@@ -407,6 +407,9 @@ GridNode = function () {
     }
     return empty;
   };
+
+  this.render = function (delta, offsetX, offsetY) {
+  };
 };
 
 Level = function (gridWidth, gridHeight) {
@@ -414,11 +417,14 @@ Level = function (gridWidth, gridHeight) {
   this.gridHeight = gridHeight;
   this.width  = gridWidth * GRID_SIZE;
   this.height = gridHeight * GRID_SIZE;
+  this.viewportGridWidth  = Math.ceil(Game.canvasWidth / GRID_SIZE);
+  this.viewportGridHeight = Math.ceil(Game.canvasHeight / GRID_SIZE);
 
   this.offsetX = 0;
   this.offsetY = 0;
 
   this.grid = new Array(gridWidth);
+
   for (var i = 0; i < this.gridWidth; i++) {
     this.grid[i] = new Array(this.gridHeight);
     for (var j = 0; j < this.gridHeight; j++) {
@@ -429,36 +435,60 @@ Level = function (gridWidth, gridHeight) {
   // set up the positional references
   for (var i = 0; i < this.gridWidth; i++) {
     for (var j = 0; j < this.gridHeight; j++) {
-      var node   = grid[i][j];
-      node.north = grid[i][(j == 0) ? this.gridHeight-1 : j-1];
-      node.south = grid[i][(j == this.gridHeight-1) ? 0 : j+1];
-      node.west  = grid[(i == 0) ? this.gridWidth-1 : i-1][j];
-      node.east  = grid[(i == this.gridWidth-1) ? 0 : i+1][j];
+      var node   = this.grid[i][j];
+      node.north = this.grid[i][(j == 0) ? this.gridHeight-1 : j-1];
+      node.south = this.grid[i][(j == this.gridHeight-1) ? 0 : j+1];
+      node.west  = this.grid[(i == 0) ? this.gridWidth-1 : i-1][j];
+      node.east  = this.grid[(i == this.gridWidth-1) ? 0 : i+1][j];
     }
   }
 
-  this.update = function () {
+  this.run = function (delta) {
+    this.updatePosition(delta);
+    this.render(delta);
+  };
+
+  this.updatePosition = function (delta) {
+    if (KEY_STATUS.left)  this.offsetX -= delta * 4;
+    if (KEY_STATUS.right) this.offsetX += delta * 4;
+    if (KEY_STATUS.up)    this.offsetY -= delta * 4;
+    if (KEY_STATUS.down)  this.offsetY += delta * 4;
+
     if (this.offsetX < 0) this.offsetX = 0;
     if (this.offsetY < 0) this.offsetY = 0;
     if (this.offsetX > this.width - Game.canvasWidth) this.offsetX = this.width - Game.canvasWidth;
     if (this.offsetY > this.height - Game.canvasHeight) this.offsetY = this.height - Game.canvasHeight;
-  }
-
-  this.render = function () {
   };
 
-  this.renderGrid = function (context) {
-    context.beginPath();
-    for (var i = 0; i < gridWidth; i++) {
-      context.moveTo(i * GRID_SIZE, 0);
-      context.lineTo(i * GRID_SIZE, Game.canvasHeight);
+  this.render = function (delta) {
+    this.renderGrid();
+    var startx = Math.floor(this.offsetX / GRID_SIZE);
+    var starty = Math.floor(this.offsetY / GRID_SIZE);
+    var endx = startx + this.viewportGridWidth + 1;
+    var endy = starty + this.viewportGridHeight + 1;
+    if (endx >= this.gridWidth) endx = this.gridWidth;
+    if (endy >= this.gridHeight) endy = this.gridHeight;
+    for (var i = startx; i < endx; i++) {
+      for (var j = starty; j < endy; j++) {
+        this.grid[i][j].render(delta, i * GRID_SIZE - this.offsetX, j * GRID_SIZE - this.offsetY);
+      }
     }
-    for (var j = 0; j < gridHeight; j++) {
-      context.moveTo(0, j * GRID_SIZE);
-      context.lineTo(Game.canvasWidth, j * GRID_SIZE);
+  };
+
+  this.renderGrid = function () {
+    var right = Math.floor(this.offsetX % GRID_SIZE);
+    var down = Math.floor(this.offsetY % GRID_SIZE);
+    this.context.beginPath();
+    for (var i = 0; i < this.gridWidth; i++) {
+      this.context.moveTo(i * GRID_SIZE - right, 0);
+      this.context.lineTo(i * GRID_SIZE - right, Game.canvasHeight);
     }
-    context.closePath();
-    context.stroke();
+    for (var j = 0; j < this.gridHeight; j++) {
+      this.context.moveTo(0, j * GRID_SIZE - down);
+      this.context.lineTo(Game.canvasWidth, j * GRID_SIZE - down);
+    }
+    this.context.closePath();
+    this.context.stroke();
   };
 };
 
@@ -467,6 +497,9 @@ var Game = {
   canvasHeight: null,
   currentLevel: null,
   sprites: [],
+  runLevel: function (delta) {
+    this.currentLevel.run(delta);
+  },
   runSprites: function (delta) {
     for (i = 0; i < this.sprites.length; i++) {
 
@@ -488,16 +521,26 @@ $(function () {
 
   var context = canvas[0].getContext("2d");
 
-  var sprites = [];
-  Game.sprites = sprites;
+  Level.prototype.context = context;
+  GridNode.prototype.context = context;
 
   // so all the sprites can use it
   Sprite.prototype.context = context;
-  Sprite.prototype.grid    = grid;
   Sprite.prototype.matrix  = new Matrix(2, 3);
 
+  Game.currentLevel = new Level(100, 100);
+
+  var gridRender = function (delta, offsetX, offsetY) {
+    this.context.fillRect(offsetX, offsetY, GRID_SIZE, GRID_SIZE);
+  };
+  for (var i = 0; i < 100; i += 2) {
+    for (var j = 0; j < 100; j++) {
+      Game.currentLevel.grid[i + j % 2][j].render = gridRender;
+    }
+  }
+
   var i, j = 0;
-  var showFramerate = false;
+  var showFramerate = true;
   var avgFramerate = 0;
   var frameCount = 0;
   var elapsedCounter = 0;
@@ -510,15 +553,20 @@ $(function () {
   var mainLoop = function () {
     context.clearRect(0, 0, Game.canvasWidth, Game.canvasHeight);
 
-    if (KEY_STATUS.g) {
-    }
-
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
     lastFrame = thisFrame;
     delta = elapsed / 30;
 
+    Game.runLevel(delta);
     Game.runSprites(delta);
+
+    if (showFramerate) {
+      context.save();
+      context.fillStyle = 'green';
+      context.fillText(''+avgFramerate, Game.canvasWidth - 38, Game.canvasHeight - 2);
+      context.restore();
+    }
 
     frameCount++;
     elapsedCounter += elapsed;
@@ -535,6 +583,19 @@ $(function () {
     switch (KEY_CODES[e.keyCode]) {
       case 'f': // show framerate
         showFramerate = !showFramerate;
+        break;
+      case 'p': // pause
+        if (mainLoopId) {
+          clearInterval(mainLoopId);
+          mainLoopId = null;
+          context.save();
+          context.fillStyle = 'green';
+          context.fillText('PAUSED', 100, 100);
+          context.restore();
+        } else {
+          lastFrame = Date.now();
+          mainLoopId = setInterval(mainLoop, 25);
+        }
         break;
     }
   });
