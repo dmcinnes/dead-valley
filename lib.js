@@ -368,6 +368,8 @@ GridNode = function () {
 
   this.nextSprite = null;
 
+  this.tileOffset = (Math.random() > 0.8) ? 1 : 0;
+
   this.dupe = {
     horizontal: null,
     vertical:   null
@@ -409,6 +411,8 @@ GridNode = function () {
   };
 
   this.render = function (delta, offsetX, offsetY) {
+    if (this.tileOffset == 0) return;
+    this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, offsetX, offsetY, GRID_SIZE, GRID_SIZE);
   };
 };
 
@@ -461,7 +465,7 @@ Level = function (gridWidth, gridHeight) {
   };
 
   this.render = function (delta) {
-    this.renderGrid();
+    // this.renderGrid();
     var startx = Math.floor(this.offsetX / GRID_SIZE);
     var starty = Math.floor(this.offsetY / GRID_SIZE);
     var endx = startx + this.viewportGridWidth + 1;
@@ -528,16 +532,13 @@ $(function () {
   Sprite.prototype.context = context;
   Sprite.prototype.matrix  = new Matrix(2, 3);
 
-  Game.currentLevel = new Level(100, 100);
+  var image = new Image();
+  image.src = './tiles.png';
 
-  var gridRender = function (delta, offsetX, offsetY) {
-    this.context.fillRect(offsetX, offsetY, GRID_SIZE, GRID_SIZE);
-  };
-  for (var i = 0; i < 100; i += 2) {
-    for (var j = 0; j < 100; j++) {
-      Game.currentLevel.grid[i + j % 2][j].render = gridRender;
-    }
-  }
+  GridNode.prototype.tiles = image;
+
+
+  Game.currentLevel = new Level(100, 100);
 
   var i, j = 0;
   var showFramerate = true;
