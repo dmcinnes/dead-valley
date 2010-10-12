@@ -368,7 +368,7 @@ GridNode = function () {
 
   this.nextSprite = null;
 
-  this.tileOffset = (Math.random() > 0.8) ? 1 : 0;
+  this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
 
   this.dupe = {
     horizontal: null,
