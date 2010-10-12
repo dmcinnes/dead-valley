@@ -369,6 +369,7 @@ GridNode = function () {
   this.nextSprite = null;
 
   this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
+  this.tileFlip = (Math.random() > 0.5);
 
   this.dupe = {
     horizontal: null,
@@ -412,7 +413,14 @@ GridNode = function () {
 
   this.render = function (delta, offsetX, offsetY) {
     if (this.tileOffset == 0) return;
-    this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, offsetX, offsetY, GRID_SIZE, GRID_SIZE);
+    if (this.tileFlip) {
+      this.context.save();
+      this.context.scale(-1, 1);
+      this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, -offsetX, offsetY, GRID_SIZE, GRID_SIZE);
+      this.context.restore();
+    } else {
+      this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, offsetX, offsetY, GRID_SIZE, GRID_SIZE);
+    }
   };
 };
 
