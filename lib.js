@@ -416,7 +416,7 @@ GridNode = function () {
     if (this.tileFlip) {
       this.context.save();
       this.context.scale(-1, 1);
-      this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, -offsetX, offsetY, GRID_SIZE, GRID_SIZE);
+      this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, -offsetX-GRID_SIZE, offsetY, GRID_SIZE, GRID_SIZE);
       this.context.restore();
     } else {
       this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, offsetX, offsetY, GRID_SIZE, GRID_SIZE);
@@ -461,10 +461,10 @@ Level = function (gridWidth, gridHeight) {
   };
 
   this.updatePosition = function (delta) {
-    if (KEY_STATUS.left)  this.offsetX -= delta * 4;
-    if (KEY_STATUS.right) this.offsetX += delta * 4;
-    if (KEY_STATUS.up)    this.offsetY -= delta * 4;
-    if (KEY_STATUS.down)  this.offsetY += delta * 4;
+    if (KEY_STATUS.left)  this.offsetX -= delta * 5;
+    if (KEY_STATUS.right) this.offsetX += delta * 5;
+    if (KEY_STATUS.up)    this.offsetY -= delta * 5;
+    if (KEY_STATUS.down)  this.offsetY += delta * 5;
 
     if (this.offsetX < 0) this.offsetX = 0;
     if (this.offsetY < 0) this.offsetY = 0;
