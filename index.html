@@ -3,10 +3,15 @@
     <script src="jquery-1.4.2.min.js"></script>
     <script src="lib.js"></script>
     <style>
-      #canvas { position:absolute; border:1px solid black; top:20px; left:20px; background:#cc9;}
+      #canvas { position:absolute; z-index:20;}
+      #canvas-mask { border:1px solid black; top:20px; left:20px; width:900px; height:420px; z-index:30; }
+      #background { background:#cc9; z-index:10; width:900px; height:420px; }
     </style>
   </head>
   <body>
-    <canvas id="canvas" width="900" height="420"></canvas>
+    <div id="canvas-mask">
+      <canvas id="canvas" width="900" height="420"></canvas>
+      <div id="background"></div>
+    </div>
   </body>
 </html>
