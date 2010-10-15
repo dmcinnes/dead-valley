@@ -542,6 +542,9 @@ Level = function (gridWidth, gridHeight) {
     this.context.closePath();
     this.context.stroke();
   };
+
+  // run first render
+  this.render(0);
 };
 
 var Game = {
@@ -550,7 +553,7 @@ var Game = {
   currentLevel: null,
   sprites: [],
   runLevel: function (delta) {
-    this.currentLevel.run(delta);
+    if (this.currentLevel) this.currentLevel.run(delta);
   },
   runSprites: function (delta) {
     for (i = 0; i < this.sprites.length; i++) {
@@ -564,6 +567,42 @@ var Game = {
       }
     }
   }
+};
+
+var AssetManager = function (completeCallback) {
+  var loadedCount = 0;
+  var assets = [];
+
+  var assetLoaded = function () {
+    loadedCount++;
+    if (loadedCount == assets.length) {
+      completeCallback();
+    } else {
+      loadNextAsset();
+    }
+  };
+
+  var loadNextAsset = function () {
+    assets[loadedCount]();
+  };
+
+  this.registerImage = function (src) {
+    var image = new Image();
+    image.onload = assetLoaded;
+
+    assets.push(function () {
+      image.src = src;
+    });
+
+    return image;
+  };
+
+  this.loadAssets = function () {
+    loadNextAsset();
+  };
+
+  this.__defineGetter__('loadedCount', function () { return loadedCount; });
+  this.__defineGetter__('totalCount', function () { return assets.length; });
 };
 
 $(function () {
@@ -581,13 +620,13 @@ $(function () {
   Sprite.prototype.context = context;
   Sprite.prototype.matrix  = new Matrix(2, 3);
 
-  var image = new Image();
-  image.src = './tiles.png';
+  var assetManager = new AssetManager(function () {
+    // only load the level after the assets are loaded
+    Game.currentLevel = new Level(100, 100);
+  });
 
-  GridNode.prototype.tiles = image;
-
-
-  Game.currentLevel = new Level(100, 100);
+  GridNode.prototype.tiles = assetManager.registerImage('./tiles.png');
+  assetManager.loadAssets();
 
   var i, j = 0;
   var showFramerate = true;
@@ -602,6 +641,20 @@ $(function () {
 
   var mainLoop = function () {
     context.clearRect(0, 0, Game.canvasWidth, Game.canvasHeight);
+
+    if (assetManager.loadedCount < assetManager.totalCount) {
+      foregroundContext.save();
+      foregroundContext.fillStyle = 'red';
+      foregroundContext.beginPath();
+      foregroundContext.moveTo(100, 100);
+      foregroundContext.lineTo(Game.canvasWidth - 100, 100);
+      foregroundContext.lineTo(Game.canvasWidth - 100, 120);
+      foregroundContext.lineTo(100, 120);
+      foregroundContext.closePath();
+      foregroundContext.stroke();
+      foregroundContext.fillRect(100, 100, (Game.canvasWidth - 200) * assetManager.loadedCount / assetManager.totalCount, 20);
+      foregroundContext.restore();
+    }
 
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
