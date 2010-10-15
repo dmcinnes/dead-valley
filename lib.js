@@ -368,8 +368,11 @@ GridNode = function () {
 
   this.nextSprite = null;
 
-  this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
+  this.tileOffset = Math.floor(Math.random()*2) + 1;
+  // this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
   this.tileFlip = (Math.random() > 0.5);
+
+  this.domNode = null;
 
   this.dupe = {
     horizontal: null,
@@ -413,18 +416,27 @@ GridNode = function () {
 
   this.render = function (delta, offsetX, offsetY) {
     if (this.tileOffset == 0) return;
-    if (this.tileFlip) {
-      this.context.save();
-      this.context.scale(-1, 1);
-      this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, -offsetX-GRID_SIZE, offsetY, GRID_SIZE, GRID_SIZE);
-      this.context.restore();
+
+    if (this.domNode) {
+      this.domNode.css({left:offsetX, top:offsetY});
     } else {
-      this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, offsetX, offsetY, GRID_SIZE, GRID_SIZE);
+      this.domNode = $('<div/>', {'class':'tile'}).css({left:offsetX, top:offsetY, 'background-position':GRID_SIZE * this.tileOffset+' 0px'});
+      // this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, offsetX, offsetY, GRID_SIZE, GRID_SIZE);
+      this.background.append(this.domNode);
+    }
+  };
+
+  this.reclaim = function (delta) {
+    if (this.domNode) {
+      this.domNode.remove();
+      this.domNode = null;
     }
   };
 };
 
 Level = function (gridWidth, gridHeight) {
+  var i, j, startx, starty, endx, endy, currentx, currenty;
+
   this.gridWidth  = gridWidth;
   this.gridHeight = gridHeight;
   this.width  = gridWidth * GRID_SIZE;
@@ -437,7 +449,7 @@ Level = function (gridWidth, gridHeight) {
 
   this.grid = new Array(gridWidth);
 
-  for (var i = 0; i < this.gridWidth; i++) {
+  for (i = 0; i < this.gridWidth; i++) {
     this.grid[i] = new Array(this.gridHeight);
     for (var j = 0; j < this.gridHeight; j++) {
       this.grid[i][j] = new GridNode();
@@ -445,8 +457,8 @@ Level = function (gridWidth, gridHeight) {
   }
 
   // set up the positional references
-  for (var i = 0; i < this.gridWidth; i++) {
-    for (var j = 0; j < this.gridHeight; j++) {
+  for (i = 0; i < this.gridWidth; i++) {
+    for (j = 0; j < this.gridHeight; j++) {
       var node   = this.grid[i][j];
       node.north = this.grid[i][(j == 0) ? this.gridHeight-1 : j-1];
       node.south = this.grid[i][(j == this.gridHeight-1) ? 0 : j+1];
@@ -474,16 +486,25 @@ Level = function (gridWidth, gridHeight) {
 
   this.render = function (delta) {
     // this.renderGrid();
-    var startx = Math.floor(this.offsetX / GRID_SIZE);
-    var starty = Math.floor(this.offsetY / GRID_SIZE);
-    var endx = startx + this.viewportGridWidth + 1;
-    var endy = starty + this.viewportGridHeight + 1;
+    startx = Math.floor(this.offsetX / GRID_SIZE);
+    starty = Math.floor(this.offsetY / GRID_SIZE);
+    endx = startx + this.viewportGridWidth + 1;
+    endy = starty + this.viewportGridHeight + 1;
     if (endx >= this.gridWidth) endx = this.gridWidth;
     if (endy >= this.gridHeight) endy = this.gridHeight;
-    for (var i = startx; i < endx; i++) {
-      for (var j = starty; j < endy; j++) {
+    for (i = startx; i < endx; i++) {
+      for (j = starty; j < endy; j++) {
         this.grid[i][j].render(delta, i * GRID_SIZE - this.offsetX, j * GRID_SIZE - this.offsetY);
       }
+    }
+    startx--; endx++;
+    for (i = startx; i < endx; i++) {
+      this.grid[i][starty-1].reclaim(delta);
+      this.grid[i][endy+1].reclaim(delta);
+    }
+    for (i = starty; i < endy; i++) {
+      this.grid[startx][i].reclaim(delta);
+      this.grid[endx][i].reclaim(delta);
     }
   };
 
@@ -535,6 +556,7 @@ $(function () {
 
   Level.prototype.context = context;
   GridNode.prototype.context = context;
+  GridNode.prototype.background = $('#background');
 
   // so all the sprites can use it
   Sprite.prototype.context = context;

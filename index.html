@@ -3,9 +3,10 @@
     <script src="jquery-1.4.2.min.js"></script>
     <script src="lib.js"></script>
     <style>
-      #canvas { position:absolute; z-index:20;}
-      #canvas-mask { border:1px solid black; top:20px; left:20px; width:900px; height:420px; z-index:30; }
-      #background { background:#cc9; z-index:10; width:900px; height:420px; }
+      #canvas { position:absolute; z-index:20; }
+      #canvas-mask { border:1px solid black; top:20px; left:20px; width:900px; height:420px; z-index:30; overflow:hidden; }
+      #background { background:#cc9; z-index:10; width:900px; height:420px; overflow:hidden; }
+      .tile { position:absolute; width:60; height:60; background-color: #000; background-image: url(./tiles.png); z-index:5; background-position: 60 0px; }
     </style>
   </head>
   <body>
