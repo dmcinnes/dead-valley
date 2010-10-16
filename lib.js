@@ -451,8 +451,9 @@ Level = function (gridWidth, gridHeight) {
   this.viewportGridWidth  = Math.ceil(Game.canvasWidth / GRID_SIZE);
   this.viewportGridHeight = Math.ceil(Game.canvasHeight / GRID_SIZE);
 
-  this.offsetX = 0;
-  this.offsetY = 0;
+  // start inside
+  this.offsetX = GRID_SIZE;
+  this.offsetY = GRID_SIZE;
 
   this.velX = 0;
   this.velY = 0;
@@ -494,9 +495,9 @@ Level = function (gridWidth, gridHeight) {
     if (KEY_STATUS.down)  this.velY += delta * 5;
 
     // hitting the edges
-    if ((this.offsetX + this.velX < 0) ||
+    if ((this.offsetX + this.velX < GRID_SIZE) ||
         (this.offsetX + this.velX > this.width - Game.canvasWidth)) this.velX = 0;
-    if ((this.offsetY + this.velY < 0) ||
+    if ((this.offsetY + this.velY < GRID_SIZE) ||
         (this.offsetY + this.velY > this.height - Game.canvasHeight)) this.velY = 0;
 
     this.offsetX += this.velX;
