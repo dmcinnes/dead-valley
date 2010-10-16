@@ -360,7 +360,9 @@ Sprite = function () {
 
 };
 
-GridNode = function () {
+GridNode = function (level) {
+  this.level = level;
+
   this.north = null;
   this.south = null;
   this.east  = null;
@@ -420,15 +422,20 @@ GridNode = function () {
     if (this.domNode) {
       this.domNode.css({left:offsetX, top:offsetY});
     } else {
-      this.domNode = $('<div/>', {'class':'tile'}).css({left:offsetX, top:offsetY, 'background-position':GRID_SIZE * this.tileOffset+' 0px'});
-      // this.context.drawImage(this.tiles, GRID_SIZE * this.tileOffset, 0, GRID_SIZE, GRID_SIZE, offsetX, offsetY, GRID_SIZE, GRID_SIZE);
-      this.background.append(this.domNode);
+      if (this.level.freeNodes.length) {
+        this.domNode = this.level.freeNodes.pop();
+        this.domNode.css({left:offsetX, top:offsetY, 'background-position':GRID_SIZE * this.tileOffset+' 0px'}).show();
+      } else {
+        this.domNode = $('<div/>', {'class':'tile'}).css({left:offsetX, top:offsetY, 'background-position':GRID_SIZE * this.tileOffset+' 0px'});
+        this.background.append(this.domNode);
+      }
     }
   };
 
   this.reclaim = function (delta) {
     if (this.domNode) {
-      this.domNode.remove();
+      this.domNode.hide();
+      level.freeNodes.push(this.domNode);
       this.domNode = null;
     }
   };
@@ -448,11 +455,12 @@ Level = function (gridWidth, gridHeight) {
   this.offsetY = 0;
 
   this.grid = new Array(gridWidth);
+  this.freeNodes = [];
 
   for (i = 0; i < this.gridWidth; i++) {
     this.grid[i] = new Array(this.gridHeight);
     for (var j = 0; j < this.gridHeight; j++) {
-      this.grid[i][j] = new GridNode();
+      this.grid[i][j] = new GridNode(this);
     }
   }
 
