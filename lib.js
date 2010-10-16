@@ -454,6 +454,9 @@ Level = function (gridWidth, gridHeight) {
   this.offsetX = 0;
   this.offsetY = 0;
 
+  this.velX = 0;
+  this.velY = 0;
+
   this.grid = new Array(gridWidth);
   this.freeNodes = [];
 
@@ -477,19 +480,27 @@ Level = function (gridWidth, gridHeight) {
 
   this.run = function (delta) {
     this.updatePosition(delta);
-    this.render(delta);
+    if (this.velX || this.velY) this.render(delta);
   };
 
   this.updatePosition = function (delta) {
-    if (KEY_STATUS.left)  this.offsetX -= delta * 5;
-    if (KEY_STATUS.right) this.offsetX += delta * 5;
-    if (KEY_STATUS.up)    this.offsetY -= delta * 5;
-    if (KEY_STATUS.down)  this.offsetY += delta * 5;
+    this.velX = 0;
+    this.velY = 0;
 
-    if (this.offsetX < 0) this.offsetX = 0;
-    if (this.offsetY < 0) this.offsetY = 0;
-    if (this.offsetX > this.width - Game.canvasWidth) this.offsetX = this.width - Game.canvasWidth;
-    if (this.offsetY > this.height - Game.canvasHeight) this.offsetY = this.height - Game.canvasHeight;
+    // just move by arrow keys for now
+    if (KEY_STATUS.left)  this.velX -= delta * 5;
+    if (KEY_STATUS.right) this.velX += delta * 5;
+    if (KEY_STATUS.up)    this.velY -= delta * 5;
+    if (KEY_STATUS.down)  this.velY += delta * 5;
+
+    // hitting the edges
+    if ((this.offsetX + this.velX < 0) ||
+        (this.offsetX + this.velX > this.width - Game.canvasWidth)) this.velX = 0;
+    if ((this.offsetY + this.velY < 0) ||
+        (this.offsetY + this.velY > this.height - Game.canvasHeight)) this.velY = 0;
+
+    this.offsetX += this.velX;
+    this.offsetY += this.velY;
   };
 
   this.render = function (delta) {
