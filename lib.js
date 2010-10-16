@@ -644,17 +644,17 @@ $(function () {
     context.clearRect(0, 0, Game.canvasWidth, Game.canvasHeight);
 
     if (assetManager.loadedCount < assetManager.totalCount) {
-      foregroundContext.save();
-      foregroundContext.fillStyle = 'red';
-      foregroundContext.beginPath();
-      foregroundContext.moveTo(100, 100);
-      foregroundContext.lineTo(Game.canvasWidth - 100, 100);
-      foregroundContext.lineTo(Game.canvasWidth - 100, 120);
-      foregroundContext.lineTo(100, 120);
-      foregroundContext.closePath();
-      foregroundContext.stroke();
-      foregroundContext.fillRect(100, 100, (Game.canvasWidth - 200) * assetManager.loadedCount / assetManager.totalCount, 20);
-      foregroundContext.restore();
+      context.save();
+      context.fillStyle = 'red';
+      context.beginPath();
+      context.moveTo(100, 100);
+      context.lineTo(Game.canvasWidth - 100, 100);
+      context.lineTo(Game.canvasWidth - 100, 120);
+      context.lineTo(100, 120);
+      context.closePath();
+      context.stroke();
+      context.fillRect(100, 100, (Game.canvasWidth - 200) * assetManager.loadedCount / assetManager.totalCount, 20);
+      context.restore();
     }
 
     thisFrame = Date.now();
