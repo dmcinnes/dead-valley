@@ -466,7 +466,7 @@ Level = function (gridWidth, gridHeight) {
 
   for (i = 0; i < this.gridWidth; i++) {
     this.grid[i] = new Array(this.gridHeight);
-    for (var j = 0; j < this.gridHeight; j++) {
+    for (j = 0; j < this.gridHeight; j++) {
       this.grid[i][j] = new GridNode(this);
     }
   }
