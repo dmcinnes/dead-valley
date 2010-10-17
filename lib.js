@@ -9,7 +9,7 @@ KEY_CODES = {
   72: 'h',
   77: 'm',
   80: 'p'
-}
+};
 
 KEY_STATUS = { keyDown:false };
 for (code in KEY_CODES) {
@@ -442,7 +442,7 @@ GridNode = function (level) {
 };
 
 Level = function (gridWidth, gridHeight) {
-  var i, j, startx, starty, endx, endy, currentx, currenty;
+  var i, j, startX, startY, endX, endY, diffX, diffY;
 
   this.gridWidth  = gridWidth;
   this.gridHeight = gridHeight;
@@ -460,6 +460,9 @@ Level = function (gridWidth, gridHeight) {
 
   this.grid = new Array(gridWidth);
   this.freeNodes = [];
+
+  this.lastGridX = 1;
+  this.lastGridY = 1;
 
   for (i = 0; i < this.gridWidth; i++) {
     this.grid[i] = new Array(this.gridHeight);
@@ -506,26 +509,53 @@ Level = function (gridWidth, gridHeight) {
 
   this.render = function (delta) {
     // this.renderGrid();
-    startx = Math.floor(this.offsetX / GRID_SIZE);
-    starty = Math.floor(this.offsetY / GRID_SIZE);
-    endx = startx + this.viewportGridWidth + 1;
-    endy = starty + this.viewportGridHeight + 1;
-    if (endx >= this.gridWidth) endx = this.gridWidth;
-    if (endy >= this.gridHeight) endy = this.gridHeight;
-    for (i = startx; i < endx; i++) {
-      for (j = starty; j < endy; j++) {
+    startX = Math.floor(this.offsetX / GRID_SIZE);
+    startY = Math.floor(this.offsetY / GRID_SIZE);
+    endX = startX + this.viewportGridWidth + 1;
+    endY = startY + this.viewportGridHeight + 1;
+    if (endX >= this.gridWidth) endX = this.gridWidth;
+    if (endY >= this.gridHeight) endY = this.gridHeight;
+    for (i = startX; i < endX; i++) {
+      for (j = startY; j < endY; j++) {
         this.grid[i][j].render(delta, i * GRID_SIZE - this.offsetX, j * GRID_SIZE - this.offsetY);
       }
     }
-    startx--; endx++;
-    for (i = startx; i < endx; i++) {
-      this.grid[i][starty-1].reclaim(delta);
-      this.grid[i][endy+1].reclaim(delta);
+
+    // reclaim the edges
+    // TODO make this not so yucky
+
+    diffX = startX - this.lastGridX;
+    diffY = startY - this.lastGridY;
+
+    if (diffX > 0) {
+      for (i = this.lastGridX; i < startX; i++) {
+        for (j = startY-1; j < endY+1; j++) {
+          this.grid[i][j].reclaim(delta);
+        }
+      }
+    } else if (diffX < 0) {
+      for (i = endX; i < endX - diffX; i++) {
+        for (j = startY-1; j < endY+1; j++) {
+          this.grid[i][j].reclaim(delta);
+        }
+      }
     }
-    for (i = starty; i < endy; i++) {
-      this.grid[startx][i].reclaim(delta);
-      this.grid[endx][i].reclaim(delta);
+    if (diffY > 0) {
+      for (i = this.lastGridY; i < startY; i++) {
+        for (j = startX-1; j < endX+1; j++) {
+          this.grid[j][i].reclaim(delta);
+        }
+      }
+    } else if (diffY < 0) {
+      for (i = endY; i < endY - diffY; i++) {
+        for (j = startX-1; j < endX+1; j++) {
+          this.grid[j][i].reclaim(delta);
+        }
+      }
     }
+
+    this.lastGridX = startX;
+    this.lastGridY = startY;
   };
 
   this.renderGrid = function () {
