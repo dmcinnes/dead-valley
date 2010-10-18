@@ -1,29 +1,19 @@
 require(
   ["underscore-min",
-   "controls",
    "game",
    "gridnode",
-   "level",
-   "matrix",
-   "sprite"],
+   "level"],
    
-  function(_, controls, game, GridNode, Level, Matrix, Sprite) {
+  function(_, game, GridNode, Level) {
 
     require.ready(function() {
-      Level.prototype.context = game.spriteContext;
-      GridNode.prototype.context = game.spriteContext;
-      GridNode.prototype.background = $('#background');
-
-      // so all the sprites can use it
-      Sprite.prototype.context = game.spriteContext;
-      Sprite.prototype.matrix  = new Matrix(2, 3);
-
       var assetManager = game.assetManager;
       assetManager.onComplete = function () {
         // only load the level after the assets are loaded
         game.currentLevel = new Level(100, 100);
       };
 
+      // TODO make the link between GridNodes and tile images cleaner
       GridNode.prototype.tiles = assetManager.registerImage('./tiles.png');
       assetManager.loadAssets();
 
@@ -84,12 +74,12 @@ require(
       var mainLoopId = setInterval(mainLoop, 25);
 
       // toggle show framerate
-      controls.registerKeyDownHandler('f', function () {
+      game.controls.registerKeyDownHandler('f', function () {
         showFramerate = !showFramerate;
       });
 
       // toggle pause
-      controls.registerKeyDownHandler('p', function () {
+      game.controls.registerKeyDownHandler('p', function () {
         if (mainLoopId) {
           clearInterval(mainLoopId);
           mainLoopId = null;

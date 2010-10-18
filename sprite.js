@@ -1,7 +1,10 @@
 // Sprite 
 
-define(function (game) {
-  var Sprite = function () {
+define(["game", "matrix"], function (game, Matrix) {
+
+  var matrix  = new Matrix(2, 3);
+
+  var Sprite = function (context) {
     this.init = function (name, points) {
       this.name     = name;
       this.points   = points;
@@ -44,35 +47,35 @@ define(function (game) {
       this.move(delta);
       this.updateGrid();
 
-      this.context.save();
+      context.save();
       this.configureTransform();
       this.draw();
 
       var canidates = this.findCollisionCanidates();
 
-      this.matrix.configure(this.rot, this.scale, this.x, this.y);
+      matrix.configure(this.rot, this.scale, this.x, this.y);
       this.checkCollisionsAgainst(canidates);
 
-      this.context.restore();
+      context.restore();
 
       if (this.bridgesH && this.currentNode && this.currentNode.dupe.horizontal) {
         this.x += this.currentNode.dupe.horizontal;
-        this.context.save();
+        context.save();
         this.configureTransform();
         this.draw();
         this.checkCollisionsAgainst(canidates);
-        this.context.restore();
+        context.restore();
         if (this.currentNode) {
           this.x -= this.currentNode.dupe.horizontal;
         }
       }
       if (this.bridgesV && this.currentNode && this.currentNode.dupe.vertical) {
         this.y += this.currentNode.dupe.vertical;
-        this.context.save();
+        context.save();
         this.configureTransform();
         this.draw();
         this.checkCollisionsAgainst(canidates);
-        this.context.restore();
+        context.restore();
         if (this.currentNode) {
           this.y -= this.currentNode.dupe.vertical;
         }
@@ -83,11 +86,11 @@ define(function (game) {
           this.currentNode.dupe.horizontal) {
         this.x += this.currentNode.dupe.horizontal;
         this.y += this.currentNode.dupe.vertical;
-        this.context.save();
+        context.save();
         this.configureTransform();
         this.draw();
         this.checkCollisionsAgainst(canidates);
-        this.context.restore();
+        context.restore();
         if (this.currentNode) {
           this.x -= this.currentNode.dupe.horizontal;
           this.y -= this.currentNode.dupe.vertical;
@@ -135,11 +138,11 @@ define(function (game) {
       }
 
       if (KEY_STATUS.g && this.currentNode) {
-        this.context.lineWidth = 3.0;
-        this.context.strokeStyle = 'green';
-        this.context.strokeRect(gridx*game.gridSize+2, gridy*game.gridSize+2, game.gridSize-4, game.gridSize-4);
-        this.context.strokeStyle = 'black';
-        this.context.lineWidth = 1.0;
+        context.lineWidth = 3.0;
+        context.strokeStyle = 'green';
+        context.strokeRect(gridx*game.gridSize+2, gridy*game.gridSize+2, game.gridSize-4, game.gridSize-4);
+        context.strokeStyle = 'black';
+        context.lineWidth = 1.0;
       }
     };
     this.configureTransform = function () {
@@ -147,30 +150,30 @@ define(function (game) {
 
       var rad = (this.rot * Math.PI)/180;
 
-      this.context.translate(this.x, this.y);
-      this.context.rotate(rad);
-      this.context.scale(this.scale, this.scale);
+      context.translate(this.x, this.y);
+      context.rotate(rad);
+      context.scale(this.scale, this.scale);
     };
     this.draw = function () {
       if (!this.visible) return;
 
-      this.context.lineWidth = 1.0 / this.scale;
+      context.lineWidth = 1.0 / this.scale;
 
       for (child in this.children) {
         this.children[child].draw();
       }
 
-      this.context.beginPath();
+      context.beginPath();
 
-      this.context.moveTo(this.points[0], this.points[1]);
+      context.moveTo(this.points[0], this.points[1]);
       for (var i = 1; i < this.points.length/2; i++) {
         var xi = i*2;
         var yi = xi + 1;
-        this.context.lineTo(this.points[xi], this.points[yi]);
+        context.lineTo(this.points[xi], this.points[yi]);
       }
 
-      this.context.closePath();
-      this.context.stroke();
+      context.closePath();
+      context.stroke();
     };
     this.findCollisionCanidates = function () {
       if (!this.visible || !this.currentNode) return [];
@@ -207,7 +210,7 @@ define(function (game) {
         px = trans[i*2];
         py = trans[i*2 + 1];
         // mozilla doesn't take into account transforms with isPointInPath >:-P
-        if (($.browser.mozilla) ? this.pointInPolygon(px, py) : this.context.isPointInPath(px, py)) {
+        if (($.browser.mozilla) ? this.pointInPolygon(px, py) : context.isPointInPath(px, py)) {
           other.collision(this);
           this.collision(other);
           return;
@@ -246,11 +249,11 @@ define(function (game) {
     this.transformedPoints = function () {
       if (this.transPoints) return this.transPoints;
       var trans = new Array(this.points.length);
-      this.matrix.configure(this.rot, this.scale, this.x, this.y);
+      matrix.configure(this.rot, this.scale, this.x, this.y);
       for (var i = 0; i < this.points.length/2; i++) {
         var xi = i*2;
         var yi = xi + 1;
-        var pts = this.matrix.multiply(this.points[xi], this.points[yi], 1);
+        var pts = matrix.multiply(this.points[xi], this.points[yi], 1);
         trans[xi] = pts[0];
         trans[yi] = pts[1];
       }

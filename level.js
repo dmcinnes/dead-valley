@@ -1,7 +1,8 @@
 // Level 
 
 define(["game", "gridnode"], function (game, GridNode) {
-  return function (gridWidth, gridHeight) {
+
+  var Level = function (gridWidth, gridHeight) {
     var i, j, startX, startY, endX, endY, diffX, diffY;
 
     var keyStatus = game.controls.keyStatus;
@@ -120,23 +121,9 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.lastGridY = startY;
     };
 
-    this.renderGrid = function () {
-      var right = Math.floor(this.offsetX % game.gridSize);
-      var down = Math.floor(this.offsetY % game.gridSize);
-      this.context.beginPath();
-      for (var i = 0; i < this.gridWidth; i++) {
-        this.context.moveTo(i * game.gridSize - right, 0);
-        this.context.lineTo(i * game.gridSize - right, game.canvasHeight);
-      }
-      for (var j = 0; j < this.gridHeight; j++) {
-        this.context.moveTo(0, j * game.gridSize - down);
-        this.context.lineTo(game.canvasWidth, j * game.gridSize - down);
-      }
-      this.context.closePath();
-      this.context.stroke();
-    };
-
     // run first render
     this.render(0);
   };
+
+  return Level;
 });

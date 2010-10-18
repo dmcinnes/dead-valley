@@ -1,7 +1,10 @@
 // GridNode
 
 define(["game"], function (game) {
-  return function (level) {
+
+  var background = $('#background');
+
+  var GridNode = function (level) {
     this.level = level;
 
     this.north = null;
@@ -68,7 +71,7 @@ define(["game"], function (game) {
           this.domNode.css({left:offsetX, top:offsetY, 'background-position':game.gridSize * this.tileOffset+' 0px'}).show();
         } else {
           this.domNode = $('<div/>', {'class':'tile'}).css({left:offsetX, top:offsetY, 'background-position':game.gridSize * this.tileOffset+' 0px'});
-          this.background.append(this.domNode);
+          background.append(this.domNode);
         }
       }
     };
@@ -81,4 +84,6 @@ define(["game"], function (game) {
       }
     };
   };
+
+  return GridNode;
 });
