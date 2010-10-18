@@ -33,17 +33,15 @@ require(
         }
       });
 
+      var parseNode = $('#pause');
       // toggle pause
       game.controls.registerKeyDownHandler('p', function () {
         if (mainloop.isPaused()) {
           mainloop.play();
+          parseNode.removeClass('active');
         } else {
           mainloop.pause();
-          // TODO do something nicer with this, make it a sprite or something
-          game.spriteContext.save();
-          game.spriteContext.fillStyle = 'green';
-          game.spriteContext.fillText('PAUSED', 100, 100);
-          game.spriteContext.restore();
+          parseNode.addClass('active');
         }
       });
 

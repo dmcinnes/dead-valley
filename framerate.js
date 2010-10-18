@@ -1,7 +1,7 @@
 define(function () {
 
   var node = $('#framerate');
-  var visible = true;
+  var visible = $('#framerate').hasClass('active');
 
   var frameCount     = 0;
   var elapsedCounter = 0.0;
@@ -27,12 +27,12 @@ define(function () {
       frameCount = 0;
       elapsedCounter = 0.0;
       visible = true;
-      node.show();
+      node.addClass('active');
     },
 
     hide: function () {
       visible = false;
-      node.hide();
+      node.removeClass('active');
     },
 
     isShowing: function () {
