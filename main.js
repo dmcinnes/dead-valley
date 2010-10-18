@@ -3,9 +3,10 @@ require(
    "game",
    "gridnode",
    "level",
-   "mainloop"],
+   "mainloop",
+   "framerate"],
    
-  function(_, game, GridNode, Level, mainloop) {
+  function(_, game, GridNode, Level, mainloop, framerate) {
 
     require.ready(function() {
 
@@ -21,10 +22,11 @@ require(
       GridNode.prototype.tiles = assetManager.registerImage('./tiles.png');
       assetManager.loadAssets();
 
+      game.sprites.push(framerate);
 
       // toggle show framerate
       game.controls.registerKeyDownHandler('f', function () {
-        showFramerate = !showFramerate;
+        framerate.show = !framerate.show;
       });
 
       // toggle pause
