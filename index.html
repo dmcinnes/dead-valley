@@ -2,9 +2,10 @@
   <head>
     <style>
       #canvas { position:absolute; z-index:20; }
-      #canvas-mask { border:1px solid black; top:20px; left:20px; width:900px; height:420px; z-index:30; overflow:hidden; }
+      #canvas-mask { position:relative; border:1px solid black; top:20px; left:20px; width:900px; height:420px; z-index:30; overflow:hidden; }
       #background { position:relative; background:#cc9; z-index:10; width:900px; height:420px; overflow:hidden; }
-      .tile { position:absolute; width:60; height:60; background-color: #000; background-image: url(./tiles.png); z-index:5; background-position: 60 0px; }
+      .tile { position:absolute; width:60; height:60; background-color:#000; background-image:url(./tiles.png); z-index:5; background-position:60 0px; }
+      #framerate { position:absolute; color:#FFF; z-index:50; right:5px; top:5px; }
     </style>
     <script data-main="main" src="requireplugins-jquery-1.4.3.js"></script>
   </head>
@@ -12,6 +13,7 @@
     <div id="canvas-mask">
       <canvas id="canvas" width="900" height="420"></canvas>
       <div id="background"></div>
+      <div id="framerate"></div>
     </div>
   </body>
 </html>

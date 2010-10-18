@@ -26,7 +26,11 @@ require(
 
       // toggle show framerate
       game.controls.registerKeyDownHandler('f', function () {
-        framerate.show = !framerate.show;
+        if (framerate.isShowing()) {
+          framerate.hide();
+        } else {
+          framerate.show();
+        }
       });
 
       // toggle pause

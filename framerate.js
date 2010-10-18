@@ -1,33 +1,42 @@
-define(['game'], function (game) {
+define(function () {
 
-  var context = game.spriteContext;
-  var x = game.canvasWidth - 38;
-  var y = game.canvasHeight - 2;
+  var node = $('#framerate');
+  var visible = true;
 
-  var avgFramerate   = 0;
   var frameCount     = 0;
-  var elapsedCounter = 0;
+  var elapsedCounter = 0.0;
 
-  var render = function () {
-    context.save();
-    context.fillStyle = 'green';
-    context.fillText(''+avgFramerate, x, y);
-    context.restore();
+  var render = function (framerate) {
+    node.text(framerate);
   };
 
   return {
     run: function (delta) {
-      if (this.show) render();
-
-      frameCount++;
-      elapsedCounter += delta;
-      if (elapsedCounter > 1.0) {
-        elapsedCounter -= 1.0;
-        avgFramerate = frameCount;
-        frameCount = 0;
+      if (visible) {
+        frameCount++;
+        elapsedCounter += delta;
+        if (elapsedCounter > 1.0) {
+          elapsedCounter -= 1.0;
+          render(frameCount);
+          frameCount = 0;
+        }
       }
     },
 
-    show: true
+    show: function () {
+      frameCount = 0;
+      elapsedCounter = 0.0;
+      visible = true;
+      node.show();
+    },
+
+    hide: function () {
+      visible = false;
+      node.hide();
+    },
+
+    isShowing: function () {
+      return visible;
+    }
   };
 });

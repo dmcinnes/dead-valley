@@ -2,10 +2,7 @@
 
 define(["game"], function (game) {
 
-  var lastFrame = Date.now();
-  var thisFrame;
-  var elapsed;
-  var delta;
+  var lastFrame, thisFrame, elapsed, delta, mainLoopId;
 
   var context = game.spriteContext;
 
@@ -20,8 +17,6 @@ define(["game"], function (game) {
     game.runLevel(delta);
     game.runSprites(delta);
   };
-
-  var mainLoopId = null;
 
   return {
     pause: function () {
