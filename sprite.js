@@ -2,9 +2,10 @@
 
 define(["game", "matrix"], function (game, Matrix) {
 
-  var matrix  = new Matrix(2, 3);
+  var matrix   = new Matrix(2, 3);
+  var context  = game.spriteContext;
 
-  var Sprite = function (context) {
+  var Sprite = function () {
     this.init = function (name, points) {
       this.name     = name;
       this.points   = points;
@@ -21,6 +22,8 @@ define(["game", "matrix"], function (game, Matrix) {
         rot: 0
       };
     };
+
+    var level = game.currentLevel;
 
     this.children = {};
 
@@ -124,11 +127,11 @@ define(["game", "matrix"], function (game, Matrix) {
       if (!this.visible) return;
       var gridx = Math.floor(this.x / game.gridSize);
       var gridy = Math.floor(this.y / game.gridSize);
-      gridx = (gridx >= this.grid.length) ? 0 : gridx;
-      gridy = (gridy >= this.grid[0].length) ? 0 : gridy;
-      gridx = (gridx < 0) ? this.grid.length-1 : gridx;
-      gridy = (gridy < 0) ? this.grid[0].length-1 : gridy;
-      var newNode = this.grid[gridx][gridy];
+      gridx = (gridx >= level.grid.length) ? 0 : gridx;
+      gridy = (gridy >= level.grid[0].length) ? 0 : gridy;
+      gridx = (gridx < 0) ? level.grid.length-1 : gridx;
+      gridy = (gridy < 0) ? level.grid[0].length-1 : gridy;
+      var newNode = level.grid[gridx][gridy];
       if (newNode != this.currentNode) {
         if (this.currentNode) {
           this.currentNode.leave(this);
@@ -137,7 +140,7 @@ define(["game", "matrix"], function (game, Matrix) {
         this.currentNode = newNode;
       }
 
-      if (KEY_STATUS.g && this.currentNode) {
+      if (game.controls.keyStatus.g && this.currentNode) {
         context.lineWidth = 3.0;
         context.strokeStyle = 'green';
         context.strokeRect(gridx*game.gridSize+2, gridy*game.gridSize+2, game.gridSize-4, game.gridSize-4);
@@ -266,9 +269,9 @@ define(["game", "matrix"], function (game, Matrix) {
       if (cn == null) {
         var gridx = Math.floor(this.x / game.gridSize);
         var gridy = Math.floor(this.y / game.gridSize);
-        gridx = (gridx >= this.grid.length) ? 0 : gridx;
-        gridy = (gridy >= this.grid[0].length) ? 0 : gridy;
-        cn = this.grid[gridx][gridy];
+        gridx = (gridx >= level.grid.length) ? 0 : gridx;
+        gridy = (gridy >= level.grid[0].length) ? 0 : gridy;
+        cn = level.grid[gridx][gridy];
       }
       return (cn.isEmpty(this.collidesWith) &&
               cn.north.isEmpty(this.collidesWith) &&
