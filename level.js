@@ -4,8 +4,11 @@ define(["game", "gridnode"], function (game, GridNode) {
 
   var Level = function (gridWidth, gridHeight) {
     var i, j,
-        startX, startY,
-        offset, nodeOffset;
+        imageData,
+        startX,     startY,
+        gridX,      gridY,
+        imageWidth, imageHeight,
+        offset,     nodeOffset;
 
     var keyStatus = game.controls.keyStatus;
 
@@ -20,6 +23,8 @@ define(["game", "gridnode"], function (game, GridNode) {
       // start in the center
       this.offsetX = game.gridSize * gridWidth/2 - gridWidth/2;
       this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2;
+      // this.offsetX = 120;
+      // this.offsetY = 120;
 
       this.velX = 0;
       this.velY = 0;
@@ -48,8 +53,6 @@ define(["game", "gridnode"], function (game, GridNode) {
       for (i = 0; i < this.gridWidth; i++) {
         for (j = 0; j < this.gridHeight; j++) {
           var node   = this.getNode(i, j);
-          node.x = i * game.gridSize - this.offsetX;
-          node.y = j * game.gridSize - this.offsetY;
           node.north = this.getNode(i, j-1);
           node.south = this.getNode(i, j+1);
           node.west  = this.getNode(i-1, j);
@@ -95,10 +98,25 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.render = function (delta) {
-      i = this.nodes.length;
+      startX = Math.floor(this.offsetX / game.gridSize) - 2;
+      startY = Math.floor(this.offsetY / game.gridSize) - 2;
+      imageWidth  = this.viewportGridWidth  + 4;
+      imageHeight = this.viewportGridHeight + 4;
+
+      imageData =
+        this.levelMapContext.getImageData(startX,
+                                          startY,
+                                          imageWidth,
+                                          imageHeight).data;
+      i = imageData.length / 4;
       while (i) {
         i--;
-        this.nodes[i].render(delta, -this.velX, -this.velY);
+        offset = i * 4;
+        nodeOffset =  imageData[offset] +
+                     (imageData[offset+1] << 8);
+        gridX = ((i % imageWidth) + startX) * game.gridSize - this.offsetX;
+        gridY = (Math.floor(i / imageWidth) + startY) * game.gridSize - this.offsetY;
+        this.nodes[nodeOffset].render(delta, gridX, gridY);
       }
     };
 

@@ -4,11 +4,8 @@ define(["game"], function (game) {
 
   var background = $('#background');
 
-  var GridNode = function (level, x, y) {
+  var GridNode = function (level) {
     this.level = level;
-
-    this.x = x;
-    this.y = y;
 
     this.north = null;
     this.south = null;
@@ -63,21 +60,18 @@ define(["game"], function (game) {
       return empty;
     };
 
-    this.render = function (delta, deltaX, deltaY) {
-      this.x += deltaX;
-      this.y += deltaY;
-
+    this.render = function (delta, x, y) {
       // nothing to render, return
       if (this.tileOffset == 0) return;
 
-      if (this.x < -game.gridSize || this.y < -game.gridSize ||
-          this.x > game.canvasWidth ||
-          this.y > game.canvasHeight) {
+      if (x < -game.gridSize || y < -game.gridSize ||
+          x > game.canvasWidth ||
+          y > game.canvasHeight) {
         // outside of the view
         if (this.domNode) this.freeDomNode();
       } else {
         if (!this.domNode) this.obtainDomNode();
-        this.domNode.css({left:this.x, top:this.y});
+        this.domNode.css({left:x, top:y});
       }
     };
 
