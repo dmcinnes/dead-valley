@@ -3,7 +3,9 @@
 define(["game", "gridnode"], function (game, GridNode) {
 
   var Level = function (gridWidth, gridHeight) {
-    var i, j, startX, startY, endX, endY, diffX, diffY, offset, nodeOffset;
+    var i, j,
+        startX, startY,
+        offset, nodeOffset;
 
     var keyStatus = game.controls.keyStatus;
 
@@ -24,9 +26,6 @@ define(["game", "gridnode"], function (game, GridNode) {
 
       this.nodes = new Array(gridWidth * gridHeight);
       this.freeNodes = [];
-
-      this.lastGridX = 1;
-      this.lastGridY = 1;
 
       this.levelMap = $('<canvas/>').attr({width:gridWidth, height:gridHeight});
       $('body').append(this.levelMap);
@@ -49,6 +48,8 @@ define(["game", "gridnode"], function (game, GridNode) {
       for (i = 0; i < this.gridWidth; i++) {
         for (j = 0; j < this.gridHeight; j++) {
           var node   = this.getNode(i, j);
+          node.x = i * game.gridSize - this.offsetX;
+          node.y = j * game.gridSize - this.offsetY;
           node.north = this.getNode(i, j-1);
           node.south = this.getNode(i, j+1);
           node.west  = this.getNode(i-1, j);
@@ -64,15 +65,7 @@ define(["game", "gridnode"], function (game, GridNode) {
           y >= this.gridHeight) return null;
       offset     = 4 * (y * this.gridWidth + x);
       nodeOffset = this.levelMapData.data[offset] +
-                   (this.levelMapData.data[offset+1] << 8) +
-                   (this.levelMapData.data[offset+2] << 16);
-      // console.log('x:', x, 'y:', y);
-      // console.log('offset:', offset);
-      // console.log(this.levelMapData.data[offset],
-      //              this.levelMapData.data[offset+1],
-      //              this.levelMapData.data[offset+2]);
-      // console.log('nodeOffset:', nodeOffset);
-      // console.log('---');
+                   (this.levelMapData.data[offset+1] << 8);
       return this.nodes[nodeOffset];
     };
 
@@ -102,54 +95,11 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.render = function (delta) {
-      // this.renderGrid();
-      startX = Math.floor(this.offsetX / game.gridSize);
-      startY = Math.floor(this.offsetY / game.gridSize);
-      endX = startX + this.viewportGridWidth + 1;
-      endY = startY + this.viewportGridHeight + 1;
-      if (endX >= this.gridWidth) endX = this.gridWidth;
-      if (endY >= this.gridHeight) endY = this.gridHeight;
-      for (i = startX; i < endX; i++) {
-        for (j = startY; j < endY; j++) {
-          this.getNode(i, j).render(delta, i * game.gridSize - this.offsetX, j * game.gridSize - this.offsetY);
-        }
+      i = this.nodes.length;
+      while (i) {
+        i--;
+        this.nodes[i].render(delta, -this.velX, -this.velY);
       }
-
-      // reclaim the edges
-      // TODO make this not so yucky
-
-      diffX = startX - this.lastGridX;
-      diffY = startY - this.lastGridY;
-
-      if (diffX > 0) {
-        for (i = this.lastGridX; i < startX; i++) {
-          for (j = startY-1; j < endY+1; j++) {
-            this.getNode(i, j).reclaim(delta);
-          }
-        }
-      } else if (diffX < 0) {
-        for (i = endX; i < endX - diffX; i++) {
-          for (j = startY-1; j < endY+1; j++) {
-            this.getNode(i, j).reclaim(delta);
-          }
-        }
-      }
-      if (diffY > 0) {
-        for (i = this.lastGridY; i < startY; i++) {
-          for (j = startX-1; j < endX+1; j++) {
-            this.getNode(i, j).reclaim(delta);
-          }
-        }
-      } else if (diffY < 0) {
-        for (i = endY; i < endY - diffY; i++) {
-          for (j = startX-1; j < endX+1; j++) {
-            this.getNode(i, j).reclaim(delta);
-          }
-        }
-      }
-
-      this.lastGridX = startX;
-      this.lastGridY = startY;
     };
 
     this.init();
