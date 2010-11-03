@@ -21,10 +21,10 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.viewportGridHeight = Math.ceil(game.canvasHeight / game.gridSize);
 
       // start in the center
-      this.offsetX = game.gridSize * gridWidth/2 - gridWidth/2;
-      this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2;
-      // this.offsetX = 120;
-      // this.offsetY = 120;
+      // this.offsetX = game.gridSize * gridWidth/2 - gridWidth/2;
+      // this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2;
+      this.offsetX = 120;
+      this.offsetY = 200;
 
       this.velX = 0;
       this.velY = 0;
@@ -74,6 +74,7 @@ define(["game", "gridnode"], function (game, GridNode) {
 
     this.run = function (delta) {
       this.updatePosition(delta);
+      this.shiftLevel();
       if (this.velX || this.velY) this.render(delta);
     };
 
@@ -97,9 +98,70 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.offsetY += this.velY;
     };
 
+    /*    |    |
+     *  --+----+--
+     *    |    |
+     *    |    |
+     *  --+----+--
+     *    |    |
+     */
+
+    this.shiftLevel = function () {
+      if (this.offsetX < game.canvasWidth) {
+        this.shiftHorizontal();
+        this.offsetX = this.offsetX + (this.width / 2);
+      } else if (this.offsetX > this.width - (2 * game.canvasWidth)) {
+        this.shiftHorizontal();
+        this.offsetX = this.offsetX - (this.width / 2);
+      }
+      // if (this.offsetY < game.canvasHeight) {
+      //   this.shiftVertical();
+      //   this.offsetY = this.offsetY + (this.height / 2);
+      // } else if (this.offsetY > this.height - (2 * game.canvasHeight)) {
+      //   this.shiftVertical();
+      //   this.offsetY = this.offsetY - (this.height / 2);
+      // }
+    };
+
+    this.shiftHorizontal = function () {
+      var chunkWidth = this.gridWidth / 2;
+      var left =
+        this.levelMapContext.getImageData(0,
+                                          0,
+                                          chunkWidth,
+                                          this.gridHeight);
+      var right =
+        this.levelMapContext.getImageData(chunkWidth,
+                                          0,
+                                          chunkWidth,
+                                          this.gridHeight);
+
+      this.levelMapContext.putImageData(right, 0, 0);
+      this.levelMapContext.putImageData(left, chunkWidth, 0);
+    };
+
+    this.shiftVertical = function () {
+      var chunkHeight = this.gridHeight / 2;
+      var top =
+        this.levelMapContext.getImageData(0,
+                                          0,
+                                          this.gridWidth,
+                                          chunkHeight);
+      var bottom =
+        this.levelMapContext.getImageData(0,
+                                          chunkHeight,
+                                          this.gridWidth,
+                                          chunkHeight);
+
+      this.levelMapContext.putImageData(top, 0, 0);
+      this.levelMapContext.putImageData(bottom, 0, chunkHeight);
+    };
+
     this.render = function (delta) {
       startX = Math.floor(this.offsetX / game.gridSize) - 2;
+      if (startX < 0) startX = 0;
       startY = Math.floor(this.offsetY / game.gridSize) - 2;
+      if (startY < 0) startY = 0;
       imageWidth  = this.viewportGridWidth  + 4;
       imageHeight = this.viewportGridHeight + 4;
 
@@ -107,7 +169,11 @@ define(["game", "gridnode"], function (game, GridNode) {
         this.levelMapContext.getImageData(startX,
                                           startY,
                                           imageWidth,
-                                          imageHeight).data;
+                                          imageHeight);
+      imageWidth = imageData.width;
+      imageHeight = imageData.height;
+      imageData = imageData.data;
+
       i = imageData.length / 4;
       while (i) {
         i--;

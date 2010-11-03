@@ -15,7 +15,7 @@ require(
       var assetManager = game.assetManager;
       assetManager.onComplete = function () {
         // only load the level after the assets are loaded
-        game.currentLevel = new Level(64, 64);
+        game.currentLevel = new Level(128, 64);
       };
 
       // TODO make the link between GridNodes and tile images cleaner
