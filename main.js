@@ -2,11 +2,11 @@ require(
   ["underscore-min",
    "game",
    "gridnode",
-   "level",
+   "map",
    "mainloop",
    "framerate"],
    
-  function(_, game, GridNode, Level, mainloop, framerate) {
+  function(_, game, GridNode, Map, mainloop, framerate) {
 
     require.ready(function() {
 
@@ -14,8 +14,8 @@ require(
 
       var assetManager = game.assetManager;
       assetManager.onComplete = function () {
-        // only load the level after the assets are loaded
-        game.currentLevel = new Level(128, 64);
+        // only load the map after the assets are loaded
+        game.currentMap = new Map(128, 64);
       };
 
       // TODO make the link between GridNodes and tile images cleaner

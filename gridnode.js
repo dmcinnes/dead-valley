@@ -4,8 +4,8 @@ define(["game"], function (game) {
 
   var background = $('#background');
 
-  var GridNode = function (level) {
-    this.level = level;
+  var GridNode = function (map) {
+    this.map = map;
 
     this.north = null;
     this.south = null;
@@ -76,8 +76,8 @@ define(["game"], function (game) {
     };
 
     this.obtainDomNode = function () {
-      if (this.level.freeNodes.length) {
-        this.domNode = this.level.freeNodes.pop();
+      if (this.map.freeNodes.length) {
+        this.domNode = this.map.freeNodes.pop();
         this.domNode.css({'background-position':game.gridSize * this.tileOffset+' 0px'}).show();
       } else {
         this.domNode = $('<div/>', {'class':'tile'}).css({'background-position':game.gridSize * this.tileOffset+' 0px'});
@@ -87,7 +87,7 @@ define(["game"], function (game) {
 
     this.freeDomNode = function (delta) {
       this.domNode.hide();
-      level.freeNodes.push(this.domNode);
+      this.map.freeNodes.push(this.domNode);
       this.domNode = null;
     };
   };

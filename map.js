@@ -1,8 +1,8 @@
-// Level 
+// Map 
 
 define(["game", "gridnode"], function (game, GridNode) {
 
-  var Level = function (gridWidth, gridHeight) {
+  var Map = function (gridWidth, gridHeight) {
     var i, j,
         imageData,
         startX,     startY,
@@ -213,5 +213,5 @@ define(["game", "gridnode"], function (game, GridNode) {
     this.render(0);
   };
 
-  return Level;
+  return Map;
 });

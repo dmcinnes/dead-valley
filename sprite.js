@@ -23,7 +23,7 @@ define(["game", "matrix"], function (game, Matrix) {
       };
     };
 
-    var level = game.currentLevel;
+    var Map = game.currentMap;
 
     this.children = {};
 
@@ -127,11 +127,11 @@ define(["game", "matrix"], function (game, Matrix) {
       if (!this.visible) return;
       var gridx = Math.floor(this.x / game.gridSize);
       var gridy = Math.floor(this.y / game.gridSize);
-      gridx = (gridx >= level.grid.length) ? 0 : gridx;
-      gridy = (gridy >= level.grid[0].length) ? 0 : gridy;
-      gridx = (gridx < 0) ? level.grid.length-1 : gridx;
-      gridy = (gridy < 0) ? level.grid[0].length-1 : gridy;
-      var newNode = level.grid[gridx][gridy];
+      gridx = (gridx >= map.grid.length) ? 0 : gridx;
+      gridy = (gridy >= map.grid[0].length) ? 0 : gridy;
+      gridx = (gridx < 0) ? map.grid.length-1 : gridx;
+      gridy = (gridy < 0) ? map.grid[0].length-1 : gridy;
+      var newNode = map.grid[gridx][gridy];
       if (newNode != this.currentNode) {
         if (this.currentNode) {
           this.currentNode.leave(this);
@@ -269,9 +269,9 @@ define(["game", "matrix"], function (game, Matrix) {
       if (cn == null) {
         var gridx = Math.floor(this.x / game.gridSize);
         var gridy = Math.floor(this.y / game.gridSize);
-        gridx = (gridx >= level.grid.length) ? 0 : gridx;
-        gridy = (gridy >= level.grid[0].length) ? 0 : gridy;
-        cn = level.grid[gridx][gridy];
+        gridx = (gridx >= map.grid.length) ? 0 : gridx;
+        gridy = (gridy >= map.grid[0].length) ? 0 : gridy;
+        cn = map.grid[gridx][gridy];
       }
       return (cn.isEmpty(this.collidesWith) &&
               cn.north.isEmpty(this.collidesWith) &&
