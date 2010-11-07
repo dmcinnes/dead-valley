@@ -20,6 +20,11 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.viewportGridWidth  = Math.ceil(game.canvasWidth / game.gridSize);
       this.viewportGridHeight = Math.ceil(game.canvasHeight / game.gridSize);
 
+      this.shiftWestBorder = game.canvasWidth;
+      this.shiftEastBorder = this.width - (2 * game.canvasWidth);
+      this.shiftNorthBorder = game.canvasHeight;
+      this.shiftSouthBorder = this.height - (2 * game.canvasHeight);
+
       // start in the center
       // this.offsetX = game.gridSize * gridWidth/2 - gridWidth/2;
       // this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2;
@@ -98,29 +103,21 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.offsetY += this.velY;
     };
 
-    /*    |    |
-     *  --+----+--
-     *    |    |
-     *    |    |
-     *  --+----+--
-     *    |    |
-     */
-
     this.shiftLevel = function () {
-      if (this.offsetX < game.canvasWidth) {
+      if (this.offsetX < this.shiftWestBorder) {
         this.shiftHorizontal();
         this.offsetX = this.offsetX + (this.width / 2);
-      } else if (this.offsetX > this.width - (2 * game.canvasWidth)) {
+      } else if (this.offsetX > this.shiftEastBorder) {
         this.shiftHorizontal();
         this.offsetX = this.offsetX - (this.width / 2);
       }
-      // if (this.offsetY < game.canvasHeight) {
-      //   this.shiftVertical();
-      //   this.offsetY = this.offsetY + (this.height / 2);
-      // } else if (this.offsetY > this.height - (2 * game.canvasHeight)) {
-      //   this.shiftVertical();
-      //   this.offsetY = this.offsetY - (this.height / 2);
-      // }
+      if (this.offsetY < this.shiftNorthBorder) {
+        this.shiftVertical();
+        this.offsetY = this.offsetY + (this.height / 2);
+      } else if (this.offsetY > this.shiftSouthBorder) {
+        this.shiftVertical();
+        this.offsetY = this.offsetY - (this.height / 2);
+      }
     };
 
     this.shiftHorizontal = function () {
@@ -153,8 +150,8 @@ define(["game", "gridnode"], function (game, GridNode) {
                                           this.gridWidth,
                                           chunkHeight);
 
-      this.levelMapContext.putImageData(top, 0, 0);
-      this.levelMapContext.putImageData(bottom, 0, chunkHeight);
+      this.levelMapContext.putImageData(bottom, 0, 0);
+      this.levelMapContext.putImageData(top, 0, chunkHeight);
     };
 
     this.render = function (delta) {
