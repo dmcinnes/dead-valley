@@ -105,22 +105,22 @@ define(["game", "gridnode"], function (game, GridNode) {
 
     this.shiftLevel = function () {
       if (this.offsetX < this.shiftWestBorder) {
-        this.shiftHorizontal();
+        this.shiftHorizontal('west');
         this.offsetX = this.offsetX + (this.width / 2);
       } else if (this.offsetX > this.shiftEastBorder) {
-        this.shiftHorizontal();
+        this.shiftHorizontal('east');
         this.offsetX = this.offsetX - (this.width / 2);
       }
       if (this.offsetY < this.shiftNorthBorder) {
-        this.shiftVertical();
+        this.shiftVertical('north');
         this.offsetY = this.offsetY + (this.height / 2);
       } else if (this.offsetY > this.shiftSouthBorder) {
-        this.shiftVertical();
+        this.shiftVertical('south');
         this.offsetY = this.offsetY - (this.height / 2);
       }
     };
 
-    this.shiftHorizontal = function () {
+    this.shiftHorizontal = function (direction) {
       var chunkWidth = this.gridWidth / 2;
       var left =
         this.levelMapContext.getImageData(0,
@@ -135,9 +135,13 @@ define(["game", "gridnode"], function (game, GridNode) {
 
       this.levelMapContext.putImageData(right, 0, 0);
       this.levelMapContext.putImageData(left, chunkWidth, 0);
+
+      // which chunk to load the new part of the map into
+      var chunk = (direction == 'east') ? left : right;
+      this.loadMapTiles(chunk);
     };
 
-    this.shiftVertical = function () {
+    this.shiftVertical = function (direction) {
       var chunkHeight = this.gridHeight / 2;
       var top =
         this.levelMapContext.getImageData(0,
@@ -152,6 +156,26 @@ define(["game", "gridnode"], function (game, GridNode) {
 
       this.levelMapContext.putImageData(bottom, 0, 0);
       this.levelMapContext.putImageData(top, 0, chunkHeight);
+
+      // which chunk to load the new part of the map into
+      var chunk = (direction == 'south') ? top : bottom;
+      this.loadMapTiles(chunk);
+    };
+
+    this.loadMapTiles = function (imageData) {
+      imageWidth  = imageData.width;
+      imageHeight = imageData.height;
+      imageData   = imageData.data;
+
+      i = imageData.length / 4;
+      while (i) {
+        i--;
+        offset = i * 4;
+        nodeOffset =  imageData[offset] +
+                     (imageData[offset+1] << 8);
+        // TODO load map data
+        // this.nodes[nodeOffset].tileOffset = 0;
+      }
     };
 
     this.render = function (delta) {
@@ -167,9 +191,9 @@ define(["game", "gridnode"], function (game, GridNode) {
                                           startY,
                                           imageWidth,
                                           imageHeight);
-      imageWidth = imageData.width;
+      imageWidth  = imageData.width;
       imageHeight = imageData.height;
-      imageData = imageData.data;
+      imageData   = imageData.data;
 
       i = imageData.length / 4;
       while (i) {
