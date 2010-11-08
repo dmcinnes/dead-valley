@@ -19,7 +19,7 @@ require(
       };
 
       // TODO make the link between GridNodes and tile images cleaner
-      GridNode.prototype.tiles = assetManager.registerImage('./tiles.png');
+      GridNode.prototype.tiles = assetManager.registerImage('./assets/tiles.png');
       assetManager.loadAssets();
 
       game.sprites.push(framerate);
