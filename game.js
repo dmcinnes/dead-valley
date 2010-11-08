@@ -8,10 +8,10 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
     canvasWidth:   canvas.width(),
     canvasHeight:  canvas.height(),
     spriteContext: canvas[0].getContext("2d"),
-    currentMap:  null,
+    map:           null,
     sprites:       [],
     runMap: function (delta) {
-      if (this.currentMap) this.currentMap.run(delta);
+      if (this.map) this.map.run(delta);
     },
     runSprites: function (delta) {
       for (i = 0; i < this.sprites.length; i++) {

@@ -23,14 +23,10 @@ define(["game", "matrix"], function (game, Matrix) {
       };
     };
 
-    var Map = game.currentMap;
-
     this.children = {};
 
     this.visible  = false;
     this.reap     = false;
-    this.bridgesH = true;
-    this.bridgesV = true;
 
     this.collidesWith = [];
 
@@ -48,57 +44,18 @@ define(["game", "matrix"], function (game, Matrix) {
     this.run = function(delta) {
 
       this.move(delta);
-      this.updateGrid();
+      // this.updateGrid();
 
       context.save();
       this.configureTransform();
       this.draw();
 
-      var canidates = this.findCollisionCanidates();
+      // var canidates = this.findCollisionCanidates();
 
-      matrix.configure(this.rot, this.scale, this.x, this.y);
-      this.checkCollisionsAgainst(canidates);
+      // matrix.configure(this.rot, this.scale, this.x, this.y);
+      // this.checkCollisionsAgainst(canidates);
 
       context.restore();
-
-      if (this.bridgesH && this.currentNode && this.currentNode.dupe.horizontal) {
-        this.x += this.currentNode.dupe.horizontal;
-        context.save();
-        this.configureTransform();
-        this.draw();
-        this.checkCollisionsAgainst(canidates);
-        context.restore();
-        if (this.currentNode) {
-          this.x -= this.currentNode.dupe.horizontal;
-        }
-      }
-      if (this.bridgesV && this.currentNode && this.currentNode.dupe.vertical) {
-        this.y += this.currentNode.dupe.vertical;
-        context.save();
-        this.configureTransform();
-        this.draw();
-        this.checkCollisionsAgainst(canidates);
-        context.restore();
-        if (this.currentNode) {
-          this.y -= this.currentNode.dupe.vertical;
-        }
-      }
-      if (this.bridgesH && this.bridgesV &&
-          this.currentNode &&
-          this.currentNode.dupe.vertical &&
-          this.currentNode.dupe.horizontal) {
-        this.x += this.currentNode.dupe.horizontal;
-        this.y += this.currentNode.dupe.vertical;
-        context.save();
-        this.configureTransform();
-        this.draw();
-        this.checkCollisionsAgainst(canidates);
-        context.restore();
-        if (this.currentNode) {
-          this.x -= this.currentNode.dupe.horizontal;
-          this.y -= this.currentNode.dupe.vertical;
-        }
-      }
     };
     this.move = function (delta) {
       if (!this.visible) return;
@@ -127,11 +84,11 @@ define(["game", "matrix"], function (game, Matrix) {
       if (!this.visible) return;
       var gridx = Math.floor(this.x / game.gridSize);
       var gridy = Math.floor(this.y / game.gridSize);
-      gridx = (gridx >= map.grid.length) ? 0 : gridx;
-      gridy = (gridy >= map.grid[0].length) ? 0 : gridy;
-      gridx = (gridx < 0) ? map.grid.length-1 : gridx;
-      gridy = (gridy < 0) ? map.grid[0].length-1 : gridy;
-      var newNode = map.grid[gridx][gridy];
+      gridx = (gridx >= game.map.grid.length) ? 0 : gridx;
+      gridy = (gridy >= game.map.grid[0].length) ? 0 : gridy;
+      gridx = (gridx < 0) ? game.map.grid.length-1 : gridx;
+      gridy = (gridy < 0) ? game.map.grid[0].length-1 : gridy;
+      var newNode = game.map.grid[gridx][gridy];
       if (newNode != this.currentNode) {
         if (this.currentNode) {
           this.currentNode.leave(this);
@@ -269,9 +226,9 @@ define(["game", "matrix"], function (game, Matrix) {
       if (cn == null) {
         var gridx = Math.floor(this.x / game.gridSize);
         var gridy = Math.floor(this.y / game.gridSize);
-        gridx = (gridx >= map.grid.length) ? 0 : gridx;
-        gridy = (gridy >= map.grid[0].length) ? 0 : gridy;
-        cn = map.grid[gridx][gridy];
+        gridx = (gridx >= game.map.grid.length) ? 0 : gridx;
+        gridy = (gridy >= game.map.grid[0].length) ? 0 : gridy;
+        cn = game.map.grid[gridx][gridy];
       }
       return (cn.isEmpty(this.collidesWith) &&
               cn.north.isEmpty(this.collidesWith) &&
@@ -283,19 +240,6 @@ define(["game", "matrix"], function (game, Matrix) {
               cn.south.east.isEmpty(this.collidesWith) &&
               cn.south.west.isEmpty(this.collidesWith));
     };
-    this.wrapPostMove = function () {
-      if (this.x > Game.canvasWidth) {
-        this.x = 0;
-      } else if (this.x < 0) {
-        this.x = Game.canvasWidth;
-      }
-      if (this.y > Game.canvasHeight) {
-        this.y = 0;
-      } else if (this.y < 0) {
-        this.y = Game.canvasHeight;
-      }
-    };
-
   };
 
   return Sprite;
