@@ -24,14 +24,16 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
       if (this.map) this.map.run(delta);
     },
     runSprites: function (delta) {
-      for (i = 0; i < this.sprites.length; i++) {
+      if (this.map) {
+        for (i = 0; i < this.sprites.length; i++) {
 
-        this.sprites[i].run(delta);
+          this.sprites[i].run(delta);
 
-        if (this.sprites[i].reap) {
-          this.sprites[i].reap = false;
-          this.sprites.splice(i, 1);
-          i--;
+          if (this.sprites[i].reap) {
+            this.sprites[i].reap = false;
+            this.sprites.splice(i, 1);
+            i--;
+          }
         }
       }
     }

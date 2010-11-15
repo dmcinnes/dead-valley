@@ -58,8 +58,7 @@ define(["game", "sprite"], function (game, Sprite) {
       this.x += this.vel.x;
       this.y += this.vel.y;
 
-      // game.map.velX = this.vel.x;
-      // game.map.velY = this.vel.y;
+      game.map.keepInView(this);
     };
 
   };

@@ -25,7 +25,7 @@ define(["game"], function (game) {
     },
     play: function () {
       lastFrame = Date.now();
-      mainLoopId = setInterval(mainLoop, 25);
+      mainLoopId = setInterval(mainLoop, 50);
     },
     isPaused: function () {
       return !mainLoopId;

@@ -8,7 +8,8 @@ define(["game", "gridnode"], function (game, GridNode) {
         startX,     startY,
         gridX,      gridY,
         imageWidth, imageHeight,
-        offset,     nodeOffset;
+        offset,     nodeOffset,
+        screenX,    screenY;
 
     var keyStatus = game.controls.keyStatus;
 
@@ -26,10 +27,11 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.shiftSouthBorder = this.height - (2 * game.canvasHeight);
 
       // start in the center
-      // this.offsetX = game.gridSize * gridWidth/2 - gridWidth/2;
-      // this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2;
-      this.offsetX = 120;
-      this.offsetY = 200;
+      this.offsetX = game.gridSize * gridWidth/2  - gridWidth/2;
+      this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2;
+      // world coordinates
+      this.originOffsetX = -game.canvasWidth  / 2.0;
+      this.originOffsetY = -game.canvasHeight / 2.0;
 
       this.velX = 0;
       this.velY = 0;
@@ -84,23 +86,10 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.updatePosition = function (delta) {
-      this.velX = 0;
-      this.velY = 0;
-
-      // just move by arrow keys for now
-      // if (keyStatus.left)  this.velX -= delta * 120;
-      // if (keyStatus.right) this.velX += delta * 120;
-      // if (keyStatus.up)    this.velY -= delta * 120;
-      // if (keyStatus.down)  this.velY += delta * 120;
-
-      // hitting the edges
-      if ((this.offsetX + this.velX < game.gridSize) ||
-          (this.offsetX + this.velX > this.width - game.canvasWidth)) this.velX = 0;
-      if ((this.offsetY + this.velY < game.gridSize) ||
-          (this.offsetY + this.velY > this.height - game.canvasHeight)) this.velY = 0;
-
       this.offsetX += this.velX;
       this.offsetY += this.velY;
+      this.originOffsetX += this.velX;
+      this.originOffsetY += this.velY;
     };
 
     this.shiftLevel = function () {
@@ -204,6 +193,28 @@ define(["game", "gridnode"], function (game, GridNode) {
         gridX = ((i % imageWidth) + startX) * game.gridSize - this.offsetX;
         gridY = (Math.floor(i / imageWidth) + startY) * game.gridSize - this.offsetY;
         this.nodes[nodeOffset].render(delta, gridX, gridY);
+      }
+    };
+
+    var hBorder = 200.0;
+    var vBorder = 120.0;
+
+    this.keepInView = function (sprite) {
+      screenX = sprite.x - this.originOffsetX;
+      screenY = sprite.y - this.originOffsetY;
+
+      this.velX = 0;
+      this.velY = 0;
+
+      if (screenX < hBorder) {
+        this.velX = screenX - hBorder;
+      } else if (screenX > game.canvasWidth - hBorder) {
+        this.velX = hBorder + screenX - game.canvasWidth;
+      }
+      if (screenY < vBorder) {
+        this.velY = screenY - vBorder;
+      } else if (screenY > game.canvasHeight - vBorder) {
+        this.velY = vBorder + screenY - game.canvasHeight;
       }
     };
 

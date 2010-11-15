@@ -112,6 +112,7 @@ define(["game", "matrix"], function (game, Matrix) {
       var rad = (this.rot * Math.PI)/180;
 
       context.translate(this.x, this.y);
+      context.translate(-game.map.originOffsetX, -game.map.originOffsetY);
       context.rotate(rad);
       context.scale(this.scale, this.scale);
     };
