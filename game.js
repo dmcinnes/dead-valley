@@ -1,3 +1,13 @@
+//
+// Couple notes on our setup
+//
+// 1 pixel  == 4 inches
+// 3 pixels == 1 foot
+// 1 tile   == 60 pixels == 20 feet
+// 1 mile   == 63360 inches == 15840 pixels
+// 60  miles / hour == 264 pixels / second
+// 100 miles / hour == 440 pixels / second
+
 define(['assetmanager', 'controls'], function (AssetManager, controls) {
   var canvas = $("#canvas");
 

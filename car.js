@@ -6,10 +6,11 @@ define(["game", "sprite"], function (game, Sprite) {
   var keyStatus = game.controls.keyStatus;
 
   var Car = function (name, points, image) {
-    var rad, speed;
+    var rad, rot;
 
     this.init(name, points);
     this.image = image;
+    this.speed = 0.0;
 
     this.draw = function () {
       if (!this.visible) return;
@@ -24,27 +25,30 @@ define(["game", "sprite"], function (game, Sprite) {
       if (!this.visible) return;
 
       this.vel.rot = 0;
-      speed = Math.sqrt(this.vel.x * this.vel.x + this.vel.y * this.vel.y);
 
       if (keyStatus.left || keyStatus.right) {
-        this.vel.rot = delta * speed * (keyStatus.left ? -1 : 1);
+        rot = this.speed;
+        if (rot > 180) rot = 180;
+        this.vel.rot = rot * delta * (keyStatus.left ? -1 : 1);
       }
       this.rot += this.vel.rot;
 
-      rad = ((this.rot-90) * Math.PI)/180;
-      this.acc.x = 0;
-      this.acc.y = 0;
-      if (keyStatus.up || keyStatus.down) {
-        this.acc.x = delta * Math.cos(rad);
-        this.acc.y = delta * Math.sin(rad);
-        if (keyStatus.down) {
-          this.acc.x *= -1;
-          this.acc.y *= -1;
-        }
+      if (keyStatus.up) {
+        this.speed += delta * 500;
+      } else if (keyStatus.down) {
+        this.speed -= delta * 500;
+      } else {
+        // friction!
+        this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
       }
 
-      this.vel.x = speed * Math.cos(rad) + this.acc.x;
-      this.vel.y = speed * Math.sin(rad) + this.acc.y;
+      if (this.speed >  440) this.speed = 440;  // tops out at 100mph
+      if (this.speed < -132) this.speed = -132; // reverse at 30mph
+
+      rad = ((this.rot-90) * Math.PI)/180;
+
+      this.vel.x = this.speed * Math.cos(rad) * delta;
+      this.vel.y = this.speed * Math.sin(rad) * delta;
 
       this.x += this.vel.x;
       this.y += this.vel.y;
