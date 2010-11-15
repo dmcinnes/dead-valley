@@ -38,6 +38,7 @@ require(
 
       car.x = 100;
       car.y = 100;
+      car.rot = 90;
       car.visible = true;
       game.sprites.push(car);
 

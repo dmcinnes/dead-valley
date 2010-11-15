@@ -88,10 +88,10 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.velY = 0;
 
       // just move by arrow keys for now
-      if (keyStatus.left)  this.velX -= delta * 120;
-      if (keyStatus.right) this.velX += delta * 120;
-      if (keyStatus.up)    this.velY -= delta * 120;
-      if (keyStatus.down)  this.velY += delta * 120;
+      // if (keyStatus.left)  this.velX -= delta * 120;
+      // if (keyStatus.right) this.velX += delta * 120;
+      // if (keyStatus.up)    this.velY -= delta * 120;
+      // if (keyStatus.down)  this.velY += delta * 120;
 
       // hitting the edges
       if ((this.offsetX + this.velX < game.gridSize) ||

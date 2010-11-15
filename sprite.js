@@ -65,8 +65,9 @@ define(["game", "matrix"], function (game, Matrix) {
         this.preMove(delta);
       }
 
-      this.vel.x += this.acc.x * delta;
-      this.vel.y += this.acc.y * delta;
+      this.vel.x   += this.acc.x * delta;
+      this.vel.y   += this.acc.y * delta;
+      this.vel.rot += this.acc.rot * delta;
       this.x += this.vel.x * delta;
       this.y += this.vel.y * delta;
       this.rot += this.vel.rot * delta;
