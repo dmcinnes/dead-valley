@@ -15,7 +15,7 @@ define(["game", "sprite"], function (game, Sprite) {
     this.acceleration    = 500;
     this.topSpeed        = 440;  // tops out at 100mph
     this.topReverseSpeed = -132; // reverse at 30mph
-    this.topRotation     = 180;
+    this.topRotation     = 120;
 
     this.draw = function () {
       if (!this.visible) return;
@@ -57,6 +57,9 @@ define(["game", "sprite"], function (game, Sprite) {
 
       this.x += this.vel.x;
       this.y += this.vel.y;
+
+      // game.map.velX = this.vel.x;
+      // game.map.velY = this.vel.y;
     };
 
   };
