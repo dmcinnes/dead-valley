@@ -12,6 +12,11 @@ define(["game", "sprite"], function (game, Sprite) {
     this.image = image;
     this.speed = 0.0;
 
+    this.acceleration    = 500;
+    this.topSpeed        = 440;  // tops out at 100mph
+    this.topReverseSpeed = -132; // reverse at 30mph
+    this.topRotation     = 180;
+
     this.draw = function () {
       if (!this.visible) return;
 
@@ -28,22 +33,22 @@ define(["game", "sprite"], function (game, Sprite) {
 
       if (keyStatus.left || keyStatus.right) {
         rot = this.speed;
-        if (rot > 180) rot = 180;
+        if (rot > this.topRotation) rot = this.topRotation;
         this.vel.rot = rot * delta * (keyStatus.left ? -1 : 1);
       }
       this.rot += this.vel.rot;
 
       if (keyStatus.up) {
-        this.speed += delta * 500;
+        this.speed += delta * this.acceleration;
       } else if (keyStatus.down) {
-        this.speed -= delta * 500;
+        this.speed -= delta * this.acceleration;
       } else {
         // friction!
         this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
       }
 
-      if (this.speed >  440) this.speed = 440;  // tops out at 100mph
-      if (this.speed < -132) this.speed = -132; // reverse at 30mph
+      if (this.speed > this.topSpeed) this.speed = this.topSpeed;
+      if (this.speed < this.topReverseSpeed) this.speed = this.topReverseSpeed;
 
       rad = ((this.rot-90) * Math.PI)/180;
 
