@@ -14,8 +14,8 @@ define(["game"], function (game) {
 
     this.nextSprite = null;
 
-    this.tileOffset = Math.floor(Math.random()*2) + 1;
-    // this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
+    // this.tileOffset = Math.floor(Math.random()*2) + 1;
+    this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
 
     this.tileFlip = (Math.random() > 0.5);
 

@@ -197,8 +197,8 @@ define(["game", "gridnode"], function (game, GridNode) {
       }
     };
 
-    var hBorder = 200.0;
-    var vBorder = 120.0;
+    var hBorder = 300.0;
+    var vBorder = 180.0;
 
     this.keepInView = function (sprite) {
       screenX = sprite.x - this.originOffsetX;
