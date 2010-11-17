@@ -42,20 +42,8 @@ define(["game", "matrix"], function (game, Matrix) {
     this.postMove = null;
 
     this.run = function(delta) {
-
       this.move(delta);
       // this.updateGrid();
-
-      context.save();
-      this.configureTransform();
-      this.draw();
-
-      // var canidates = this.findCollisionCanidates();
-
-      // matrix.configure(this.rot, this.scale, this.x, this.y);
-      // this.checkCollisionsAgainst(canidates);
-
-      context.restore();
     };
     this.move = function (delta) {
       if (!this.visible) return;
@@ -80,6 +68,15 @@ define(["game", "matrix"], function (game, Matrix) {
       if ($.isFunction(this.postMove)) {
         this.postMove(delta);
       }
+    };
+    this.render = function (delta) {
+      if (!this.visible) return;
+
+      context.save();
+      this.configureTransform();
+      this.draw();
+
+      context.restore();
     };
     this.updateGrid = function () {
       if (!this.visible) return;

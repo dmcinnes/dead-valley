@@ -14,8 +14,11 @@ define(["game"], function (game) {
     lastFrame = thisFrame;
     delta = elapsed / 1000;
 
-    game.runMap(delta);
     game.runSprites(delta);
+    game.runMap(delta);
+
+    game.renderSprites(delta);
+    game.renderMap(delta);
   };
 
   return {

@@ -23,6 +23,9 @@ define(function () {
       }
     },
 
+    render: function (delta) {
+    },
+
     show: function () {
       frameCount = 0;
       elapsedCounter = 0.0;

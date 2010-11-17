@@ -23,6 +23,9 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
     runMap: function (delta) {
       if (this.map) this.map.run(delta);
     },
+    renderMap: function (delta) {
+      if (this.map) this.map.render(delta);
+    },
     runSprites: function (delta) {
       if (this.map) {
         for (i = 0; i < this.sprites.length; i++) {
@@ -34,6 +37,13 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
             this.sprites.splice(i, 1);
             i--;
           }
+        }
+      }
+    },
+    renderSprites: function (delta) {
+      if (this.map) {
+        for (i = 0; i < this.sprites.length; i++) {
+          this.sprites[i].render(delta);
         }
       }
     }

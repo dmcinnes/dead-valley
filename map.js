@@ -82,7 +82,6 @@ define(["game", "gridnode"], function (game, GridNode) {
     this.run = function (delta) {
       this.updatePosition(delta);
       this.shiftLevel();
-      if (this.velX || this.velY) this.render(delta);
     };
 
     this.updatePosition = function (delta) {
@@ -168,6 +167,8 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.render = function (delta) {
+      if (delta && !this.velX && !this.velY) return;
+
       startX = Math.floor(this.offsetX / game.gridSize) - 2;
       if (startX < 0) startX = 0;
       startY = Math.floor(this.offsetY / game.gridSize) - 2;
