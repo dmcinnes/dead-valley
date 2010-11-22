@@ -23,7 +23,7 @@ require(
       // TODO make the link between GridNodes and tile images cleaner
       GridNode.prototype.tiles = assetManager.registerImage('./assets/tiles.png');
       // TODO make images addressible in assetManager
-      var carImage = assetManager.registerImage('./assets/spy_hunter.png');
+      var carImage = assetManager.registerImage('./assets/car1.png');
 
       assetManager.loadAssets();
 

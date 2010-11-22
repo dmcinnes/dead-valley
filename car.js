@@ -12,7 +12,10 @@ define(["game", "sprite"], function (game, Sprite) {
     this.image = image;
     this.speed = 0.0;
 
-    this.acceleration    = 500;
+    this.dirty = false;
+    this.breaking = false;
+
+    this.acceleration    = 200;
     this.topSpeed        = 440;  // tops out at 100mph
     this.topReverseSpeed = -132; // reverse at 30mph
     this.topRotation     = 120;
@@ -20,9 +23,24 @@ define(["game", "sprite"], function (game, Sprite) {
     this.draw = function () {
       if (!this.visible) return;
 
+      this.drawTile(0);
+      this.drawTile(1);
+      if (this.breaking) {
+        this.drawTile(4);
+        this.drawTile(5);
+      }
+    };
+
+    this.drawTile = function (index) {
       context.drawImage(image,
+                        index * 24,
+                        0,
+                        24,
+                        40,
                         points[0],
-                        points[1]);
+                        points[1],
+                        24,
+                        40);
     };
 
     // override move
@@ -40,11 +58,21 @@ define(["game", "sprite"], function (game, Sprite) {
 
       if (keyStatus.up) {
         this.speed += delta * this.acceleration;
+        this.breaking = false;
       } else if (keyStatus.down) {
-        this.speed -= delta * this.acceleration;
+        if (this.speed > 0.1) { // breaking
+          this.breaking = true;
+          this.speed -= delta * this.acceleration;
+          if (this.speed < 0.0) this.speed = 0.0;
+        } else if (this.speed <= 0.1 && !this.breaking) {
+          this.speed -= delta * this.acceleration;
+        } else {
+          this.speed = 0.0;
+        }
       } else {
         // friction!
         this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
+        this.breaking = false;
       }
 
       if (this.speed > this.topSpeed) this.speed = this.topSpeed;
