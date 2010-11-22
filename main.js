@@ -6,9 +6,10 @@ require(
    "mainloop",
    "sprite",
    "car",
+   "dude",
    "framerate"],
    
-  function(_, game, GridNode, Map, mainloop, Sprite, Car, framerate) {
+  function(_, game, GridNode, Map, mainloop, Sprite, Car, Dude, framerate) {
 
     require.ready(function() {
 
@@ -23,7 +24,8 @@ require(
       // TODO make the link between GridNodes and tile images cleaner
       GridNode.prototype.tiles = assetManager.registerImage('./assets/tiles.png');
       // TODO make images addressible in assetManager
-      var carImage = assetManager.registerImage('./assets/car1.png');
+      var carImage  = assetManager.registerImage('./assets/car1.png');
+      var dudeImage = assetManager.registerImage('./assets/dude.png');
 
       assetManager.loadAssets();
 
@@ -44,6 +46,19 @@ require(
       car.rot = 90;
       car.visible = true;
       game.sprites.push(car);
+
+      var dude = new Dude('dude',
+                          [-10, -10,
+                            10, -10,
+                            10, 10,
+                           -10, 10],
+                           dudeImage,
+                           20,
+                           20);
+      dude.x = 50;
+      dude.y = 0;
+      dude.visible = true;
+      game.sprites.push(dude);
 
       // toggle show framerate
       game.controls.registerKeyDownHandler('f', function () {

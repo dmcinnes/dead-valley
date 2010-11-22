@@ -2,7 +2,6 @@
 
 define(["game", "sprite"], function (game, Sprite) {
 
-  var context = game.spriteContext;
   var keyStatus = game.controls.keyStatus;
 
   var Car = function (name, points, image, tileWidth, tileHeight) {
@@ -11,8 +10,8 @@ define(["game", "sprite"], function (game, Sprite) {
     this.init(name, points, image, tileWidth, tileHeight);
     this.speed = 0.0;
 
-    this.dirty = false;
     this.breaking = false;
+    this.driver = null;
 
     this.acceleration    = 150;
     this.deceleration    = 300;  // breaks!
@@ -34,6 +33,7 @@ define(["game", "sprite"], function (game, Sprite) {
     // override move
     this.move = function (delta) {
       if (!this.visible) return;
+      if (!this.driver) return;
 
       this.vel.rot = 0;
 

@@ -78,7 +78,7 @@
 
       context.save();
       this.configureTransform();
-      this.draw();
+      this.draw(delta);
 
       context.restore();
     };
@@ -243,7 +243,11 @@
               cn.south.east.isEmpty(this.collidesWith) &&
               cn.south.west.isEmpty(this.collidesWith));
     };
-    this.drawTile = function (index) {
+    this.drawTile = function (index, flipped) {
+      if (flipped) {
+        context.save();
+        context.scale(-1, 1);
+      }
       context.drawImage(this.image,
                         index * this.tileWidth,
                         0,
@@ -253,6 +257,9 @@
                         this.points[1],
                         this.tileWidth,
                         this.tileHeight);
+      if (flipped) {
+        context.restore();
+      }
     };
   };
 
