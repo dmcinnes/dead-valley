@@ -47,7 +47,7 @@
 
     this.run = function(delta) {
       this.move(delta);
-      // this.updateGrid();
+      this.updateGrid();
     };
     this.move = function (delta) {
       if (!this.visible) return;
@@ -84,13 +84,14 @@
     };
     this.updateGrid = function () {
       if (!this.visible) return;
+      // TODO move this calculation into Map
       var gridx = Math.floor(this.x / game.gridSize);
       var gridy = Math.floor(this.y / game.gridSize);
-      gridx = (gridx >= game.map.grid.length) ? 0 : gridx;
-      gridy = (gridy >= game.map.grid[0].length) ? 0 : gridy;
-      gridx = (gridx < 0) ? game.map.grid.length-1 : gridx;
-      gridy = (gridy < 0) ? game.map.grid[0].length-1 : gridy;
-      var newNode = game.map.grid[gridx][gridy];
+      // gridx = (gridx >= game.map.grid.length) ? 0 : gridx;
+      // gridy = (gridy >= game.map.grid[0].length) ? 0 : gridy;
+      // gridx = (gridx < 0) ? game.map.grid.length-1 : gridx;
+      // gridy = (gridy < 0) ? game.map.grid[0].length-1 : gridy;
+      var newNode = game.map.getNode(gridx, gridy);
       if (newNode != this.currentNode) {
         if (this.currentNode) {
           this.currentNode.leave(this);
@@ -261,7 +262,28 @@
         context.restore();
       }
     };
-  };
+    this.nearby = function () {
+      var cn = this.currentNode;
+      if (cn == null) return [];
+      return _([cn,
+                cn.north,
+                cn.south,
+                cn.east,
+                cn.west,
+                cn.north.east,
+                cn.north.west,
+                cn.south.east,
+                cn.south.west]).chain().map(function (n) {
+                  var spr = n.nextSprite;
+                  var out = [spr];
+                  while (spr) {
+                    out.push(spr);
+                    spr = spr.nextSprite;
+                  }
+                  return out;
+              }).flatten().without(null).value();
+      };
+    };
 
-  return Sprite;
-});
+    return Sprite;
+  });

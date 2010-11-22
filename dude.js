@@ -12,6 +12,8 @@ define(["game", "sprite"], function (game, Sprite) {
   var Dude = function (name, points, image, tileWidth, tileHeight) {
     this.init(name, points, image, tileWidth, tileHeight);
 
+    this.driving = null;
+
     this.direction = RIGHT;
     this.walking = false;
     this.walkingFrame = 0;
@@ -36,6 +38,10 @@ define(["game", "sprite"], function (game, Sprite) {
 
     this.move = function (delta) {
       if (!this.visible) return;
+
+      if (keyStatus.space) {
+        console.log(this.nearby());
+      }
 
       this.walking = (keyStatus.left  ||
                       keyStatus.right ||
