@@ -1,45 +1,49 @@
-// Sprite 
+  // Sprite 
 
-define(["game", "matrix"], function (game, Matrix) {
+  define(["game", "matrix"], function (game, Matrix) {
 
-  var matrix   = new Matrix(2, 3);
-  var context  = game.spriteContext;
+    var matrix   = new Matrix(2, 3);
+    var context  = game.spriteContext;
 
-  var Sprite = function () {
-    this.init = function (name, points) {
-      this.name     = name;
-      this.points   = points;
+    var Sprite = function () {
+      this.init = function (name, points, image, tileWidth, tileHeight) {
+        this.name     = name;
+        this.points   = points;
+        this.image    = image;
+        // assuming horizontal tiles
+        this.tileWidth  = tileWidth;
+        this.tileHeight = tileHeight;
 
-      this.vel = {
-        x:   0,
-        y:   0,
-        rot: 0
+        this.vel = {
+          x:   0,
+          y:   0,
+          rot: 0
+        };
+
+        this.acc = {
+          x:   0,
+          y:   0,
+          rot: 0
+        };
       };
 
-      this.acc = {
-        x:   0,
-        y:   0,
-        rot: 0
-      };
-    };
+      this.children = {};
 
-    this.children = {};
+      this.visible  = false;
+      this.reap     = false;
 
-    this.visible  = false;
-    this.reap     = false;
+      this.collidesWith = [];
 
-    this.collidesWith = [];
+      this.x     = 0;
+      this.y     = 0;
+      this.rot   = 0;
+      this.scale = 1;
 
-    this.x     = 0;
-    this.y     = 0;
-    this.rot   = 0;
-    this.scale = 1;
+      this.currentNode = null;
+      this.nextSprite  = null;
 
-    this.currentNode = null;
-    this.nextSprite  = null;
-
-    this.preMove  = null;
-    this.postMove = null;
+      this.preMove  = null;
+      this.postMove = null;
 
     this.run = function(delta) {
       this.move(delta);
@@ -238,6 +242,17 @@ define(["game", "matrix"], function (game, Matrix) {
               cn.north.west.isEmpty(this.collidesWith) &&
               cn.south.east.isEmpty(this.collidesWith) &&
               cn.south.west.isEmpty(this.collidesWith));
+    };
+    this.drawTile = function (index) {
+      context.drawImage(this.image,
+                        index * this.tileWidth,
+                        0,
+                        this.tileWidth,
+                        this.tileHeight,
+                        this.points[0],
+                        this.points[1],
+                        this.tileWidth,
+                        this.tileHeight);
     };
   };
 

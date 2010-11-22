@@ -35,7 +35,9 @@ require(
                           12, -30,
                           12, 12,
                          -12, 12],
-                         carImage);
+                         carImage,
+                         24,
+                         40);
 
       car.x = 0;
       car.y = 0;

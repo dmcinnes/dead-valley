@@ -5,17 +5,17 @@ define(["game", "sprite"], function (game, Sprite) {
   var context = game.spriteContext;
   var keyStatus = game.controls.keyStatus;
 
-  var Car = function (name, points, image) {
+  var Car = function (name, points, image, tileWidth, tileHeight) {
     var rad, rot;
 
-    this.init(name, points);
-    this.image = image;
+    this.init(name, points, image, tileWidth, tileHeight);
     this.speed = 0.0;
 
     this.dirty = false;
     this.breaking = false;
 
-    this.acceleration    = 200;
+    this.acceleration    = 150;
+    this.deceleration    = 300;  // breaks!
     this.topSpeed        = 440;  // tops out at 100mph
     this.topReverseSpeed = -132; // reverse at 30mph
     this.topRotation     = 120;
@@ -29,18 +29,6 @@ define(["game", "sprite"], function (game, Sprite) {
         this.drawTile(4);
         this.drawTile(5);
       }
-    };
-
-    this.drawTile = function (index) {
-      context.drawImage(image,
-                        index * 24,
-                        0,
-                        24,
-                        40,
-                        points[0],
-                        points[1],
-                        24,
-                        40);
     };
 
     // override move
@@ -60,11 +48,11 @@ define(["game", "sprite"], function (game, Sprite) {
         this.speed += delta * this.acceleration;
         this.breaking = false;
       } else if (keyStatus.down) {
-        if (this.speed > 0.1) { // breaking
+        if (this.speed > 1.0) { // breaking
           this.breaking = true;
-          this.speed -= delta * this.acceleration;
-          if (this.speed < 0.0) this.speed = 0.0;
-        } else if (this.speed <= 0.1 && !this.breaking) {
+          this.speed -= delta * this.deceleration;
+          if (this.speed < 1.0) this.speed = 0.0;
+        } else if (this.speed <= 1.0 && !this.breaking) {
           this.speed -= delta * this.acceleration;
         } else {
           this.speed = 0.0;
