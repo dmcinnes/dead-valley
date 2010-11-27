@@ -9,9 +9,9 @@ require(
    "dude",
    "framerate"],
    
-  function(_, game, GridNode, Map, mainloop, Sprite, Car, Dude, framerate) {
+  function (_, game, GridNode, Map, mainloop, Sprite, Car, Dude, framerate) {
 
-    require.ready(function() {
+    require.ready(function () {
 
       mainloop.play();
 
@@ -46,6 +46,15 @@ require(
       car.rot = 90;
       car.visible = true;
       game.sprites.push(car);
+
+      var car2 = $.extend({}, car);
+      car2.y = 80;
+      game.sprites.push(car2);
+
+      var car3 = $.extend({}, car);
+      car3.y = 160;
+      car3.rot = 45;
+      game.sprites.push(car3);
 
       var dude = new Dude('dude',
                           [-10, -10,
