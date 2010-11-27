@@ -33,34 +33,39 @@ define(["game", "sprite"], function (game, Sprite) {
     // override move
     this.move = function (delta) {
       if (!this.visible) return;
-      if (!this.driver) return;
 
       this.vel.rot = 0;
 
-      if (keyStatus.left || keyStatus.right) {
-        rot = this.speed;
-        if (rot > this.topRotation) rot = this.topRotation;
-        this.vel.rot = rot * delta * (keyStatus.left ? -1 : 1);
-      }
-      this.rot += this.vel.rot;
+      if (this.driver) {
+        if (keyStatus.left || keyStatus.right) {
+          rot = this.speed;
+          if (rot > this.topRotation) rot = this.topRotation;
+          this.vel.rot = rot * delta * (keyStatus.left ? -1 : 1);
+        }
+        this.rot += this.vel.rot;
 
-      if (keyStatus.up) {
-        this.speed += delta * this.acceleration;
-        this.breaking = false;
-      } else if (keyStatus.down) {
-        if (this.speed > 1.0) { // breaking
-          this.breaking = true;
-          this.speed -= delta * this.deceleration;
-          if (this.speed < 1.0) this.speed = 0.0;
-        } else if (this.speed <= 1.0 && !this.breaking) {
-          this.speed -= delta * this.acceleration;
+        if (keyStatus.up) {
+          this.speed += delta * this.acceleration;
+          this.breaking = false;
+        } else if (keyStatus.down) {
+          if (this.speed > 1.0) { // breaking
+            this.breaking = true;
+            this.speed -= delta * this.deceleration;
+            if (this.speed < 1.0) this.speed = 0.0;
+          } else if (this.speed <= 1.0 && !this.breaking) {
+            this.speed -= delta * this.acceleration;
+          } else {
+            this.speed = 0.0;
+          }
         } else {
-          this.speed = 0.0;
+          // friction!
+          this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
+          this.breaking = false;
         }
       } else {
         // friction!
         this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
-        this.breaking = false;
+        // TODO clean this up
       }
 
       if (this.speed > this.topSpeed) this.speed = this.topSpeed;
@@ -74,7 +79,9 @@ define(["game", "sprite"], function (game, Sprite) {
       this.x += this.vel.x;
       this.y += this.vel.y;
 
-      game.map.keepInView(this);
+      if (this.driver) {
+        game.map.keepInView(this);
+      }
     };
 
   };

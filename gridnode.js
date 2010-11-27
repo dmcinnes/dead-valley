@@ -91,6 +91,26 @@ define(["game"], function (game) {
       this.map.freeNodes.push(this.domNode);
       this.domNode = null;
     };
+
+    this.nearby = function () {
+      return _([this,
+                this.north,
+                this.south,
+                this.east,
+                this.west,
+                this.north.east,
+                this.north.west,
+                this.south.east,
+                this.south.west]).chain().map(function (n) {
+                  var spr = n.nextSprite;
+                  var out = [];
+                  while (spr) {
+                    out.push(spr);
+                    spr = spr.nextSprite;
+                  }
+                  return out;
+              }).flatten().value();
+    };
   };
 
   return GridNode;

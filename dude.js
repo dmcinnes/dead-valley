@@ -39,8 +39,7 @@ define(["game", "sprite"], function (game, Sprite) {
     this.move = function (delta) {
       if (!this.visible) return;
 
-      if (keyStatus.space) {
-        console.log(_(this.nearby()).map(function (x) { return x.name; }));
+      if (keyStatus.x) {
       }
 
       this.walking = (keyStatus.left  ||
@@ -60,7 +59,39 @@ define(["game", "sprite"], function (game, Sprite) {
       } else if (keyStatus.down) {
         this.y += SPEED;
       }
+
+      game.map.keepInView(this);
     };
+
+    var self = this;
+    game.controls.registerKeyDownHandler('x', function () {
+      if (self.driving) {
+        // leave the car
+        self.x = self.driving.x;
+        self.y = self.driving.y;
+        self.driving.driver = null;
+        self.driving = null;
+        self.visible = true;
+        return;
+      }
+
+      if (!self.visible) return;
+
+      var cars = _(self.nearby()).select(function (sprite) {
+        return sprite.name === "car";
+      });
+      if (cars.length > 0) {
+        // find the closest
+        var car = _(cars).reduce(function (closest, car) {
+          return (self.distance(car) < self.distance(closest)) ? car : closest;
+        }, cars[0]);
+
+        // get in the car
+        car.driver = self;
+        self.driving = car;
+        self.visible = false;
+      }
+    });
   };
   Dude.prototype = new Sprite();
 

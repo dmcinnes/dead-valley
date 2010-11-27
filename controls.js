@@ -1,4 +1,5 @@
 define(function () {
+  // TODO generate all alpha key codes
   var KEY_CODES = {
     32: 'space',
     37: 'left',
@@ -9,7 +10,8 @@ define(function () {
     71: 'g',
     72: 'h',
     77: 'm',
-    80: 'p'
+    80: 'p',
+    88: 'x'
   };
 
   var keyStatus = { keyDown:false };
