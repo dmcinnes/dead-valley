@@ -133,6 +133,15 @@ define(["game", "gridnode"], function (game, GridNode) {
       // which chunk to load the new part of the map into
       var chunk = (direction == 'east') ? left : right;
       this.loadMapTiles(chunk);
+
+      // zipper the sections together
+      var left, right;
+      for (i = 0; i < this.gridHeight; i++) {
+        left = this.getNode(chunkWidth-1, i);
+        right = this.getNode(chunkWidth, i);
+        left.east = right;
+        right.west = left;
+      }
     };
 
     this.shiftVertical = function (direction) {
@@ -154,6 +163,15 @@ define(["game", "gridnode"], function (game, GridNode) {
       // which chunk to load the new part of the map into
       var chunk = (direction == 'south') ? top : bottom;
       this.loadMapTiles(chunk);
+
+      // zipper the sections together
+      var upper, lower;
+      for (i = 0; i < this.gridWidth; i++) {
+        upper = this.getNode(i, chunkHeight-1);
+        lower = this.getNode(i, chunkHeight);
+        upper.south = lower;
+        lower.north = upper;
+      }
     };
 
     this.loadMapTiles = function (imageData) {
