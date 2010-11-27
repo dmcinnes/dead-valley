@@ -68,6 +68,12 @@ define(["game", "gridnode"], function (game, GridNode) {
       }
     };
 
+    this.getNodeByWorldCoords = function (x, y) {
+      gridX = Math.floor((x - this.originOffsetX) / game.gridSize);
+      gridY = Math.floor((y - this.originOffsetY) / game.gridSize);
+      return this.getNode(gridX, gridY);
+    };
+
     this.getNode = function (x, y) {
       if (x < 0 ||
           y < 0 ||
