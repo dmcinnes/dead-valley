@@ -7,7 +7,7 @@ define(["game", "sprite"], function (game, Sprite) {
   var RIGHT = false;
 
   var SPEED = 3.5;
-  var WALKING_FRAME_RATE = 0.02; // in seconds
+  var WALKING_ANIMATION_FRAME_RATE = 0.02; // in seconds
 
   var Dude = function (name, points, image, tileWidth, tileHeight) {
     this.init(name, points, image, tileWidth, tileHeight);
@@ -24,7 +24,7 @@ define(["game", "sprite"], function (game, Sprite) {
 
       if (this.walking) {
         this.walkingFrameCounter += delta;
-        if (this.walkingFrameCounter > WALKING_FRAME_RATE) {
+        if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
           this.walkingFrameCounter = 0.0;
           this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
         }
@@ -40,7 +40,7 @@ define(["game", "sprite"], function (game, Sprite) {
       if (!this.visible) return;
 
       if (keyStatus.space) {
-        console.log(this.nearby());
+        console.log(_(this.nearby()).map(function (x) { return x.name; }));
       }
 
       this.walking = (keyStatus.left  ||

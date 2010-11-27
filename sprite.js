@@ -88,7 +88,7 @@ define(["game", "matrix"], function (game, Matrix) {
     if (!this.visible) return;
     newNode = game.map.getNodeByWorldCoords(this.x, this.y);
 
-    // we're off the screen
+    // we're off the the part of the world loaded into memory
     if (!newNode) {
       this.die();
       return;
@@ -269,7 +269,7 @@ define(["game", "matrix"], function (game, Matrix) {
               cn.south.east,
               cn.south.west]).chain().map(function (n) {
                 var spr = n.nextSprite;
-                var out = [spr];
+                var out = [];
                 while (spr) {
                   out.push(spr);
                   spr = spr.nextSprite;
