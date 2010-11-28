@@ -48,13 +48,13 @@ define(["game", "matrix"], function (game, Matrix) {
     this.postMove = null;
 
     this.run = function(delta) {
+      this.transPoints = null; // clear cached points
       this.move(delta);
       this.updateGrid();
       this.checkCollisionsAgainst(this.findCollisionCanidates());
     };
     this.move = function (delta) {
       if (!this.visible) return;
-      this.transPoints = null; // clear cached points
 
       if ($.isFunction(this.preMove)) {
         this.preMove(delta);

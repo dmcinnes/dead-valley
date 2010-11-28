@@ -88,9 +88,7 @@ define(["game", "sprite"], function (game, Sprite) {
     };
 
     this.collision = function (other) {
-      console.log("collision!");
-      this.vel.x = -this.vel.x;
-      this.vel.y = -this.vel.y;
+      // this.speed = -this.speed;
     };
 
   };
