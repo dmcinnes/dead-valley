@@ -50,6 +50,7 @@ define(["game", "matrix"], function (game, Matrix) {
     this.run = function(delta) {
       this.move(delta);
       this.updateGrid();
+      this.checkCollisionsAgainst(this.findCollisionCanidates());
     };
     this.move = function (delta) {
       if (!this.visible) return;
@@ -146,7 +147,7 @@ define(["game", "matrix"], function (game, Matrix) {
       if (cn.north.west.nextSprite) canidates.push(cn.north.west.nextSprite);
       if (cn.south.east.nextSprite) canidates.push(cn.south.east.nextSprite);
       if (cn.south.west.nextSprite) canidates.push(cn.south.west.nextSprite);
-      return canidates
+      return canidates;
     };
     this.checkCollisionsAgainst = function (canidates) {
       for (var i = 0; i < canidates.length; i++) {
@@ -167,8 +168,7 @@ define(["game", "matrix"], function (game, Matrix) {
       for (var i = 0; i < count; i++) {
         px = trans[i*2];
         py = trans[i*2 + 1];
-        // mozilla doesn't take into account transforms with isPointInPath >:-P
-        if (($.browser.mozilla) ? this.pointInPolygon(px, py) : context.isPointInPath(px, py)) {
+        if (this.pointInPolygon(px, py)) {
           other.collision(this);
           this.collision(other);
           return;

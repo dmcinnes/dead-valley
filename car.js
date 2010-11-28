@@ -8,6 +8,7 @@ define(["game", "sprite"], function (game, Sprite) {
     var rad, rot;
 
     this.init(name, points, image, tileWidth, tileHeight);
+
     this.speed = 0.0;
 
     this.breaking = false;
@@ -18,6 +19,8 @@ define(["game", "sprite"], function (game, Sprite) {
     this.topSpeed        = 440;  // tops out at 100mph
     this.topReverseSpeed = -132; // reverse at 30mph
     this.topRotation     = 120;
+
+    this.collidesWith = ['car'];
 
     this.draw = function () {
       if (!this.visible) return;
@@ -82,6 +85,12 @@ define(["game", "sprite"], function (game, Sprite) {
       if (this.driver) {
         game.map.keepInView(this);
       }
+    };
+
+    this.collision = function (other) {
+      console.log("collision!");
+      this.vel.x = -this.vel.x;
+      this.vel.y = -this.vel.y;
     };
 
   };
