@@ -1,14 +1,16 @@
 // Car
 
-define(["game", "sprite"], function (game, Sprite) {
+define(["game", "sprite"], function (game, RigidBody, Matrix) {
 
   var keyStatus = game.controls.keyStatus;
-  var context  = game.spriteContext;
+  var context   = game.spriteContext;
+  var matrix    = new Matrix(2, 3);
 
   var Car = function (name, points, image, tileWidth, tileHeight) {
     var rad, rot;
 
     this.init(name, points, image, tileWidth, tileHeight);
+    this.setMass(5.0); // units?
 
     this.speed = 0.0;
 
@@ -16,6 +18,10 @@ define(["game", "sprite"], function (game, Sprite) {
 
     this.breaking = false;
     this.driver = null;
+
+    // components of steering
+    this.forwardAxis = [0, 0];
+    this.sideAxis    = [0, 0];
 
     this.acceleration    = 150;
     this.deceleration    = 300;  // breaks!
@@ -100,12 +106,19 @@ define(["game", "sprite"], function (game, Sprite) {
       }
     };
 
+    this.setSteeringAngle = function (angle) {
+      matrix.configure(angle, 1.0, 0, 0);
+
+      this.forwardAxis = matrix.multiply(0.0, 1.0, 1); 
+      this.sideAxis    = matrix.multiply(-1.0, 0.0, 1); 
+    };
+
     this.collision = function (other) {
       this.collided = true;
     };
 
   };
-  Car.prototype = new Sprite();
+  Car.prototype = new RigidBody();
 
   return Car;
 });

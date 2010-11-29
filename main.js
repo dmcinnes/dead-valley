@@ -31,12 +31,11 @@ require(
 
       game.sprites.push(framerate);
 
-      // move center point back a bit so steering works right
       var car = new Car('car',
-                        [-12, -30,
-                          12, -30,
-                          12, 12,
-                         -12, 12],
+                        [-12, -21,
+                          12, -21,
+                          12,  21,
+                         -12,  21],
                          carImage,
                          24,
                          40);
