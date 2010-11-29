@@ -47,12 +47,12 @@ require(
       car.visible = true;
       game.sprites.push(car);
 
-      var car2 = $.extend({}, car);
-      car2.y = 80;
+      var car2 = $.extend(true, {}, car);
+      car2.y = 200;
       game.sprites.push(car2);
 
-      var car3 = $.extend({}, car);
-      car3.y = 160;
+      var car3 = $.extend(true, {}, car);
+      car3.y = 400;
       car3.rot = 0;
       game.sprites.push(car3);
 
