@@ -37,6 +37,11 @@ define(["game", "matrix"], function (game, Matrix) {
       [0, 1]
     ];
 
+    this.currentNormals = [
+      [1, 0],
+      [0, 1]
+    ];
+
     this.children = {};
 
     this.visible  = false;
@@ -89,7 +94,7 @@ define(["game", "matrix"], function (game, Matrix) {
       // only rotate
       matrix.configure(this.rot, 1.0, 0, 0);
       for (i = 0; i < this.normals.length; i++) {
-        this.normals[i] = matrix.multiply(this.normals[i][0], this.normals[i][1], 1); 
+        this.currentNormals[i] = matrix.multiply(this.normals[i][0], this.normals[i][1], 1); 
       }
     };
     this.render = function (delta) {
@@ -174,21 +179,24 @@ define(["game", "matrix"], function (game, Matrix) {
         } while (ref)
       }
     };
-    var trans, points, dot, count, px, py, nx, ny, weMax, weMin, theyMax, theyMin;
+    var normals, trans, points, dot, count, px, py, nx, ny, weMax, weMin, theyMax, theyMin;
     this.checkCollision = function (other) {
       if (!other.visible ||
            this == other ||
            this.collidesWith.indexOf(other.name) == -1) return;
 
+      normals = this.currentNormals.concat(other.currentNormals);
+
       points = this.transformedPoints();
       otherPoints = other.transformedPoints();
 
-      for (i = 0; i < this.normals.length; i++) {
-        nx = this.normals[i][0];
-        ny = this.normals[i][1];
+      for (i = 0; i < normals.length; i++) {
+        nx = normals[i][0];
+        ny = normals[i][1];
         count = points.length/2;
         weMin = theyMin = Number.MAX_VALUE;
         weMax = theyMax = -Number.MAX_VALUE;
+        // TODO extract these for loops into another method
         for (j = 0; j < count; j++) {
           px = points[j*2];
           py = points[j*2 + 1];
@@ -208,7 +216,7 @@ define(["game", "matrix"], function (game, Matrix) {
           return; // no collision!
         }
       }
-      other.collision(this);
+      // other.collision(this);
       this.collision(other);
     };
     this.pointInPolygon = function (x, y) {

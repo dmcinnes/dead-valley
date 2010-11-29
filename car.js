@@ -34,15 +34,15 @@ define(["game", "sprite"], function (game, Sprite) {
                          this.points[1],
                          this.tileWidth,
                          this.tileHeight);
-      } else {
-        this.drawTile(0);
-        this.drawTile(1);
-        if (this.breaking) {
-          this.drawTile(4);
-          this.drawTile(5);
-        }
       }
-    };
+
+      this.drawTile(0);
+      this.drawTile(1);
+      if (this.breaking) {
+        this.drawTile(4);
+        this.drawTile(5);
+      }
+   };
 
     // override move
     this.move = function (delta) {
@@ -78,7 +78,9 @@ define(["game", "sprite"], function (game, Sprite) {
         }
       } else {
         // friction!
-        this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
+        if (this.speed != 0.0) {
+          this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
+        }
         // TODO clean this up
       }
 

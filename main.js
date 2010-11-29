@@ -53,7 +53,7 @@ require(
 
       var car3 = $.extend({}, car);
       car3.y = 160;
-      car3.rot = 45;
+      car3.rot = 0;
       game.sprites.push(car3);
 
       var dude = new Dude('dude',
