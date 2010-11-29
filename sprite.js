@@ -6,7 +6,7 @@ define(["game", "matrix"], function (game, Matrix) {
   var context  = game.spriteContext;
 
   var Sprite = function () {
-    var newNode;
+    var newNode, i, j;
 
     this.init = function (name, points, image, tileWidth, tileHeight) {
       this.name     = name;
@@ -27,7 +27,15 @@ define(["game", "matrix"], function (game, Matrix) {
         y:   0,
         rot: 0
       };
+      
     };
+
+    // for now we're going to assume all sprites are boxes
+    // TODO calculate the normals for arbitrary shapes
+    this.normals = [
+      [1, 0],
+      [0, 1]
+    ];
 
     this.children = {};
 
@@ -50,6 +58,7 @@ define(["game", "matrix"], function (game, Matrix) {
     this.run = function(delta) {
       this.transPoints = null; // clear cached points
       this.move(delta);
+      this.transformNormals();
       this.updateGrid();
       this.checkCollisionsAgainst(this.findCollisionCanidates());
     };
@@ -74,6 +83,13 @@ define(["game", "matrix"], function (game, Matrix) {
 
       if ($.isFunction(this.postMove)) {
         this.postMove(delta);
+      }
+    };
+    this.transformNormals = function () {
+      // only rotate
+      matrix.configure(this.rot, 1.0, 0, 0);
+      for (i = 0; i < this.normals.length; i++) {
+        this.normals[i] = matrix.multiply(this.normals[i][0], this.normals[i][1], 1); 
       }
     };
     this.render = function (delta) {
@@ -158,22 +174,42 @@ define(["game", "matrix"], function (game, Matrix) {
         } while (ref)
       }
     };
+    var trans, points, dot, count, px, py, nx, ny, weMax, weMin, theyMax, theyMin;
     this.checkCollision = function (other) {
       if (!other.visible ||
            this == other ||
            this.collidesWith.indexOf(other.name) == -1) return;
-      var trans = other.transformedPoints();
-      var px, py;
-      var count = trans.length/2;
-      for (var i = 0; i < count; i++) {
-        px = trans[i*2];
-        py = trans[i*2 + 1];
-        if (this.pointInPolygon(px, py)) {
-          other.collision(this);
-          this.collision(other);
-          return;
+
+      points = this.transformedPoints();
+      otherPoints = other.transformedPoints();
+
+      for (i = 0; i < this.normals.length; i++) {
+        nx = this.normals[i][0];
+        ny = this.normals[i][1];
+        count = points.length/2;
+        weMin = theyMin = Number.MAX_VALUE;
+        weMax = theyMax = -Number.MAX_VALUE;
+        for (j = 0; j < count; j++) {
+          px = points[j*2];
+          py = points[j*2 + 1];
+          dot = nx * px + ny * py;
+          weMin = Math.min(weMin, dot);
+          weMax = Math.max(weMax, dot);
+        }
+        count = otherPoints.length/2;
+        for (j = 0; j < count; j++) {
+          px = otherPoints[j*2];
+          py = otherPoints[j*2 + 1];
+          dot = nx * px + ny * py;
+          theyMin = Math.min(theyMin, dot);
+          theyMax = Math.max(theyMax, dot);
+        }
+        if (weMax < theyMin || weMin > theyMax) {
+          return; // no collision!
         }
       }
+      other.collision(this);
+      this.collision(other);
     };
     this.pointInPolygon = function (x, y) {
       var points = this.transformedPoints();

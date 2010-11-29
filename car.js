@@ -3,6 +3,7 @@
 define(["game", "sprite"], function (game, Sprite) {
 
   var keyStatus = game.controls.keyStatus;
+  var context  = game.spriteContext;
 
   var Car = function (name, points, image, tileWidth, tileHeight) {
     var rad, rot;
@@ -10,6 +11,8 @@ define(["game", "sprite"], function (game, Sprite) {
     this.init(name, points, image, tileWidth, tileHeight);
 
     this.speed = 0.0;
+
+    this.collided = false;
 
     this.breaking = false;
     this.driver = null;
@@ -25,11 +28,19 @@ define(["game", "sprite"], function (game, Sprite) {
     this.draw = function () {
       if (!this.visible) return;
 
-      this.drawTile(0);
-      this.drawTile(1);
-      if (this.breaking) {
-        this.drawTile(4);
-        this.drawTile(5);
+      if (this.collided) {
+        this.collided = false;
+        context.fillRect(this.points[0],
+                         this.points[1],
+                         this.tileWidth,
+                         this.tileHeight);
+      } else {
+        this.drawTile(0);
+        this.drawTile(1);
+        if (this.breaking) {
+          this.drawTile(4);
+          this.drawTile(5);
+        }
       }
     };
 
@@ -88,7 +99,7 @@ define(["game", "sprite"], function (game, Sprite) {
     };
 
     this.collision = function (other) {
-      // this.speed = -this.speed;
+      this.collided = true;
     };
 
   };
