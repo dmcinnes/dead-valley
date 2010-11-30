@@ -6,6 +6,63 @@ define(["game", "sprite"], function (game, RigidBody, Matrix) {
   var context   = game.spriteContext;
   var matrix    = new Matrix(2, 3);
 
+  var Wheel = function (posx, posy, radius) {
+    this.position = {
+      x: posx,
+      y: posy
+    };
+
+    var forwardAxis = [0, 0];
+    var sideAxis    = [0, 0];
+    var torque      = 0.0;
+    var speed       = 0.0;
+    var inertia     = 0.0;
+
+    this.setSteeringAngle = function (angle) {
+      matrix.configure(angle, 1.0, 0, 0);
+
+      forwardAxis = matrix.multiply(0.0, 1.0, 1); 
+      sideAxis    = matrix.multiply(-1.0, 0.0, 1); 
+    };
+
+    this.addTransmissionTorque = function (newValue) {
+      torque += newValue;
+    };
+
+    var patchSpeedX, patchSpeedY, diffX, diffY, forwardMag;
+    this.calculateForce = function (groundSpeedX, groundSpeedY, delta) {
+      //calculate speed of tire patch at ground
+      patchSpeedX = forwardAxis[0] * speed * radius;
+      patchSpeedY = forwardAxis[1] * speed * radius;
+
+      //get velocity difference between ground and patch
+      diffX = groundSpeedX + patchSpeedX;
+      diffY = groundSpeedY + patchSpeedY;
+
+      //project ground speed onto side axis
+      forwardMag = 0.0;
+      Vector sideVel = velDifference.Project(m_sideAxis);
+      Vector forwardVel = velDifference.Project(m_forwardAxis, out forwardMag);
+
+      //calculate super fake friction forces
+      //calculate response force
+      Vector responseForce = -sideVel * 2.0f;
+      responseForce -= forwardVel;
+
+      //calculate torque on wheel
+      m_wheelTorque += forwardMag * m_wheelRadius;
+
+      //integrate total torque into wheel
+      m_wheelSpeed += m_wheelTorque / m_wheelInertia * timeStep;
+
+      //clear our transmission torque accumulator
+      m_wheelTorque = 0;
+
+      //return force acting on body
+      return responseForce;
+  }
+  };
+
   var Car = function (name, points, image, tileWidth, tileHeight) {
     var rad, rot;
 
@@ -18,10 +75,6 @@ define(["game", "sprite"], function (game, RigidBody, Matrix) {
 
     this.breaking = false;
     this.driver = null;
-
-    // components of steering
-    this.forwardAxis = [0, 0];
-    this.sideAxis    = [0, 0];
 
     this.acceleration    = 150;
     this.deceleration    = 300;  // breaks!
@@ -104,13 +157,6 @@ define(["game", "sprite"], function (game, RigidBody, Matrix) {
       if (this.driver) {
         game.map.keepInView(this);
       }
-    };
-
-    this.setSteeringAngle = function (angle) {
-      matrix.configure(angle, 1.0, 0, 0);
-
-      this.forwardAxis = matrix.multiply(0.0, 1.0, 1); 
-      this.sideAxis    = matrix.multiply(-1.0, 0.0, 1); 
     };
 
     this.collision = function (other) {
