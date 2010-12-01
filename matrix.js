@@ -1,8 +1,9 @@
 // Matrix
 
-define(function () {
-  return function (rows, columns) {
-    var i, j, k, rad, sin, cos, vector;
+define(['vector'], function (Vector) {
+
+  var Matrix = function (rows, columns) {
+    var i, j, k, rad, sin, cos, vector, out;
 
     this.data = new Array(rows);
     for (i = 0; i < rows; i++) {
@@ -31,6 +32,16 @@ define(function () {
       }
     }
 
+    // assuming 2x3 matrix
+    this.vectorMultiply = function (vector) {
+      return new Vector(this.data[0][0] * vector.x +
+                        this.data[0][1] * vector.y +
+                        this.data[0][2], 
+                        this.data[1][0] * vector.x +
+                        this.data[1][1] * vector.y +
+                        this.data[1][2]);
+    };
+
     this.multiply = function () {
       vector = new Array(rows);
       for (i = 0; i < rows; i++) {
@@ -42,4 +53,9 @@ define(function () {
       return vector;
     };
   };
+
+  window.Vector = Vector;
+  window.Matrix = Matrix;
+
+  return Matrix;
 });

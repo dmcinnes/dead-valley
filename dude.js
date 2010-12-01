@@ -9,8 +9,8 @@ define(["game", "sprite"], function (game, Sprite) {
   var SPEED = 3.5;
   var WALKING_ANIMATION_FRAME_RATE = 0.02; // in seconds
 
-  var Dude = function (name, points, image, tileWidth, tileHeight) {
-    this.init(name, points, image, tileWidth, tileHeight);
+  var Dude = function (name, width, height, image) {
+    this.init(name, width, height, image);
 
     this.driving = null;
 
@@ -48,16 +48,16 @@ define(["game", "sprite"], function (game, Sprite) {
                       keyStatus.down);
 
       if (keyStatus.left) {
-        this.x -= SPEED;
+        this.pos.x -= SPEED;
         this.direction = LEFT;
       } else if (keyStatus.right) {
-        this.x += SPEED;
+        this.pos.x += SPEED;
         this.direction = RIGHT;
       } 
       if (keyStatus.up) {
-        this.y -= SPEED;
+        this.pos.y -= SPEED;
       } else if (keyStatus.down) {
-        this.y += SPEED;
+        this.pos.y += SPEED;
       }
 
       game.map.keepInView(this);
@@ -67,8 +67,9 @@ define(["game", "sprite"], function (game, Sprite) {
     game.controls.registerKeyDownHandler('x', function () {
       if (self.driving) {
         // leave the car
-        self.x = self.driving.x;
-        self.y = self.driving.y;
+        // TODO add an offset to the driver's side door
+        self.pos.x = self.driving.x;
+        self.pos.y = self.driving.y;
         self.driving.driver = null;
         self.driving = null;
         self.visible = true;

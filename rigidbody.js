@@ -1,13 +1,10 @@
 // Rigid Body
 // for physics simulation
 
-define(["game", "sprite"], function (game, Sprite) {
+define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
 
   var RigidBody = function () {
-    this.forces = {
-      x: 0.0,
-      y: 0.0
-    };
+    this.forces = new Vector(0.0, 0.0);
     this.mass = 1.0;
     this.torque = 0.0;
     this.inertia = 1.0;
@@ -17,9 +14,10 @@ define(["game", "sprite"], function (game, Sprite) {
       // points[0] and points[1] are the x and y of
       // the first point of the sprite
       // TODO still assuming this is a box
+      var point = this.points[0];
       this.inertia = (1.0 / 12.0) *
-                     this.points[0] * this.points[0] *
-                     this.points[1] * this.points[1] *
+                     point.x * point.x *
+                     point.y * point.y *
                      mass;
     };
 
@@ -36,20 +34,20 @@ define(["game", "sprite"], function (game, Sprite) {
       this.acc.y = this.forces.y / this.inertia;
       this.vel.x += this.acc.x * delta;
       this.vel.y += this.acc.y * delta;
-      this.x += this.vel.x * delta;
-      this.y += this.vel.y * delta;
+      this.pos.x += this.vel.x * delta;
+      this.pos.y += this.vel.y * delta;
       this.forces.x = this.forces.y = 0.0; // clear forces
 
       // angular
       this.acc.rot = this.torque / this.inertia;
       this.vel.rot += this.acc.rot * delta;
-      this.rot += this.vel.rot * delta;
+      this.pos.rot += this.vel.rot * delta;
       this.torque = 0.0; // clear torque
 
-      if (this.rot > 360) {
-        this.rot -= 360;
-      } else if (this.rot < 0) {
-        this.rot += 360;
+      if (this.pos.rot > 360) {
+        this.pos.rot -= 360;
+      } else if (this.pos.rot < 0) {
+        this.pos.rot += 360;
       }
 
       if (this.postMove) {

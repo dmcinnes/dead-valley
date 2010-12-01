@@ -32,39 +32,38 @@ require(
       game.sprites.push(framerate);
 
       var car = new Car('car',
-                        [-12, -21,
-                          12, -21,
-                          12,  21,
-                         -12,  21],
-                         carImage,
-                         24,
-                         40);
+                        24, 40,
+                        carImage);
 
-      car.x = 0;
-      car.y = 0;
-      car.rot = 90;
+      car.pos.x = 0;
+      car.pos.y = 0;
+      car.pos.rot = 90;
       car.visible = true;
       game.sprites.push(car);
 
-      var car2 = $.extend(true, {}, car);
-      car2.y = 200;
+      var car2 = new Car('car',
+                        24, 40,
+                        carImage);
+
+      car2.pos.x = 0;
+      car2.pos.y = 200;
+      car2.visible = true;
       game.sprites.push(car2);
 
-      var car3 = $.extend(true, {}, car);
-      car3.y = 400;
-      car3.rot = 0;
+      var car3 = new Car('car',
+                        24, 40,
+                        carImage);
+
+      car3.pos.x = 0;
+      car3.pos.y = 400;
+      car3.visible = true;
       game.sprites.push(car3);
 
       var dude = new Dude('dude',
-                          [-10, -10,
-                            10, -10,
-                            10, 10,
-                           -10, 10],
-                           dudeImage,
-                           20,
-                           20);
-      dude.x = 50;
-      dude.y = 0;
+                          20, 20,
+                          dudeImage);
+      dude.pos.x = 50;
+      dude.pos.y = 0;
       dude.visible = true;
       game.sprites.push(dude);
 
