@@ -6,65 +6,63 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
   var context   = game.spriteContext;
   var matrix    = new Matrix(2, 3);
 
-  // var Wheel = function (posx, posy, radius) {
-  //   this.position = {
-  //     x: posx,
-  //     y: posy
-  //   };
+  var Wheel = function (posx, posy, radius) {
+    this.position = new Vector(posx, posy);
 
-  //   var forwardAxis = [0, 0];
-  //   var sideAxis    = [0, 0];
-  //   var torque      = 0.0;
-  //   var speed       = 0.0;
-  //   var inertia     = 0.0;
+    var forwardAxis = new Vector(0, 0);
+    var sideAxis    = new Vector(0, 0);
+    var torque      = 0.0;
+    var speed       = 0.0;
+    var inertia     = 0.0;
 
-  //   this.setSteeringAngle = function (angle) {
-  //     matrix.configure(angle, 1.0, 0, 0);
+    //foward vector
+    var forwardVector = new Vector( 0, 1);
+    var sideVector    = new Vector(-1, 0);
 
-  //     forwardAxis = matrix.multiply(0.0, 1.0, 1); 
-  //     sideAxis    = matrix.multiply(-1.0, 0.0, 1); 
-  //   };
+    this.setSteeringAngle = function (angle) {
+      matrix.configure(angle, 1.0, 0, 0);
 
-  //   this.addTransmissionTorque = function (newValue) {
-  //     torque += newValue;
-  //   };
+      matrix.vectorMultiply(forwardVector, forwardAxis); 
+      matrix.vectorMultiply(sideVector, sideAxis); 
+    };
 
-  //   var patchSpeedX, patchSpeedY, diffX, diffY, forwardMag;
-  //   this.calculateForce = function (groundSpeedX, groundSpeedY, delta) {
-  //     //calculate speed of tire patch at ground
-  //     patchSpeedX = forwardAxis[0] * speed * radius;
-  //     patchSpeedY = forwardAxis[1] * speed * radius;
+    this.addTransmissionTorque = function (newValue) {
+      torque += newValue;
+    };
 
-  //     //get velocity difference between ground and patch
-  //     diffX = groundSpeedX + patchSpeedX;
-  //     diffY = groundSpeedY + patchSpeedY;
+    var patchSpeed, diff, forwardMag, sideVel, forwardVel, responseForce;
+    this.calculateForce = function (relativeGroundSpeed, delta) {
+      //calculate speed of tire patch at ground
+      patchSpeed = forwardAxis.multiply(speed * radius);
 
-  //     //project ground speed onto side axis
-  //     forwardMag = 0.0;
-  //     Vector sideVel = velDifference.Project(m_sideAxis);
-  //     Vector forwardVel = velDifference.Project(m_forwardAxis, out forwardMag);
+      //get velocity difference between ground and patch
+      diff = relativeGroundSpeed.subtract(patchSpeed);
 
-  //     //calculate super fake friction forces
-  //     //calculate response force
-  //     Vector responseForce = -sideVel * 2.0f;
-  //     responseForce -= forwardVel;
+      //project ground speed onto side axis
+      forwardMag = 0.0;
+      sideVel    = diff.project(sideAxis);
+      forwardVel = diff.project(forwardAxis); //, out forwardMag);
 
-  //     //calculate torque on wheel
-  //     m_wheelTorque += forwardMag * m_wheelRadius;
+      //calculate super fake friction forces
+      //calculate response force
+      responseForce = sideVel.multiply(-2.0).subtract(forwardVel);
 
-  //     //integrate total torque into wheel
-  //     m_wheelSpeed += m_wheelTorque / m_wheelInertia * timeStep;
+      //calculate torque on wheel
+      torque += forwardMag * radius;
 
-  //     //clear our transmission torque accumulator
-  //     m_wheelTorque = 0;
+      //integrate total torque into wheel
+      speed += torque / inertia * delta;
 
-  //     //return force acting on body
-  //     return responseForce;
-  // }
-  // };
+      //clear our transmission torque accumulator
+      torque = 0;
+
+      //return force acting on body
+      return responseForce;
+    }
+  };
 
   var Car = function (name, width, height, image) {
-    var rad, rot;
+    var rad, rot, i;
 
     this.init(name, width, height, image);
     this.setMass(5.0); // units?
@@ -76,13 +74,20 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
     this.breaking = false;
     this.driver = null;
 
-    this.acceleration    = 150;
-    this.deceleration    = 300;  // breaks!
-    this.topSpeed        = 440;  // tops out at 100mph
-    this.topReverseSpeed = -132; // reverse at 30mph
-    this.topRotation     = 120;
+    this.steeringLock = 0.75;
+    this.engineTorque = 20.0;
+    this.brakeTorque  = 4.0;
 
     this.collidesWith = ['car'];
+
+    var hw = width / 2;
+    var hh = height / 2;
+    this.wheels = [
+      new Wheel(-hw,  hh, 0.5),
+      new Wheel( hw,  hh, 0.5),
+      new Wheel( hw, -hh, 0.5),
+      new Wheel(-hw, -hh, 0.5)
+    ];
 
     this.draw = function () {
       if (!this.visible) return;
@@ -103,61 +108,54 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
       }
     };
 
-    // override move
-    this.move = function (delta) {
-      if (!this.visible) return;
+    this.setSteering = function (steering) {
+      //apply steering angle to front wheels
+      this.wheels[0].setSteeringAngle(-steering * this.steeringLock);
+      this.wheels[1].setSteeringAngle(-steering * this.steeringLock);
+    };
 
-      this.vel.rot = 0;
+    this.setThrottle = function (throttle) {
+      // front wheel drive
+      this.wheels[2].addTransmissionTorque(throttle * this.engineTorque);
+      this.wheels[3].addTransmissionTorque(throttle * this.engineTorque);
+    };
+
+    this.setBrakes = function (brakes) {
+      _(this.wheels).each(function (wheel) {
+        wheel.AddTransmissionTorque(-wheel.speed * this.brakeTorque * brakes);
+      });
+    }
+
+    this.preMove = function (delta) {
+      if (!this.visible) return;
 
       if (this.driver) {
         if (keyStatus.left || keyStatus.right) {
-          rot = this.speed;
-          if (rot > this.topRotation) rot = this.topRotation;
-          this.vel.rot = rot * delta * (keyStatus.left ? -1 : 1);
+          this.setSteering(keyStatus.left ? -1 : 1);
+        } else {
+          this.setSteering(0);
         }
-        this.pos.rot += this.vel.rot;
 
         if (keyStatus.up) {
-          this.speed += delta * this.acceleration;
+          this.setThrottle(1);
           this.breaking = false;
         } else if (keyStatus.down) {
-          if (this.speed > 1.0) { // breaking
-            this.breaking = true;
-            this.speed -= delta * this.deceleration;
-            if (this.speed < 1.0) this.speed = 0.0;
-          } else if (this.speed <= 1.0 && !this.breaking) {
-            this.speed -= delta * this.acceleration;
-          } else {
-            this.speed = 0.0;
-          }
-        } else {
-          // friction!
-          this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
-          this.breaking = false;
+          this.setBreaks(1);
+          this.breaking = true;
         }
-      } else {
-        // friction!
-        if (this.speed != 0.0) {
-          this.speed += delta * 10 * (this.speed > 0) ? -1 : 1;
-        }
-        // TODO clean this up
       }
 
-      if (this.speed > this.topSpeed) this.speed = this.topSpeed;
-      if (this.speed < this.topReverseSpeed) this.speed = this.topReverseSpeed;
+      for (i = 0; i < 4; i++) {
+        // Vector worldWheelOffset = base.RelativeToWorld(wheel.GetAttachPoint());
+        // Vector worldGroundVel = base.PointVel(worldWheelOffset);
+        // Vector relativeGroundSpeed = base.WorldToRelative(worldGroundVel);
+        // Vector relativeResponseForce = wheel.CalculateForce(relativeGroundSpeed, timeStep);
+        // Vector worldResponseForce = base.RelativeToWorld(relativeResponseForce);
 
-      rad = ((this.pos.rot-90) * Math.PI)/180;
-
-      this.vel.x = this.speed * Math.cos(rad) * delta;
-      this.vel.y = this.speed * Math.sin(rad) * delta;
-
-      this.pos.x += this.vel.x;
-      this.pos.y += this.vel.y;
-
-      if (this.driver) {
-        game.map.keepInView(this);
+        this.addForce(wheel[i].calculateForce(relativeGroundSpeed, delta), wheel[i].position);
       }
     };
+
 
     this.collision = function (other) {
       this.collided = true;

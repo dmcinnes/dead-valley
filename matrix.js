@@ -33,13 +33,16 @@ define(['vector'], function (Vector) {
     }
 
     // assuming 2x3 matrix
-    this.vectorMultiply = function (vector) {
-      return new Vector(this.data[0][0] * vector.x +
-                        this.data[0][1] * vector.y +
-                        this.data[0][2], 
-                        this.data[1][0] * vector.x +
-                        this.data[1][1] * vector.y +
-                        this.data[1][2]);
+    this.vectorMultiply = function (vector, use) {
+      // reuse vector if one is given to us
+      out = (use) ? use : new Vector();
+      out.x = this.data[0][0] * vector.x +
+              this.data[0][1] * vector.y +
+              this.data[0][2];
+      out.y = this.data[1][0] * vector.x +
+              this.data[1][1] * vector.y +
+              this.data[1][2];
+      return out;
     };
 
     this.multiply = function () {

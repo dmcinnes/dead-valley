@@ -55,11 +55,9 @@ define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
       }
     };
 
-    this.addForce = function (fx, fy, offsetx, offsety) {
-      this.forces.x += fx;
-      this.forces.y += fy;
-      // cross product offset vector X force vector
-      this.torque += fx * offsety - fy * offsetx;
+    this.addForce = function (vector, offset) {
+      this.forces.translate(vector);
+      this.torque += offset.crossProduct(vector);
     };
   };
   RigidBody.prototype = new Sprite();
