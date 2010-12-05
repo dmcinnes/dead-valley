@@ -259,6 +259,22 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     this.distance = function (other) {
       return Math.sqrt(Math.pow(other.pos.x - this.pos.x, 2) + Math.pow(other.pos.y - this.pos.y, 2));
     };
+    // take a relative vector and make it a world vector
+    this.relativeToWorld = function (relative) {
+      matrix.configure(this.pos.rot, 1.0, 0, 0);
+      return matrix.vectorMultiply(relative);
+    };
+    // take a world vector and make it a relative vector
+    this.worldToRelative = function (world) {
+      matrix.configure(-this.pos.rot, 1.0, 0, 0);
+      return matrix.vectorMultiply(world);
+    };
+    //velocity of a point on body
+    this.pointVel = function (worldOffset) {
+      var tangent = new Vector(-worldOffset.y, worldOffset.x);
+      tangent.scale(this.vel.rot).translate(this.vel);
+      return tangent;
+    };
   };
 
   return Sprite;

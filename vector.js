@@ -17,11 +17,13 @@ define(function () {
   Vector.prototype.translate = function (vector) {
     this.x += vector.x;
     this.y += vector.y;
+    return this;
   };
 
   Vector.prototype.scale = function (scalar) {
     this.x *= scalar;
     this.y *= scalar;
+    return this;
   };
 
   Vector.prototype.multiply = function (scalar) {
@@ -39,6 +41,10 @@ define(function () {
   Vector.prototype.project = function (other) {
     // projected vector = (this dot v) * v;
     return other.multiply(this.dotProduct(other));
+  };
+
+  Vector.prototype.magnitude = function () {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
   };
 
   return Vector;

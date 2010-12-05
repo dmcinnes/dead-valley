@@ -19,6 +19,7 @@ define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
                      point.x * point.x *
                      point.y * point.y *
                      mass;
+      this.inertia = 60;
     };
 
     // override Sprite's move function
@@ -36,12 +37,24 @@ define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
       this.vel.y += this.acc.y * delta;
       this.pos.x += this.vel.x * delta;
       this.pos.y += this.vel.y * delta;
+
+      // console.log('forces', this.forces.x, this.forces.y);
+      // console.log('acc', this.acc.x, this.acc.y);
+      // console.log('vel', this.vel.x, this.vel.y);
+
       this.forces.x = this.forces.y = 0.0; // clear forces
 
       // angular
       this.acc.rot = this.torque / this.inertia;
       this.vel.rot += this.acc.rot * delta;
       this.pos.rot += this.vel.rot * delta;
+
+      // console.log('torque', this.torque);
+      // console.log('acc.rot', this.acc.rot);
+      // console.log('vel.rot', this.vel.rot);
+      // console.log('pos.rot', this.pos.rot);
+      // console.log('---');
+
       this.torque = 0.0; // clear torque
 
       if (this.pos.rot > 360) {
@@ -51,7 +64,7 @@ define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
       }
 
       if (this.postMove) {
-        this.preMove(delta);
+        this.postMove(delta);
       }
     };
 

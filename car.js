@@ -9,15 +9,16 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
   var Wheel = function (posx, posy, radius) {
     this.position = new Vector(posx, posy);
 
+    this.speed      = 0.0;
+
     var forwardAxis = new Vector(0, 0);
     var sideAxis    = new Vector(0, 0);
     var torque      = 0.0;
-    var speed       = 0.0;
-    var inertia     = 0.0;
+    var inertia     = 1.0; // so no divide by zero
 
     //foward vector
-    var forwardVector = new Vector( 0, 1);
-    var sideVector    = new Vector(-1, 0);
+    var forwardVector = new Vector(0, -1);
+    var sideVector    = new Vector(1,  0);
 
     this.setSteeringAngle = function (angle) {
       matrix.configure(angle, 1.0, 0, 0);
@@ -30,35 +31,48 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
       torque += newValue;
     };
 
-    var patchSpeed, diff, forwardMag, sideVel, forwardVel, responseForce;
+    var patchSpeed, diff, sideVel, forwardVel, responseForce;
     this.calculateForce = function (relativeGroundSpeed, delta) {
-      //calculate speed of tire patch at ground
-      patchSpeed = forwardAxis.multiply(speed * radius);
+      // calculate speed of tire patch at ground
+      patchSpeed = forwardAxis.multiply(this.speed * radius);
 
-      //get velocity difference between ground and patch
+      // get velocity difference between ground and patch
       diff = relativeGroundSpeed.subtract(patchSpeed);
 
-      //project ground speed onto side axis
-      forwardMag = 0.0;
+      // project ground speed onto side axis
       sideVel    = diff.project(sideAxis);
-      forwardVel = diff.project(forwardAxis); //, out forwardMag);
+      forwardVel = diff.project(forwardAxis);
 
-      //calculate super fake friction forces
-      //calculate response force
+      // calculate super fake friction forces
+      // calculate response force
       responseForce = sideVel.multiply(-2.0).subtract(forwardVel);
 
-      //calculate torque on wheel
-      torque += forwardMag * radius;
+      // calculate torque on wheel
+      torque += forwardVel.magnitude() * radius;
 
-      //integrate total torque into wheel
-      speed += torque / inertia * delta;
+      // integrate total torque into wheel
+      this.speed += torque / inertia * delta;
 
-      //clear our transmission torque accumulator
-      torque = 0;
+      // if (keyStatus.up || keyStatus.down) {
+      //   console.log('----');
+      //   console.log('patchSpeed', patchSpeed.x, patchSpeed.y);
+      //   console.log('diff', diff.x, diff.y);
+      //   console.log('sideVel', sideVel.x, sideVel.y);
+      //   console.log('forwardVel', forwardVel.x, forwardVel.y);
+      //   console.log('torque', torque);
+      //   console.log('speed', this.speed);
+      //   console.log('responseForce', responseForce.x, responseForce.y);
+      //   console.log('----');
+      // }
 
-      //return force acting on body
+      // clear our transmission torque accumulator
+      torque = 0.0;
+
+      // return force acting on body
       return responseForce;
-    }
+    };
+
+    this.setSteeringAngle(0);
   };
 
   var Car = function (name, width, height, image) {
@@ -83,10 +97,10 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
     var hw = width / 2;
     var hh = height / 2;
     this.wheels = [
-      new Wheel(-hw,  hh, 0.5),
-      new Wheel( hw,  hh, 0.5),
+      new Wheel(-hw, -hh, 0.5),
       new Wheel( hw, -hh, 0.5),
-      new Wheel(-hw, -hh, 0.5)
+      new Wheel(-hw,  hh, 0.5),
+      new Wheel( hw,  hh, 0.5)
     ];
 
     this.draw = function () {
@@ -109,20 +123,21 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
     };
 
     this.setSteering = function (steering) {
-      //apply steering angle to front wheels
-      this.wheels[0].setSteeringAngle(-steering * this.steeringLock);
-      this.wheels[1].setSteeringAngle(-steering * this.steeringLock);
+      // apply steering angle to front wheels
+      this.wheels[0].setSteeringAngle(steering * this.steeringLock);
+      this.wheels[1].setSteeringAngle(steering * this.steeringLock);
     };
 
     this.setThrottle = function (throttle) {
       // front wheel drive
-      this.wheels[2].addTransmissionTorque(throttle * this.engineTorque);
-      this.wheels[3].addTransmissionTorque(throttle * this.engineTorque);
+      this.wheels[0].addTransmissionTorque(throttle * this.engineTorque);
+      this.wheels[1].addTransmissionTorque(throttle * this.engineTorque);
     };
 
     this.setBrakes = function (brakes) {
+      var self = this;
       _(this.wheels).each(function (wheel) {
-        wheel.AddTransmissionTorque(-wheel.speed * this.brakeTorque * brakes);
+        wheel.addTransmissionTorque(-wheel.speed * self.brakeTorque * brakes);
       });
     }
 
@@ -131,31 +146,41 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
 
       if (this.driver) {
         if (keyStatus.left || keyStatus.right) {
-          this.setSteering(keyStatus.left ? -1 : 1);
+          this.setSteering(keyStatus.left ? 1 : -1);
         } else {
           this.setSteering(0);
         }
 
+        this.breaking = false;
+
         if (keyStatus.up) {
           this.setThrottle(1);
-          this.breaking = false;
         } else if (keyStatus.down) {
-          this.setBreaks(1);
+          this.setBrakes(1);
           this.breaking = true;
         }
       }
 
+      var worldWheelOffset,
+          worldGroundVel,
+          relativeGroundSpeed,
+          relativeResponseForce,
+          worldResponseForce;
       for (i = 0; i < 4; i++) {
-        // Vector worldWheelOffset = base.RelativeToWorld(wheel.GetAttachPoint());
-        // Vector worldGroundVel = base.PointVel(worldWheelOffset);
-        // Vector relativeGroundSpeed = base.WorldToRelative(worldGroundVel);
-        // Vector relativeResponseForce = wheel.CalculateForce(relativeGroundSpeed, timeStep);
-        // Vector worldResponseForce = base.RelativeToWorld(relativeResponseForce);
+        worldWheelOffset = this.relativeToWorld(this.wheels[i].position);
+        worldGroundVel = this.pointVel(worldWheelOffset);
+        relativeGroundSpeed = this.worldToRelative(worldGroundVel);
+        relativeResponseForce = this.wheels[i].calculateForce(relativeGroundSpeed, delta);
+        worldResponseForce = this.relativeToWorld(relativeResponseForce);
 
-        this.addForce(wheel[i].calculateForce(relativeGroundSpeed, delta), wheel[i].position);
+        this.addForce(worldResponseForce, worldWheelOffset);
       }
+
+      game.map.keepInView(this);
     };
 
+    // this.postMove = function (delta) {
+    // };
 
     this.collision = function (other) {
       this.collided = true;
