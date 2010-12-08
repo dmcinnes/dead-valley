@@ -51,7 +51,7 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
       torque += forwardVel.magnitude() * radius;
 
       // integrate total torque into wheel
-      this.speed += torque / inertia * delta;
+      this.speed += (torque / inertia) * delta;
 
       // if (keyStatus.up || keyStatus.down) {
       //   console.log('----');
@@ -80,6 +80,7 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
 
     this.init(name, width, height, image);
     this.setMass(5.0); // units?
+    // this.setMass(1200); // kg
 
     this.speed = 0.0;
 
@@ -88,7 +89,7 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
     this.breaking = false;
     this.driver = null;
 
-    this.steeringLock = 0.75;
+    this.steeringLock = 43.0; // degrees
     this.engineTorque = 20.0;
     this.brakeTorque  = 4.0;
 
@@ -146,7 +147,7 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
 
       if (this.driver) {
         if (keyStatus.left || keyStatus.right) {
-          this.setSteering(keyStatus.left ? 1 : -1);
+          this.setSteering(keyStatus.right ? 1 : -1);
         } else {
           this.setSteering(0);
         }
@@ -168,6 +169,7 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
           worldResponseForce;
       for (i = 0; i < 4; i++) {
         worldWheelOffset = this.relativeToWorld(this.wheels[i].position);
+        // console.log(this.wheels[i].position.x, this.wheels[i].position.y, worldWheelOffset.x, worldWheelOffset.y);
         worldGroundVel = this.pointVel(worldWheelOffset);
         relativeGroundSpeed = this.worldToRelative(worldGroundVel);
         relativeResponseForce = this.wheels[i].calculateForce(relativeGroundSpeed, delta);
