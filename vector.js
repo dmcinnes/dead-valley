@@ -6,6 +6,13 @@ define(function () {
     this.y = y;
   };
 
+  Vector.prototype.normalize = function (other) {
+    var mag = this.magnitude();
+    this.x /= mag;
+    this.y /= mag;
+    return this;
+  };
+
   Vector.prototype.dotProduct = function (other) {
     return this.x * other.x + this.y * other.y;
   };

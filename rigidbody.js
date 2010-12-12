@@ -15,11 +15,11 @@ define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
       // the first point of the sprite
       // TODO still assuming this is a box
       var point = this.points[0];
-      this.inertia = (point.x * point.x *
-                      point.y * point.y *
-                      mass) /
-                      12.0;
-      this.inertia = 100;
+      // this.inertia = (point.x * point.x *
+      //                 point.y * point.y *
+      //                 mass) /
+      //                 12.0;
+      this.inertia = 80;
     };
 
     // override Sprite's move function

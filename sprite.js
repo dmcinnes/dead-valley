@@ -271,9 +271,9 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     };
     //velocity of a point on body
     this.pointVel = function (worldOffset) {
-      var tangent = new Vector(-worldOffset.y, worldOffset.x);
-      tangent.scale(this.vel.rot).translate(this.vel);
-      return tangent;
+      return new Vector(-worldOffset.y, worldOffset.x)
+                    .scale(this.vel.rot * Math.PI / 180.0)
+                    .translate(this.vel);
     };
   };
 
