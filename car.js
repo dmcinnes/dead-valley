@@ -53,12 +53,6 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
         this.drawTile(5);
       }
 
-      if (this.collidedPoint) {
-        context.fillColor = 'red';
-        context.fillRect(this.collidedPoint.x-5,this.collidedPoint.y-5,10,10)
-        this.collidedPoint = null;
-      }
-
       // MPH
       if (this.driver) {
         context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
@@ -132,16 +126,23 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
       }
     };
 
-    var time = null;
     this.postMove = function (delta) {
       if (this.driver) {
         game.map.keepInView(this);
       }
     };
 
-    this.collision = function (other, point) {
+    this.collision = function (other, point, vector) {
       this.collided = true;
-      this.collidedPoint = point;
+
+      var f = this.pointVel(point.subtract(this.pos));
+      other.addForce(f, point.subtract(other.pos));
+
+      context.save();
+      context.translate(-game.map.originOffsetX, -game.map.originOffsetY);
+      context.fillColor = 'red';
+      context.fillRect(point.x-5, point.y-5, 10, 10);
+      context.restore();
     };
 
   };

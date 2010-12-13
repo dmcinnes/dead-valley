@@ -44,7 +44,7 @@ define(["matrix"], function (Matrix) {
 
       // calculate super fake friction forces
       // calculate response force
-      responseForce = sideVel.multiply(-8.0).subtract(forwardVel);
+      responseForce = sideVel.multiply(-10.0).subtract(forwardVel);
 
       // calculate torque on wheel
       this.torque += diff.dotProduct(this.forwardAxis) * radius;

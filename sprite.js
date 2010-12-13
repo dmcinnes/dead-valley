@@ -171,7 +171,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     // TODO figure out collidible sprite pairs first
     // and eliminate duplicates before running
     // checkCollision
-    var depth, minDepth, minPoint, left, right;
+    var depth, minDepth, minPoint, left, right, normalIndex;
     this.checkCollision = function (other) {
       if (!other.visible ||
            this == other ||
@@ -190,14 +190,20 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
           left = we[1] - they[0];
           right = they[1] - we[0];
           depth = Math.min(left, right);
-          minDepth = Math.min(minDepth, depth);
-          if (depth == minDepth) {
-            minPoint = (right === depth) ? we[2] : we[3];
+          if (depth < minDepth) {
+            minDepth = depth;
+            minPoint = (right < left) ?
+                         [we[2], they[3]] :
+                         [we[3], they[2]];
+            normalIndex = i;
           }
         }
       }
-      // other.collision(this);
-      this.collision(other, minPoint);
+      
+      // we're edge on if the min depth is on our normal, so use "they"'s point
+      minPoint = minPoint[(normalIndex < this.currentNormals.length) ? 1 : 0];
+
+      this.collision(other, minPoint, normals[normalIndex].multiply(minDepth));
     };
 
     var min, max, pmin, pmax, points, count, dot;
@@ -211,9 +217,9 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         min = Math.min(min, dot);
         max = Math.max(max, dot);
         if (dot === min) {
-          pmin = this.points[j];
+          pmin = points[j];
         } else if (dot === max) {
-          pmax = this.points[j];
+          pmax = points[j];
         }
       }
       return [min, max, pmin, pmax];
