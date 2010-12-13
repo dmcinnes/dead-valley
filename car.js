@@ -114,6 +114,7 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
 
       if (this.collided) {
         this.collided = false;
+        context.fillColor = 'black';
         context.fillRect(this.points[0].x,
                          this.points[0].y,
                          this.tileWidth,
@@ -125,6 +126,12 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
       if (this.breaking) {
         this.drawTile(4);
         this.drawTile(5);
+      }
+
+      if (this.collidedPoint) {
+        context.fillColor = 'red';
+        context.fillRect(this.collidedPoint.x-5,this.collidedPoint.y-5,10,10)
+        this.collidedPoint = null;
       }
 
       // _(this.wheels).each(function (wheel) {
@@ -199,8 +206,9 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
       game.map.keepInView(this);
     };
 
-    this.collision = function (other) {
+    this.collision = function (other, point) {
       this.collided = true;
+      this.collidedPoint = point;
     };
 
   };

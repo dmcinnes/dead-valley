@@ -41,14 +41,14 @@ require(
       car.visible = true;
       game.sprites.push(car);
 
-      // var car2 = new Car('car',
-      //                   24, 40,
-      //                   carImage);
+      var car2 = new Car('car',
+                        24, 40,
+                        carImage);
 
-      // car2.pos.x = 0;
-      // car2.pos.y = 200;
-      // car2.visible = true;
-      // game.sprites.push(car2);
+      car2.pos.x = 0;
+      car2.pos.y = 200;
+      car2.visible = true;
+      game.sprites.push(car2);
 
       // var car3 = new Car('car',
       //                   24, 40,

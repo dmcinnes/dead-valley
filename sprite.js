@@ -1,4 +1,4 @@
-// Sprite 
+// Sprite
 
 define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
 
@@ -6,7 +6,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
   var context  = game.spriteContext;
 
   var Sprite = function () {
-    var newNode, i, j, normals, trans, points, dot, count, px, py, nx, ny, min, max, we, they;
+    var newNode, i, j, normals, trans, px, py, nx, ny, we, they;
 
     this.init = function (name, width, height, image) {
       this.name     = name;
@@ -69,6 +69,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       this.updateGrid();
       this.checkCollisionsAgainst(this.findCollisionCanidates());
     };
+
     this.move = function (delta) {
       if (!this.visible) return;
 
@@ -92,6 +93,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         this.postMove(delta);
       }
     };
+
     this.transformNormals = function () {
       // only rotate
       matrix.configure(this.pos.rot, 1.0, 0, 0);
@@ -99,6 +101,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         this.currentNormals[i] = matrix.vectorMultiply(this.normals[i]);
       }
     };
+
     this.render = function (delta) {
       if (!this.visible) return;
 
@@ -108,6 +111,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
 
       context.restore();
     };
+
     this.updateGrid = function () {
       if (!this.visible) return;
       newNode = game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
@@ -126,6 +130,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         this.currentNode = newNode;
       }
     };
+
     this.configureTransform = function () {
       if (!this.visible) return;
 
@@ -136,6 +141,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       context.rotate(rad);
       context.scale(this.scale, this.scale);
     };
+
     this.findCollisionCanidates = function () {
       if (!this.visible || !this.currentNode) return [];
       var cn = this.currentNode;
@@ -151,6 +157,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       if (cn.south.west.nextSprite) canidates.push(cn.south.west.nextSprite);
       return canidates;
     };
+
     this.checkCollisionsAgainst = function (canidates) {
       for (var i = 0; i < canidates.length; i++) {
         var ref = canidates[i];
@@ -160,9 +167,11 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         } while (ref)
       }
     };
+
     // TODO figure out collidible sprite pairs first
     // and eliminate duplicates before running
     // checkCollision
+    var depth, minDepth, minPoint, left, right;
     this.checkCollision = function (other) {
       if (!other.visible ||
            this == other ||
@@ -170,16 +179,28 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
 
       normals = this.currentNormals.concat(other.currentNormals);
 
+      minDepth = Number.MAX_VALUE;
+
       for (i = 0; i < normals.length; i++) {
         we   = this.lineProjection(normals[i]);
         they = other.lineProjection(normals[i]);
         if (we[1] < they[0] || we[0] > they[1]) {
           return; // no collision!
+        } else {
+          left = we[1] - they[0];
+          right = they[1] - we[0];
+          depth = Math.min(left, right);
+          minDepth = Math.min(minDepth, depth);
+          if (depth == minDepth) {
+            minPoint = (right === depth) ? we[2] : we[3];
+          }
         }
       }
       // other.collision(this);
-      this.collision(other);
+      this.collision(other, minPoint);
     };
+
+    var min, max, pmin, pmax, points, count, dot;
     this.lineProjection = function (normal) {
       min = Number.MAX_VALUE;
       max = -Number.MAX_VALUE;
@@ -189,11 +210,18 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         dot = normal.dotProduct(points[j]);
         min = Math.min(min, dot);
         max = Math.max(max, dot);
+        if (dot === min) {
+          pmin = this.points[j];
+        } else if (dot === max) {
+          pmax = this.points[j];
+        }
       }
-      return [min, max];
+      return [min, max, pmin, pmax];
     };
+
     this.collision = function () {
     };
+
     this.die = function () {
       this.visible = false;
       this.reap = true;
@@ -214,6 +242,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       this.transPoints = trans; // cache translated points
       return trans;
     };
+
     this.isClear = function () {
       if (this.collidesWith.length == 0) return true;
       var cn = this.currentNode;
@@ -234,6 +263,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
               cn.south.east.isEmpty(this.collidesWith) &&
               cn.south.west.isEmpty(this.collidesWith));
     };
+
     this.drawTile = function (index, flipped) {
       if (flipped) {
         context.save();
@@ -252,10 +282,12 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         context.restore();
       }
     };
+
     this.nearby = function () {
       if (this.currentNode == null) return [];
       return _(this.currentNode.nearby()).without(this);
     };
+
     this.distance = function (other) {
       return Math.sqrt(Math.pow(other.pos.x - this.pos.x, 2) + Math.pow(other.pos.y - this.pos.y, 2));
     };
