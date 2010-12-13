@@ -203,7 +203,9 @@ define(["game", "rigidbody", "matrix"], function (game, RigidBody, Matrix) {
     };
 
     this.postMove = function (delta) {
-      game.map.keepInView(this);
+      if (this.driver) {
+        game.map.keepInView(this);
+      }
     };
 
     this.collision = function (other, point) {
