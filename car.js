@@ -20,7 +20,7 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
     this.driver = null;
 
     this.steeringLock = 43.0; // degrees
-    this.engineTorque = 40.0;
+    this.engineTorque = 60.0;
     this.brakeTorque  = 4.0;
 
     this.collidesWith = ['car'];
@@ -57,6 +57,11 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
         context.fillColor = 'red';
         context.fillRect(this.collidedPoint.x-5,this.collidedPoint.y-5,10,10)
         this.collidedPoint = null;
+      }
+
+      // MPH
+      if (this.driver) {
+        context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
       }
 
       // _(this.wheels).each(function (wheel) {
@@ -127,6 +132,7 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
       }
     };
 
+    var time = null;
     this.postMove = function (delta) {
       if (this.driver) {
         game.map.keepInView(this);

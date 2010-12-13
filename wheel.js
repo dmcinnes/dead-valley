@@ -14,7 +14,6 @@ define(["matrix"], function (Matrix) {
     this.sideAxis    = new Vector(0, 0);
     this.torque      = 0.0;
     this.inertia     = radius * radius; // fake
-    // this.inertia     = 2.0; // fake
 
     //foward vector
     var forwardVector = new Vector(0, -1);
@@ -45,7 +44,7 @@ define(["matrix"], function (Matrix) {
 
       // calculate super fake friction forces
       // calculate response force
-      responseForce = sideVel.multiply(-2.0).subtract(forwardVel);
+      responseForce = sideVel.multiply(-8.0).subtract(forwardVel);
 
       // calculate torque on wheel
       this.torque += diff.dotProduct(this.forwardAxis) * radius;
