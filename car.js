@@ -21,7 +21,7 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
 
     this.steeringLock = 43.0; // degrees
     this.engineTorque = 60.0;
-    this.brakeTorque  = 4.0;
+    this.brakeTorque  = 5.0;
 
     this.collidesWith = ['car'];
 
@@ -99,13 +99,19 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
           this.setSteering(0);
         }
 
-        this.breaking = false;
-
         this.setThrottle((keyStatus.up) ? 1 : 0);
 
         if (keyStatus.down) {
-          this.setBrakes(1);
-          this.breaking = true;
+          if (this.wheels[0].speed > 0 &&
+              this.wheels[1].speed > 0) {
+            this.setBrakes(1);
+            this.breaking = true;
+          } else if (!this.breaking) {
+            // reverse
+            this.setThrottle(-1);
+          }
+        } else {
+          this.breaking = false;
         }
       }
 
