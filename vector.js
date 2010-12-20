@@ -54,5 +54,9 @@ define(function () {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   };
 
+  Vector.prototype.normal = function () {
+    return new Vector(-this.y, this.x);
+  };
+
   return Vector;
 });

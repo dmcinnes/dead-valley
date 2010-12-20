@@ -67,7 +67,10 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       this.move(delta);
       this.transformNormals();
       this.updateGrid();
-      this.checkCollisionsAgainst(this.findCollisionCanidates());
+      // TODO make the colision checks separate from run()
+      if (this.driver) {
+        this.checkCollisionsAgainst(this.findCollisionCanidates());
+      }
     };
 
     this.move = function (delta) {
@@ -94,6 +97,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       }
     };
 
+    // TODO: cache these
     this.transformNormals = function () {
       // only rotate
       matrix.configure(this.pos.rot, 1.0, 0, 0);
@@ -171,7 +175,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     // TODO figure out collidible sprite pairs first
     // and eliminate duplicates before running
     // checkCollision
-    var depth, minDepth, minPoint, left, right, normalIndex;
+    var depth, minDepth, minPoint, left, right, normalIndex, nl;
     this.checkCollision = function (other) {
       if (!other.visible ||
            this == other ||
@@ -181,7 +185,8 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
 
       minDepth = Number.MAX_VALUE;
 
-      for (i = 0; i < normals.length; i++) {
+      nl = normals.length;
+      for (i = 0; i < nl; i++) {
         we   = this.lineProjection(normals[i]);
         they = other.lineProjection(normals[i]);
         if (we[1] < they[0] || we[0] > they[1]) {
@@ -201,9 +206,20 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       }
       
       // we're edge on if the min depth is on our normal, so use "they"'s point
-      minPoint = minPoint[(normalIndex < this.currentNormals.length) ? 1 : 0];
+      var point;
+      if (normalIndex < this.currentNormals.length) {
+        point = minPoint[1];
+      } else {
+        point = minPoint[0];
+      }
 
-      this.collision(other, minPoint, normals[normalIndex].multiply(minDepth));
+      var normal = normals[normalIndex].multiply(minDepth);
+      // normal should always point toward 'this'
+      if (other.pos.subtract(this.pos).dotProduct(normal) > 0) {
+        normal.scale(-1);
+      }
+
+      this.collision(other, point, normal);
     };
 
     var min, max, pmin, pmax, points, count, dot;
