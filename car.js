@@ -132,21 +132,23 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
       }
     };
 
+    // TODO move this into RigidBody
     this.collision = function (other, point, vector) {
       this.collided = true;
 
-      var n = vector.normalize();
+      // rectify the positions
+      // TODO make scale this based on collision response
+      // for each car
+      var rectify = vector.multiply(0.5);
+      this.pos.translate(rectify);
+      other.pos.translate(rectify.scale(-1));
 
-      var tdot = n.dotProduct(point.subtract(this.pos));
-      if (tdot > 0) {
-        console.log(tdot);
-        return;
-      }
+      var n = vector.normalize();
 
       var vab = this.pointVel(point.subtract(this.pos)).subtract(other.pointVel(point.subtract(other.pos)));
 
       // coefficient of restitution (how bouncy the collision is)
-      var e = 0.5;
+      var e = 0.2;
 
       var ap = point.subtract(this.pos).normal();
       var bp = point.subtract(other.pos).normal();
