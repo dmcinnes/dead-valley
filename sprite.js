@@ -215,7 +215,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
 
       var normal = normals[normalIndex].multiply(minDepth);
       // normal should always point toward 'this'
-      if (other.pos.subtract(this.pos).dotProduct(normal) > 0) {
+      if (point.subtract(this.pos).dotProduct(normal) > 0) {
         normal.scale(-1);
       }
 
