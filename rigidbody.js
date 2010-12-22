@@ -3,6 +3,8 @@
 
 define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
 
+  var context   = game.spriteContext;
+
   var RigidBody = function () {
     this.forces = new Vector(0.0, 0.0);
     this.mass = 1.0;
@@ -72,6 +74,63 @@ define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
       this.forces.translate(vector);
       this.torque += offset.crossProduct(vector);
     };
+
+    this.collision = function (other, point, vector) {
+      this.collided = true;
+
+      // rectify the positions
+      // TODO make scale this based on collision response
+      // for each car
+      var rectify = vector.multiply(0.5);
+      this.pos.translate(rectify);
+      other.pos.translate(rectify.scale(-1));
+
+      var n = vector.normalize();
+
+      var vab = this.pointVel(point.subtract(this.pos)).subtract(other.pointVel(point.subtract(other.pos)));
+
+      // coefficient of restitution (how bouncy the collision is)
+      var e = 0.2;
+
+      var ap = point.subtract(this.pos).normal();
+      var bp = point.subtract(other.pos).normal();
+      var apd = Math.pow(ap.dotProduct(n), 2);
+      var bpd = Math.pow(bp.dotProduct(n), 2);
+
+      var dot = vab.dotProduct(n);
+      if (dot > 0) {
+        return; // moving away from each other
+      }
+
+      var j =  -(1 + e) * dot;
+
+      j /= n.multiply(1/this.mass + 1/other.mass).dotProduct(n) +
+           apd / this.inertia + bpd / this.inertia;
+
+      // console.log('j', j);
+
+      this.vel.translate(n.multiply(j  / this.mass));
+      other.vel.translate(n.multiply(-j  / other.mass));
+
+      // console.log('this.vel', this.vel.x, this.vel.y);
+      // console.log('other.vel', other.vel.x, other.vel.y);
+
+      // console.log('pre this.vel.rot', this.vel.rot);
+      // console.log('pre other.vel.rot', other.vel.rot);
+
+      // TODO make all rot into radians
+      this.vel.rot += 180 * (ap.dotProduct(n.multiply(j)) / this.inertia) / Math.PI;
+      other.vel.rot += 180 * (bp.dotProduct(n.multiply(-j)) / other.inertia) / Math.PI;
+
+      // console.log('this.vel.rot', this.vel.rot);
+      // console.log('other.vel.rot', other.vel.rot);
+
+      context.save();
+      context.translate(-game.map.originOffsetX, -game.map.originOffsetY);
+      context.fillRect(point.x-5, point.y-5, 10, 10);
+      context.restore();
+    };
+
   };
   RigidBody.prototype = new Sprite();
 
