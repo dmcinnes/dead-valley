@@ -35,9 +35,9 @@ require(
                         24, 40,
                         carImage);
 
-      car.pos.x = 0;
-      car.pos.y = 0;
-      car.pos.rot = 90;
+      car.pos.x = -100;
+      car.pos.y = -200;
+      car.pos.rot = 180;
       car.visible = true;
       game.sprites.push(car);
 
@@ -46,7 +46,8 @@ require(
                         carImage);
 
       car2.pos.x = 0;
-      car2.pos.y = 200;
+      car2.pos.y = 0;
+      car2.pos.rot = 337;
       car2.visible = true;
       game.sprites.push(car2);
 

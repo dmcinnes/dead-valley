@@ -192,8 +192,8 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         if (we[1] < they[0] || we[0] > they[1]) {
           return; // no collision!
         } else {
-          left = we[1] - they[0];
-          right = they[1] - we[0];
+          left = Math.abs(we[1] - they[0]);
+          right = Math.abs(they[1] - we[0]);
           depth = Math.min(left, right);
           if (depth < minDepth) {
             minDepth = depth;
@@ -222,8 +222,9 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       this.collision(other, point, normal);
     };
 
-    var min, max, pmin, pmax, points, count, dot;
+    var min, max, points, count, dot;
     this.lineProjection = function (normal) {
+      var pmin, pmax;
       min = Number.MAX_VALUE;
       max = -Number.MAX_VALUE;
       points = this.transformedPoints();
@@ -234,7 +235,8 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         max = Math.max(max, dot);
         if (dot === min) {
           pmin = points[j];
-        } else if (dot === max) {
+        } 
+        if (dot === max) {
           pmax = points[j];
         }
       }
