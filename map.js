@@ -2,7 +2,7 @@
 
 define(["game", "gridnode"], function (game, GridNode) {
 
-  var Map = function (gridWidth, gridHeight) {
+  var Map = function (gridWidth, gridHeight, callback) {
     var i, j,
         imageData,
         startX,     startY,
@@ -54,6 +54,7 @@ define(["game", "gridnode"], function (game, GridNode) {
         mapData[j + 2] = (i >> 16) & 255;
         mapData[j + 3] = 255; // has to be set
       }
+
       this.levelMapContext.putImageData(this.levelMapData, 0, 0);
 
       // set up the positional references
@@ -66,6 +67,8 @@ define(["game", "gridnode"], function (game, GridNode) {
           node.east  = this.getNode(i+1, j);
         }
       }
+
+      this.loaded();
     };
 
     this.getNodeByWorldCoords = function (x, y) {
@@ -243,10 +246,15 @@ define(["game", "gridnode"], function (game, GridNode) {
       }
     };
 
-    this.init();
+    this.loaded = function () {
+      // run first render
+      this.render(0);
 
-    // run first render
-    this.render(0);
+      // fire the callback
+      callback && callback();
+    };
+
+    this.init();
   };
 
   return Map;
