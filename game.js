@@ -12,7 +12,7 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
   var canvas = $("#canvas");
 
   return {
-    assetManager:  new AssetManager(),
+    assetManager:  new AssetManager('./assets/'),
     controls:      controls,
     gridSize:      60,
     canvasWidth:   canvas.width(),

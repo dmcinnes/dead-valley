@@ -109,5 +109,7 @@ define(["game"], function (game) {
             }).flatten().value();
   };
 
+  GridNode.prototype.tiles = game.assetManager.images.tiles;
+
   return GridNode;
 });

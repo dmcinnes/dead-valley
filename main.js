@@ -7,66 +7,63 @@ require(
    "car",
    "dude",
    "framerate"],
-   
+
   function (game, GridNode, Map, mainloop, Sprite, Car, Dude, framerate) {
 
-    // TODO move this into a separate startup file
+    // TODO clean this up so main isn't so cluttered
     require.ready(function () {
 
       var assetManager = game.assetManager;
+
+      var createSprites = function () {
+        var car = new Car('car',
+                          24, 40,
+                          assetManager.images.car1);
+
+        car.pos.x = -100;
+        car.pos.y = -200;
+        car.pos.rot = 180;
+        car.visible = true;
+        game.sprites.push(car);
+
+        var car2 = new Car('car',
+                          24, 40,
+                          assetManager.images.car1blue);
+
+        car2.pos.x = 0;
+        car2.pos.y = 0;
+        car2.pos.rot = 337;
+        car2.visible = true;
+        game.sprites.push(car2);
+
+        var dude = new Dude('dude',
+                            20, 20,
+                            assetManager.images.dude);
+        dude.pos.x = 50;
+        dude.pos.y = 0;
+        dude.visible = true;
+        game.sprites.push(dude);
+      };
+
       assetManager.onComplete = function () {
+        assetManager.copyImageAndMutateWhite('car1', 'car1blue', 70, 70, 255);
         // only load the map after the assets are loaded
         game.map = new Map(128, 64, function () {
+
+          createSprites();
+
+          // only run the main loop after the map is loaded
           mainloop.play();
         });
       };
 
-      // TODO make the link between GridNodes and tile images cleaner
-      GridNode.prototype.tiles = assetManager.registerImage('./assets/tiles.png');
-      // TODO make images addressible in assetManager
-      var carImage  = assetManager.registerImage('./assets/car1.png');
-      var dudeImage = assetManager.registerImage('./assets/dude.png');
+      _(['tiles', 'car1', 'dude']).each(function (image) {
+        assetManager.registerImage(image + '.png');
+      });
 
       assetManager.loadAssets();
 
       game.sprites.push(framerate);
-
-      var car = new Car('car',
-                        24, 40,
-                        carImage);
-
-      car.pos.x = -100;
-      car.pos.y = -200;
-      car.pos.rot = 180;
-      car.visible = true;
-      game.sprites.push(car);
-
-      var car2 = new Car('car',
-                        24, 40,
-                        carImage);
-
-      car2.pos.x = 0;
-      car2.pos.y = 0;
-      car2.pos.rot = 337;
-      car2.visible = true;
-      game.sprites.push(car2);
-
-      // var car3 = new Car('car',
-      //                   24, 40,
-      //                   carImage);
-
-      // car3.pos.x = 0;
-      // car3.pos.y = 400;
-      // car3.visible = true;
-      // game.sprites.push(car3);
-
-      var dude = new Dude('dude',
-                          20, 20,
-                          dudeImage);
-      dude.pos.x = 50;
-      dude.pos.y = 0;
-      dude.visible = true;
-      game.sprites.push(dude);
 
       // toggle show framerate
       game.controls.registerKeyDownHandler('f', function () {
