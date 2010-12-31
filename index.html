@@ -9,7 +9,10 @@
       #pause { position:absolute; background-color:#FFF; color:#000; z-index:50; left:45%; bottom:50%; padding:8px; font-weight:bold; display:none; }
       .active { display:block !important; }
       #leveldata { display:block }
+      #progress { position:absolute; left:0px; top:0px; width:100%; height:10px; background-color:#000; z-index:50; opacity:0.5; display:none; }
+      #progress-slider { width:0%; height:10px; background-color:red; }
     </style>
+    <script src="underscore-min.js"></script>
     <script data-main="main" src="requireplugins-jquery-1.4.3.js"></script>
   </head>
   <body>
@@ -18,6 +21,7 @@
       <div id="background"></div>
       <div id="framerate"></div>
       <div id="pause">PAUSE</div>
+      <div id="progress"><div id="progress-slider"></div></div>
     </div>
   </body>
 </html>
