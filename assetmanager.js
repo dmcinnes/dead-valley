@@ -1,4 +1,6 @@
-define(function () {
+// AssetManager
+
+define(["progress"], function (progress) {
   var AssetManager = function (onComplete) {
     var loadedCount = 0;
     var assets = [];
@@ -6,6 +8,7 @@ define(function () {
     this.onComplete = onComplete;
 
     var assetLoaded = function () {
+      progress.increment();
       loadedCount++;
       if (loadedCount == assets.length) {
         if (this.onComplete) this.onComplete();
@@ -30,6 +33,8 @@ define(function () {
     };
 
     this.loadAssets = function () {
+      progress.setTotal(assets.length);
+
       loadNextAsset();
     };
 
