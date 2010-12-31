@@ -1,6 +1,5 @@
 require(
-  ["underscore-min",
-   "game",
+  ["game",
    "gridnode",
    "map",
    "mainloop",
@@ -9,16 +8,17 @@ require(
    "dude",
    "framerate"],
    
-  function (_, game, GridNode, Map, mainloop, Sprite, Car, Dude, framerate) {
+  function (game, GridNode, Map, mainloop, Sprite, Car, Dude, framerate) {
 
+    // TODO move this into a separate startup file
     require.ready(function () {
-
-      mainloop.play();
 
       var assetManager = game.assetManager;
       assetManager.onComplete = function () {
         // only load the map after the assets are loaded
-        game.map = new Map(128, 64);
+        game.map = new Map(128, 64, function () {
+          mainloop.play();
+        });
       };
 
       // TODO make the link between GridNodes and tile images cleaner
