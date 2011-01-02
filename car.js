@@ -19,9 +19,10 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
     this.breaking = false;
     this.driver = null;
 
-    this.steeringLock = 43.0; // degrees
-    this.engineTorque = 600.0;
-    this.brakeTorque  = 20.0;
+    this.steeringAngle = 0;
+    this.steeringLock  = 43.0; // degrees
+    this.engineTorque  = 600.0;
+    this.brakeTorque   = 20.0;
 
     this.collidesWith = ['car', 'Dude'];
 
@@ -58,22 +59,27 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
         context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
       }
 
-      _(this.wheels).each(function (wheel) {
-        context.beginPath();
-        context.strokeStyle = 'black';
-        context.lineWidth = 1;
-        context.moveTo(wheel.position.x, wheel.position.y);
-        context.lineTo(wheel.position.x + wheel.responseForce.x,
-                       wheel.position.y + wheel.responseForce.y);
-        context.stroke();
+      // _(this.wheels).each(function (wheel) {
+      //   context.beginPath();
+      //   context.strokeStyle = 'black';
+      //   context.lineWidth = 1;
+      //   context.moveTo(wheel.position.x, wheel.position.y);
+      //   context.lineTo(wheel.position.x + wheel.responseForce.x,
+      //                  wheel.position.y + wheel.responseForce.y);
+      //   context.stroke();
       //   context.fillText(Math.round(wheel.speed), wheel.position.x, wheel.position.y);
-      });
+      // });
     };
 
     this.setSteering = function (steering) {
+      if (steering == 0) this.steeringAngle = 0; // reset
+      this.steeringAngle += steering * 4;
+      if (Math.abs(this.steeringAngle) > this.steeringLock) {
+        this.steeringAngle = this.steeringLock * steering;
+      }
       // apply steering angle to front wheels
-      this.wheels[0].setSteeringAngle(steering * this.steeringLock);
-      this.wheels[1].setSteeringAngle(steering * this.steeringLock);
+      this.wheels[0].setSteeringAngle(this.steeringAngle);
+      this.wheels[1].setSteeringAngle(this.steeringAngle);
     };
 
     this.setThrottle = function (throttle) {
