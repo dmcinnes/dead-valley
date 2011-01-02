@@ -44,7 +44,8 @@ define(["matrix"], function (Matrix) {
 
       // calculate super fake friction forces
       // calculate response force
-      responseForce = sideVel.multiply(-10.0).subtract(forwardVel);
+      // responseForce = sideVel.multiply(-10.0).subtract(forwardVel);
+      responseForce = sideVel.multiply(-20.0).subtract(forwardVel);
 
       // calculate torque on wheel
       this.torque += diff.dotProduct(this.forwardAxis) * radius;
@@ -52,18 +53,8 @@ define(["matrix"], function (Matrix) {
       // integrate total torque into wheel
       this.speed += (this.torque / this.inertia) * delta;
 
-      // if (keyStatus.up || keyStatus.down) {
-      //   console.log('----');
-      //   console.log('groundSpeed', relativeGroundSpeed.x, relativeGroundSpeed.y);
-      //   console.log('patchSpeed', patchSpeed.x, patchSpeed.y);
-      //   console.log('diff', diff.x, diff.y);
-      //   console.log('sideVel', sideVel.x, sideVel.y);
-      //   console.log('forwardVel', forwardVel.x, forwardVel.y);
-      //   console.log('torque', this.torque);
-      //   console.log('speed', this.speed);
-      //   console.log('responseForce', responseForce.x, responseForce.y);
-      //   console.log('----');
-      // }
+      // awesome fake wheel friction
+      this.speed *= 0.97;
 
       // clear our transmission torque accumulator
       this.torque = 0.0;

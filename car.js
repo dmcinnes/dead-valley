@@ -20,18 +20,18 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
     this.driver = null;
 
     this.steeringLock = 43.0; // degrees
-    this.engineTorque = 60.0;
-    this.brakeTorque  = 5.0;
+    this.engineTorque = 600.0;
+    this.brakeTorque  = 10.0;
 
     this.collidesWith = ['car', 'Dude'];
 
     var hw = width / 2;
     var hh = height / 2;
     this.wheels = [
-      new Wheel(-hw+2, -hh+8, 0.5),
-      new Wheel( hw-2, -hh+8, 0.5),
-      new Wheel(-hw+2,  hh-8, 0.5),
-      new Wheel( hw-2,  hh-8, 0.5)
+      new Wheel(-hw+2, -hh+8, 1),
+      new Wheel( hw-2, -hh+8, 1),
+      new Wheel(-hw+2,  hh-8, 1),
+      new Wheel( hw-2,  hh-8, 1)
     ];
 
     this.draw = function () {
@@ -58,16 +58,16 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
         context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
       }
 
-      // _(this.wheels).each(function (wheel) {
-      //   context.beginPath();
-      //   context.strokeStyle = 'black';
-      //   context.lineWidth = 1;
-      //   context.moveTo(wheel.position.x, wheel.position.y);
-      //   context.lineTo(wheel.position.x + wheel.responseForce.x,
-      //                  wheel.position.y + wheel.responseForce.y);
-      //   context.stroke();
+      _(this.wheels).each(function (wheel) {
+        context.beginPath();
+        context.strokeStyle = 'black';
+        context.lineWidth = 1;
+        context.moveTo(wheel.position.x, wheel.position.y);
+        context.lineTo(wheel.position.x + wheel.responseForce.x,
+                       wheel.position.y + wheel.responseForce.y);
+        context.stroke();
       //   context.fillText(Math.round(wheel.speed), wheel.position.x, wheel.position.y);
-      // });
+      });
     };
 
     this.setSteering = function (steering) {
