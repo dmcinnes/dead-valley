@@ -53,6 +53,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     this.reap     = false;
 
     this.collidesWith = [];
+    this.collidable = true;
 
     this.scale = 1;
 
@@ -148,23 +149,27 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       if (!this.visible || !this.currentNode) return [];
       var cn = this.currentNode;
       var canidates = [];
-      if (cn.nextSprite) canidates.push(cn.nextSprite);
-      if (cn.north.nextSprite) canidates.push(cn.north.nextSprite);
-      if (cn.south.nextSprite) canidates.push(cn.south.nextSprite);
-      if (cn.east.nextSprite) canidates.push(cn.east.nextSprite);
-      if (cn.west.nextSprite) canidates.push(cn.west.nextSprite);
-      if (cn.north.east.nextSprite) canidates.push(cn.north.east.nextSprite);
-      if (cn.north.west.nextSprite) canidates.push(cn.north.west.nextSprite);
-      if (cn.south.east.nextSprite) canidates.push(cn.south.east.nextSprite);
-      if (cn.south.west.nextSprite) canidates.push(cn.south.west.nextSprite);
-      return canidates;
+      return [cn,
+              cn.north,
+              cn.south,
+              cn.east,
+              cn.west,
+              cn.north.east,
+              cn.north.west,
+              cn.south.east,
+              cn.south.west];
     };
 
     this.checkCollisionsAgainst = function (canidates) {
-      for (var i = 0; i < canidates.length; i++) {
-        var ref = canidates[i];
+      var len = canidates.length;
+      var ref;
+      for (var i = 0; i < len; i++) {
+        ref = canidates[i];
         do {
-          this.checkCollision(ref);
+          // so we don't make nine extra function calls
+          // every frame for every sprite because most
+          // tiles are non-collidable
+          if (ref.collidable) this.checkCollision(ref);
           ref = ref.nextSprite;
         } while (ref)
       }

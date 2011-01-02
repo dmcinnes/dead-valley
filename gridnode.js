@@ -21,6 +21,8 @@ define(["game"], function (game) {
 
     this.domNode = null;
 
+    this.visible    = true;
+    this.collidable = false;
   };
 
   GridNode.prototype.enter = function (sprite) {
