@@ -9,7 +9,7 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
     var rad, rot, i;
 
     this.init(name, width, height, image);
-    this.setMass(5.0); // units?
+    this.setMass(15); // units?
     // this.setMass(1200); // kg
 
     this.speed = 0.0;
@@ -21,7 +21,7 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
 
     this.steeringLock = 43.0; // degrees
     this.engineTorque = 600.0;
-    this.brakeTorque  = 10.0;
+    this.brakeTorque  = 20.0;
 
     this.collidesWith = ['car', 'Dude'];
 
