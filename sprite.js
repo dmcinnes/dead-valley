@@ -68,9 +68,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       this.transformNormals();
       this.updateGrid();
       // TODO make the colision checks separate from run()
-      if (this.driver) {
-        this.checkCollisionsAgainst(this.findCollisionCanidates());
-      }
+      this.checkCollisionsAgainst(this.findCollisionCanidates());
     };
 
     this.move = function (delta) {

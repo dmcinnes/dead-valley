@@ -14,6 +14,8 @@ define(["game", "sprite"], function (game, Sprite) {
 
     this.driving = null;
 
+    this.collidesWith = ['car'];
+
     this.direction = RIGHT;
     this.walking = false;
     this.walkingFrame = 0;
@@ -36,7 +38,7 @@ define(["game", "sprite"], function (game, Sprite) {
       }
     };
 
-    this.move = function (delta) {
+    this.preMove = function (delta) {
       if (!this.visible) return;
 
       if (keyStatus.x) {
@@ -61,6 +63,10 @@ define(["game", "sprite"], function (game, Sprite) {
       }
 
       game.map.keepInView(this);
+    };
+
+    this.collision = function (other, point, vector) {
+      this.pos.translate(vector);
     };
 
     var self = this;

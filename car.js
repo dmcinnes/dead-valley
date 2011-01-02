@@ -23,7 +23,7 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
     this.engineTorque = 60.0;
     this.brakeTorque  = 5.0;
 
-    this.collidesWith = ['car'];
+    this.collidesWith = ['car', 'Dude'];
 
     var hw = width / 2;
     var hh = height / 2;
