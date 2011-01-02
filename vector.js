@@ -7,8 +7,13 @@ define(function () {
   };
 
   Vector.prototype.set = function (other) {
-    this.x = other.x;
-    this.y = other.y;
+    if (arguments.length > 1) {
+      this.x = arguments[0];
+      this.y = arguments[1];
+    } else {
+      this.x = other.x;
+      this.y = other.y;
+    }
     return this;
   };
 

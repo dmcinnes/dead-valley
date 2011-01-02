@@ -6,7 +6,7 @@ define(["game", "sprite"], function (game, Sprite) {
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
-  var SPEED = 3.5;
+  var SPEED = 88; // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.02; // in seconds
 
   var Dude = function (name, width, height, image) {
@@ -50,19 +50,24 @@ define(["game", "sprite"], function (game, Sprite) {
                       keyStatus.down);
 
       if (keyStatus.left) {
-        this.pos.x -= SPEED;
+        this.vel.x = -SPEED;
         this.direction = LEFT;
       } else if (keyStatus.right) {
-        this.pos.x += SPEED;
+        this.vel.x = SPEED;
         this.direction = RIGHT;
       } 
       if (keyStatus.up) {
-        this.pos.y -= SPEED;
+        this.vel.y = -SPEED;
       } else if (keyStatus.down) {
-        this.pos.y += SPEED;
+        this.vel.y = SPEED;
       }
 
       game.map.keepInView(this);
+    };
+
+    this.postMove = function (delta) {
+      // clear velocity
+      this.vel.set(0, 0);
     };
 
     this.collision = function (other, point, vector) {
