@@ -6,6 +6,12 @@ define(function () {
     this.y = y;
   };
 
+  Vector.prototype.set = function (other) {
+    this.x = other.x;
+    this.y = other.y;
+    return this;
+  };
+
   Vector.prototype.normalize = function (other) {
     var mag = this.magnitude();
     this.x /= mag;

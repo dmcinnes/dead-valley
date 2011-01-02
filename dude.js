@@ -67,9 +67,9 @@ define(["game", "sprite"], function (game, Sprite) {
     game.controls.registerKeyDownHandler('x', function () {
       if (self.driving) {
         // leave the car
-        // TODO add an offset to the driver's side door
-        self.pos.x = self.driving.x;
-        self.pos.y = self.driving.y;
+        // TODO move this calculation into Car
+        // TODO make the dude come out the driver's side
+        self.pos.set(self.driving.pos);
         self.driving.driver = null;
         self.driving = null;
         self.visible = true;
