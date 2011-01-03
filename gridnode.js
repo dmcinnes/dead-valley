@@ -15,7 +15,7 @@ define(["game"], function (game) {
     this.nextSprite = null;
 
     // this.tileOffset = Math.floor(Math.random()*2) + 1;
-    this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
+    this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*4) + 1 : 0;
 
     this.tileFlip = (Math.random() > 0.5);
 
@@ -62,7 +62,7 @@ define(["game"], function (game) {
 
   GridNode.prototype.render = function (delta, x, y) {
     // nothing to render, return
-    if (this.tileOffset == 0) return;
+    // if (this.tileOffset == 0) return;
 
     if (x < -game.gridSize || y < -game.gridSize ||
         x > game.canvasWidth ||
@@ -79,6 +79,11 @@ define(["game"], function (game) {
     if (this.map.freeNodes.length) {
       this.domNode = this.map.freeNodes.pop();
       this.domNode.css({'background-position':game.gridSize * this.tileOffset+' 0px'}).show();
+      if (this.tileFlip) {
+        this.domNode.addClass('flip-horizontal');
+      } else {
+        this.domNode.removeClass('flip-horizontal');
+      }
     } else {
       this.domNode = $('<div/>', {'class':'tile'}).css({'background-position':game.gridSize * this.tileOffset+' 0px'});
       background.append(this.domNode);
