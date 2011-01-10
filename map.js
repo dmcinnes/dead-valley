@@ -68,7 +68,11 @@ define(["game", "gridnode"], function (game, GridNode) {
         }
       }
 
-      this.loaded();
+      var w = this.levelMapContext.getImageData(0,
+                                                0,
+                                                this.gridWidth / 2,
+                                                this.gridHeight);
+      this.loadMapTiles(w, $.proxy(this.loaded, this));
     };
 
     this.getNodeByWorldCoords = function (x, y) {
@@ -177,20 +181,25 @@ define(["game", "gridnode"], function (game, GridNode) {
       }
     };
 
-    this.loadMapTiles = function (imageData) {
-      imageWidth  = imageData.width;
-      imageHeight = imageData.height;
-      imageData   = imageData.data;
+    this.loadMapTiles = function (imageData, loadCallback) {
+      var imageWidth  = imageData.width;
+      var imageHeight = imageData.height;
+      var imageData   = imageData.data;
+      var nodes       = this.nodes;
 
-      i = imageData.length / 4;
-      while (i) {
-        i--;
-        offset = i * 4;
-        nodeOffset =  imageData[offset] +
-                     (imageData[offset+1] << 8);
-        // TODO load map data
-        // this.nodes[nodeOffset].tileOffset = 0;
-      }
+      $.getJSON("maps/w.json", {}, function (data) {
+        var offset, nodeOffset;
+        var i = imageData.length / 4;
+        while (i) {
+          i--;
+          offset = i * 4;
+          nodeOffset =  imageData[offset] +
+                       (imageData[offset+1] << 8);
+          nodes[nodeOffset].tileOffset = parseInt(data[i]);
+        }
+
+        loadCallback();
+      });
     };
 
     this.render = function (delta) {
@@ -247,6 +256,7 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.loaded = function () {
+      console.log('loaded');
       // run first render
       this.render(0);
 

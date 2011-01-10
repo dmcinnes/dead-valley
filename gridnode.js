@@ -15,9 +15,11 @@ define(["game"], function (game) {
     this.nextSprite = null;
 
     // this.tileOffset = Math.floor(Math.random()*2) + 1;
-    this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*6) + 1 : 0;
+    // this.tileOffset = (Math.random() > 0.9) ? Math.floor(Math.random()*6) + 1 : 0;
+    this.tileOffset = 0;
 
-    this.tileFlip = (Math.random() > 0.5);
+    // this.tileFlip = (Math.random() > 0.5);
+    this.tileFlip = false;
 
     this.domNode = null;
 
@@ -78,14 +80,14 @@ define(["game"], function (game) {
   GridNode.prototype.obtainDomNode = function () {
     if (this.map.freeNodes.length) {
       this.domNode = this.map.freeNodes.pop();
-      this.domNode.css({'background-position':game.gridSize * this.tileOffset+' 0px'}).show();
+      this.domNode.css({'background-position': -game.gridSize * this.tileOffset+'px 0px'}).show();
       if (this.tileFlip) {
         this.domNode.addClass('flip-horizontal');
       } else {
         this.domNode.removeClass('flip-horizontal');
       }
     } else {
-      this.domNode = $('<div/>', {'class':'tile'}).css({'background-position':game.gridSize * this.tileOffset+' 0px'});
+      this.domNode = $('<div/>', {'class':'tile'}).css({'background-position': -game.gridSize * this.tileOffset+'px 0px'});
       background.append(this.domNode);
     }
   };
