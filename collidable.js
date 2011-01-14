@@ -110,6 +110,13 @@ define(["vector"], function (Vector) {
       }
       return [min, max, pmin, pmax];
     };
+
+    //velocity of a point on body
+    thing.prototype.pointVel = function (worldOffset) {
+      return new Vector(-worldOffset.y, worldOffset.x)
+                    .scale(this.vel.rot * Math.PI / 180.0)
+                    .translate(this.vel);
+    };
   };
 
   return collidable;

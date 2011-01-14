@@ -65,14 +65,24 @@ define(["game", "gridnode"], function (game, GridNode) {
           node.south = this.getNode(i, j+1);
           node.west  = this.getNode(i-1, j);
           node.east  = this.getNode(i+1, j);
+
+          // TODO don't do this here, should be in loadMapTiles
+          node.setPosition(i * game.gridSize - this.offsetX + this.originOffsetX, j * game.gridSize - this.offsetY + this.originOffsetY);
         }
+        node.transformedPoints();
       }
 
+      // TODO make first map a special load
       var w = this.levelMapContext.getImageData(0,
                                                 0,
                                                 this.gridWidth / 2,
                                                 this.gridHeight);
       this.loadMapTiles(w, $.proxy(this.loaded, this));
+
+      // test collidable tiles
+      var test = this.getNodeByWorldCoords(0, -140);
+      test.tileOffset = 6;
+      test.collidable = true;
     };
 
     this.getNodeByWorldCoords = function (x, y) {

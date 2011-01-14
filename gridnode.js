@@ -1,6 +1,6 @@
 // GridNode
 
-define(["game"], function (game) {
+define(["game", "vector", "collidable"], function (game, Vector, collidable) {
 
   var background = $('#background');
 
@@ -26,7 +26,26 @@ define(["game"], function (game) {
     this.visible    = true;
     this.collidable = false;
 
+    this.points = [ 
+      new Vector(0, 0),
+      new Vector(game.gridSize, 0),
+      new Vector(0, game.gridSize),
+      new Vector(game.gridSize, game.gridSize)
+    ];
+
     this.name = 'scenery';
+
+    this.currentNormals = [
+      new Vector(1, 0),
+      new Vector(0, 1)
+    ];
+
+    this.mass    = Number.MAX_VALUE;
+    this.inertia = Number.MAX_VALUE;
+    this.pos = new Vector();
+    this.pos.rot = 0;
+    this.vel = new Vector();
+    this.vel.rot = 0;
   };
 
   GridNode.prototype.enter = function (sprite) {
@@ -120,7 +139,23 @@ define(["game"], function (game) {
             }).flatten().value();
   };
 
+  GridNode.prototype.setPosition = function (x, y) {
+    this.points[0].set(x, y);
+    this.points[1].set(x + game.gridSize, y);
+    this.points[2].set(x, y + game.gridSize);
+    this.points[3].set(x + game.gridSize, y + game.gridSize);
+  };
+
+  GridNode.prototype.transformedPoints = function () {
+    return this.points;
+  };
+
   GridNode.prototype.tiles = game.assetManager.images.tiles;
+
+  collidable(GridNode, {});
+
+  // not collidable by default!
+  GridNode.prototype.collidable = false;
 
   return GridNode;
 });

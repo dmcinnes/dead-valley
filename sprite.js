@@ -224,12 +224,6 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       matrix.configure(-this.pos.rot, 1.0, 0, 0);
       return matrix.vectorMultiply(world);
     };
-    //velocity of a point on body
-    this.pointVel = function (worldOffset) {
-      return new Vector(-worldOffset.y, worldOffset.x)
-                    .scale(this.vel.rot * Math.PI / 180.0)
-                    .translate(this.vel);
-    };
   };
 
   return Sprite;
