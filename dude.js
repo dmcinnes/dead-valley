@@ -6,8 +6,8 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
-  var SPEED = 88; // 20 MPH
-  var WALKING_ANIMATION_FRAME_RATE = 0.02; // in seconds
+  var SPEED = 44; // 20 MPH
+  var WALKING_ANIMATION_FRAME_RATE = 0.03; // in seconds
 
   var Dude = function (name, width, height, image) {
     this.init(name, width, height, image);
