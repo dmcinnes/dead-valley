@@ -1,6 +1,6 @@
 // The DUDE
 
-define(["game", "sprite"], function (game, Sprite) {
+define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
 
   var keyStatus = game.controls.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
@@ -13,10 +13,6 @@ define(["game", "sprite"], function (game, Sprite) {
     this.init(name, width, height, image);
 
     this.driving = null;
-
-    this.collidesWith = {
-      car: true
-    };
 
     this.direction = RIGHT;
     this.walking = false;
@@ -108,6 +104,11 @@ define(["game", "sprite"], function (game, Sprite) {
     });
   };
   Dude.prototype = new Sprite();
+
+  collidable(Dude, {
+    scenery: true,
+    car:     true,
+  });
 
   return Dude;
 
