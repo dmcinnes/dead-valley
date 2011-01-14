@@ -14,7 +14,9 @@ define(["game", "sprite"], function (game, Sprite) {
 
     this.driving = null;
 
-    this.collidesWith = ['car'];
+    this.collidesWith = {
+      car: true
+    };
 
     this.direction = RIGHT;
     this.walking = false;

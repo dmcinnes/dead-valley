@@ -56,7 +56,7 @@ define(["game"], function (game) {
     var ref = this;
     while (ref.nextSprite) {
       ref = ref.nextSprite;
-      empty = !ref.visible || collidables.indexOf(ref.name) == -1
+      empty = !(ref.visible && collidables[ref.name]);
       if (!empty) break;
     }
     return empty;

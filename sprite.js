@@ -52,7 +52,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     this.visible  = false;
     this.reap     = false;
 
-    this.collidesWith = [];
+    this.collidesWith = {};
     this.collidable = true;
 
     this.scale = 1;
@@ -175,14 +175,14 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       }
     };
 
-    // TODO figure out collidible sprite pairs first
+    // TODO figure out collidable sprite pairs first
     // and eliminate duplicates before running
     // checkCollision
     var depth, minDepth, minPoint, left, right, normalIndex, nl;
     this.checkCollision = function (other) {
       if (!other.visible ||
            this == other ||
-           this.collidesWith.indexOf(other.name) == -1) return;
+          !this.collidesWith[other.name]) return;
 
       normals = this.currentNormals.concat(other.currentNormals);
 
@@ -271,7 +271,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     };
 
     this.isClear = function () {
-      if (this.collidesWith.length == 0) return true;
+      if (!collidable) return true;
       var cn = this.currentNode;
       if (cn == null) {
         var gridx = Math.floor(this.pos.x / game.gridSize);
