@@ -6,7 +6,6 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
   var context  = game.spriteContext;
 
   var Sprite = function () {
-    var newNode, i, j, normals, trans, px, py, nx, ny, we, they;
 
     this.init = function (name, width, height, image) {
       this.name     = name;
@@ -52,8 +51,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     this.visible  = false;
     this.reap     = false;
 
-    this.collidesWith = {};
-    this.collidable = true;
+    this.collidable = false;
 
     this.scale = 1;
 
@@ -68,8 +66,6 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       this.move(delta);
       this.transformNormals();
       this.updateGrid();
-      // TODO make the colision checks separate from run()
-      this.checkCollisionsAgainst(this.findCollisionCanidates());
     };
 
     this.move = function (delta) {
@@ -100,7 +96,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     this.transformNormals = function () {
       // only rotate
       matrix.configure(this.pos.rot, 1.0, 0, 0);
-      for (i = 0; i < this.normals.length; i++) {
+      for (var i = 0; i < this.normals.length; i++) {
         this.currentNormals[i] = matrix.vectorMultiply(this.normals[i]);
       }
     };
@@ -117,7 +113,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
 
     this.updateGrid = function () {
       if (!this.visible) return;
-      newNode = game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
+      var newNode = game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
 
       // we're off the the part of the world loaded into memory
       if (!newNode) {
@@ -145,107 +141,6 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       context.scale(this.scale, this.scale);
     };
 
-    this.findCollisionCanidates = function () {
-      if (!this.visible || !this.currentNode) return [];
-      var cn = this.currentNode;
-      var canidates = [];
-      return [cn,
-              cn.north,
-              cn.south,
-              cn.east,
-              cn.west,
-              cn.north.east,
-              cn.north.west,
-              cn.south.east,
-              cn.south.west];
-    };
-
-    this.checkCollisionsAgainst = function (canidates) {
-      var len = canidates.length;
-      var ref;
-      for (var i = 0; i < len; i++) {
-        ref = canidates[i];
-        do {
-          // so we don't make nine extra function calls
-          // every frame for every sprite because most
-          // tiles are non-collidable
-          if (ref.collidable) this.checkCollision(ref);
-          ref = ref.nextSprite;
-        } while (ref)
-      }
-    };
-
-    // TODO figure out collidable sprite pairs first
-    // and eliminate duplicates before running
-    // checkCollision
-    var depth, minDepth, minPoint, left, right, normalIndex, nl;
-    this.checkCollision = function (other) {
-      if (!other.visible ||
-           this == other ||
-          !this.collidesWith[other.name]) return;
-
-      normals = this.currentNormals.concat(other.currentNormals);
-
-      minDepth = Number.MAX_VALUE;
-
-      nl = normals.length;
-      for (i = 0; i < nl; i++) {
-        we   = this.lineProjection(normals[i]);
-        they = other.lineProjection(normals[i]);
-        if (we[1] < they[0] || we[0] > they[1]) {
-          return; // no collision!
-        } else {
-          left = Math.abs(we[1] - they[0]);
-          right = Math.abs(they[1] - we[0]);
-          depth = Math.min(left, right);
-          if (depth < minDepth) {
-            minDepth = depth;
-            minPoint = (right < left) ?
-                         [we[2], they[3]] :
-                         [we[3], they[2]];
-            normalIndex = i;
-          }
-        }
-      }
-      
-      // we're edge on if the min depth is on our normal, so use "they"'s point
-      var point;
-      if (normalIndex < this.currentNormals.length) {
-        point = minPoint[1];
-      } else {
-        point = minPoint[0];
-      }
-
-      var normal = normals[normalIndex].multiply(minDepth);
-      // normal should always point toward 'this'
-      if (point.subtract(this.pos).dotProduct(normal) > 0) {
-        normal.scale(-1);
-      }
-
-      this.collision(other, point, normal);
-    };
-
-    var min, max, points, count, dot;
-    this.lineProjection = function (normal) {
-      var pmin, pmax;
-      min = Number.MAX_VALUE;
-      max = -Number.MAX_VALUE;
-      points = this.transformedPoints();
-      count = points.length;
-      for (j = 0; j < count; j++) {
-        dot = normal.dotProduct(points[j]);
-        min = Math.min(min, dot);
-        max = Math.max(max, dot);
-        if (dot === min) {
-          pmin = points[j];
-        } 
-        if (dot === max) {
-          pmax = points[j];
-        }
-      }
-      return [min, max, pmin, pmax];
-    };
-
     this.collision = function () {
     };
 
@@ -257,10 +152,11 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         this.currentNode = null;
       }
     };
+
     // TODO perhaps cache transPoints vectors?
     this.transformedPoints = function () {
       if (this.transPoints) return this.transPoints;
-      trans = new Array(this.points.length);
+      var trans = new Array(this.points.length);
       matrix.configure(this.pos.rot, this.scale, this.pos.x, this.pos.y);
       var count = this.points.length;
       for (var i = 0; i < count; i++) {
@@ -271,7 +167,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     };
 
     this.isClear = function () {
-      if (!collidable) return true;
+      if (!this.collidable) return true;
       var cn = this.currentNode;
       if (cn == null) {
         var gridx = Math.floor(this.pos.x / game.gridSize);

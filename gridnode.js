@@ -25,6 +25,8 @@ define(["game"], function (game) {
 
     this.visible    = true;
     this.collidable = false;
+
+    this.name = 'scenery';
   };
 
   GridNode.prototype.enter = function (sprite) {

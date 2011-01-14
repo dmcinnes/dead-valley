@@ -1,6 +1,6 @@
 // Car
 
-define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
+define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, Wheel, collidable) {
 
   var keyStatus = game.controls.keyStatus;
   var context   = game.spriteContext;
@@ -23,11 +23,6 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
     this.steeringLock  = 43.0; // degrees
     this.engineTorque  = 600.0;
     this.brakeTorque   = 20.0;
-
-    this.collidesWith = {
-      car:  true, 
-      Dude: true
-    };
 
     var hw = width / 2;
     var hh = height / 2;
@@ -148,6 +143,12 @@ define(["game", "rigidbody", "wheel"], function (game, RigidBody, Wheel) {
     };
   };
   Car.prototype = new RigidBody();
+
+  collidable(Car, {
+    scenery: true,
+    car:     true,
+    Dude:    true
+  });
 
   return Car;
 });

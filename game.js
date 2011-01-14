@@ -11,6 +11,8 @@
 define(['assetmanager', 'controls'], function (AssetManager, controls) {
   var canvas = $("#canvas");
 
+  var i, sprite, spriteCount;
+
   return {
     assetManager:  new AssetManager('./assets/'),
     controls:      controls,
@@ -28,16 +30,30 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
     },
     runSprites: function (delta) {
       if (this.map) {
-        for (i = 0; i < this.sprites.length; i++) {
 
-          this.sprites[i].run(delta);
+        // move
+        spriteCount = this.sprites.length;
+        for (i = 0; i < spriteCount; i++) {
 
-          if (this.sprites[i].reap) {
-            this.sprites[i].reap = false;
+          sprite = this.sprites[i];
+          sprite.run(delta);
+
+          if (sprite.reap) {
+            sprite.reap = false;
             this.sprites.splice(i, 1);
             i--;
           }
         }
+
+        // collide!
+        spriteCount = this.sprites.length;
+        for (i = 0; i < spriteCount; i++) {
+          sprite = this.sprites[i];
+          if (sprite.collidable) {
+            sprite.checkCollisionsAgainst(sprite.findCollisionCanidates());
+          }
+        }
+
       }
     },
     renderSprites: function (delta) {
