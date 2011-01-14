@@ -20,9 +20,6 @@ require(
                           24, 40,
                           assetManager.images.car1);
 
-        console.log(car);
-        console.log(Car);
-
         car.pos.x = -100;
         car.pos.y = -200;
         car.pos.rot = 180;
