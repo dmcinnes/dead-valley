@@ -72,17 +72,12 @@ define(["game", "gridnode"], function (game, GridNode) {
         node.transformedPoints();
       }
 
-      // TODO make first map a special load
-      var w = this.levelMapContext.getImageData(0,
-                                                0,
-                                                this.gridWidth / 2,
-                                                this.gridHeight);
-      this.loadMapTiles(w, $.proxy(this.loaded, this));
+      this.loadStartMapTiles($.proxy(this.loaded, this));
 
       // test collidable tiles
-      var test = this.getNodeByWorldCoords(0, -140);
-      test.tileOffset = 6;
-      test.collidable = true;
+      // var test = this.getNodeByWorldCoords(0, -140);
+      // test.tileOffset = 6;
+      // test.collidable = true;
     };
 
     this.getNodeByWorldCoords = function (x, y) {
@@ -191,13 +186,37 @@ define(["game", "gridnode"], function (game, GridNode) {
       }
     };
 
-    this.loadMapTiles = function (imageData, loadCallback) {
+    this.loadMapTiles = function (imageData) {
       var imageWidth  = imageData.width;
       var imageHeight = imageData.height;
       var imageData   = imageData.data;
       var nodes       = this.nodes;
 
-      $.getJSON("maps/w.json", {}, function (data) {
+      var offset, nodeOffset;
+      var i = imageData.length / 4;
+      while (i) {
+        i--;
+        offset = i * 4;
+        nodeOffset =  imageData[offset] +
+                     (imageData[offset+1] << 8);
+        // TODO load new tile data
+        // nodes[nodeOffset].tileOffset = parseInt(data[i]);
+      }
+    };
+
+    this.loadStartMapTiles = function (loadCallback) {
+      var imageData =
+        this.levelMapContext.getImageData(0,
+                                          0,
+                                          this.gridWidth,
+                                          this.gridHeight);
+
+      var imageWidth  = imageData.width;
+      var imageHeight = imageData.height;
+      var imageData   = imageData.data;
+      var nodes       = this.nodes;
+
+      $.getJSON("maps/start.json", {}, function (data) {
         var offset, nodeOffset;
         var i = imageData.length / 4;
         while (i) {
@@ -206,6 +225,13 @@ define(["game", "gridnode"], function (game, GridNode) {
           nodeOffset =  imageData[offset] +
                        (imageData[offset+1] << 8);
           nodes[nodeOffset].tileOffset = parseInt(data[i]);
+          if (data[i].length > 1) {
+            switch(data[i][1]) {
+              case "R":
+                nodes[nodeOffset].tileFlip = true;
+                break;
+            }
+          }
         }
 
         loadCallback();
