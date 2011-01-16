@@ -74,9 +74,9 @@ define(["game", "sprite", "vector"], function (game, Sprite, Vector) {
       // rectify the positions
       // TODO make scale this based on collision response
       // for each car
-      var rectify = vector.multiply(0.5);
-      this.pos.translate(rectify);
-      other.pos.translate(rectify.scale(-1));
+      // var rectify = vector.multiply(0.5);
+      this.pos.translate(vector);
+      // other.pos.translate(rectify.scale(-1));
 
       var n = vector.normalize();
 
