@@ -101,15 +101,19 @@ define(["game", "vector", "collidable"], function (game, Vector, collidable) {
   GridNode.prototype.obtainDomNode = function () {
     if (this.map.freeNodes.length) {
       this.domNode = this.map.freeNodes.pop();
-      this.domNode.css({'background-position': -game.gridSize * this.tileOffset+'px 0px'}).show();
-      if (this.tileFlip) {
-        this.domNode.addClass('flip-horizontal');
-      } else {
-        this.domNode.removeClass('flip-horizontal');
-      }
     } else {
-      this.domNode = $('<div/>', {'class':'tile'}).css({'background-position': -game.gridSize * this.tileOffset+'px 0px'});
+      this.domNode = $('<div/>', {'class':'tile'});
       background.append(this.domNode);
+    }
+
+    // set background offset for which tile we have
+    this.domNode.css({'background-position': -game.gridSize * this.tileOffset+'px 0px'}).show();
+
+    // flip if necessary
+    if (this.tileFlip) {
+      this.domNode.addClass('flip-horizontal');
+    } else {
+      this.domNode.removeClass('flip-horizontal');
     }
   };
 
