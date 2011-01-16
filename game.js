@@ -42,6 +42,7 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
             sprite.reap = false;
             this.sprites.splice(i, 1);
             i--;
+            spriteCount--;
           }
         }
 
