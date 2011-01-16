@@ -42,9 +42,9 @@ define(["game", "vector", "collidable"], function (game, Vector, collidable) {
 
     this.mass    = Number.MAX_VALUE;
     this.inertia = Number.MAX_VALUE;
-    this.pos = new Vector();
+    this.pos = new Vector(0, 0);
     this.pos.rot = 0;
-    this.vel = new Vector();
+    this.vel = new Vector(0, 0);
     this.vel.rot = 0;
   };
 
