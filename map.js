@@ -193,15 +193,34 @@ define(["game", "gridnode"], function (game, GridNode) {
       var nodes       = this.nodes;
 
       var offset, nodeOffset;
-      var i = imageData.length / 4;
-      while (i) {
-        i--;
-        offset = i * 4;
-        nodeOffset =  imageData[offset] +
-                     (imageData[offset+1] << 8);
-        // TODO load new tile data
-        // nodes[nodeOffset].tileOffset = parseInt(data[i]);
+
+      var worker = new Worker("mapworker.js");
+
+      worker.onmessage = function (e) {
+        var data = e.data.split(',');
+
+        // TODO: consolidate this with loadStartMapTiles
+        var i = imageData.length / 4;
+        while (i) {
+          i--;
+          offset = i * 4;
+          nodeOffset =  imageData[offset] +
+                       (imageData[offset+1] << 8);
+          nodes[nodeOffset].tileOffset = parseInt(data[i]);
+          if (data[i].length > 1) {
+            switch(data[i][1]) {
+              case "R":
+                nodes[nodeOffset].tileFlip = true;
+                break;
+            }
+          }
+        }
       }
+      worker.onerror = function (e) {
+        console.log('worker error!', e);
+      }
+      worker.postMessage(imageWidth+","+imageHeight);
+
     };
 
     this.loadStartMapTiles = function (loadCallback) {
