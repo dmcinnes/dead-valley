@@ -1,6 +1,10 @@
 // GridNode
 
-define(["game", "vector", "collidable"], function (game, Vector, collidable) {
+define(["game",
+        "vector",
+        "collidable",
+        "tilemarshal"],
+        function (game, Vector, collidable, tileMarshal) {
 
   var background = $('#background');
 
@@ -155,25 +159,11 @@ define(["game", "vector", "collidable"], function (game, Vector, collidable) {
     return this.points;
   };
 
-  GridNode.prototype.toJSON = function () {
-    return {
-      offset:     this.offset,
-      tileRotate: this.tileRotate,
-      tileFlip:   this.tileFlip,
-      collidable: this.collidable
-    };
-  };
-
-  GridNode.prototype.setFromJSON = function (json) {
-    this.offset     = json.offset;
-    this.tileRotate = json.tileRotate;
-    this.tileFlip   = json.tileFlip;
-    this.collidable = json.collidable;
-  };
-
   GridNode.prototype.tiles = game.assetManager.images.tiles;
 
+  // mixins
   collidable(GridNode, {});
+  tileMarshal(GridNode);
 
   return GridNode;
 });

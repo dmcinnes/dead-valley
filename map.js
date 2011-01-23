@@ -13,6 +13,11 @@ define(["game", "gridnode"], function (game, GridNode) {
 
     var keyStatus = game.controls.keyStatus;
 
+    var mapWorker = new Worker("mapworker.js");
+    mapWorker.onerror = function (e) {
+      console.log('worker error!', e);
+    };
+
     this.init = function () {
       this.gridWidth  = gridWidth;
       this.gridHeight = gridHeight;
@@ -194,9 +199,8 @@ define(["game", "gridnode"], function (game, GridNode) {
 
       var offset, nodeOffset;
 
-      var worker = new Worker("mapworker.js");
-
-      worker.onmessage = function (e) {
+      // TODO make it so we don't redefine this every time
+      mapWorker.onmessage = function (e) {
         var data = e.data.split(',');
 
         // TODO: consolidate this with loadStartMapTiles
@@ -206,20 +210,12 @@ define(["game", "gridnode"], function (game, GridNode) {
           offset = i * 4;
           nodeOffset =  imageData[offset] +
                        (imageData[offset+1] << 8);
-          nodes[nodeOffset].tileOffset = parseInt(data[i]);
-          if (data[i].length > 1) {
-            switch(data[i][1]) {
-              case "R":
-                nodes[nodeOffset].tileFlip = true;
-                break;
-            }
-          }
+
+          nodes[nodeOffset].setFromString(data[i]);
         }
-      }
-      worker.onerror = function (e) {
-        console.log('worker error!', e);
-      }
-      worker.postMessage(imageWidth+","+imageHeight);
+      };
+
+      mapWorker.postMessage(imageWidth+","+imageHeight);
 
     };
 
