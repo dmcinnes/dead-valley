@@ -148,8 +148,19 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.levelMapContext.putImageData(left, chunkWidth, 0);
 
       // which chunk to load the new part of the map into
-      var chunk = (direction == 'east') ? left : right;
-      this.loadMapTiles(chunk);
+      if (direction == 'east') {
+        var strip = this.getMapStrip(this.gridWidth/2,
+                                     0,
+                                     1,
+                                     this.gridHeight);
+        this.loadMapTiles(left, strip, direction);
+      } else {
+        var strip = this.getMapStrip(this.gridWidth/2+1,
+                                     0,
+                                     1,
+                                     this.gridHeight);
+        this.loadMapTiles(right, strip, direction);
+      }
 
       // zipper the sections together
       var left, right;
@@ -178,8 +189,19 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.levelMapContext.putImageData(top, 0, chunkHeight);
 
       // which chunk to load the new part of the map into
-      var chunk = (direction == 'south') ? top : bottom;
-      this.loadMapTiles(chunk);
+      if (direction == 'south') {
+        var strip = this.getMapStrip(0,
+                                     this.gridHeight/2,
+                                     this.gridWidth,
+                                     1);
+        this.loadMapTiles(top, strip, direction);
+      } else {
+        var strip = this.getMapStrip(0,
+                                     this.gridHeight/2+1,
+                                     this.gridWidth,
+                                     1);
+        this.loadMapTiles(bottom, strip, direction);
+      }
 
       // zipper the sections together
       var upper, lower;
@@ -191,11 +213,39 @@ define(["game", "gridnode"], function (game, GridNode) {
       }
     };
 
-    this.loadMapTiles = function (imageData) {
+    // return an array of node objects from a part of the map
+    this.getMapStrip = function (x, y, w, h) {
+      var imageData = this.levelMapContext.getImageData(x, y, w, h);
+
+      return this.convertToNodes(imageData);
+    };
+
+    // return an array of node objects from imageData
+    this.convertToNodes = function (imageData) {
+      var nodes, i, offset, nodeOffset;
+
+      var nodes = [];
+
+      i = imageData.length / 4;
+      while (i) {
+        i--;
+        offset = i * 4;
+        nodeOffset =  imageData[offset] +
+                     (imageData[offset+1] << 8);
+
+        nodes.push(this.nodes[nodeOffset]);
+      }
+
+      return nodes;
+    };
+
+    this.loadMapTiles = function (imageData, strip, direction) {
       var imageWidth  = imageData.width;
       var imageHeight = imageData.height;
       var imageData   = imageData.data;
       var nodes       = this.nodes;
+
+      var newSection = this.convertToNodes(imageData);
 
       var offset, nodeOffset;
 
@@ -203,19 +253,28 @@ define(["game", "gridnode"], function (game, GridNode) {
       mapWorker.onmessage = function (e) {
         var data = e.data.split(',');
 
+        // for testing
+        if (data.length == 1) {
+          console.log(e.data);
+          return;
+        }
+
         // TODO: consolidate this with loadStartMapTiles
-        var i = imageData.length / 4;
+        var i = data.length;
         while (i) {
           i--;
-          offset = i * 4;
-          nodeOffset =  imageData[offset] +
-                       (imageData[offset+1] << 8);
-
-          nodes[nodeOffset].setFromString(data[i]);
+          newSection[i].setFromString(data[i]);
         }
       };
 
-      mapWorker.postMessage(imageWidth+","+imageHeight);
+      var message = {
+        width:  imageWidth,
+        height: imageHeight,
+        strip:  _(strip).map(function (n) { return n.toString(); }),
+        direction: direction
+      };
+
+      mapWorker.postMessage(JSON.stringify(message));
 
     };
 

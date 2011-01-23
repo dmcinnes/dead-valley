@@ -7,14 +7,14 @@ var define = function (r) {
   tileMarshal = r();
 };
 
-importScripts('tilemarshal.js', 'underscore-min.js');
+importScripts('json2.js', 'tilemarshal.js', 'underscore-min.js');
 
 var Tile = function () {};
 tileMarshal(Tile);
 
 onmessage = function (e) {
-  var config = e.data.split(',');
-  var total = parseInt(config[0]) * parseInt(config[1]);
+  var config = JSON.parse(e.data);
+  var total = config.width * config.height;
   var tiles = [];
 
   for (var i = 0; i < total; i++) {
