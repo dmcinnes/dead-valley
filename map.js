@@ -217,7 +217,7 @@ define(["game", "gridnode"], function (game, GridNode) {
     this.getMapStrip = function (x, y, w, h) {
       var imageData = this.levelMapContext.getImageData(x, y, w, h);
 
-      return this.convertToNodes(imageData);
+      return this.convertToNodes(imageData.data);
     };
 
     // return an array of node objects from imageData
