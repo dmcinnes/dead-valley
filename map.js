@@ -251,19 +251,21 @@ define(["game", "gridnode"], function (game, GridNode) {
 
       // TODO make it so we don't redefine this every time
       mapWorker.onmessage = function (e) {
-        var data = e.data.split(',');
+        var data = JSON.parse(e.data);
 
-        // for testing
-        if (data.length == 1) {
-          console.log(e.data);
-          return;
-        }
-
-        // TODO: consolidate this with loadStartMapTiles
-        var i = data.length;
-        while (i) {
-          i--;
-          newSection[i].setFromString(data[i]);
+        switch (data.type) {
+          // so we can get output from the worker
+          case 'log':
+            console.log.apply(console, data.message);
+            break;
+          default:
+            var newTiles = data.tiles;
+            var i = newTiles.length;
+            while (i) {
+              i--;
+              newSection[i].setFromString(newTiles[i]);
+            }
+            break;
         }
       };
 

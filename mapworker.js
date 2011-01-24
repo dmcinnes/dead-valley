@@ -12,6 +12,17 @@ importScripts('json2.js', 'tilemarshal.js', 'underscore-min.js');
 var Tile = function () {};
 tileMarshal(Tile);
 
+// so we can get output from the worker
+var console = {
+  log: function () {
+    var message = {
+      type:    'log',
+      message: _(arguments).toArray()
+    };
+    postMessage(JSON.stringify(message));
+  }
+};
+
 onmessage = function (e) {
   var config = JSON.parse(e.data);
   var total = config.width * config.height;
@@ -25,5 +36,10 @@ onmessage = function (e) {
     tiles.push(tile);
   }
 
-  postMessage(_(tiles).map(function (t) { return t.toString(); }));
+  var message = {
+    type: 'newtiles',
+    tiles: _(tiles).map(function (t) { return t.toString(); })
+  };
+
+  postMessage(JSON.stringify(message));
 };
