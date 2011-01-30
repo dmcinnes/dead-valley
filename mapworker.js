@@ -49,23 +49,40 @@ var console = {
   }
 };
 
-// load meta map tiles
-var metaTiles = {};
+// load 'meta map' section tiles
+var sections = {};
 importScripts('maps/vertical_road.json');
 
-// generates a map filed with blank, dirt and scrub tiles
-var generateBlankMap = function (total) {
-  var tiles = [];
+// convert them into objects
+_(sections).each(function (data) {
+  for (var i = 0; i < data.length; i++) {
+    var tile = new Tile();
+    tile.setFromString(data[i]);
+    data[i] = tile;
+  }
+});
+
+// fills a map's blank tiles wth random dirt and scrub
+var fillBlankTiles = function (tiles) {
+  var total = tiles.length;
 
   for (var i = 0; i < total; i++) {
-    var tile = new Tile();
-    tile.tileOffset =
-      (Math.random() > 0.9) ? Math.floor(Math.random()*2) + 1 : 0;
-    tile.tileFlip = Math.random() > 0.5;
-    tile.tileRotate = 0; // Math.floor(Math.random() * 4);
-    tiles.push(tile);
+    var tile = tiles[i];
+    if (tile.tileOffset == 0 && Math.random() > 0.9) {
+      tile.tileOffset = Math.floor(Math.random()*2) + 1;
+      tile.tileFlip = Math.random() > 0.5;
+      tile.tileRotate = 0; // Math.floor(Math.random() * 4);
+    }
   }
 
+  return tiles;
+};
+
+var createBlankSection = function (length) {
+  var tiles = [];
+  for (var i = 0; i < length; i++) {
+    tiles.push(new Tile());
+  }
   return tiles;
 };
 
@@ -96,13 +113,24 @@ var layRoads = function (tiles, config) {
   }
 };
 
+var loadSection = function (config) {
+  // TODO have to do transformation if tile should be
+  // rotated vertically
+  return _.clone(sections[config.section]);
+};
+
 onmessage = function (e) {
   var config = JSON.parse(e.data);
   var total = config.width * config.height;
 
-  var tiles = generateBlankMap(total);
+  // if (config.section) {
+    var tiles = loadSection(config);
+  // } else {
+  //   var tiles = createBlankSection(total);
+    // figure out what kind of section use
+  // }
 
-  layRoads(tiles, config);
+  fillBlankTiles(tiles);
 
   var message = {
     type: 'newtiles',
