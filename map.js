@@ -239,7 +239,9 @@ define(["game", "gridnode"], function (game, GridNode) {
       return nodes;
     };
 
-    this.loadMapTiles = function (imageData, strip, direction) {
+    this.loadMapTiles = function (imageData, strip, direction, callback) {
+      strip = strip || [];
+
       var imageWidth  = imageData.width;
       var imageHeight = imageData.height;
       var imageData   = imageData.data;
@@ -265,6 +267,7 @@ define(["game", "gridnode"], function (game, GridNode) {
               i--;
               newSection[i].setFromString(newTiles[i]);
             }
+            callback && callback(newTiles);
             break;
         }
       };
@@ -281,37 +284,20 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.loadStartMapTiles = function (loadCallback) {
-      var imageData =
+      var top =
         this.levelMapContext.getImageData(0,
                                           0,
                                           this.gridWidth,
-                                          this.gridHeight);
+                                          this.gridHeight/2);
+      var bottom =
+        this.levelMapContext.getImageData(0,
+                                          this.gridHeight/2,
+                                          this.gridWidth,
+                                          this.gridHeight/2);
 
-      var imageWidth  = imageData.width;
-      var imageHeight = imageData.height;
-      var imageData   = imageData.data;
-      var nodes       = this.nodes;
-
-      $.getJSON("maps/start.json", {}, function (data) {
-        var offset, nodeOffset;
-        var i = imageData.length / 4;
-        while (i) {
-          i--;
-          offset = i * 4;
-          nodeOffset =  imageData[offset] +
-                       (imageData[offset+1] << 8);
-          nodes[nodeOffset].tileOffset = parseInt(data[i]);
-          if (data[i].length > 1) {
-            switch(data[i][1]) {
-              case "R":
-                nodes[nodeOffset].tileFlip = true;
-                break;
-            }
-          }
-        }
-
-        loadCallback();
-      });
+      this.loadMapTiles(top, [], 'north', _(function () {
+        this.loadMapTiles(bottom, [], 'south', loadCallback);
+      }).bind(this));
     };
 
     this.render = function (delta) {

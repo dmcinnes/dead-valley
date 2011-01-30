@@ -13,6 +13,17 @@
 // 7 building corner (lower left)
 // 8 building side (bottom)
 
+// our 'meta' map tiles are 128 level tiles wide and 64 tall
+// they are added to the map either horizontally or vertically
+//
+// So what do we have
+//
+// horizontal road
+// vertical road
+// crossroads
+// curve left
+// curve right
+
 // so we can use tileMarshal even though it's defined
 // with requirejs
 var tileMarshal;
@@ -20,7 +31,9 @@ var define = function (r) {
   tileMarshal = r();
 };
 
-importScripts('json2.js', 'tilemarshal.js', 'underscore-min.js');
+importScripts('json2.js',
+              'tilemarshal.js',
+              'underscore-min.js');
 
 var Tile = function () {};
 tileMarshal(Tile);
@@ -35,6 +48,10 @@ var console = {
     postMessage(JSON.stringify(message));
   }
 };
+
+// load meta map tiles
+var metaTiles = {};
+importScripts('maps/vertical_road.json');
 
 // generates a map filed with blank, dirt and scrub tiles
 var generateBlankMap = function (total) {

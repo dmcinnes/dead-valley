@@ -48,7 +48,7 @@ require(
       assetManager.onComplete = function () {
         assetManager.copyImageAndMutateWhite('car1', 'car1blue', 70, 70, 255);
         // only load the map after the assets are loaded
-        game.map = new Map(128, 64, function () {
+        game.map = new Map(128, 128, function () {
 
           createSprites();
 
