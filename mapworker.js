@@ -36,6 +36,7 @@ importScripts('json2.js',
               'underscore-min.js');
 
 var Tile = function () {};
+Tile.prototype.tileOffset = 0;
 tileMarshal(Tile);
 
 // so we can get output from the worker
@@ -80,8 +81,10 @@ var fillBlankTiles = function (tiles) {
 
 var createBlankSection = function (length) {
   var tiles = [];
+  var tile;
   for (var i = 0; i < length; i++) {
-    tiles.push(new Tile());
+    tile = new Tile();
+    tiles.push(tile);
   }
   return tiles;
 };
@@ -116,19 +119,25 @@ var layRoads = function (tiles, config) {
 var loadSection = function (config) {
   // TODO have to do transformation if tile should be
   // rotated vertically
-  return _.clone(sections[config.section]);
+  var section = sections[config.section];
+  var length = section.length;
+  var tiles = [];
+  for (var i = 0; i < length; i++) {
+    tiles[i] = _.clone(section[i]);
+  }
+  return tiles;
 };
 
 onmessage = function (e) {
   var config = JSON.parse(e.data);
   var total = config.width * config.height;
 
-  // if (config.section) {
+  if (config.section) {
     var tiles = loadSection(config);
-  // } else {
-  //   var tiles = createBlankSection(total);
+  } else {
+    var tiles = createBlankSection(total);
     // figure out what kind of section use
-  // }
+  }
 
   fillBlankTiles(tiles);
 

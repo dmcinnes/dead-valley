@@ -239,7 +239,7 @@ define(["game", "gridnode"], function (game, GridNode) {
       return nodes;
     };
 
-    this.loadMapTiles = function (imageData, strip, direction, callback) {
+    this.loadMapTiles = function (imageData, strip, direction, section, callback) {
       strip = strip || [];
 
       var imageWidth  = imageData.width;
@@ -276,7 +276,8 @@ define(["game", "gridnode"], function (game, GridNode) {
         width:  imageWidth,
         height: imageHeight,
         strip:  _(strip).map(function (n) { return n.toString(); }),
-        direction: direction
+        direction: direction,
+        section: section
       };
 
       mapWorker.postMessage(JSON.stringify(message));
@@ -295,8 +296,8 @@ define(["game", "gridnode"], function (game, GridNode) {
                                           this.gridWidth,
                                           this.gridHeight/2);
 
-      this.loadMapTiles(top, [], 'north', _(function () {
-        this.loadMapTiles(bottom, [], 'south', loadCallback);
+      this.loadMapTiles(top, [], 'north', 'vertical_road', _(function () {
+        this.loadMapTiles(bottom, [], 'south', 'vertical_road', loadCallback);
       }).bind(this));
     };
 
