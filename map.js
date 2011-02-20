@@ -248,11 +248,11 @@ define(["game", "gridnode"], function (game, GridNode) {
     this.loadMapTiles = function (imageData, strip, direction, section, callback) {
       strip = strip || [];
 
-      var width  = imageData.width;
-      var height = imageData.height;
-      var data   = imageData.data;
+      var mapWidth  = imageData.width;
+      var mapHeight = imageData.height;
+      var mapData   = imageData.data;
 
-      var newSection = this.convertToNodes(data);
+      var newSection = this.convertToNodes(mapData);
 
       // TODO make it so we don't redefine this every time
       mapWorker.onmessage = function (e) {
@@ -279,8 +279,8 @@ define(["game", "gridnode"], function (game, GridNode) {
       };
 
       var message = {
-        width:  width,
-        height: height,
+        width:  mapWidth,
+        height: mapHeight,
         strip:  _(strip).map(function (n) { return n.toString(); }),
         direction: direction,
         section: section
@@ -291,20 +291,13 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.loadStartMapTiles = function (loadCallback) {
-      var top =
+      var map =
         this.levelMapContext.getImageData(0,
                                           0,
                                           this.gridWidth,
-                                          this.gridHeight/2);
-      var bottom =
-        this.levelMapContext.getImageData(0,
-                                          this.gridHeight/2,
-                                          this.gridWidth,
-                                          this.gridHeight/2);
+                                          this.gridHeight);
 
-      this.loadMapTiles(top, [], 'north', 'vertical_road', _(function () {
-        this.loadMapTiles(bottom, [], 'south', 'vertical_road', loadCallback);
-      }).bind(this));
+      this.loadMapTiles(map, [], '', 'NS_road', loadCallback);
     };
 
     this.render = function (delta) {

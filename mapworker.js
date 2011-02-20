@@ -52,10 +52,17 @@ var console = {
 
 // load 'meta map' section tiles
 var sections = {};
-importScripts('maps/vertical_road.json');
+
+// sections set this variable with their data when loaded
+var map;
+// TODO somehow pull the section names from somewhere
+_(['NS_road']).each(function (name) {
+  importScripts('maps/'+name+'.json');
+  sections[name] = map;
+});
 
 // convert them into objects
-_(sections).each(function (data) {
+_(sections).each(function (data, key) {
   for (var i = 0; i < data.length; i++) {
     var tile = new Tile();
     tile.setFromString(data[i]);
@@ -117,13 +124,13 @@ var layRoads = function (tiles, config) {
 };
 
 var loadSection = function (config) {
-  // TODO have to do transformation if tile should be
-  // rotated vertically
+  // fills the map with the given section
   var section = sections[config.section];
-  var length = section.length;
+  var sectionLength = section.length;
+  var mapLength = config.width * config.height;
   var tiles = [];
-  for (var i = 0; i < length; i++) {
-    tiles[i] = _.clone(section[i]);
+  for (var i = 0; i < mapLength; i++) {
+    tiles[i] = _.clone(section[i % sectionLength]);
   }
   return tiles;
 };

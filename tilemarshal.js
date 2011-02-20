@@ -6,9 +6,9 @@ define(function () {
   var tileMarshal = function (thing) {
 
     thing.prototype.toString = function () {
-      return [this.tileOffset,
+      return [this.tileOffset || 0,
               this.tileFlip ? 'F' : 'N',
-              this.tileRotate,
+              this.tileRotate || 0,
               this.collidable ? 'C' : 'N'].join('');
     };
 
