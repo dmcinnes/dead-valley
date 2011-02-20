@@ -11,8 +11,6 @@ define(["game", "gridnode"], function (game, GridNode) {
         offset,     nodeOffset,
         screenX,    screenY;
 
-    var keyStatus = game.controls.keyStatus;
-
     var mapWorker = new Worker("mapworker.js");
     mapWorker.onerror = function (e) {
       console.log('worker error!', e);
@@ -62,10 +60,12 @@ define(["game", "gridnode"], function (game, GridNode) {
 
       this.levelMapContext.putImageData(this.levelMapData, 0, 0);
 
+      var node;
+
       // set up the positional references
       for (i = 0; i < this.gridWidth; i++) {
         for (j = 0; j < this.gridHeight; j++) {
-          var node   = this.getNode(i, j);
+          node       = this.getNode(i, j);
           node.north = this.getNode(i, j-1);
           node.south = this.getNode(i, j+1);
           node.west  = this.getNode(i-1, j);
@@ -95,7 +95,9 @@ define(["game", "gridnode"], function (game, GridNode) {
       if (x < 0 ||
           y < 0 ||
           x >= this.gridWidth ||
-          y >= this.gridHeight) return null;
+          y >= this.gridHeight) {
+        return null;
+      }
       offset     = 4 * (y * this.gridWidth + x);
       nodeOffset = this.levelMapData.data[offset] +
                    (this.levelMapData.data[offset+1] << 8);
@@ -147,28 +149,30 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.levelMapContext.putImageData(right, 0, 0);
       this.levelMapContext.putImageData(left, chunkWidth, 0);
 
+      var strip;
+
       // which chunk to load the new part of the map into
-      if (direction == 'east') {
-        var strip = this.getMapStrip(this.gridWidth/2,
-                                     0,
-                                     1,
-                                     this.gridHeight);
+      if (direction === 'east') {
+        strip = this.getMapStrip(this.gridWidth/2,
+                                 0,
+                                 1,
+                                 this.gridHeight);
         this.loadMapTiles(left, strip, direction);
       } else {
-        var strip = this.getMapStrip(this.gridWidth/2+1,
-                                     0,
-                                     1,
-                                     this.gridHeight);
+        strip = this.getMapStrip(this.gridWidth/2+1,
+                                 0,
+                                 1,
+                                 this.gridHeight);
         this.loadMapTiles(right, strip, direction);
       }
 
       // zipper the sections together
-      var left, right;
+      var leftNode, rightNode;
       for (i = 0; i < this.gridHeight; i++) {
-        left = this.getNode(chunkWidth-1, i);
-        right = this.getNode(chunkWidth, i);
-        left.east = right;
-        right.west = left;
+        leftNode  = this.getNode(chunkWidth-1, i);
+        rightNode = this.getNode(chunkWidth, i);
+        leftNode.east  = rightNode;
+        rightNode.west = leftNode;
       }
     };
 
@@ -188,18 +192,20 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.levelMapContext.putImageData(bottom, 0, 0);
       this.levelMapContext.putImageData(top, 0, chunkHeight);
 
+      var strip;
+
       // which chunk to load the new part of the map into
-      if (direction == 'south') {
-        var strip = this.getMapStrip(0,
-                                     this.gridHeight/2,
-                                     this.gridWidth,
-                                     1);
+      if (direction === 'south') {
+        strip = this.getMapStrip(0,
+                                 this.gridHeight/2,
+                                 this.gridWidth,
+                                 1);
         this.loadMapTiles(top, strip, direction);
       } else {
-        var strip = this.getMapStrip(0,
-                                     this.gridHeight/2+1,
-                                     this.gridWidth,
-                                     1);
+        strip = this.getMapStrip(0,
+                                 this.gridHeight/2+1,
+                                 this.gridWidth,
+                                 1);
         this.loadMapTiles(bottom, strip, direction);
       }
 
@@ -222,7 +228,7 @@ define(["game", "gridnode"], function (game, GridNode) {
 
     // return an array of node objects from imageData
     this.convertToNodes = function (imageData) {
-      var nodes, i, offset, nodeOffset;
+      var i, offset, nodeOffset;
 
       var nodes = [];
 
@@ -242,14 +248,11 @@ define(["game", "gridnode"], function (game, GridNode) {
     this.loadMapTiles = function (imageData, strip, direction, section, callback) {
       strip = strip || [];
 
-      var imageWidth  = imageData.width;
-      var imageHeight = imageData.height;
-      var imageData   = imageData.data;
-      var nodes       = this.nodes;
+      var width  = imageData.width;
+      var height = imageData.height;
+      var data   = imageData.data;
 
-      var newSection = this.convertToNodes(imageData);
-
-      var offset, nodeOffset;
+      var newSection = this.convertToNodes(data);
 
       // TODO make it so we don't redefine this every time
       mapWorker.onmessage = function (e) {
@@ -267,14 +270,17 @@ define(["game", "gridnode"], function (game, GridNode) {
               i--;
               newSection[i].setFromString(newTiles[i]);
             }
-            callback && callback(newTiles);
+
+            if (callback) {
+              callback(newTiles);
+            }
             break;
         }
       };
 
       var message = {
-        width:  imageWidth,
-        height: imageHeight,
+        width:  width,
+        height: height,
         strip:  _(strip).map(function (n) { return n.toString(); }),
         direction: direction,
         section: section
@@ -302,12 +308,18 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.render = function (delta) {
-      if (delta && !this.velX && !this.velY) return;
+      if (delta && !this.velX && !this.velY) {
+        return;
+      }
 
       startX = Math.floor(this.offsetX / game.gridSize) - 2;
-      if (startX < 0) startX = 0;
+      if (startX < 0) {
+        startX = 0;
+      }
       startY = Math.floor(this.offsetY / game.gridSize) - 2;
-      if (startY < 0) startY = 0;
+      if (startY < 0) {
+        startY = 0;
+      }
       imageWidth  = this.viewportGridWidth  + 4;
       imageHeight = this.viewportGridHeight + 4;
 
@@ -360,7 +372,9 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.render(0);
 
       // fire the callback
-      callback && callback();
+      if (callback) {
+        callback();
+      }
     };
 
     this.init();
