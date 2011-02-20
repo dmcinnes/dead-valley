@@ -16,9 +16,9 @@ define(function () {
       this.tileOffset = parseInt(str);
 
       var arr = str.split('');
-      this.collidable = arr.pop() == 'C';
+      this.collidable = arr.pop() === 'C';
       this.tileRotate = parseInt(arr.pop());
-      this.tileFlip   = arr.pop() == 'F';
+      this.tileFlip   = arr.pop() === 'F';
     };
 
   };

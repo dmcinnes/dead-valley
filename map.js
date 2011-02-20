@@ -233,7 +233,7 @@ define(["game", "gridnode"], function (game, GridNode) {
         nodeOffset =  imageData[offset] +
                      (imageData[offset+1] << 8);
 
-        nodes.push(this.nodes[nodeOffset]);
+        nodes[i] = this.nodes[nodeOffset];
       }
 
       return nodes;
