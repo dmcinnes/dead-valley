@@ -15,23 +15,27 @@ require(
 
       var assetManager = game.assetManager;
 
+      // want to start in the center of the right vertical road
+      var startX = 50 + 26 * game.gridSize;
+      var startY = 0;
+
       var createSprites = function () {
         var car = new Car('car',
                           24, 40,
-                          assetManager.images.car1);
+                          assetManager.images.car1blue);
 
-        car.pos.x = -100;
-        car.pos.y = -200;
+        car.pos.x = startX - 100;
+        car.pos.y = startY - 200;
         car.pos.rot = 180;
         car.visible = true;
         game.sprites.push(car);
 
         var car2 = new Car('car',
                           24, 40,
-                          assetManager.images.car1blue);
+                          assetManager.images.car1);
 
-        car2.pos.x = 0;
-        car2.pos.y = 0;
+        car2.pos.x = startX - 50;
+        car2.pos.y = startY;
         car2.pos.rot = 337;
         car2.visible = true;
         game.sprites.push(car2);
@@ -39,8 +43,8 @@ require(
         var dude = new Dude('dude',
                             20, 20,
                             assetManager.images.dude);
-        dude.pos.x = 50;
-        dude.pos.y = 0;
+        dude.pos.x = startX;
+        dude.pos.y = startY;
         dude.visible = true;
         game.sprites.push(dude);
       };
@@ -48,7 +52,7 @@ require(
       assetManager.onComplete = function () {
         assetManager.copyImageAndMutateWhite('car1', 'car1blue', 70, 70, 255);
         // only load the map after the assets are loaded
-        game.map = new Map(128, 128, function () {
+        game.map = new Map(128, 128, startX, startY, function () {
 
           createSprites();
 

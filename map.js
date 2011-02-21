@@ -2,7 +2,7 @@
 
 define(["game", "gridnode"], function (game, GridNode) {
 
-  var Map = function (gridWidth, gridHeight, callback) {
+  var Map = function (gridWidth, gridHeight, startX, startY, callback) {
     var i, j,
         imageData,
         startX,     startY,
@@ -30,11 +30,11 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.shiftSouthBorder = this.height - (2 * game.canvasHeight);
 
       // start in the center
-      this.offsetX = game.gridSize * gridWidth/2  - gridWidth/2;
-      this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2;
+      this.offsetX = game.gridSize * gridWidth/2  - gridWidth/2 + startX;
+      this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2 + startY;
       // world coordinates
-      this.originOffsetX = -game.canvasWidth  / 2.0;
-      this.originOffsetY = -game.canvasHeight / 2.0;
+      this.originOffsetX = -game.canvasWidth  / 2.0 + startX;
+      this.originOffsetY = -game.canvasHeight / 2.0 + startY;
 
       this.velX = 0;
       this.velY = 0;
