@@ -1,43 +1,6 @@
 <html>
   <head>
-    <style>
-      #canvas { position:absolute; z-index:20; }
-      #canvas-mask { position:relative; border:1px solid black; top:20px; left:20px; width:900px; height:420px; z-index:30; overflow:hidden; }
-      #background { position:relative; background:#93803A; z-index:10; width:900px; height:420px; overflow:hidden; }
-      .tile { position:absolute; width:60; height:60; background-color:#000; background-image:url(./assets/tiles.png); z-index:5; background-position:60 0px; }
-      #framerate { position:absolute; color:#000; z-index:50; right:5px; top:5px; display:none; }
-      #pause { position:absolute; background-color:#FFF; color:#000; z-index:50; left:45%; bottom:50%; padding:8px; font-weight:bold; display:none; }
-      .active { display:block !important; }
-      #leveldata { display:block }
-      #progress { position:absolute; left:0px; top:0px; width:100%; height:10px; background-color:#000; z-index:50; opacity:0.5; display:none; }
-      #progress-slider { width:0%; height:10px; background-color:red; }
-      .flip-horizontal {
-        -moz-transform: scaleX(-1);
-        -webkit-transform: scaleX(-1);
-        -o-transform: scaleX(-1);
-        transform: scaleX(-1);
-        filter: fliph; /*IE*/
-      }
-      .flip-vertical {
-        -moz-transform: scaleY(-1);
-        -webkit-transform: scaleY(-1);
-        -o-transform: scaleY(-1);
-        transform: scaleY(-1);
-        filter: flipv; /*IE*/
-      }
-      .rotate-90 {
-        -moz-transform: rotate(90deg);
-        -webkit-transform: rotate(90deg);
-      }
-      .rotate-180 {
-        -moz-transform: rotate(180deg);
-        -webkit-transform: rotate(180deg);
-      }
-      .rotate-270 {
-        -moz-transform: rotate(270deg);
-        -webkit-transform: rotate(270deg);
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" media="screen" href="game.css">
     <script src="json2.js"></script>
     <script src="underscore-min.js"></script>
     <script data-main="main" src="requireplugins-jquery-1.4.3.js"></script>
