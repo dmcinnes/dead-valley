@@ -87,7 +87,14 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     });
   };
 
-  var saveMap = function () {
+  var saveMapText = function () {
+    var text = [];
+    var nodes = $map.children();
+    for (var i = 0; i < nodes.length; i++) {
+      var tileObject = TileDisplay.getTileObject(nodes.eq(i));
+      text.push(tileObject.toString());
+    }
+    return "map = ['" + text.join("','") + "'];";
   };
 
   var setupComponentSizes = function () {
@@ -203,7 +210,14 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     });
 
     $('#save-button').click(function () {
-      $('#save').lightbox_me();
+      var saveText = $('#save-text');
+      saveText.val(saveMapText());
+
+      $('#save').lightbox_me({
+        onLoad: function () {
+          saveText.focus().select();
+        }
+      });
     });
   };
 
