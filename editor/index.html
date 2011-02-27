@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="../game.css">
     <link rel="stylesheet" type="text/css" media="screen" href="editor.css">
     <script src="../json2.js"></script>
+    <script src="../underscore-min.js"></script>
     <script data-main="editor/editor" src="../requireplugins-jquery-1.4.3.js"></script>
     <script src="jquery.lightbox_me.js"></script>
   </head>
@@ -21,10 +22,10 @@
 	<li>
 	  <label for="rotate-control">Rotate:</label>
 	  <select id="rotate-control">
-	    <option>0</option>
-	    <option>90</option>
-	    <option>180</option>
-	    <option>270</option>
+	    <option value="0">0</option>
+	    <option value="1">90</option>
+	    <option value="2">180</option>
+	    <option value="3">270</option>
 	  </select>
 	</li>
 	<li>

@@ -1,8 +1,6 @@
 require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
 
   var Tile = function () {};
-  Tile.prototype.tileOffset = 0;
-  tileMarshal(Tile);
 
   var TILE_SIZE = 60;
   var MAP_SIZE  = 64;
@@ -22,50 +20,47 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   // the current tile targeted by the mouse
   var currentTarget = null;
 
-  var updateTile = function (event) {
-    var target = $(event.target);
-    if (target.is('.tile')) {
-      setTileOffset(target);
-      setTileFlip(target);
-      setTileRotate(target);
+  var TileDisplay = {
+    findTile: function (event) {
+      var target = $(event.target);
+      if (target.is('.tile')) {
+        return target;
+      }
+    },
+
+    getTileObject: function (tile) {
+      if (tile.target) { // 'tile' is an event object
+        tile = TileDisplay.findTile(tile);
+      }
+      return tile.data('tile');
+    },
+
+    update: function (tile, attr, value) {
+      TileDisplay[attr](tile, value);
+    },
+
+    tileOffset: function (tile, offset) {
+      tile.css({'background-position': -TILE_SIZE * offset + 'px 0px'}).show();
+    },
+
+    tileFlip: function (tile, flip) {
+      if (flip) {
+        tile.addClass('flip-horizontal');
+      } else {
+        tile.removeClass('flip-horizontal');
+      }
+    },
+
+    tileRotate: function (tile, rotate) {
+      rotate = rotate * 90; // values are 0-3
+      tile.removeClass('rotate-90 rotate-180 rotate-270');
+      if (rotate) {
+        tile.addClass('rotate-'+rotate);
+      }
+    },
+
+    collidable: function (tile, collidable) {
     }
-  };
-
-  var setTileOffset = function (tile, offset) {
-    offset = offset || selectedTile;
-    tile.css({'background-position': -TILE_SIZE * offset + 'px 0px'}).show();
-    tile.data('offset', offset);
-  };
-
-  var setTileFlip = function (tile, flip) {
-    flip = flip || flipTiles;
-    if (flip) {
-      tile.addClass('flip-horizontal');
-    } else {
-      tile.removeClass('flip-horizontal');
-    }
-    tile.data('flip', flip);
-  };
-
-  var toggleTileFlip = function (tile) {
-    setTileFlip(tile, !tile.is('.flip-horizontal'));
-  };
-
-  var setTileRotate = function (tile, rotate) {
-    rotate = rotate || rotateTiles;
-    tile.removeClass('rotate-90 rotate-180 rotate-270');
-    if (rotate) {
-      tile.addClass('rotate-'+rotate);
-    }
-    tile.data('rotate', rotate);
-  };
-
-  var cycleTileRotate = function (tile) {
-    var rotate = tile.data('rotate') + 90;
-    if (rotate > 270) {
-      rotate = 0;
-    }
-    setTileRotate(tile, rotate);
   };
 
   var selectTileType = function (tile) {
@@ -82,14 +77,11 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   var loadMap = function (text) {
     $.getScript("../maps/" + text, function () {
       if (map) {
-	var tile = new Tile();
 	var nodes = $map.children();
 	for (var i = 0; i < map.length; i++) {
-	  tile.setFromString(map[i]);
 	  var node = nodes.eq(i);
-	  setTileOffset(node, tile.tileOffset);
-	  setTileFlip(node, tile.tileFlip);
-	  setTileRotate(node, tile.tileRotate * 90 || 0);
+          var tileObject = TileDisplay.getTileObject(node);
+	  tileObject.setFromString(map[i]);
 	}
       }
     });
@@ -112,7 +104,7 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
       var total = tiles.width / TILE_SIZE;
       for (var i = 0; i < total; i++) {
 	var tile = $('<div>', {'class':'list-tile'});
-	setTileOffset(tile, i);
+	TileDisplay.tileOffset(tile, i);
 	$tileList.append(tile);
 	if (i == 0) {
 	  tile.addClass('selected');
@@ -130,15 +122,35 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
       (function () {
 	var top = i;
 	window.setTimeout(function () {
-	  var tile;
+	  var tile, tileObj;
 	  for (var left = 0; left < MAP_SIZE; left++) {
 	    tile = $('<div>', {'class':'tile'});
 	    tile.css({left:left*TILE_SIZE, top:top*TILE_SIZE});
+            tileObj = new Tile();
+            tileObj.tileDisplay = tile;
+            tile.data('tile', tileObj);
 	    $map.append(tile);
 	  };
 	}, 0);
       })();
     }
+  };
+
+  var updateTile = function (event) {
+    var tileObject = TileDisplay.getTileObject(event);
+    tileObject.tileOffset = selectedTile;
+    tileObject.tileFlip   = flipTiles;
+    tileObject.tileRotate = rotateTiles;
+  };
+
+  var toggleTileFlip = function (tile) {
+    var tileObject = TileDisplay.getTileObject(tile);
+    tileObject.tileFlip = !tileObject.tileFlip;
+  };
+
+  var cycleTileRotate = function (tile) {
+    var tileObject = TileDisplay.getTileObject(tile);
+    tileObject.tileRotate = (tileObject.tileRotate + 1) % 4;
   };
 
   var setupMouseHandling = function () {
@@ -178,7 +190,7 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
 
     // rotate select box
     $('#rotate-control').change(function (e) {
-      rotateTiles = $(this).val();
+      rotateTiles = parseInt($(this).val());
     });
 
     $('#load-button').click(function () {
@@ -186,8 +198,8 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     });
 
     $('#load-file').change(function (e) {
-      loadMap(e.target.files[0].fileName);
       $('.lb_overlay').click(); // cheesy way to close the overlay
+      loadMap(e.target.files[0].fileName);
     });
 
     $('#save-button').click(function () {
@@ -225,7 +237,29 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     });
   };
 
+  var setupTileObject = function () {
+    Tile.prototype.tileOffset = 0;
+    _(['tileOffset', 'tileFlip', 'tileRotate', 'collidable']).each(function (attr) {
+      Tile.prototype.__defineSetter__(attr, function (val) {
+        if (!this.values) {
+          this.values = {};
+        }
+        this.values[attr] = val;
+        if (this.callback) {
+          this.callback(this.tileDisplay, attr, val);
+        }
+      });
+      Tile.prototype.__defineGetter__(attr, function (val) {
+        return this.values && this.values[attr];
+      });
+    });
+    // so the view can get the data updates
+    Tile.prototype.callback = TileDisplay.update;
+    tileMarshal(Tile);
+  };
+
   require.ready(function () {
+    setupTileObject();
     setupTileList();
     setupMapTiles();
     setupMouseHandling();
