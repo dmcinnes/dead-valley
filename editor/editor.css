@@ -1,0 +1,57 @@
+#top {
+  padding-bottom: 4px;
+}
+#left {
+  padding: 2px;
+  float: left;
+}
+#right {
+  padding: 2px;
+}
+
+#tile-list {
+  width: 90px;
+  border: 1px black solid;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-left: 4px;
+  padding-top: 4px;
+}
+
+.list-tile {
+  width: 60;
+  height: 60;
+  background-color: #000;
+  background-image: url(../assets/tiles.png);
+  z-index: 5;
+  margin: 3px;
+}
+.list-tile.selected {
+  border: 3px solid #F50;
+  margin:0px;
+}
+
+.tile {
+  background-position: 0px 0px;
+  display: block;
+}
+
+#map-mask {
+  border: 1px solid black;
+  top: 20px;
+  overflow: hidden;
+  float: right;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  z-index: 10;
+}
+
+#map {
+  width: 3840px;
+  height:3840px;
+  position:relative;
+}
+
+#map.show-grid .tile {
+  border: 1px solid black;
+}
