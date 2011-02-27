@@ -107,9 +107,12 @@ define(["game",
     if (this.map.freeNodes.length) {
       this.domNode = this.map.freeNodes.pop();
     } else {
-      this.domNode = $('<div/>', {'class':'tile'});
+      this.domNode = $('<div/>');
       background.append(this.domNode);
     }
+
+    // clear all other classes
+    this.domNode.attr('class', 'tile');
 
     // set background offset for which tile we have
     this.domNode.css({'background-position': -game.gridSize * this.tileOffset+'px 0px'}).show();
@@ -117,8 +120,12 @@ define(["game",
     // flip if necessary
     if (this.tileFlip) {
       this.domNode.addClass('flip-horizontal');
-    } else {
-      this.domNode.removeClass('flip-horizontal');
+    }
+
+    // rotate if necessary
+    if (this.tileRotate) {
+      var rot = 'rotate-' + (this.tileRotate * 90);
+      this.domNode.addClass(rot);
     }
   };
 

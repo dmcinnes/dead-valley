@@ -56,7 +56,7 @@ var sections = {};
 // sections set this variable with their data when loaded
 var map;
 // TODO somehow pull the section names from somewhere
-_(['NS_road']).each(function (name) {
+_(['NS_road', 'intersection']).each(function (name) {
   importScripts('maps/'+name+'.json');
   sections[name] = map;
 });

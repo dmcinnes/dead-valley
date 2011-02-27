@@ -291,13 +291,23 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.loadStartMapTiles = function (loadCallback) {
-      var map =
+      // have to do each side at a time because tile positions will
+      // get messed up if we try something wider
+      var left =
         this.levelMapContext.getImageData(0,
                                           0,
-                                          this.gridWidth,
+                                          this.gridWidth/2,
+                                          this.gridHeight);
+      var right =
+        this.levelMapContext.getImageData(this.gridWidth/2,
+                                          0,
+                                          this.gridWidth/2,
                                           this.gridHeight);
 
-      this.loadMapTiles(map, [], '', 'NS_road', loadCallback);
+      var self = this;
+      this.loadMapTiles(left, [], '', 'intersection', function () {
+        self.loadMapTiles(right, [], '', 'intersection', loadCallback);
+      });
     };
 
     this.render = function (delta) {
