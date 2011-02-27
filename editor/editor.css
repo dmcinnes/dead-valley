@@ -23,6 +23,9 @@ body {
   display: inline;
   padding-right: 10;
 }
+#controls li:last-child {
+  float: right;
+}
 
 #tile-list {
   width: 90px;
@@ -69,4 +72,17 @@ body {
 
 #map.show-grid .tile {
   border: 1px solid black;
+}
+
+#save {
+  display: none;
+}
+
+#save-text {
+  width: 500px;
+  height: 500px;
+}
+
+#load {
+  display: none;
 }

@@ -4,14 +4,20 @@
     <link rel="stylesheet" type="text/css" media="screen" href="../game.css">
     <link rel="stylesheet" type="text/css" media="screen" href="editor.css">
     <script src="../json2.js"></script>
-    <script src="../underscore-min.js"></script>
     <script data-main="editor/editor" src="../requireplugins-jquery-1.4.3.js"></script>
+    <script src="jquery.lightbox_me.js"></script>
   </head>
   <body>
     <div id="top">
       <ul id="controls">
-	<li><input type="checkbox" id="show-grid-checkbox"><label for="show-grid-checkbox">Show Grid</label></li>
-	<li><input type="checkbox" id="flip-checkbox"><label for="flip-checkbox">Filp Tile</label></li>
+	<li>
+	<input type="checkbox" id="show-grid-checkbox"/>
+	  <label for="show-grid-checkbox">Show Grid</label>
+	</li>
+	<li>
+	  <input type="checkbox" id="flip-checkbox"/>
+	  <label for="flip-checkbox">Filp Tile</label>
+	</li>
 	<li>
 	  <label for="rotate-control">Rotate:</label>
 	  <select id="rotate-control">
@@ -20,6 +26,10 @@
 	    <option>180</option>
 	    <option>270</option>
 	  </select>
+	</li>
+	<li>
+	  <input type="button" id="load-button" value="Load"/>
+	  <input type="button" id="save-button" value="Save"/>
 	</li>
       </ul>
     </div>
@@ -32,6 +42,13 @@
 	<div id="map">
 	</div>
       </div>
+    </div>
+    <div id="load">
+      <input type="file" id="load-file"/>
+      <!-- <input type="button" id="load-file-button" value="Load" class="close"/> -->
+    </div>
+    <div id="save">
+      <textarea id="save-text" readonly></textarea>
     </div>
   </body>
 </html>

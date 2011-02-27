@@ -1,12 +1,16 @@
 require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
 
+  var Tile = function () {};
+  Tile.prototype.tileOffset = 0;
+  tileMarshal(Tile);
+
   var TILE_SIZE = 60;
   var MAP_SIZE  = 64;
 
-  var tileList = $('#tile-list');
+  var $tileList = $('#tile-list');
 
-  var map     = $('#map');
-  var mapMask = $('#map-mask');
+  var $map     = $('#map');
+  var $mapMask = $('#map-mask');
 
   // the current selected tile from the list
   var selectedTile = 0;
@@ -66,7 +70,7 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
 
   var selectTileType = function (tile) {
     if (typeof(tile) === 'number') {
-      tile = tileList.children().eq(tile);
+      tile = $tileList.children().eq(tile);
     }
     if (tile.is('.list-tile')) {
       tile.siblings().removeClass('selected');
@@ -75,9 +79,28 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     }
   };
 
+  var loadMap = function (text) {
+    $.getScript("../maps/" + text, function () {
+      if (map) {
+	var tile = new Tile();
+	var nodes = $map.children();
+	for (var i = 0; i < map.length; i++) {
+	  tile.setFromString(map[i]);
+	  var node = nodes.eq(i);
+	  setTileOffset(node, tile.tileOffset);
+	  setTileFlip(node, tile.tileFlip);
+	  setTileRotate(node, tile.tileRotate * 90 || 0);
+	}
+      }
+    });
+  };
+
+  var saveMap = function () {
+  };
+
   var setupComponentSizes = function () {
-    mapMask.height(tileList.height());
-    mapMask.width(window.innerWidth - tileList.width() - 60);
+    $mapMask.height($tileList.height());
+    $mapMask.width(window.innerWidth - $tileList.width() - 60);
   };
 
   var setupTileList = function () {
@@ -90,7 +113,7 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
       for (var i = 0; i < total; i++) {
 	var tile = $('<div>', {'class':'list-tile'});
 	setTileOffset(tile, i);
-	tileList.append(tile);
+	$tileList.append(tile);
 	if (i == 0) {
 	  tile.addClass('selected');
 	}
@@ -103,15 +126,15 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   };
 
   var setupMapTiles = function () {
-    for (var x = 0; x < MAP_SIZE; x++) {
+    for (var i = 0; i < MAP_SIZE; i++) {
       (function () {
-	var left = x;
+	var top = i;
 	window.setTimeout(function () {
 	  var tile;
-	  for (var y = 0; y < MAP_SIZE; y++) {
+	  for (var left = 0; left < MAP_SIZE; left++) {
 	    tile = $('<div>', {'class':'tile'});
-	    tile.css({left:left*TILE_SIZE, top:y*TILE_SIZE});
-	    map.append(tile);
+	    tile.css({left:left*TILE_SIZE, top:top*TILE_SIZE});
+	    $map.append(tile);
 	  };
 	}, 0);
       })();
@@ -120,13 +143,13 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
 
   var setupMouseHandling = function () {
     // tile selection
-    tileList.click(function (e) {
+    $tileList.click(function (e) {
       var target = $(e.target);
       selectTileType(target);
     });
 
     // map clicks/drags
-    map.click(function (e) {
+    $map.click(function (e) {
       updateTile(e);
     }).mousemove(function (e) {
       currentTarget = e.target;
@@ -142,9 +165,9 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     // show grid checkbox
     $('#show-grid-checkbox').change(function (e) {
       if ($(this).is(':checked')) {
-	map.addClass('show-grid');
+	$map.addClass('show-grid');
       } else {
-	map.removeClass('show-grid');
+	$map.removeClass('show-grid');
       }
     });
 
@@ -157,11 +180,24 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     $('#rotate-control').change(function (e) {
       rotateTiles = $(this).val();
     });
+
+    $('#load-button').click(function () {
+      $('#load').lightbox_me();
+    });
+
+    $('#load-file').change(function (e) {
+      loadMap(e.target.files[0].fileName);
+      $('.lb_overlay').click(); // cheesy way to close the overlay
+    });
+
+    $('#save-button').click(function () {
+      $('#save').lightbox_me();
+    });
   };
 
   var setupHotKeys = function () {
     $(window).keydown(function (e) {
-      var target = currentTarget && $(currentTarget);
+      var target = $(currentTarget);
       target = target.is('.tile') && target;
 
       switch (e.keyCode) {
