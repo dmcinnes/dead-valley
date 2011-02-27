@@ -9,6 +9,17 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   var mapMask = $('#map-mask');
 
   var selectedTile = 0;
+  var flipTiles    = false;
+  var rotateTiles  = 0;
+
+  var updateTile = function (event) {
+    var target = $(event.target);
+    if (target.is('.tile')) {
+      setTileOffset(target);
+      setTileFlip(target);
+      setTileRotate(target);
+    }
+  };
 
   var setTileOffset = function (tile, offset) {
     offset = offset || selectedTile;
@@ -17,12 +28,26 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   };
 
   var setTileFlip = function (tile, flip) {
+    flip = flip || flipTiles;
     if (flip) {
       tile.addClass('flip-horizontal');
     } else {
       tile.removeClass('flip-horizontal');
     }
     tile.data('flip', flip);
+  };
+
+  var setTileRotate = function (tile, rotate) {
+    rotate = rotate || rotateTiles;
+    tile.removeClass('rotate-90 rotate-180 rotate-270');
+    if (rotate) {
+      tile.addClass('rotate-'+rotate);
+    }
+    tile.data('rotate', rotate);
+  };
+
+  var toggleTileFlip = function (tile) {
+    setTileFlip(tile, !tile.is('.flip-horizontal'));
   };
 
   var setupComponentSizes = function () {
@@ -68,7 +93,7 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     }
   };
 
-  var setupEventHandling = function () {
+  var setupMouseHandling = function () {
     // tile selection
     tileList.click(function (e) {
       var target = $(e.target);
@@ -76,6 +101,15 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
 	target.siblings().removeClass('selected');
 	target.addClass('selected');
 	selectedTile = target.prevAll().length;
+      }
+    });
+
+    // map clicks/drags
+    map.click(function (e) {
+      updateTile(e);
+    }).mousemove(function (e) {
+      if (e.shiftKey) {
+	updateTile(e);
       }
     });
 
@@ -88,29 +122,24 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
       }
     });
 
-    var updateTile = function (e) {
-      var target = $(e.target);
-      if (target.is('.tile')) {
-	setTileOffset(target);
-      }
-    };
-
-    var down = false;
-
-    // map clicks/drags
-    map.click(function (e) {
-      updateTile(e);
-    }).mousemove(function (e) {
-      if (e.shiftKey) {
-	updateTile(e);
-      }
+    // flip checkbox
+    $('#flip-checkbox').change(function (e) {
+      flipTiles = $(this).is(':checked');
     });
+
+    $('#rotate-control').change(function (e) {
+      rotateTiles = $(this).val();
+    });
+  };
+
+  var setupHotKeys = function () {
   };
 
   require.ready(function () {
     setupTileList();
     setupMapTiles();
-    setupEventHandling();
+    setupMouseHandling();
+    setupHotKeys();
   });
 
 });

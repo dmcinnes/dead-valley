@@ -9,7 +9,19 @@
   </head>
   <body>
     <div id="top">
-      <input type="checkbox" id="show-grid-checkbox"><label for="show-grid-checkbox">Show Grid</label>
+      <ul id="controls">
+	<li><input type="checkbox" id="show-grid-checkbox"><label for="show-grid-checkbox">Show Grid</label></li>
+	<li><input type="checkbox" id="flip-checkbox"><label for="flip-checkbox">Filp Tile</label></li>
+	<li>
+	  <label for="rotate-control">Rotate:</label>
+	  <select id="rotate-control">
+	    <option>0</option>
+	    <option>90</option>
+	    <option>180</option>
+	    <option>270</option>
+	  </select>
+	</li>
+      </ul>
     </div>
     <div id="left">
       <div id="tile-list">

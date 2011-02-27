@@ -1,3 +1,8 @@
+body {
+  font-size: 14px;
+  font-family: arial, sans-serif;
+}
+
 #top {
   padding-bottom: 4px;
 }
@@ -7,6 +12,16 @@
 }
 #right {
   padding: 2px;
+}
+
+#controls {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#controls li {
+  display: inline;
+  padding-right: 10;
 }
 
 #tile-list {
