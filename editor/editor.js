@@ -8,9 +8,15 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   var map     = $('#map');
   var mapMask = $('#map-mask');
 
+  // the current selected tile from the list
   var selectedTile = 0;
+
+  // the current state of the controls
   var flipTiles    = false;
   var rotateTiles  = 0;
+
+  // the current tile targeted by the mouse
+  var currentTarget = null;
 
   var updateTile = function (event) {
     var target = $(event.target);
@@ -37,6 +43,10 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     tile.data('flip', flip);
   };
 
+  var toggleTileFlip = function (tile) {
+    setTileFlip(tile, !tile.is('.flip-horizontal'));
+  };
+
   var setTileRotate = function (tile, rotate) {
     rotate = rotate || rotateTiles;
     tile.removeClass('rotate-90 rotate-180 rotate-270');
@@ -46,8 +56,23 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     tile.data('rotate', rotate);
   };
 
-  var toggleTileFlip = function (tile) {
-    setTileFlip(tile, !tile.is('.flip-horizontal'));
+  var cycleTileRotate = function (tile) {
+    var rotate = tile.data('rotate') + 90;
+    if (rotate > 270) {
+      rotate = 0;
+    }
+    setTileRotate(tile, rotate);
+  };
+
+  var selectTileType = function (tile) {
+    if (typeof(tile) === 'number') {
+      tile = tileList.children().eq(tile);
+    }
+    if (tile.is('.list-tile')) {
+      tile.siblings().removeClass('selected');
+      tile.addClass('selected');
+      selectedTile = tile.prevAll().length;
+    }
   };
 
   var setupComponentSizes = function () {
@@ -97,22 +122,23 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
     // tile selection
     tileList.click(function (e) {
       var target = $(e.target);
-      if (target.is('.list-tile')) {
-	target.siblings().removeClass('selected');
-	target.addClass('selected');
-	selectedTile = target.prevAll().length;
-      }
+      selectTileType(target);
     });
 
     // map clicks/drags
     map.click(function (e) {
       updateTile(e);
     }).mousemove(function (e) {
+      currentTarget = e.target;
       if (e.shiftKey) {
 	updateTile(e);
       }
+    }).mouseleave(function (e) {
+      currentTarget = null;
     });
+  };
 
+  var setupControls = function () {
     // show grid checkbox
     $('#show-grid-checkbox').change(function (e) {
       if ($(this).is(':checked')) {
@@ -127,18 +153,47 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
       flipTiles = $(this).is(':checked');
     });
 
+    // rotate select box
     $('#rotate-control').change(function (e) {
       rotateTiles = $(this).val();
     });
   };
 
   var setupHotKeys = function () {
+    $(window).keydown(function (e) {
+      var target = currentTarget && $(currentTarget);
+      target = target.is('.tile') && target;
+
+      switch (e.keyCode) {
+	case 68: // d is for DROPPER
+	  if (target) {
+	    selectTileType(target.data('offset') || 0);
+	  }
+	  break;
+	case 70: // f is for FLIP
+	  if (e.altKey) {
+	    $('#flip-checkbox').click();
+	  } else if (target) {
+	    toggleTileFlip(target);
+	  }
+	  break;
+	case 82: // r is for ROTATE
+	  if (e.altKey) {
+	  } else if (target) {
+	    cycleTileRotate(target);
+	  }
+	  break;
+	default:
+	  // nothing
+      }
+    });
   };
 
   require.ready(function () {
     setupTileList();
     setupMapTiles();
     setupMouseHandling();
+    setupControls();
     setupHotKeys();
   });
 
