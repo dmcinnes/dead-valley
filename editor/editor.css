@@ -54,6 +54,12 @@ body {
   display: block;
 }
 
+.road-matcher {
+  border: 1px red solid;
+  z-index: 10;
+  margin: -1;
+}
+
 #map-mask {
   border: 1px solid black;
   top: 20px;

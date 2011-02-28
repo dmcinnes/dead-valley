@@ -126,22 +126,27 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   };
 
   var setupMapTiles = function () {
-    for (var i = 0; i < MAP_SIZE; i++) {
-      (function () {
-	var top = i;
-	window.setTimeout(function () {
-	  var tile, tileObj;
-	  for (var left = 0; left < MAP_SIZE; left++) {
-	    tile = $('<div>', {'class':'tile'});
-	    tile.css({left:left*TILE_SIZE, top:top*TILE_SIZE});
-            tileObj = new Tile();
-            tileObj.tileDisplay = tile;
-            tile.data('tile', tileObj);
-	    $map.append(tile);
-	  };
-	}, 0);
-      })();
+    for (var top = 0; top < MAP_SIZE; top++) {
+      var tile, tileObj;
+      for (var left = 0; left < MAP_SIZE; left++) {
+        tile = $('<div>', {'class':'tile'});
+        tile.css({left:left*TILE_SIZE, top:top*TILE_SIZE});
+        tileObj = new Tile();
+        tileObj.tileDisplay = tile;
+        tile.data('tile', tileObj);
+        $map.append(tile);
+      };
     }
+
+    var tiles = $map.children();
+
+    // mark which tiles are the road matchers
+    _([  31,   32,   33,
+       1984, 2048, 2112,
+       2047, 2111, 2175,
+       4063, 4064, 4065]).each(function (offset) {
+      tiles.eq(offset).addClass('road-matcher');
+    });
   };
 
   var updateTile = function (event) {
