@@ -27,8 +27,8 @@ define(function () {
       container.show();
     },
 
-    increment: function () {
-      current++;
+    increment: function (value) {
+      current = current + (value || 1);
       updateSlider();
       return current;
     },

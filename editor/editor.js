@@ -1,4 +1,4 @@
-require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
+require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, AssetManager, progress) {
 
   var Tile = function () {};
 
@@ -77,11 +77,23 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   var loadMap = function (text) {
     $.getScript("../maps/" + text, function () {
       if (map) {
+        progress.setTotal(map.length);
+
+        var line = 0;
 	var nodes = $map.children();
-	for (var i = 0; i < map.length; i++) {
-	  var node = nodes.eq(i);
-          var tileObject = TileDisplay.getTileObject(node);
-	  tileObject.setFromString(map[i]);
+	for (var i = 0; i < MAP_SIZE; i++) {
+          (function (line) {
+            var index, node, tileObject, j;
+            window.setTimeout(function () {
+              for (j = 0; j < MAP_SIZE; j++) {
+                index = line * MAP_SIZE + j;
+                node = nodes.eq(index);
+                tileObject = TileDisplay.getTileObject(node);
+                tileObject.setFromString(map[index]);
+              }
+              progress.increment(MAP_SIZE);
+            }, 0);
+          })(i);
 	}
       }
     });
