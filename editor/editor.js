@@ -98,6 +98,7 @@ require(['tilemarshal', 'assetmanager'], function (tileMarshal, AssetManager) {
   };
 
   var setupComponentSizes = function () {
+    $tileList.height(window.innerHeight - 60);
     $mapMask.height($tileList.height());
     $mapMask.width(window.innerWidth - $tileList.width() - 60);
   };
