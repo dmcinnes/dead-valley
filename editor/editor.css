@@ -39,7 +39,7 @@ body {
 .list-tile {
   width: 60;
   height: 60;
-  background-color: #000;
+  background-color: #F0F;
   background-image: url(../assets/tiles.png);
   z-index: 5;
   margin: 3px;

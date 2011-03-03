@@ -4,6 +4,7 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
 
   var TILE_SIZE = 60;
   var MAP_SIZE  = 64;
+  var TILE_SHEET_WIDTH;
 
   var $tileList = $('#tile-list');
 
@@ -40,7 +41,9 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
     },
 
     tileOffset: function (tile, offset) {
-      tile.css({'background-position': -TILE_SIZE * offset + 'px 0px'}).show();
+      var left = (offset % TILE_SHEET_WIDTH) * TILE_SIZE;
+      var top  = Math.floor(offset / TILE_SHEET_WIDTH) * TILE_SIZE;
+      tile.css({'background-position': -left + 'px ' + -top + 'px'}).show();
     },
 
     tileFlip: function (tile, flip) {
@@ -121,7 +124,8 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
 
     assetManager.onComplete = function () {
       // set up the tile selection
-      var total = tiles.width / TILE_SIZE;
+      TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
+      var total = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
       for (var i = 0; i < total; i++) {
 	var tile = $('<div>', {'class':'list-tile'});
 	TileDisplay.tileOffset(tile, i);
