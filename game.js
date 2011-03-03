@@ -17,6 +17,9 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
     assetManager:  new AssetManager('./assets/'),
     controls:      controls,
     gridSize:      60,
+    tileRowSize:   8,  // should be set by asset manager
+                       // this is the number of tiles in row
+                       // of the tile image
     canvasWidth:   canvas.width(),
     canvasHeight:  canvas.height(),
     spriteContext: canvas[0].getContext("2d"),

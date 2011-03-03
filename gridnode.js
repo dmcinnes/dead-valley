@@ -115,7 +115,9 @@ define(["game",
     this.domNode.attr('class', 'tile');
 
     // set background offset for which tile we have
-    this.domNode.css({'background-position': -game.gridSize * this.tileOffset+'px 0px'}).show();
+    var left = -(this.tileOffset % game.tileRowSize) * game.gridSize;
+    var top  = -Math.floor(this.tileOffset / game.tileRowSize) * game.gridSize;
+    this.domNode.css({'background-position': [left, 'px ', top, 'px'].join('')}).show();
 
     // flip if necessary
     if (this.tileFlip) {

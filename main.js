@@ -50,6 +50,9 @@ require(
       };
 
       assetManager.onComplete = function () {
+
+        game.tileRowSize = assetManager.images.tiles.width / game.gridSize;
+
         assetManager.copyImageAndMutateWhite('car1', 'car1blue', 70, 70, 255);
         // only load the map after the assets are loaded
         game.map = new Map(128, 128, startX, startY, function () {
