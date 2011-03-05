@@ -51,22 +51,33 @@ var console = {
 };
 
 // load 'meta map' section tiles
-var sections = {};
+var sections = {
+  north: [],
+  south: [],
+  east:  [],
+  west:  []
+};
 
-// sections set this variable with their data when loaded
-var map;
+// sections set these variables with their data when loaded
+var map, roads;
 // TODO somehow pull the section names from somewhere
 _(['NS_road', 'intersection']).each(function (name) {
   importScripts('maps/'+name+'.json');
   sections[name] = map;
-});
+  // save the road directions on the map Array object
+  map.roads = roads;
+  // break out the maps by road direction
+  for (var dir in roads) {
+    if (roads.hasOwnProperty(dir)) {
+      sections[dir] = map;
+    }
+  }
 
-// convert them into objects
-_(sections).each(function (data, key) {
-  for (var i = 0; i < data.length; i++) {
+  // convert the map into objects
+  for (var i = 0; i < map.length; i++) {
     var tile = new Tile();
-    tile.setFromString(data[i]);
-    data[i] = tile;
+    tile.setFromString(map[i]);
+    map[i] = tile;
   }
 });
 
