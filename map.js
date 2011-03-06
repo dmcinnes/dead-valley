@@ -1,6 +1,6 @@
 // Map 
 
-define(["game", "gridnode", "World"], function (game, GridNode, World) {
+define(["game", "gridnode", "World", "progress"], function (game, GridNode, World, progress) {
 
   var Map = function (gridWidth, gridHeight, startX, startY, callback) {
     var i, j,
@@ -332,11 +332,19 @@ define(["game", "gridnode", "World"], function (game, GridNode, World) {
     this.loadStartMapTiles = function (loadCallback) {
       var chunks = this.getLevelChunks();
 
+      progress.setTotal(4);
+
       var self = this;
       self.loadMapTiles(chunks.nw, 'nw', 'intersection', function () {
+        progress.increment();
         self.loadMapTiles(chunks.sw, 'sw', 'intersection', function () {
+	  progress.increment();
           self.loadMapTiles(chunks.ne, 'ne', 'intersection', function () {
-            self.loadMapTiles(chunks.se, 'se', 'intersection', loadCallback);
+	    progress.increment();
+            self.loadMapTiles(chunks.se, 'se', 'intersection', function () {
+	      progress.increment();
+	      loadCallback();
+	    });
           });
         });
       });
