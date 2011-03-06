@@ -58,6 +58,9 @@ var sections = {
   west:  []
 };
 
+var world = {
+};
+
 // sections set these variables with their data when loaded
 var map, roads;
 // TODO somehow pull the section names from somewhere
@@ -107,33 +110,6 @@ var createBlankSection = function (length) {
   return tiles;
 };
 
-var layRoads = function (tiles, config) {
-  // are there any roads in the map slice we've been given?
-  var strip = config.strip;
-  var length = strip.length;
-  var roads = [];
-  var begin;
-  for (var i = 0; i < length; i++) {
-    if (strip[i].tileOffset == 3) { // road edge
-      if (begin) {
-        roads.push([begin, i]);
-        begin = null;
-      } else {
-        begin = i;
-      }
-    };
-  }
-
-  if (roads.length) {
-  }
-
-  switch (config.direction) {
-    case 'south':
-
-      break;
-  }
-};
-
 var loadSection = function (config) {
   // fills the map with the given section
   var section = sections[config.section];
@@ -143,6 +119,7 @@ var loadSection = function (config) {
   for (var i = 0; i < mapLength; i++) {
     tiles[i] = _.clone(section[i % sectionLength]);
   }
+  world[config.position] = tiles;
   return tiles;
 };
 
@@ -150,11 +127,17 @@ onmessage = function (e) {
   var config = JSON.parse(e.data);
   var total = config.width * config.height;
 
-  if (config.section) {
-    var tiles = loadSection(config);
+  console.log(config.position.x, config.position.y);
+
+  var tiles;
+
+  if (world[config.position]) {
+    tiles = world[config.position];
+  } else if (config.section) {
+    tiles = loadSection(config);
   } else {
-    var tiles = createBlankSection(total);
-    // figure out what kind of section use
+    tiles = createBlankSection(total);
+    // TODO figure out what kind of section use
   }
 
   fillBlankTiles(tiles);

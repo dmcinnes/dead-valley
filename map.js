@@ -24,6 +24,10 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.viewportGridWidth  = Math.ceil(game.canvasWidth / game.gridSize);
       this.viewportGridHeight = Math.ceil(game.canvasHeight / game.gridSize);
 
+      // a map consists of 4 sections
+      this.sectionWidth  = game.gridSize * gridWidth / 2;
+      this.sectionHeight = game.gridSize * gridHeight / 2;
+
       this.shiftWestBorder = game.canvasWidth;
       this.shiftEastBorder = this.width - (2 * game.canvasWidth);
       this.shiftNorthBorder = game.canvasHeight;
@@ -98,9 +102,13 @@ define(["game", "gridnode"], function (game, GridNode) {
           y >= this.gridHeight) {
         return null;
       }
-      offset     = 4 * (y * this.gridWidth + x);
-      nodeOffset = this.levelMapData.data[offset] +
-                   (this.levelMapData.data[offset+1] << 8);
+      return this.getNodeFromSection(x, y, this.levelMapData);
+    };
+
+    this.getNodeFromSection = function (x, y, section) {
+      offset     = 4 * (y * section.width + x);
+      nodeOffset = section.data[offset] +
+                   (section.data[offset+1] << 8);
       return this.nodes[nodeOffset];
     };
 
@@ -117,86 +125,62 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.shiftLevel = function () {
+      var chunks = this.getLevelChunks();
+
       if (this.offsetX < this.shiftWestBorder) {
-        this.shiftHorizontal('west');
+        this.loadMapTiles(chunks.ne, 'nw');
+        this.loadMapTiles(chunks.se, 'sw');
+        this.swapVertical(chunks.nw, chunks.ne);
+        this.swapVertical(chunks.sw, chunks.se);
         this.offsetX = this.offsetX + (this.width / 2);
       } else if (this.offsetX > this.shiftEastBorder) {
-        this.shiftHorizontal('east');
+        this.loadMapTiles(chunks.nw, 'ne');
+        this.loadMapTiles(chunks.sw, 'se');
+        this.swapVertical(chunks.ne, chunks.nw);
+        this.swapVertical(chunks.se, chunks.sw);
         this.offsetX = this.offsetX - (this.width / 2);
       }
       if (this.offsetY < this.shiftNorthBorder) {
-        this.shiftVertical('north');
+        this.loadMapTiles(chunks.se, 'ne');
+        this.loadMapTiles(chunks.sw, 'nw');
+        this.swapHorizontal(chunks.ne, chunks.se);
+        this.swapHorizontal(chunks.nw, chunks.sw);
         this.offsetY = this.offsetY + (this.height / 2);
       } else if (this.offsetY > this.shiftSouthBorder) {
-        this.shiftVertical('south');
+        this.loadMapTiles(chunks.ne, 'se');
+        this.loadMapTiles(chunks.nw, 'sw');
+        this.swapHorizontal(chunks.se, chunks.ne);
+        this.swapHorizontal(chunks.sw, chunks.nw);
         this.offsetY = this.offsetY - (this.height / 2);
       }
     };
 
-    this.shiftHorizontal = function (direction) {
-      var chunkWidth = this.gridWidth / 2;
-      var left =
-        this.levelMapContext.getImageData(0,
-                                          0,
-                                          chunkWidth,
-                                          this.gridHeight);
-      var right =
-        this.levelMapContext.getImageData(chunkWidth,
-                                          0,
-                                          chunkWidth,
-                                          this.gridHeight);
-
-      this.levelMapContext.putImageData(right, 0, 0);
-      this.levelMapContext.putImageData(left, chunkWidth, 0);
-
-      // which chunk to load the new part of the map into
-      if (direction === 'east') {
-        this.loadMapTiles(left);
-      } else {
-        this.loadMapTiles(right);
-      }
-
-      // zipper the sections together
-      var leftNode, rightNode;
-      for (i = 0; i < this.gridHeight; i++) {
-        leftNode  = this.getNode(chunkWidth-1, i);
-        rightNode = this.getNode(chunkWidth, i);
+    this.swapVertical = function (left, right) {
+      var leftNode, rightNode, i;
+      var leftX = left.width - 1;
+      for (i = 0; i < left.height; i++) {
+        leftNode  = this.getNodeFromSection(leftX, i, left);
+        rightNode = this.getNodeFromSection(0, i, right);
         leftNode.east  = rightNode;
         rightNode.west = leftNode;
       }
+
+      this.levelMapContext.putImageData(left, right.x, right.y);
+      this.levelMapContext.putImageData(right, left.x, left.y);
     };
 
-    this.shiftVertical = function (direction) {
-      var chunkHeight = this.gridHeight / 2;
-      var top =
-        this.levelMapContext.getImageData(0,
-                                          0,
-                                          this.gridWidth,
-                                          chunkHeight);
-      var bottom =
-        this.levelMapContext.getImageData(0,
-                                          chunkHeight,
-                                          this.gridWidth,
-                                          chunkHeight);
-
-      this.levelMapContext.putImageData(bottom, 0, 0);
-      this.levelMapContext.putImageData(top, 0, chunkHeight);
-
-      // which chunk to load the new part of the map into
-      if (direction === 'south') {
-        this.loadMapTiles(top);
-      } else {
-        this.loadMapTiles(bottom);
+    this.swapHorizontal = function (top, bottom) {
+      var upperNode, lowerNode, i;
+      var bottomY = top.height - 1;
+      for (i = 0; i < top.width; i++) {
+        upperNode = this.getNodeFromSection(i, bottomY, top);
+        lowerNode = this.getNodeFromSection(i, 0, bottom);
+        upperNode.south = lowerNode;
+        lowerNode.north = upperNode;
       }
 
-      // zipper the sections together
-      var upper, lower;
-      for (i = 0; i < this.gridWidth; i++) {
-        upper = this.getNode(i, chunkHeight-1);
-        lower = this.getNode(i, chunkHeight);
-        upper.south = lower;
-        lower.north = upper;
-      }
+      this.levelMapContext.putImageData(top, bottom.x, bottom.y);
+      this.levelMapContext.putImageData(bottom, top.x, top.y);
     };
 
     // return an array of node objects from a part of the map
@@ -225,7 +209,24 @@ define(["game", "gridnode"], function (game, GridNode) {
       return nodes;
     };
 
-    this.loadMapTiles = function (imageData, section, callback) {
+    this.getSectionCoords = function (which) {
+      switch(which) {
+        case 'nw':
+          return {x:-1, y:-1};
+        case 'ne':
+          return {x: 1, y:-1};
+        case 'sw':
+          return {x:-1, y: 1};
+        case 'se':
+          return {x: 1, y: 1};
+      }
+      // return {
+      //   x: Math.ceil(world.x / this.sectionWidth),
+      //   y: Math.ceil(world.y / this.sectionHeight)
+      // };
+    };
+
+    this.loadMapTiles = function (imageData, position, section, callback) {
       var mapWidth  = imageData.width;
       var mapHeight = imageData.height;
       var mapData   = imageData.data;
@@ -255,34 +256,64 @@ define(["game", "gridnode"], function (game, GridNode) {
             break;
         }
       };
-
+      
       var message = {
         width:  mapWidth,
         height: mapHeight,
+        position: this.getSectionCoords(position),
         section: section
       };
 
       mapWorker.postMessage(JSON.stringify(message));
+    };
 
+    this.getLevelChunks = function () {
+      var halfWidth  = this.gridWidth/2;
+      var halfHeight = this.gridHeight/2;
+      var chunks = {
+        nw: this.levelMapContext.getImageData(0,
+                                              0,
+                                              halfWidth,
+                                              halfHeight),
+        sw: this.levelMapContext.getImageData(0,
+                                              halfHeight,
+                                              halfWidth,
+                                              halfHeight),
+        ne: this.levelMapContext.getImageData(halfWidth,
+                                              0,
+                                              halfWidth,
+                                              halfHeight),
+        se: this.levelMapContext.getImageData(halfWidth,
+                                              halfHeight,
+                                              halfWidth,
+                                              halfHeight)
+      };
+
+      chunks.nw.x = 0;
+      chunks.nw.y = 0;
+
+      chunks.sw.x = 0;
+      chunks.sw.y = halfHeight;
+
+      chunks.ne.x = halfWidth;
+      chunks.ne.y = 0;
+
+      chunks.se.x = halfWidth;
+      chunks.se.y = halfHeight;
+
+      return chunks;
     };
 
     this.loadStartMapTiles = function (loadCallback) {
-      // have to do each side at a time because tile positions will
-      // get messed up if we try something wider
-      var left =
-        this.levelMapContext.getImageData(0,
-                                          0,
-                                          this.gridWidth/2,
-                                          this.gridHeight);
-      var right =
-        this.levelMapContext.getImageData(this.gridWidth/2,
-                                          0,
-                                          this.gridWidth/2,
-                                          this.gridHeight);
+      var chunks = this.getLevelChunks();
 
       var self = this;
-      this.loadMapTiles(left, 'intersection', function () {
-        self.loadMapTiles(right, 'intersection', loadCallback);
+      self.loadMapTiles(chunks.nw, 'nw', 'intersection', function () {
+        self.loadMapTiles(chunks.sw, 'sw', 'intersection', function () {
+          self.loadMapTiles(chunks.ne, 'ne', 'intersection', function () {
+            self.loadMapTiles(chunks.se, 'se', 'intersection', loadCallback);
+          });
+        });
       });
     };
 
