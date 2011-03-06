@@ -1,6 +1,6 @@
 // Map 
 
-define(["game", "gridnode"], function (game, GridNode) {
+define(["game", "gridnode", "World"], function (game, GridNode, World) {
 
   var Map = function (gridWidth, gridHeight, startX, startY, callback) {
     var i, j,
@@ -34,6 +34,7 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.shiftSouthBorder = this.height - (2 * game.canvasHeight);
 
       // start in the center
+      // this is the viewport offset within the current loaded view sections
       this.offsetX = game.gridSize * gridWidth/2  - gridWidth/2 + startX;
       this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2 + startY;
       // world coordinates
@@ -155,6 +156,7 @@ define(["game", "gridnode"], function (game, GridNode) {
       }
     };
 
+    // swap tile sections around a vertical axis
     this.swapVertical = function (left, right) {
       var leftNode, rightNode, i;
       var leftX = left.width - 1;
@@ -169,6 +171,7 @@ define(["game", "gridnode"], function (game, GridNode) {
       this.levelMapContext.putImageData(right, left.x, left.y);
     };
 
+    // swap tile sections around a horizontal axis
     this.swapHorizontal = function (top, bottom) {
       var upperNode, lowerNode, i;
       var bottomY = top.height - 1;
@@ -210,29 +213,31 @@ define(["game", "gridnode"], function (game, GridNode) {
     };
 
     this.getSectionCoords = function (which) {
+      var x = Math.ceil(this.originOffsetX / this.sectionWidth);
+      var y = Math.ceil(this.originOffsetY / this.sectionHeight);
       switch(which) {
         case 'nw':
-          return {x:-1, y:-1};
+          return new Vector(x, y);
         case 'ne':
-          return {x: 1, y:-1};
+          return new Vector(x+1, y);
         case 'sw':
-          return {x:-1, y: 1};
+          return new Vector(x, y+1);
         case 'se':
-          return {x: 1, y: 1};
+          return new Vector(x+1, y+1);
       }
-      // return {
-      //   x: Math.ceil(world.x / this.sectionWidth),
-      //   y: Math.ceil(world.y / this.sectionHeight)
-      // };
     };
 
-    this.loadMapTiles = function (imageData, position, section, callback) {
-      var mapWidth  = imageData.width;
-      var mapHeight = imageData.height;
-      var mapData   = imageData.data;
+    this.setTilesFromStrings = function (tiles, strings) {
+      var i = strings.length;
+      while (i) {
+        i--;
+        tiles[i].setFromString(strings[i]);
+      }
+    };
 
-      var newSection = this.convertToNodes(mapData);
-
+    // TODO make this method signiture less stupid and long
+    this.getTilesFromMapWorker = function (recipientTiles, position, width, height, sectionName, callback) {
+      var self = this;
       // TODO make it so we don't redefine this every time
       mapWorker.onmessage = function (e) {
         var data = JSON.parse(e.data);
@@ -243,28 +248,48 @@ define(["game", "gridnode"], function (game, GridNode) {
             console.log.apply(console, data.message);
             break;
           default:
-            var newTiles = data.tiles;
-            var i = newTiles.length;
-            while (i) {
-              i--;
-              newSection[i].setFromString(newTiles[i]);
-            }
+            var strings = data.tiles;
+            var pos = new Vector(data.position.x, data.position.y);
+            World.setTiles(pos, strings);
+            self.setTilesFromStrings(recipientTiles, strings);
 
             if (callback) {
-              callback(newTiles);
+              callback(strings);
             }
             break;
         }
       };
       
       var message = {
-        width:  mapWidth,
-        height: mapHeight,
-        position: this.getSectionCoords(position),
-        section: section
+        width:       width,
+        height:      height,
+        position:    position,
+        sectionName: sectionName
       };
 
       mapWorker.postMessage(JSON.stringify(message));
+    };
+
+    this.loadMapTiles = function (imageData, positionString, sectionName, callback) {
+      var mapWidth  = imageData.width;
+      var mapHeight = imageData.height;
+      var mapData   = imageData.data;
+      var position  = this.getSectionCoords(positionString);
+
+      var newSection = this.convertToNodes(mapData);
+
+      var tiles = World.getTiles(position);
+
+      if (tiles) {
+        // we've already create this one, reuse it
+        this.setTilesFromStrings(newSection, tiles);
+        if (callback) {
+          callback(tiles);
+        }
+      } else {
+        // we need to generate a new section
+        this.getTilesFromMapWorker(newSection, position, mapWidth, mapHeight, sectionName, callback);
+      }
     };
 
     this.getLevelChunks = function () {

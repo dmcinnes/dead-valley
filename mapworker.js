@@ -58,9 +58,6 @@ var sections = {
   west:  []
 };
 
-var world = {
-};
-
 // sections set these variables with their data when loaded
 var map, roads;
 // TODO somehow pull the section names from somewhere
@@ -112,14 +109,13 @@ var createBlankSection = function (length) {
 
 var loadSection = function (config) {
   // fills the map with the given section
-  var section = sections[config.section];
+  var section = sections[config.sectionName];
   var sectionLength = section.length;
   var mapLength = config.width * config.height;
   var tiles = [];
   for (var i = 0; i < mapLength; i++) {
     tiles[i] = _.clone(section[i % sectionLength]);
   }
-  world[config.position] = tiles;
   return tiles;
 };
 
@@ -127,24 +123,21 @@ onmessage = function (e) {
   var config = JSON.parse(e.data);
   var total = config.width * config.height;
 
-  console.log(config.position.x, config.position.y);
-
   var tiles;
 
-  if (world[config.position]) {
-    tiles = world[config.position];
-  } else if (config.section) {
+  if (config.sectionName) {
     tiles = loadSection(config);
   } else {
-    tiles = createBlankSection(total);
     // TODO figure out what kind of section use
+    tiles = createBlankSection(total);
   }
 
   fillBlankTiles(tiles);
 
   var message = {
-    type: 'newtiles',
-    tiles: _(tiles).map(function (t) { return t.toString(); })
+    type:     'newtiles',
+    tiles:    _(tiles).map(function (t) { return t.toString(); }),
+    position: config.position
   };
 
   postMessage(JSON.stringify(message));

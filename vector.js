@@ -69,5 +69,9 @@ define(function () {
     return new Vector(-this.y, this.x);
   };
 
+  Vector.prototype.toString = function () {
+    return [this.x, this.y].join(',');
+  };
+
   return Vector;
 });
