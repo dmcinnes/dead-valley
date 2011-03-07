@@ -8,13 +8,13 @@ define([], function () {
 
   var World = {
     setTiles: function (position, tiles) {
-      console.log("Set ", position.toString());
+      // console.log("Set ", position.toString());
       tiles.position = position;
       worldMap[position.toString()] = tiles;
     },
 
     getTiles: function (position) {
-      console.log("Get ", position.toString(), worldMap[position.toString()] !== undefined);
+      // console.log("Get ", position.toString(), worldMap[position.toString()] !== undefined);
       return worldMap[position.toString()];
     },
 

@@ -16,7 +16,11 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       console.log('worker error!', e);
     };
 
+    var queuedSectionDownloads = {};
+
     this.init = function () {
+      mapWorker.onmessage = $.proxy(this.mapWorkerCallback, this);
+
       this.gridWidth  = gridWidth;
       this.gridHeight = gridHeight;
       this.width  = gridWidth * game.gridSize;
@@ -240,29 +244,42 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       }
     };
 
+    this.mapWorkerCallback = function (e) {
+      var data = JSON.parse(e.data);
+
+      switch (data.type) {
+        // so we can get output from the worker
+        case 'log':
+          console.log.apply(console, data.message);
+          break;
+        default:
+          var strings = data.tiles;
+          var pos = new Vector(data.position.x, data.position.y);
+          var stuff = queuedSectionDownloads[pos];
+          if (!stuff) {
+            console.warn("nothing in queuedSectionDownloads for '"+pos.toString()+"'");
+            return;
+          }
+          queuedSectionDownloads[pos] = null;
+
+          World.setTiles(pos, strings);
+
+          this.setTilesFromStrings(stuff.recipientTiles, strings);
+
+          if (stuff.callback) {
+            stuff.callback(strings);
+          }
+          break;
+      }
+    };
+
     // TODO make this method signiture less stupid and long
     this.getTilesFromMapWorker = function (recipientTiles, position, width, height, sectionName, callback) {
-      var self = this;
-      // TODO make it so we don't redefine this every time
-      mapWorker.onmessage = function (e) {
-        var data = JSON.parse(e.data);
 
-        switch (data.type) {
-          // so we can get output from the worker
-          case 'log':
-            console.log.apply(console, data.message);
-            break;
-          default:
-            var strings = data.tiles;
-            var pos = new Vector(data.position.x, data.position.y);
-            World.setTiles(pos, strings);
-            self.setTilesFromStrings(recipientTiles, strings);
-
-            if (callback) {
-              callback(strings);
-            }
-            break;
-        }
+      // save the data off for use when the worker returns
+      queuedSectionDownloads[position] = {
+        recipientTiles: recipientTiles,
+        callback: callback
       };
       
       var message = {
