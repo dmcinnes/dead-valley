@@ -52,26 +52,17 @@ var console = {
 
 // load 'meta map' section tiles
 var sections = {
-  north: [],
-  south: [],
-  east:  [],
-  west:  []
 };
 
 // sections set these variables with their data when loaded
 var map, roads;
 // TODO somehow pull the section names from somewhere
-_(['NS_road', 'intersection']).each(function (name) {
+_(['blank', 'NS_road', 'intersection']).each(function (name) {
   importScripts('maps/'+name+'.json');
   sections[name] = map;
   // save the road directions on the map Array object
   map.roads = roads;
-  // break out the maps by road direction
-  for (var dir in roads) {
-    if (roads.hasOwnProperty(dir)) {
-      sections[dir] = map;
-    }
-  }
+  map.name  = name;
 
   // convert the map into objects
   for (var i = 0; i < map.length; i++) {
@@ -97,22 +88,6 @@ var fillBlankTiles = function (tiles) {
   return tiles;
 };
 
-var createBlankSection = function (length) {
-  var tiles = [];
-  var tile;
-  for (var i = 0; i < length; i++) {
-    tile = new Tile();
-    tiles.push(tile);
-  }
-  tiles.roads = {
-    n: false,
-    s: false,
-    e: false,
-    w: false
-  };
-  return tiles;
-};
-
 var loadSection = function (config) {
   // fills the map with the given section
   var section = sections[config.sectionName];
@@ -126,18 +101,52 @@ var loadSection = function (config) {
   return tiles;
 };
 
+var cloneSection = function (section) {
+  var tiles = [];
+  for (var i = 0; i < section.length; i++) {
+    tiles[i] = _.clone(section[i]);
+  }
+  tiles.roads = section.roads;
+  return tiles;
+};
+
+var getRandomSection = function (incomingRoads) {
+  var canidates = [];
+
+  for (var name in sections) {
+    if (sections.hasOwnProperty(name)) {
+      var section = sections[name];
+
+      var match = true;
+      for (var dir in section.roads) {
+        if (incomingRoads.hasOwnProperty(dir) &&
+            (incomingRoads[dir] !== undefined) &&
+            (incomingRoads[dir] !== section.roads[dir])) {
+          match = false;
+          break;
+        }
+      }
+
+      if (match) {
+        canidates.push(section);
+      }
+    }
+  }
+
+  var choice = (canidates.length) ?
+    canidates[Math.floor(Math.random() * canidates.length)] :
+    sections['blank']; // nothing is better than really nothing
+
+  console.log(choice.name);
+  return cloneSection(choice);
+};
+
 onmessage = function (e) {
   var config = JSON.parse(e.data);
-  var total = config.width * config.height;
 
-  var tiles;
-
-  if (config.sectionName) {
-    tiles = loadSection(config);
-  } else {
-    // TODO figure out what kind of section use
-    tiles = createBlankSection(total);
-  }
+  var tiles = (config.sectionName) ?
+                loadSection(config) :
+                getRandomSection(config.roads);
 
   fillBlankTiles(tiles);
 
