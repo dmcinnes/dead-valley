@@ -14,7 +14,7 @@ define([], function () {
     },
 
     getTiles: function (position) {
-      console.log("Get ", position.toString());
+      console.log("Get ", position.toString(), worldMap[position.toString()] !== undefined);
       return worldMap[position.toString()];
     },
 

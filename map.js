@@ -37,9 +37,12 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       // this is the viewport offset within the current loaded view sections
       this.offsetX = game.gridSize * gridWidth/2  - gridWidth/2 + startX;
       this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2 + startY;
-      // world coordinates
+      // viewport world coordinates
       this.originOffsetX = -game.canvasWidth  / 2.0 + startX;
       this.originOffsetY = -game.canvasHeight / 2.0 + startY;
+      // upper left section coordinates
+      this.sectionOffsetX = 0;
+      this.sectionOffsetY = 0;
 
       this.velX = 0;
       this.velY = 0;
@@ -129,12 +132,14 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       var chunks = this.getLevelChunks();
 
       if (this.offsetX < this.shiftWestBorder) {
+        this.sectionOffsetX--;
         this.loadMapTiles(chunks.ne, 'nw');
         this.loadMapTiles(chunks.se, 'sw');
         this.swapVertical(chunks.nw, chunks.ne);
         this.swapVertical(chunks.sw, chunks.se);
         this.offsetX = this.offsetX + (this.width / 2);
       } else if (this.offsetX > this.shiftEastBorder) {
+        this.sectionOffsetX++;
         this.loadMapTiles(chunks.nw, 'ne');
         this.loadMapTiles(chunks.sw, 'se');
         this.swapVertical(chunks.ne, chunks.nw);
@@ -142,12 +147,14 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         this.offsetX = this.offsetX - (this.width / 2);
       }
       if (this.offsetY < this.shiftNorthBorder) {
+        this.sectionOffsetY--;
         this.loadMapTiles(chunks.se, 'ne');
         this.loadMapTiles(chunks.sw, 'nw');
         this.swapHorizontal(chunks.ne, chunks.se);
         this.swapHorizontal(chunks.nw, chunks.sw);
         this.offsetY = this.offsetY + (this.height / 2);
       } else if (this.offsetY > this.shiftSouthBorder) {
+        this.sectionOffsetY++;
         this.loadMapTiles(chunks.ne, 'se');
         this.loadMapTiles(chunks.nw, 'sw');
         this.swapHorizontal(chunks.se, chunks.ne);
@@ -213,17 +220,15 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     };
 
     this.getSectionCoords = function (which) {
-      var x = Math.ceil(this.originOffsetX / this.sectionWidth);
-      var y = Math.ceil(this.originOffsetY / this.sectionHeight);
       switch(which) {
         case 'nw':
-          return new Vector(x, y);
+          return new Vector(this.sectionOffsetX,   this.sectionOffsetY);
         case 'ne':
-          return new Vector(x+1, y);
+          return new Vector(this.sectionOffsetX+1, this.sectionOffsetY);
         case 'sw':
-          return new Vector(x, y+1);
+          return new Vector(this.sectionOffsetX,   this.sectionOffsetY+1);
         case 'se':
-          return new Vector(x+1, y+1);
+          return new Vector(this.sectionOffsetX+1, this.sectionOffsetY+1);
       }
     };
 
@@ -288,7 +293,12 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         }
       } else {
         // we need to generate a new section
-        this.getTilesFromMapWorker(newSection, position, mapWidth, mapHeight, sectionName, callback);
+        this.getTilesFromMapWorker(newSection,
+				   position,
+                                   mapWidth,
+                                   mapHeight,
+                                   sectionName,
+                                   callback);
       }
     };
 
