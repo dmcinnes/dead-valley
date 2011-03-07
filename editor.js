@@ -78,7 +78,7 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
   };
 
   var loadMap = function (text) {
-    $.getScript("../maps/" + text, function () {
+    $.getScript("maps/" + text, function () {
       if (map) {
         progress.setTotal(map.length);
 
@@ -119,7 +119,7 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
   };
 
   var setupTileList = function () {
-    var assetManager = new AssetManager('../assets/');
+    var assetManager = new AssetManager('./assets/');
     var tiles = assetManager.registerImage('tiles.png');
 
     assetManager.onComplete = function () {
