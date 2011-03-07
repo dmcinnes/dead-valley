@@ -281,6 +281,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         recipientTiles: recipientTiles,
         callback: callback
       };
+
+      var roads = World.getSurroundingRoads(position);
       
       var message = {
         width:       width,

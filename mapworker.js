@@ -104,6 +104,12 @@ var createBlankSection = function (length) {
     tile = new Tile();
     tiles.push(tile);
   }
+  tiles.roads = {
+    n: false,
+    s: false,
+    e: false,
+    w: false
+  };
   return tiles;
 };
 
@@ -116,6 +122,7 @@ var loadSection = function (config) {
   for (var i = 0; i < mapLength; i++) {
     tiles[i] = _.clone(section[i % sectionLength]);
   }
+  tiles.roads = section.roads;
   return tiles;
 };
 
@@ -137,6 +144,7 @@ onmessage = function (e) {
   var message = {
     type:     'newtiles',
     tiles:    _(tiles).map(function (t) { return t.toString(); }),
+    roads:    tiles.roads,
     position: config.position
   };
 
