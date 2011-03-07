@@ -262,7 +262,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
           }
           queuedSectionDownloads[pos] = null;
 
-          World.setTiles(pos, strings);
+          World.setTiles(pos, strings, data.roads);
 
           this.setTilesFromStrings(stuff.recipientTiles, strings);
 
@@ -288,7 +288,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         width:       width,
         height:      height,
         position:    position,
-        sectionName: sectionName
+        sectionName: sectionName,
+        roads:       roads
       };
 
       mapWorker.postMessage(JSON.stringify(message));

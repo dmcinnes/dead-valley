@@ -6,13 +6,11 @@ define([], function () {
   var worldMap = localStorage;
 
   var World = {
-    setTiles: function (position, tiles) {
+    setTiles: function (position, tiles, roads) {
       // console.log("Set ", position.toString());
       tiles.position = position;
       worldMap[position.toString()] = JSON.stringify(tiles);
-      if (tiles.roads) {
-        worldMap[position.toString() + 'r'] = JSON.stringify(tiles.roads);
-      }
+      worldMap[position.toString() + 'r'] = JSON.stringify(roads);
     },
 
     getTiles: function (position) {
