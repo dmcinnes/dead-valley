@@ -16,7 +16,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       console.log('worker error!', e);
     };
 
-    var queuedSectionDownloads = {};
+    var waitingSectionDownloads = {};
 
     this.init = function () {
       mapWorker.onmessage = $.proxy(this.mapWorkerCallback, this);
@@ -255,12 +255,12 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         default:
           var strings = data.tiles;
           var pos = new Vector(data.position.x, data.position.y);
-          var stuff = queuedSectionDownloads[pos];
+          var stuff = waitingSectionDownloads[pos];
           if (!stuff) {
-            console.warn("nothing in queuedSectionDownloads for '"+pos.toString()+"'");
+            console.warn("nothing in waitingSectionDownloads for '"+pos.toString()+"'");
             return;
           }
-          queuedSectionDownloads[pos] = null;
+          waitingSectionDownloads[pos] = null;
 
           World.setTiles(pos, strings, data.roads);
 
@@ -277,7 +277,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     this.getTilesFromMapWorker = function (recipientTiles, position, width, height, sectionName, callback) {
 
       // save the data off for use when the worker returns
-      queuedSectionDownloads[position] = {
+      waitingSectionDownloads[position] = {
         recipientTiles: recipientTiles,
         callback: callback
       };
