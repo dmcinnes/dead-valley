@@ -287,7 +287,6 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
       // sectionData can have road data in it
       var roads = $.extend(sectionData, World.getSurroundingRoads(position));
-      console.log(roads);
       
       var message = {
         width:       width,
