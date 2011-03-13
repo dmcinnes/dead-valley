@@ -135,32 +135,35 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     this.shiftLevel = function () {
       var chunks = this.getLevelChunks();
 
-      if (this.offsetX < this.shiftWestBorder) {
+      // TODO figure out a better magic number for this
+      var road = Math.random() > 0.5;
+
+      if (this.offsetX < this.shiftWestBorder) { // going left
         this.sectionOffsetX--;
-        this.loadMapTiles(chunks.ne, 'nw');
-        this.loadMapTiles(chunks.se, 'sw');
+        this.loadMapTiles(chunks.ne, 'nw', {s:road});
+        this.loadMapTiles(chunks.se, 'sw', {n:road});
         this.swapVertical(chunks.nw, chunks.ne);
         this.swapVertical(chunks.sw, chunks.se);
         this.offsetX = this.offsetX + (this.width / 2);
-      } else if (this.offsetX > this.shiftEastBorder) {
+      } else if (this.offsetX > this.shiftEastBorder) { // going right
         this.sectionOffsetX++;
-        this.loadMapTiles(chunks.nw, 'ne');
-        this.loadMapTiles(chunks.sw, 'se');
+        this.loadMapTiles(chunks.nw, 'ne', {s:road});
+        this.loadMapTiles(chunks.sw, 'se', {n:road});
         this.swapVertical(chunks.ne, chunks.nw);
         this.swapVertical(chunks.se, chunks.sw);
         this.offsetX = this.offsetX - (this.width / 2);
       }
-      if (this.offsetY < this.shiftNorthBorder) {
+      if (this.offsetY < this.shiftNorthBorder) { // going up
         this.sectionOffsetY--;
-        this.loadMapTiles(chunks.se, 'ne');
-        this.loadMapTiles(chunks.sw, 'nw');
+        this.loadMapTiles(chunks.se, 'ne', {w:road});
+        this.loadMapTiles(chunks.sw, 'nw', {e:road});
         this.swapHorizontal(chunks.ne, chunks.se);
         this.swapHorizontal(chunks.nw, chunks.sw);
         this.offsetY = this.offsetY + (this.height / 2);
-      } else if (this.offsetY > this.shiftSouthBorder) {
+      } else if (this.offsetY > this.shiftSouthBorder) { // going down
         this.sectionOffsetY++;
-        this.loadMapTiles(chunks.ne, 'se');
-        this.loadMapTiles(chunks.nw, 'sw');
+        this.loadMapTiles(chunks.ne, 'se', {w:road});
+        this.loadMapTiles(chunks.nw, 'sw', {e:road});
         this.swapHorizontal(chunks.se, chunks.ne);
         this.swapHorizontal(chunks.sw, chunks.nw);
         this.offsetY = this.offsetY - (this.height / 2);
@@ -274,7 +277,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     };
 
     // TODO make this method signiture less stupid and long
-    this.getTilesFromMapWorker = function (recipientTiles, position, width, height, sectionName, callback) {
+    this.getTilesFromMapWorker = function (recipientTiles, position, width, height, sectionData, callback) {
 
       // save the data off for use when the worker returns
       waitingSectionDownloads[position] = {
@@ -282,20 +285,22 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         callback: callback
       };
 
-      var roads = World.getSurroundingRoads(position);
+      // sectionData can have road data in it
+      var roads = $.extend(sectionData, World.getSurroundingRoads(position));
+      console.log(roads);
       
       var message = {
         width:       width,
         height:      height,
         position:    position,
-        sectionName: sectionName,
+        sectionName: sectionData.name,
         roads:       roads
       };
 
       mapWorker.postMessage(JSON.stringify(message));
     };
 
-    this.loadMapTiles = function (imageData, positionString, sectionName, callback) {
+    this.loadMapTiles = function (imageData, positionString, sectionData, callback) {
       var mapWidth  = imageData.width;
       var mapHeight = imageData.height;
       var mapData   = imageData.data;
@@ -317,7 +322,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 				   position,
                                    mapWidth,
                                    mapHeight,
-                                   sectionName,
+                                   sectionData,
                                    callback);
       }
     };
@@ -365,13 +370,13 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       progress.setTotal(4);
 
       var self = this;
-      self.loadMapTiles(chunks.nw, 'nw', 'intersection', function () {
+      self.loadMapTiles(chunks.nw, 'nw', {name:'intersection'}, function () {
         progress.increment();
-        self.loadMapTiles(chunks.sw, 'sw', 'intersection', function () {
+        self.loadMapTiles(chunks.sw, 'sw', {name:'intersection'}, function () {
 	  progress.increment();
-          self.loadMapTiles(chunks.ne, 'ne', 'intersection', function () {
+          self.loadMapTiles(chunks.ne, 'ne', {name:'intersection'}, function () {
 	    progress.increment();
-            self.loadMapTiles(chunks.se, 'se', 'intersection', function () {
+            self.loadMapTiles(chunks.se, 'se', {name:'intersection'}, function () {
 	      progress.increment();
 	      loadCallback();
 	    });
