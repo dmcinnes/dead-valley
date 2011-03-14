@@ -72,7 +72,9 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     };
 
     this.collision = function (other, point, vector) {
-      this.pos.translate(vector);
+      // the dude abides
+      this.pos.rot = 0;
+      this.vel.rot = 0;
     };
 
     var self = this;

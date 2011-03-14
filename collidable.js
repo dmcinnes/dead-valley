@@ -104,11 +104,10 @@ define(["vector"], function (Vector) {
         normal.scale(-1);
       }
 
-      var totalMass = this.mass + other.mass
-      var thisVec = normal.multiply(other.mass / totalMass);
-      var otherVec = normal.multiply(-this.mass / totalMass);
-      this.collision(other, point, thisVec);
-      // other.collision(this, point, otherVec);
+      // TODO gotta be a better way to structure all this
+      collidable.resolveCollision(this, other, point, normal);
+      this.collision(other, point, normal);
+      other.collision(this, point, normal.scale(-1));
     };
 
     thing.prototype.lineProjection = function (normal) {
@@ -144,7 +143,57 @@ define(["vector"], function (Vector) {
     if (currentCollisionList.length > 0) {
       currentCollisionList.splice(0); // empty the array
     }
-  }
+  };
+
+  // resolve the collision between two rigid body sprites
+  // TODO: find a better way to structure all this
+  collidable.resolveCollision = function (we, they, point, vector) {
+    we.collided   = true;
+    they.collided = true;
+
+    // rectify the positions
+    // TODO scale we based on collision response
+    // for each car
+    var rectify = vector.multiply(0.5);
+    we.pos.translate(vector);
+    they.pos.translate(rectify.scale(-1));
+
+    var n = vector.normalize();
+
+    var vab = we.pointVel(point.subtract(we.pos)).subtract(they.pointVel(point.subtract(they.pos)));
+
+    // coefficient of restitution (how bouncy the collision is)
+    // TODO make we configurable by we individual
+    var e = 0.2;
+
+    var ap  = point.subtract(we.pos).normal();
+    var bp  = point.subtract(they.pos).normal();
+    var apd = Math.pow(ap.dotProduct(n), 2);
+    var bpd = Math.pow(bp.dotProduct(n), 2);
+
+    var dot = vab.dotProduct(n);
+    if (dot > 0) {
+      return; // moving away from each they
+    }
+
+    var j =  -(1 + e) * dot;
+
+    j /= n.multiply(1/we.mass + 1/they.mass).dotProduct(n) +
+         apd / we.inertia + bpd / we.inertia;
+
+    we.vel.translate(n.multiply(j  / we.mass));
+    they.vel.translate(n.multiply(-j  / they.mass));
+
+    // TODO make all rot into radians
+    we.vel.rot += 180 * (ap.dotProduct(n.multiply(j)) / we.inertia) / Math.PI;
+    they.vel.rot += 180 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
+
+    // show the point of collision
+    // context.save();
+    // context.translate(-game.map.originOffsetX, -game.map.originOffsetY);
+    // context.fillRect(point.x-5, point.y-5, 10, 10);
+    // context.restore();
+  };
 
   return collidable;
 });
