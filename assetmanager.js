@@ -40,6 +40,7 @@ define(["progress"], function (progress) {
       loadNextAsset();
     };
 
+    // TODO fix for FF
     this.copyImageAndMutateWhite = function (imageName, newImageName, r, g, b) {
       var image = images[imageName];
       var canvas = document.createElement('canvas');

@@ -415,8 +415,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         offset = i * 4;
         nodeOffset =  imageData[offset] +
                      (imageData[offset+1] << 8);
-        gridX = ((i % imageWidth) + startX) * game.gridSize - this.offsetX;
-        gridY = (Math.floor(i / imageWidth) + startY) * game.gridSize - this.offsetY;
+        gridX = Math.floor(((i % imageWidth) + startX) * game.gridSize - this.offsetX);
+        gridY = Math.floor((Math.floor(i / imageWidth) + startY) * game.gridSize - this.offsetY);
         this.nodes[nodeOffset].render(delta, gridX, gridY);
       }
     };

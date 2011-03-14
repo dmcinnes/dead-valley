@@ -22,7 +22,7 @@ require(
       var createSprites = function () {
         var car = new Car('car',
                           24, 40,
-                          assetManager.images.car1blue);
+                          assetManager.images.car1);
 
         car.pos.x = startX - 100;
         car.pos.y = startY - 200;
@@ -53,7 +53,7 @@ require(
 
         game.tileRowSize = assetManager.images.tiles.width / game.gridSize;
 
-        assetManager.copyImageAndMutateWhite('car1', 'car1blue', 70, 70, 255);
+        // assetManager.copyImageAndMutateWhite('car1', 'car1blue', 70, 70, 255);
         // only load the map after the assets are loaded
         game.map = new Map(128, 128, startX, startY, function () {
 
