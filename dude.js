@@ -19,6 +19,9 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     this.walkingFrame = 0;
     this.walkingFrameCounter = 0.0;
 
+    this.mass = 0.6;
+    this.inertia = 1;
+
     this.draw = function (delta) {
       if (!this.visible) return;
 

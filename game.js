@@ -8,7 +8,7 @@
 // 60  miles / hour == 264 pixels / second
 // 100 miles / hour == 440 pixels / second
 
-define(['assetmanager', 'controls'], function (AssetManager, controls) {
+define(['assetmanager', 'controls', 'collidable'], function (AssetManager, controls, collidable) {
   var canvas = $("#canvas");
 
   var i, sprite, spriteCount;
@@ -50,6 +50,7 @@ define(['assetmanager', 'controls'], function (AssetManager, controls) {
         }
 
         // collide!
+        collidable.clearCurrentCollisionList();
         spriteCount = this.sprites.length;
         for (i = 0; i < spriteCount; i++) {
           sprite = this.sprites[i];

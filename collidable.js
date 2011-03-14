@@ -4,6 +4,8 @@
 
 define(["vector"], function (Vector) {
 
+  var currentCollisionList = [];
+
   var collidable = function (thing, collidesWith) {
     thing.prototype.collidesWith = collidesWith;
     thing.prototype.collidable   = true;
@@ -32,7 +34,9 @@ define(["vector"], function (Vector) {
           // so we don't make nine extra function calls
           // every frame for every sprite because most
           // tiles are non-collidable
-          if (ref.collidable) this.checkCollision(ref);
+          if (ref.collidable) {
+            this.checkCollision(ref);
+          }
           ref = ref.nextSprite;
         } while (ref)
       }
@@ -43,11 +47,24 @@ define(["vector"], function (Vector) {
     // checkCollision
     thing.prototype.checkCollision = function (other) {
       var normals, minDepth, nl, we, they, left, right, depth,
-          minDepth, minPoint, normalIndex;
+          minDepth, minPoint, normalIndex, self;
 
-      if (!other.visible ||
-           this == other ||
-          !this.collidesWith[other.name]) return;
+      if (!other.visible  ||
+           this === other ||
+          !this.collidesWith[other.name]) {
+        return;
+      }
+
+      // check to see if the pair has already been checked for collisions
+      // only have to check one way
+      self = this;
+      if (_(currentCollisionList).detect(function (pair) {
+           return (pair[0] === other && pair[1] === self);
+          })) {
+        return;
+      }
+      // put the pair in the list for further checks
+      currentCollisionList.push([this, other]);
 
       normals = this.currentNormals.concat(other.currentNormals);
 
@@ -87,7 +104,11 @@ define(["vector"], function (Vector) {
         normal.scale(-1);
       }
 
-      this.collision(other, point, normal);
+      var totalMass = this.mass + other.mass
+      var thisVec = normal.multiply(other.mass / totalMass);
+      var otherVec = normal.multiply(-this.mass / totalMass);
+      this.collision(other, point, thisVec);
+      // other.collision(this, point, otherVec);
     };
 
     thing.prototype.lineProjection = function (normal) {
@@ -118,6 +139,12 @@ define(["vector"], function (Vector) {
                     .translate(this.vel);
     };
   };
+
+  collidable.clearCurrentCollisionList = function () {
+    if (currentCollisionList.length > 0) {
+      currentCollisionList.splice(0); // empty the array
+    }
+  }
 
   return collidable;
 });
