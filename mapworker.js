@@ -54,10 +54,12 @@ var console = {
 var sections = {
 };
 
+// loads the section list into section_list
+importScripts('section_list.js');
+
 // sections set these variables with their data when loaded
 var map, roads;
-// TODO somehow pull the section names from somewhere
-_(['blank', 'NS_road', 'EW_road', 'intersection']).each(function (name) {
+_(section_list).each(function (name) {
   importScripts('maps/'+name+'.json');
   sections[name] = map;
   // save the road directions on the map Array object
