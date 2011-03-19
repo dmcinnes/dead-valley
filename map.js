@@ -55,7 +55,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       this.freeNodes = [];
 
       this.levelMap = $('<canvas/>').attr({width:gridWidth, height:gridHeight});
-      $('body').append(this.levelMap);
+      // $('body').append(this.levelMap);
 
       this.levelMapContext = this.levelMap[0].getContext("2d");
       this.levelMapData = this.levelMapContext.createImageData(gridWidth, gridHeight);
