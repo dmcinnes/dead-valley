@@ -27,10 +27,10 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
     var hw = width / 2;
     var hh = height / 2;
     this.wheels = [
-      new Wheel(-hw+2, -hh+8, 1),
-      new Wheel( hw-2, -hh+8, 1),
-      new Wheel(-hw+2,  hh-8, 1),
-      new Wheel( hw-2,  hh-8, 1)
+      new Wheel(-hw+2, -hh+8, 1, this.mass / 4),
+      new Wheel( hw-2, -hh+8, 1, this.mass / 4),
+      new Wheel(-hw+2,  hh-8, 1, this.mass / 4),
+      new Wheel( hw-2,  hh-8, 1, this.mass / 4)
     ];
   };
   Car.prototype = new RigidBody();
@@ -59,16 +59,16 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
       context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
     }
 
-    // _(this.wheels).each(function (wheel) {
-    //   context.beginPath();
-    //   context.strokeStyle = 'black';
-    //   context.lineWidth = 1;
-    //   context.moveTo(wheel.position.x, wheel.position.y);
-    //   context.lineTo(wheel.position.x + wheel.responseForce.x,
-    //                  wheel.position.y + wheel.responseForce.y);
-    //   context.stroke();
-    //   context.fillText(Math.round(wheel.speed), wheel.position.x, wheel.position.y);
-    // });
+    _(this.wheels).each(function (wheel) {
+      context.beginPath();
+      context.strokeStyle = 'black';
+      context.lineWidth = 1;
+      context.moveTo(wheel.position.x, wheel.position.y);
+      context.lineTo(wheel.position.x + wheel.responseForce.x,
+                     wheel.position.y + wheel.responseForce.y);
+      context.stroke();
+      context.fillText(Math.round(wheel.speed), wheel.position.x, wheel.position.y);
+    });
   };
 
   Car.prototype.setSteering = function (steering) {
@@ -136,6 +136,16 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
 
       this.addForce(worldResponseForce, worldWheelOffset);
     }
+
+    var massDensityOfAir = 1.2; // kg/m^3
+    // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
+    // var dragCoefficient  = 0.36;
+    // var frontalArea      = 2; // m^2
+    var dragArea = 0.654; // m^2 -- Drag Coefficent * Frontal Area
+    var vel_m_s = this.vel.magnitude() / 10; // 10 pixels per meter
+    var airResistance = Math.round(-0.5 * massDensityOfAir * dragArea * Math.pow(vel_m_s, 2));
+    var airResistanceVec = this.vel.clone().normalize().scale(airResistance);
+    this.addForce(airResistanceVec, new Vector(0, 0));
   };
 
   Car.prototype.postMove = function (delta) {

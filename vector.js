@@ -19,8 +19,10 @@ define(function () {
 
   Vector.prototype.normalize = function (other) {
     var mag = this.magnitude();
-    this.x /= mag;
-    this.y /= mag;
+    if (mag) {
+      this.x /= mag;
+      this.y /= mag;
+    }
     return this;
   };
 
@@ -67,6 +69,10 @@ define(function () {
 
   Vector.prototype.normal = function () {
     return new Vector(-this.y, this.x);
+  };
+
+  Vector.prototype.clone = function () {
+    return new Vector(this.x, this.y);
   };
 
   Vector.prototype.toString = function () {

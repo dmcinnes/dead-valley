@@ -54,7 +54,7 @@ define(["matrix"], function (Matrix) {
       this.speed += (this.torque / this.inertia) * delta;
 
       // awesome fake wheel friction
-      this.speed *= 0.97;
+      // this.speed *= 0.97;
 
       // clear our transmission torque accumulator
       this.torque = 0.0;
