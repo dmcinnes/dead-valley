@@ -9,8 +9,9 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
   var SPEED = 44; // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.03; // in seconds
 
-  var Dude = function (name, width, height, image) {
-    this.init(name, width, height, image);
+  var Dude = function (config) {
+    config.name = 'Dude';
+    this.init(config);
 
     this.driving = null;
 

@@ -20,9 +20,16 @@ require(
       var startY = 0;
 
       var createSprites = function () {
-        var car = new Car('car',
-                          24, 40,
-                          assetManager.images.car1);
+        // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
+        var config = {
+          width:    24,
+          height:   40,
+          image:    assetManager.images.car1,
+          mass:     15,
+          dragArea: 0.654
+        };
+
+        var car = new Car(config);
 
         car.pos.x = startX - 100;
         car.pos.y = startY - 200;
@@ -30,9 +37,7 @@ require(
         car.visible = true;
         game.sprites.push(car);
 
-        var car2 = new Car('car',
-                          24, 40,
-                          assetManager.images.car1);
+        var car2 = new Car(config);
 
         car2.pos.x = startX - 50;
         car2.pos.y = startY;
@@ -40,9 +45,12 @@ require(
         car2.visible = true;
         game.sprites.push(car2);
 
-        var dude = new Dude('dude',
-                            20, 20,
-                            assetManager.images.dude);
+        var dude = new Dude({
+          width: 20,
+          height: 20,
+          image: assetManager.images.dude
+        });
+
         dude.pos.x = startX;
         dude.pos.y = startY;
         dude.visible = true;

@@ -5,12 +5,14 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
   var keyStatus = game.controls.keyStatus;
   var context   = game.spriteContext;
 
-  var Car = function (name, width, height, image) {
-    var rad, rot, i;
+  var massDensityOfAir = 1.2; // kg/m^3
 
-    this.init(name, width, height, image);
-    this.setMass(15); // units?
-    // this.setMass(1200); // kg
+  var Car = function (config) {
+    config.name = 'car';
+    this.init(config);
+
+    this.setMass(config.mass);
+    this.dragArea = config.dragArea;
 
     this.speed = 0.0;
 
@@ -24,8 +26,8 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
     this.engineTorque  = 600.0;
     this.brakeTorque   = 20.0;
 
-    var hw = width / 2;
-    var hh = height / 2;
+    var hw = config.width / 2;
+    var hh = config.height / 2;
     this.wheels = [
       new Wheel(-hw+2, -hh+8, 1, this.mass / 4),
       new Wheel( hw-2, -hh+8, 1, this.mass / 4),
@@ -126,7 +128,7 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
         relativeGroundSpeed,
         relativeResponseForce,
         worldResponseForce;
-    for (i = 0; i < 4; i++) {
+    for (var i = 0; i < 4; i++) {
       worldWheelOffset = this.relativeToWorld(this.wheels[i].position);
       // console.log(this.wheels[i].position.x, this.wheels[i].position.y, worldWheelOffset.x, worldWheelOffset.y);
       worldGroundVel = this.pointVel(worldWheelOffset);
@@ -137,13 +139,8 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
       this.addForce(worldResponseForce, worldWheelOffset);
     }
 
-    var massDensityOfAir = 1.2; // kg/m^3
-    // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
-    // var dragCoefficient  = 0.36;
-    // var frontalArea      = 2; // m^2
-    var dragArea = 0.654; // m^2 -- Drag Coefficent * Frontal Area
     var vel_m_s = this.vel.magnitude() / 10; // 10 pixels per meter
-    var airResistance = Math.round(-0.5 * massDensityOfAir * dragArea * Math.pow(vel_m_s, 2));
+    var airResistance = Math.round(-0.5 * massDensityOfAir * this.dragArea * Math.pow(vel_m_s, 2));
     var airResistanceVec = this.vel.clone().normalize().scale(airResistance);
     this.addForce(airResistanceVec, new Vector(0, 0));
   };

@@ -7,22 +7,23 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
 
   var Sprite = function () {
 
-    this.init = function (name, width, height, image) {
-      this.name     = name;
+    this.init = function (config) {
+      this.name   = config.name;
 
-      var halfWidth  = width / 2;
-      var halfHeight = height / 2;
-      this.points   = new Array(4);
+      var halfWidth  = config.width / 2;
+      var halfHeight = config.height / 2;
+
+      this.points    = new Array(4);
       this.points[0] = new Vector(-halfWidth, -halfHeight);
       this.points[1] = new Vector( halfWidth, -halfHeight);
       this.points[2] = new Vector( halfWidth,  halfHeight);
       this.points[3] = new Vector(-halfWidth,  halfHeight);
 
-      this.image    = image;
+      this.image    = config.image;
 
       // assuming horizontal tiles
-      this.tileWidth  = width;
-      this.tileHeight = height;
+      this.tileWidth  = config.width;
+      this.tileHeight = config.height;
 
       this.pos = new Vector(0, 0);
       this.pos.rot = 0;
