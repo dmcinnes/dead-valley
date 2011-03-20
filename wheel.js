@@ -30,22 +30,21 @@ define(["matrix"], function (Matrix) {
       this.torque += newValue;
     };
 
-    var patchSpeed, diff, sideVel, forwardVel, responseForce;
     this.calculateForce = function (relativeGroundSpeed, delta) {
       // calculate speed of tire patch at ground
-      patchSpeed = this.forwardAxis.multiply(this.speed * this.radius);
+      var patchSpeed = this.forwardAxis.multiply(this.speed * this.radius);
 
       // get velocity difference between ground and patch
-      diff = relativeGroundSpeed.subtract(patchSpeed);
+      var diff = relativeGroundSpeed.subtract(patchSpeed);
 
       // project ground speed onto side and forward axis
-      sideVel    = diff.project(this.sideAxis);
-      forwardVel = diff.project(this.forwardAxis);
+      var sideVel    = diff.project(this.sideAxis);
+      var forwardVel = diff.project(this.forwardAxis);
 
       // calculate super fake friction forces
       // calculate response force
       // responseForce = sideVel.multiply(-10.0).subtract(forwardVel);
-      responseForce = sideVel.multiply(-20.0).subtract(forwardVel);
+      this.responseForce = sideVel.multiply(-20.0).subtract(forwardVel);
 
       // calculate torque on wheel
       this.torque += diff.dotProduct(this.forwardAxis) * radius;
@@ -59,10 +58,8 @@ define(["matrix"], function (Matrix) {
       // clear our transmission torque accumulator
       this.torque = 0.0;
 
-      this.responseForce = responseForce;
-
       // return force acting on body
-      return responseForce;
+      return this.responseForce;
     };
 
     this.setSteeringAngle(0);

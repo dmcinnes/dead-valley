@@ -34,8 +34,10 @@ define(["sprite", "vector"], function (Sprite, Vector) {
       }
 
       // linear
-      this.acc.x = this.forces.x / this.mass;
-      this.acc.y = this.forces.y / this.mass;
+      // acc, vel and pos are in pixels
+      // there are 10 pixels to a meter
+      this.acc.x = 10 * this.forces.x / this.mass;
+      this.acc.y = 10 * this.forces.y / this.mass;
       this.vel.x += this.acc.x * delta;
       this.vel.y += this.acc.y * delta;
       this.pos.x += this.vel.x * delta;

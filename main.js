@@ -25,10 +25,11 @@ require(
           width:        24,
           height:       40,
           image:        assetManager.images.car1,
-          mass:         15,
+          mass:         225,  // kg
           dragArea:     0.654,
           steeringLock: 43.0, // degrees
-          engineTorque: 600,
+          // 140 HP * 3000 RPM / 5252 = ft/lbs and * 3 px/ft * 2.2 lbs/kg
+          engineTorque: (140 * 3000 * 3 * 2.2) / 5252,
           brakeTorque:  40,
           wheelRadius:  1,
           wheelPositions: [
@@ -38,6 +39,7 @@ require(
             new Vector( 10,  12)
           ]
         };
+        console.log(config.engineTorque);
 
         var car = new Car(config);
 
