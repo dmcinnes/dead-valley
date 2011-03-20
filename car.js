@@ -13,27 +13,19 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
 
     this.setMass(config.mass);
     this.dragArea = config.dragArea;
+    this.steeringLock  = config.steeringLock;
+    this.engineTorque  = config.engineTorque;
+    this.brakeTorque   = config.brakeTorque;
+
+    this.wheels = _(config.wheelPositions).map(function (pos) {
+      return new Wheel(pos.x, pos.y, config.wheelRadius, this.mass / 4),
+    });
 
     this.speed = 0.0;
-
     this.collided = false;
-
     this.breaking = false;
     this.driver = null;
-
     this.steeringAngle = 0;
-    this.steeringLock  = 43.0; // degrees
-    this.engineTorque  = 600.0;
-    this.brakeTorque   = 20.0;
-
-    var hw = config.width / 2;
-    var hh = config.height / 2;
-    this.wheels = [
-      new Wheel(-hw+2, -hh+8, 1, this.mass / 4),
-      new Wheel( hw-2, -hh+8, 1, this.mass / 4),
-      new Wheel(-hw+2,  hh-8, 1, this.mass / 4),
-      new Wheel( hw-2,  hh-8, 1, this.mass / 4)
-    ];
   };
   Car.prototype = new RigidBody();
 

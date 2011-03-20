@@ -22,11 +22,21 @@ require(
       var createSprites = function () {
         // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
         var config = {
-          width:    24,
-          height:   40,
-          image:    assetManager.images.car1,
-          mass:     15,
-          dragArea: 0.654
+          width:        24,
+          height:       40,
+          image:        assetManager.images.car1,
+          mass:         15,
+          dragArea:     0.654,
+          steeringLock: 43.0, // degrees
+          engineTorque: 600,
+          brakeTorque:  40,
+          wheelRadius:  1,
+          wheelPositions: [
+            new Vector(-10, -12),
+            new Vector( 10, -12),
+            new Vector(-10,  12),
+            new Vector( 10,  12)
+          ]
         };
 
         var car = new Car(config);
