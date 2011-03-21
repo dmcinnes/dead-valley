@@ -57,6 +57,7 @@ define(["sprite", "vector"], function (Sprite, Vector) {
       } else if (this.pos.rot < 0) {
         this.pos.rot += 360;
       }
+      this.pos.rot = Math.round(this.pos.rot);
 
       if (this.postMove) {
         this.postMove(delta);

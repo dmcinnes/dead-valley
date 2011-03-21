@@ -39,7 +39,6 @@ require(
             new Vector( 10,  12)
           ]
         };
-        console.log(config.engineTorque);
 
         var car = new Car(config);
 

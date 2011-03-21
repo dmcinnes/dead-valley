@@ -53,16 +53,16 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
       context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
     }
 
-    _(this.wheels).each(function (wheel) {
-      context.beginPath();
-      context.strokeStyle = 'black';
-      context.lineWidth = 1;
-      context.moveTo(wheel.position.x, wheel.position.y);
-      context.lineTo(wheel.position.x + wheel.responseForce.x,
-                     wheel.position.y + wheel.responseForce.y);
-      context.stroke();
-      context.fillText(Math.round(wheel.speed), wheel.position.x, wheel.position.y);
-    });
+    // _(this.wheels).each(function (wheel) {
+    //   context.beginPath();
+    //   context.strokeStyle = 'black';
+    //   context.lineWidth = 1;
+    //   context.moveTo(wheel.position.x, wheel.position.y);
+    //   context.lineTo(wheel.position.x + wheel.responseForce.x,
+    //                  wheel.position.y + wheel.responseForce.y);
+    //   context.stroke();
+    //   context.fillText(Math.round(wheel.speed), wheel.position.x, wheel.position.y);
+    // });
   };
 
   Car.prototype.setSteering = function (steering) {
