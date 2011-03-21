@@ -59,12 +59,17 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     this.currentNode = null;
     this.nextSprite  = null;
 
-    this.preMove  = null;
-    this.postMove = null;
+    this.preMove  = function () {
+    };
 
-    this.run = function(delta) {
+    this.postMove = function () {
+    };
+
+    this.run = function (delta) {
       this.transPoints = null; // clear cached points
+      this.preMove(delta);
       this.move(delta);
+      this.postMove(delta);
       this.transformNormals();
       this.updateGrid();
     };
@@ -72,24 +77,17 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     this.move = function (delta) {
       if (!this.visible) return;
 
-      if (this.preMove) {
-        this.preMove(delta);
-      }
-
       this.vel.x   += this.acc.x   * delta;
       this.vel.y   += this.acc.y   * delta;
       this.vel.rot += this.acc.rot * delta;
       this.pos.x   += this.vel.x   * delta;
       this.pos.y   += this.vel.y   * delta;
       this.pos.rot += this.vel.rot * delta;
+
       if (this.pos.rot > 360) {
         this.pos.rot -= 360;
       } else if (this.pos.rot < 0) {
         this.pos.rot += 360;
-      }
-
-      if (this.postMove) {
-        this.postMove(delta);
       }
     };
 

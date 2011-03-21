@@ -152,11 +152,11 @@ define(["vector"], function (Vector) {
     they.collided = true;
 
     // rectify the positions
-    // TODO scale we based on collision response
-    // for each car
-    var rectify = vector.multiply(0.5);
-    we.pos.translate(vector);
-    they.pos.translate(rectify.scale(-1));
+    var wePart   = they.mass / (we.mass + they.mass);
+    var theyPart = wePart - 1;
+
+    we.pos.translate(vector.multiply(wePart));
+    they.pos.translate(vector.multiply(theyPart));
 
     var n = vector.normalize();
 

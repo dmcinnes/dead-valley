@@ -20,7 +20,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     this.walkingFrame = 0;
     this.walkingFrameCounter = 0.0;
 
-    this.mass = 0.6;
+    this.mass = 0.001;
     this.inertia = 1;
 
     this.draw = function (delta) {
@@ -43,8 +43,8 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     this.preMove = function (delta) {
       if (!this.visible) return;
 
-      if (keyStatus.x) {
-      }
+      // clear velocity
+      this.vel.set(0, 0);
 
       this.walking = (keyStatus.left  ||
                       keyStatus.right ||
@@ -68,8 +68,6 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     };
 
     this.postMove = function (delta) {
-      // clear velocity
-      this.vel.set(0, 0);
     };
 
     this.collision = function (other, point, vector) {
