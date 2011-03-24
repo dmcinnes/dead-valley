@@ -6,9 +6,10 @@ require(
    "sprite",
    "car",
    "dude",
+   "Sky",
    "framerate"],
 
-  function (game, GridNode, Map, mainloop, Sprite, Car, Dude, framerate) {
+  function (game, GridNode, Map, mainloop, Sprite, Car, Dude, Sky, framerate) {
 
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
@@ -66,6 +67,8 @@ require(
         dude.pos.y = startY;
         dude.visible = true;
         game.sprites.push(dude);
+
+        game.sprites.push(Sky);
       };
 
       assetManager.onComplete = function () {
