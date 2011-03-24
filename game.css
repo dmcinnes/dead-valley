@@ -1,3 +1,4 @@
+#sky-canvas { position:absolute; z-index:30; }
 #canvas { position:absolute; z-index:20; }
 #canvas-mask { position:relative; border:1px solid black; top:20px; left:20px; width:900px; height:600px; z-index:30; overflow:hidden; }
 #background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }

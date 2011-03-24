@@ -23,6 +23,7 @@ define(['assetmanager', 'controls', 'collidable'], function (AssetManager, contr
     canvasWidth:   canvas.width(),
     canvasHeight:  canvas.height(),
     spriteContext: canvas[0].getContext("2d"),
+    skyContext:    $('#sky-canvas')[0].getContext("2d"),
     map:           null,
     sprites:       [],
     runMap: function (delta) {

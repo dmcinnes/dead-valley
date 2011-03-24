@@ -2,7 +2,7 @@
 
 define(["game", "sprite"], function (game, Sprite) {
 
-  var context = game.spriteContext;
+  var context = game.skyContext;
 
   // in seconds
   var dayTotal        = 10 * 60;
@@ -58,8 +58,17 @@ define(["game", "sprite"], function (game, Sprite) {
       currentState();
     },
     render: function (delta) {
+      context.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
       context.fillStyle = "rgba(0, 0, 50, "+alpha+")";
       context.fillRect(0, 0, game.canvasWidth, game.canvasHeight);
+      // context.globalCompositeOperation = 'source-out';
+      // context.beginPath();
+      // context.moveTo(450, 300);
+      // context.lineTo(420, 200);
+      // context.lineTo(480, 200);
+      // context.closePath();
+      // context.fill();
+      // context.globalCompositeOperation = 'source-over';
     },
     currentAlpha: function () {
       return alpha;

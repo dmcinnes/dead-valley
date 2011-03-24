@@ -116,7 +116,7 @@ require(
       });
 
       // transition sky states
-      game.controls.registerKeyDownHandler('t', function () {
+      game.controls.registerKeyDownHandler('n', function () {
         Sky.gotoNextState();
       });
 
