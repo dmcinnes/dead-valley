@@ -115,6 +115,11 @@ require(
         }
       });
 
+      // transition sky states
+      game.controls.registerKeyDownHandler('t', function () {
+        Sky.gotoNextState();
+      });
+
     });
 
 });

@@ -20,28 +20,28 @@ define(["game", "sprite"], function (game, Sprite) {
   };
 
   var states = {
-    sunrise: function (delta) {
+    sunrise: function () {
       alpha = nightAlpha - (nightAlpha * transitionPercent());
       if (counter < 0) {
         counter = dayTotal;
         currentState = states.day;
       }
     },
-    day: function (delta) {
+    day: function () {
       alpha = 0.0;
       if (counter < 0) {
         counter = transitionTotal;
         currentState = states.sunset;
       }
     },
-    sunset: function (delta) {
+    sunset: function () {
       alpha = nightAlpha * transitionPercent();
       if (counter < 0) {
         counter = dayTotal;
         currentState = states.night;
       }
     },
-    night: function (delta) {
+    night: function () {
       alpha = nightAlpha;
       if (counter < 0) {
         counter = transitionTotal;
@@ -55,7 +55,7 @@ define(["game", "sprite"], function (game, Sprite) {
   var Sky = {
     run: function (delta) {
       counter -= delta;
-      currentState(delta);
+      currentState();
     },
     render: function (delta) {
       context.fillStyle = "rgba(0, 0, 50, "+alpha+")";
@@ -63,6 +63,10 @@ define(["game", "sprite"], function (game, Sprite) {
     },
     currentAlpha: function () {
       return alpha;
+    },
+    gotoNextState: function () {
+      counter = -1;
+      currentState();
     }
   };
   
