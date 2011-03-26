@@ -20,7 +20,6 @@ define(['game'], function (game) {
     context.lineTo(lampHW, 0);
     context.arc(0, 0, lampHW, 0, Math.PI);
     context.fill();
-    context.globalCompositeOperation = 'source-over';
     context.restore();
   };
 
