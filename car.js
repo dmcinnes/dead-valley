@@ -36,6 +36,7 @@ define(["game",
       this.points[0].add({x:4, y:0}),
       this.points[1].add({x:-4, y:0})
     ];
+    this.headlightsOn = false;
   };
   Car.prototype = new RigidBody();
 
@@ -61,16 +62,16 @@ define(["game",
         this.drawTile(5);
       }
 
-      if (Sky.isDark()) {
-        // headlights
-        this.drawTile(2);
-        this.drawTile(3);
-        Headlight.render(this, this.headlights[0]);
-        Headlight.render(this, this.headlights[1]);
-      }
-
       // MPH
       context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
+    }
+
+    if (this.headlightsOn) {
+      // headlights
+      this.drawTile(2);
+      this.drawTile(3);
+      Headlight.render(this, this.headlights[0]);
+      Headlight.render(this, this.headlights[1]);
     }
 
     // _(this.wheels).each(function (wheel) {
@@ -161,6 +162,10 @@ define(["game",
     if (this.driver) {
       game.map.keepInView(this);
     }
+  };
+
+  Car.prototype.toggleHeadlights = function () {
+    this.headlightsOn = !this.headlightsOn;
   };
 
   collidable(Car, {

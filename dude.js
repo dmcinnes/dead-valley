@@ -106,6 +106,12 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
         self.visible = false;
       }
     });
+
+    game.controls.registerKeyDownHandler('h', function () {
+      if (self.driving) {
+        self.driving.toggleHeadlights();
+      }
+    });
   };
   Dude.prototype = new Sprite();
 
