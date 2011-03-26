@@ -104,7 +104,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       if (!this.visible) return;
 
       context.save();
-      this.configureTransform();
+      this.configureTransform(context);
       this.draw(delta);
 
       context.restore();
@@ -129,15 +129,15 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       }
     };
 
-    this.configureTransform = function () {
+    this.configureTransform = function (ctx) {
       if (!this.visible) return;
 
       var rad = (this.pos.rot * Math.PI)/180;
 
-      context.translate(this.pos.x, this.pos.y);
-      context.translate(-game.map.originOffsetX, -game.map.originOffsetY);
-      context.rotate(rad);
-      context.scale(this.scale, this.scale);
+      ctx.translate(this.pos.x, this.pos.y);
+      ctx.translate(-game.map.originOffsetX, -game.map.originOffsetY);
+      ctx.rotate(rad);
+      ctx.scale(this.scale, this.scale);
     };
 
     this.collision = function () {

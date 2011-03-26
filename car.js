@@ -1,6 +1,11 @@
 // Car
 
-define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, Wheel, collidable) {
+define(["game",
+        "rigidbody",
+        "wheel",
+        "collidable",
+        "Sky",
+        "Headlight"], function (game, RigidBody, Wheel, collidable, Sky, Headlight) {
 
   var keyStatus = game.controls.keyStatus;
   var context   = game.spriteContext;
@@ -26,6 +31,11 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
     this.breaking = false;
     this.driver = null;
     this.steeringAngle = 0;
+
+    this.headlights = [
+      this.points[0].add({x:4, y:0}),
+      this.points[1].add({x:-4, y:0})
+    ];
   };
   Car.prototype = new RigidBody();
 
@@ -43,13 +53,23 @@ define(["game", "rigidbody", "wheel", "collidable"], function (game, RigidBody, 
 
     this.drawTile(0);
     this.drawTile(1);
-    if (this.breaking) {
-      this.drawTile(4);
-      this.drawTile(5);
-    }
 
-    // MPH
     if (this.driver) {
+      if (this.breaking) {
+        // break lights
+        this.drawTile(4);
+        this.drawTile(5);
+      }
+
+      if (Sky.isDark()) {
+        // headlights
+        this.drawTile(2);
+        this.drawTile(3);
+        Headlight.render(this, this.headlights[0]);
+        Headlight.render(this, this.headlights[1]);
+      }
+
+      // MPH
       context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
     }
 

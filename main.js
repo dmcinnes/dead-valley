@@ -21,6 +21,9 @@ require(
       var startY = 0;
 
       var createSprites = function () {
+
+        game.sprites.push(Sky);
+
         // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
         var config = {
           width:        24,
@@ -67,8 +70,6 @@ require(
         dude.pos.y = startY;
         dude.visible = true;
         game.sprites.push(dude);
-
-        game.sprites.push(Sky);
       };
 
       assetManager.onComplete = function () {

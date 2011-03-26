@@ -11,7 +11,7 @@ define(["game", "sprite"], function (game, Sprite) {
 
   var counter = 45; // 1/2 the way through sunrise
 
-  var nightAlpha = 0.95;
+  var nightAlpha = 0.90;
 
   var alpha = nightAlpha;
 
@@ -59,16 +59,8 @@ define(["game", "sprite"], function (game, Sprite) {
     },
     render: function (delta) {
       context.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
-      context.fillStyle = "rgba(0, 0, 50, "+alpha+")";
+      context.globalAlpha = alpha;
       context.fillRect(0, 0, game.canvasWidth, game.canvasHeight);
-      // context.globalCompositeOperation = 'source-out';
-      // context.beginPath();
-      // context.moveTo(450, 300);
-      // context.lineTo(420, 200);
-      // context.lineTo(480, 200);
-      // context.closePath();
-      // context.fill();
-      // context.globalCompositeOperation = 'source-over';
     },
     currentAlpha: function () {
       return alpha;
@@ -76,6 +68,9 @@ define(["game", "sprite"], function (game, Sprite) {
     gotoNextState: function () {
       counter = -1;
       currentState();
+    },
+    isDark: function () {
+      return alpha > 0.4;
     }
   };
   
