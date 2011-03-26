@@ -87,7 +87,7 @@ define(["game",
 
   Car.prototype.setSteering = function (steering) {
     if (steering == 0) this.steeringAngle = 0; // reset
-    this.steeringAngle += steering * 4;
+    this.steeringAngle += steering;
     if (Math.abs(this.steeringAngle) > this.steeringLock) {
       this.steeringAngle = this.steeringLock * steering;
     }
