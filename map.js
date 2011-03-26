@@ -425,8 +425,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     var vBorder = 180.0;
 
     this.keepInView = function (sprite) {
-      screenX = sprite.pos.x - this.originOffsetX;
-      screenY = sprite.pos.y - this.originOffsetY;
+      screenX = sprite.pos.x + sprite.vel.x*0.8 - this.originOffsetX;
+      screenY = sprite.pos.y + sprite.vel.y*0.8 - this.originOffsetY;
 
       this.velX = 0;
       this.velY = 0;
