@@ -5,7 +5,8 @@ define(["game",
         "wheel",
         "collidable",
         "Sky",
-        "Headlight"], function (game, RigidBody, Wheel, collidable, Sky, Headlight) {
+        "Headlight",
+        "Taillight"], function (game, RigidBody, Wheel, collidable, Sky, Headlight, Taillight) {
 
   var keyStatus = game.controls.keyStatus;
   var context   = game.spriteContext;
@@ -72,6 +73,8 @@ define(["game",
       this.drawTile(3);
       Headlight.render(this, this.headlights[0]);
       Headlight.render(this, this.headlights[1]);
+      Taillight.render(this, 4, this.breaking);
+      Taillight.render(this, 5, this.breaking);
     }
 
     // _(this.wheels).each(function (wheel) {

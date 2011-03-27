@@ -186,12 +186,13 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
               cn.south.west.isEmpty(this.collidesWith));
     };
 
-    this.drawTile = function (index, flipped) {
+    this.drawTile = function (index, flipped, cxt) {
+      cxt = cxt || context;
       if (flipped) {
-        context.save();
-        context.scale(-1, 1);
+        cxt.save();
+        cxt.scale(-1, 1);
       }
-      context.drawImage(this.image,
+      cxt.drawImage(this.image,
                         index * this.tileWidth,
                         0,
                         this.tileWidth,
@@ -201,7 +202,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
                         this.tileWidth,
                         this.tileHeight);
       if (flipped) {
-        context.restore();
+        cxt.restore();
       }
     };
 
