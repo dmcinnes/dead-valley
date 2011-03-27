@@ -61,17 +61,20 @@ importScripts('section_list.js');
 var map, roads;
 _(section_list).each(function (name) {
   importScripts('maps/'+name+'.json');
-  sections[name] = map;
-  // save the road directions on the map Array object
-  map.roads = roads;
-  map.name  = name;
+
+  var section = [];
 
   // convert the map into objects
   for (var i = 0; i < map.length; i++) {
     var tile = new Tile();
     tile.setFromString(map[i]);
-    map[i] = tile;
+    section[i] = tile;
   }
+
+  sections[name] = section;
+  // save the road directions on the map Array object
+  section.roads = roads;
+  section.name  = name;
 });
 
 // fills a map's blank tiles wth random dirt and scrub
@@ -154,7 +157,7 @@ onmessage = function (e) {
 
   var message = {
     type:     'newtiles',
-    tiles:    _(tiles).map(function (t) { return t.toString(); }),
+    tiles:    _(tiles).map(function (t) { return t.toString(); }).join(''),
     roads:    tiles.roads,
     position: config.position
   };

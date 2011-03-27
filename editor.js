@@ -109,7 +109,7 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
       var tileObject = TileDisplay.getTileObject(nodes.eq(i));
       text.push(tileObject.toString());
     }
-    return "map = ['" + text.join("','") + "'];";
+    return "map = \"" + text.join('') + "\";";
   };
 
   var setupComponentSizes = function () {
@@ -286,7 +286,7 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
         }
       });
       Tile.prototype.__defineGetter__(attr, function (val) {
-        return this.values && this.values[attr];
+        return (this.values && this.values[attr]) || 0;
       });
     });
     // so the view can get the data updates

@@ -8,15 +8,14 @@ define([], function () {
   var World = {
     setTiles: function (position, tiles, roads) {
       // console.log("Set ", position.toString());
-      tiles.position = position;
-      worldMap[position.toString()] = JSON.stringify(tiles);
+      worldMap[position.toString()] = tiles;
       worldMap[position.toString() + 'r'] = JSON.stringify(roads);
     },
 
     getTiles: function (position) {
       var data = worldMap[position.toString()];
       // console.log("Get ", position.toString(), data !== undefined);
-      return data && JSON.parse(data);
+      return data;
     },
 
     getRoads: function (position) {
