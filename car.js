@@ -159,6 +159,11 @@ define(["game",
     var airResistance = Math.round(-0.5 * massDensityOfAir * this.dragArea * Math.pow(vel_m_s, 2));
     var airResistanceVec = this.vel.clone().normalize().scale(airResistance);
     this.addForce(airResistanceVec, new Vector(0, 0));
+
+    if (this.currentNode && !this.currentNode.isRoad()) {
+      this.pos.rot += (Math.random() > 0.5) ? -1 : 1;
+      this.addForce(airResistanceVec.scale(4), new Vector(0, 0)); // slow em down too
+    }
   };
 
   Car.prototype.postMove = function (delta) {

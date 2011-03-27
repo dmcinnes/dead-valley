@@ -168,6 +168,10 @@ define(["game",
     return this.points;
   };
 
+  GridNode.prototype.isRoad = function () {
+    return this.tileOffset > 2;
+  };
+
   GridNode.prototype.tiles = game.assetManager.images.tiles;
 
   // mixins
