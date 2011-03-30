@@ -13,6 +13,7 @@ define(["game",
 
   var massDensityOfAir = 1.2; // kg/m^3
 
+  // TODO maybe I should just save the config directly
   var Car = function (config) {
     config.name = 'car';
     this.init(config);
@@ -26,6 +27,9 @@ define(["game",
     this.wheels = _(config.wheelPositions).map(function (pos) {
       return new Wheel(pos.x, pos.y, config.wheelRadius, this.mass / 4),
     });
+
+    this.driversSide    = config.driversSide;
+    this.passengersSide = config.driversSide.multiply({x:-1, y:1}); // assuming we're symmetrical
 
     this.speed = 0.0;
     this.collided = false;
@@ -174,6 +178,14 @@ define(["game",
 
   Car.prototype.toggleHeadlights = function () {
     this.headlightsOn = !this.headlightsOn;
+  };
+
+  Car.prototype.driversSideLocation = function () {
+    return this.pos.add(this.relativeToWorld(this.driversSide));
+  };
+
+  Car.prototype.passengersSideLocation = function () {
+    return this.pos.add(this.relativeToWorld(this.passengersSide));
   };
 
   collidable(Car, {

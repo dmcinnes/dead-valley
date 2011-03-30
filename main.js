@@ -41,7 +41,8 @@ require(
             new Vector( 10, -12),
             new Vector(-10,  12),
             new Vector( 10,  12)
-          ]
+          ],
+          driversSide: new Vector(-26, -4)
         };
 
         var car = new Car(config);

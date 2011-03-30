@@ -165,12 +165,12 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
       return trans;
     };
 
-    this.isClear = function () {
-      if (!this.collidable) return true;
+    this.isClear = function (pos) {
+      pos = pos || this.pos;
       var cn = this.currentNode;
       if (cn == null) {
-        var gridx = Math.floor(this.pos.x / game.gridSize);
-        var gridy = Math.floor(this.pos.y / game.gridSize);
+        var gridx = Math.floor(pos.x / game.gridSize);
+        var gridy = Math.floor(pos.y / game.gridSize);
         gridx = (gridx >= game.map.grid.length) ? 0 : gridx;
         gridy = (gridy >= game.map.grid[0].length) ? 0 : gridy;
         cn = game.map.grid[gridx][gridy];

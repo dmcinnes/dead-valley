@@ -80,30 +80,25 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     game.controls.registerKeyDownHandler('x', function () {
       if (self.driving) {
         // leave the car
-        // TODO move this calculation into Car
-        // TODO make the dude come out the driver's side
-        self.pos.set(self.driving.pos);
+        self.pos.set(self.driving.driversSideLocation());
         self.driving.driver = null;
         self.driving = null;
         self.visible = true;
-        return;
-      }
+      } else if (self.visible) {
+        var cars = _(self.nearby()).select(function (sprite) {
+          return sprite.name === "car";
+        });
+        if (cars.length > 0) {
+          // find the closest
+          var car = _(cars).reduce(function (closest, car) {
+            return (self.distance(car) < self.distance(closest)) ? car : closest;
+          }, cars[0]);
 
-      if (!self.visible) return;
-
-      var cars = _(self.nearby()).select(function (sprite) {
-        return sprite.name === "car";
-      });
-      if (cars.length > 0) {
-        // find the closest
-        var car = _(cars).reduce(function (closest, car) {
-          return (self.distance(car) < self.distance(closest)) ? car : closest;
-        }, cars[0]);
-
-        // get in the car
-        car.driver = self;
-        self.driving = car;
-        self.visible = false;
+          // get in the car
+          car.driver = self;
+          self.driving = car;
+          self.visible = false;
+        }
       }
     });
 
