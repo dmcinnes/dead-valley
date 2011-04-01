@@ -373,7 +373,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         progress.increment();
         self.loadMapTiles(chunks.sw, 'sw', {name:'intersection'}, function () {
 	  progress.increment();
-          self.loadMapTiles(chunks.ne, 'ne', {name:'intersection'}, function () {
+          self.loadMapTiles(chunks.ne, 'ne', {name:'gas-station-crossroads'}, function () {
 	    progress.increment();
             self.loadMapTiles(chunks.se, 'se', {name:'intersection'}, function () {
 	      progress.increment();

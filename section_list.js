@@ -10,5 +10,6 @@ section_list = [
   'NSE_T',
   'NSW_T',
   'NEW_T',
-  'SEW_T'
+  'SEW_T',
+  'gas-station-crossroads'
 ];
