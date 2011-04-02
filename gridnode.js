@@ -172,6 +172,9 @@ define(["game",
     return this.tileOffset > 2;
   };
 
+  GridNode.prototype.collision = function () {
+  };
+
   GridNode.prototype.tiles = game.assetManager.images.tiles;
 
   // mixins

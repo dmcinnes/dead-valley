@@ -92,3 +92,7 @@ body {
 #load {
   display: none;
 }
+
+.collidable {
+  border: dotted red 2px;
+}

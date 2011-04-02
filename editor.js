@@ -63,6 +63,11 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
     },
 
     collidable: function (tile, collidable) {
+      if (collidable) {
+        tile.addClass('collidable');
+      } else {
+        tile.removeClass('collidable');
+      }
     }
   };
 
@@ -177,6 +182,11 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
     tileObject.tileFlip = !tileObject.tileFlip;
   };
 
+  var toggleTileCollide = function (tile) {
+    var tileObject = TileDisplay.getTileObject(tile);
+    tileObject.collidable = !tileObject.collidable;
+  };
+
   var cycleTileRotate = function (tile) {
     var tileObject = TileDisplay.getTileObject(tile);
     tileObject.tileRotate = (tileObject.tileRotate + 1) % 4;
@@ -249,6 +259,11 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
       target = target.is('.tile') && target;
 
       switch (e.keyCode) {
+	case 67: // c is for COLLIDE
+	  if (target) {
+            toggleTileCollide(target);
+	  }
+	  break;
 	case 68: // d is for DROPPER
 	  if (target) {
 	    selectTileType(target.data('offset') || 0);
