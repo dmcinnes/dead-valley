@@ -178,7 +178,7 @@ define(["game",
   GridNode.prototype.tiles = game.assetManager.images.tiles;
 
   // mixins
-  collidable(GridNode, {});
+  collidable(GridNode);
   tileMarshal(GridNode);
 
   return GridNode;

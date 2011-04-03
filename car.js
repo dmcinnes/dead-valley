@@ -188,12 +188,7 @@ define(["game",
     return this.pos.add(this.relativeToWorld(this.passengersSide));
   };
 
-  collidable(Car, {
-    scenery: true,
-    car:     true,
-    Dude:    true,
-    barrel:  true
-  });
+  collidable(Car);
 
   return Car;
 });

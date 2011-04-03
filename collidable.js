@@ -51,7 +51,8 @@ define(["vector"], function (Vector) {
 
       if (!other.visible  ||
            this === other ||
-          !this.collidesWith[other.name]) {
+          (this.collidesWith &&
+          !this.collidesWith[other.name])) {
         return;
       }
 

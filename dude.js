@@ -110,11 +110,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
   };
   Dude.prototype = new Sprite();
 
-  collidable(Dude, {
-    scenery: true,
-    car:     true,
-    barrel:  true
-  });
+  collidable(Dude);
 
   return Dude;
 
