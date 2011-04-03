@@ -68,6 +68,20 @@ define(['assetmanager', 'controls', 'collidable'], function (AssetManager, contr
           this.sprites[i].render(delta);
         }
       }
+    },
+    addSprites: function (spriteHash, offset) {
+      var self = this;
+      _(spriteHash).each(function (coords, key) {
+        // TODO these could be cars too
+        require(['objects/'+key], function (NewSprite) {
+          for (var i = 0; i < coords.length; i += 2) {
+            var sprite = new NewSprite();
+            sprite.pos.x = coords[i]   + offset.x;
+            sprite.pos.y = coords[i+1] + offset.y;
+            self.sprites.push(sprite);
+          }
+        });
+      });
     }
   };
 

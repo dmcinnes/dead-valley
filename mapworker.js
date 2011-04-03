@@ -34,7 +34,7 @@ var sections = {
 importScripts('section_list.js');
 
 // sections set these variables with their data when loaded
-var map, roads;
+var map, roads, sprites;
 _(section_list).each(function (name) {
   importScripts('maps/'+name+'.json');
 
@@ -49,8 +49,9 @@ _(section_list).each(function (name) {
 
   sections[name] = section;
   // save the road directions on the map Array object
-  section.roads = roads;
-  section.name  = name;
+  section.roads   = roads;
+  section.sprites = sprites;
+  section.name    = name;
 });
 
 // fills a map's blank tiles wth random dirt and scrub
@@ -78,7 +79,8 @@ var loadSection = function (config) {
   for (var i = 0; i < mapLength; i++) {
     tiles[i] = _.clone(section[i % sectionLength]);
   }
-  tiles.roads = section.roads;
+  tiles.roads   = section.roads;
+  tiles.sprites = section.sprites;
   return tiles;
 };
 
@@ -88,6 +90,7 @@ var cloneSection = function (section) {
     tiles[i] = _.clone(section[i]);
   }
   tiles.roads = section.roads;
+  tiles.sprites = section.sprites;
   return tiles;
 };
 
@@ -135,6 +138,7 @@ onmessage = function (e) {
     type:     'newtiles',
     tiles:    _(tiles).map(function (t) { return t.toString(); }).join(''),
     roads:    tiles.roads,
+    sprites:  tiles.sprites,
     position: config.position
   };
 

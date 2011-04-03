@@ -77,7 +77,7 @@ require(
         barrel.pos.x = startX + 120;
         barrel.pos.y = startY;
 
-        game.sprites.push(barrel);
+        // game.sprites.push(barrel);
       };
 
       assetManager.registerCompleteLoadCallback(function () {

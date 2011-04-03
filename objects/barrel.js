@@ -12,6 +12,8 @@ define(["game",
 
   var friction = -0.8;
 
+  var image = null;
+
   var config = {
     name:         'barrel',
     width:        16,
@@ -29,11 +31,11 @@ define(["game",
 
   Barrel.prototype.draw = function (delta) {
     if (!this.visible ||
-        !Barrel.image) {
+        !image) {
       return;
     }
 
-    context.drawImage(Barrel.image,
+    context.drawImage(image,
                       spriteOffset.x,
                       spriteOffset.y,
                       this.tileWidth,
@@ -53,8 +55,8 @@ define(["game",
 
   collidable(Barrel);
 
-  game.assetManager.registerImageLoadCallback('objects', function (image) {
-    Barrel.image = image;
+  game.assetManager.registerImageLoadCallback('objects', function (img) {
+    image = img;
   });
 
   return Barrel;

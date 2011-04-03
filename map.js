@@ -259,7 +259,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         case 'log':
           console.log.apply(console, data.message);
           break;
-        default:
+        case 'newtiles':
           var strings = data.tiles;
           var pos = new Vector(data.position.x, data.position.y);
           var stuff = waitingSectionDownloads[pos];
@@ -273,10 +273,16 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
           this.setTilesFromStrings(stuff.recipientTiles, strings);
 
+          if (data.sprites) {
+            // pos of 0,0 is the upper left corner but the origin is in it's lower right corner
+            game.addSprites(data.sprites, pos.subtract({x:1, y:1}).scale(this.sectionWidth));
+          }
+
           if (stuff.callback) {
             stuff.callback(strings);
           }
           break;
+        default:
       }
     };
 

@@ -107,6 +107,11 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
         self.driving.toggleHeadlights();
       }
     });
+
+    // game.controls.registerKeyDownHandler('p', function () {
+    //   var spr = (self.driving) ? self.driving : self;
+    //   console.log(spr.pos.x, spr.pos.y, game.sprites);
+    // });
   };
   Dude.prototype = new Sprite();
 
