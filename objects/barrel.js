@@ -21,7 +21,7 @@ define(["game",
   var Barrel = function () {
     this.init(config);
 
-    this.mass    = 0.1;
+    this.mass    = 0.2;
     this.inertia = 10;
     this.visible = true;
   };
