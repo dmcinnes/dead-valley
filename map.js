@@ -168,6 +168,10 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         this.swapHorizontal(chunks.sw, chunks.nw);
         this.offsetY = this.offsetY - (this.height / 2);
       }
+
+      // update the current levelData so we can grab the
+      // correct tiles with lookups
+      this.levelMapData = this.levelMapContext.getImageData(0, 0, gridWidth, gridHeight);
     };
 
     // swap tile sections around a vertical axis
