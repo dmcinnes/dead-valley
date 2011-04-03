@@ -73,20 +73,14 @@ require(
         dude.visible = true;
         game.sprites.push(dude);
 
-        var barrel = new Barrel({
-          spriteOffset: new Vector(78, 0),
-          width: 16,
-          height: 16,
-          image: assetManager.images.objects
-        });
+        var barrel = new Barrel();
         barrel.pos.x = startX + 120;
         barrel.pos.y = startY;
 
-        barrel.visible = true;
         game.sprites.push(barrel);
       };
 
-      assetManager.onComplete = function () {
+      assetManager.registerCompleteLoadCallback(function () {
 
         game.tileRowSize = assetManager.images.tiles.width / game.gridSize;
 
@@ -99,7 +93,7 @@ require(
           // only run the main loop after the map is loaded
           mainloop.play();
         });
-      };
+      });
 
       _(['tiles', 'car1', 'dude', 'objects']).each(function (image) {
         assetManager.registerImage(image + '.png');

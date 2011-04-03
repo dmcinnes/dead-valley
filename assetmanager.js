@@ -1,18 +1,34 @@
 // AssetManager
 
 define(["progress"], function (progress) {
-  var AssetManager = function (base, onComplete) {
+  var AssetManager = function (base) {
     var loadedCount = 0;
-    var assets = [];
-    var images = {};
+    var assets      = [];
+    var images      = {};
+    var callbacks   = {};
+    var onComplete  = [];
 
-    this.onComplete = onComplete;
+    var fireCallbacks = function (imageName) {
+      if (callbacks[imageName]) {
+        _(callbacks[imageName]).each(function (callback) {
+          callback(images[imageName]);
+        });
+        callbacks[imageName] = null;
+      }
+    };
+    
+    var fireOnCompleteCallbacks = function () {
+      _(onComplete).each(function (callback) {
+        callback();
+      });
+    };
 
-    var assetLoaded = function () {
+    var assetLoaded = function (imageName) {
+      fireCallbacks(imageName);
       progress.increment();
       loadedCount++;
       if (loadedCount == assets.length) {
-        this.onComplete && this.onComplete();
+        fireOnCompleteCallbacks();
       } else {
         loadNextAsset();
       }
@@ -24,15 +40,18 @@ define(["progress"], function (progress) {
 
     this.registerImage = function (src) {
       var image = new Image();
-      image.onload = $.proxy(assetLoaded, this);
+      var name = src.split('.')[0];
+
+      image.onload = function () {
+        images[name] = image;
+        assetLoaded(name);
+      };
 
       assets.push(function () {
         image.src = base + src;
       });
 
-      images[src.split('.')[0]] = image;
-
-      return image;
+      return name;
     };
 
     this.loadAssets = function () {
@@ -64,6 +83,25 @@ define(["progress"], function (progress) {
       images[newImageName] = canvas;
 
       return canvas;
+    };
+
+    this.registerImageLoadCallback = function (imageName, callback) {
+      if (callbacks[imageName] === images[imageName]) {
+        // image already loaded!
+        fireCallbacks(imageName);
+      }
+      if (!callbacks[imageName]) {
+        callbacks[imageName] = [];
+      }
+      callbacks[imageName].push(callback);
+    };
+
+    this.registerCompleteLoadCallback = function (callback) {
+      if (assets.length && loadedCount == assets.length) {
+        // images already loaded!
+        fireOnCompleteCallbacks();
+      }
+      onComplete.push(callback);
     };
 
     this.__defineGetter__('loadedCount', function () { return loadedCount; });
