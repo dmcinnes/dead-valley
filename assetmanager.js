@@ -9,11 +9,14 @@ define(["progress"], function (progress) {
     var onComplete  = [];
 
     var fireCallbacks = function (imageName) {
-      if (callbacks[imageName]) {
-        _(callbacks[imageName]).each(function (callback) {
-          callback(images[imageName]);
+      var imageCallbacks = callbacks[imageName];
+      var image = images[imageName];
+      if (imageCallbacks && imageCallbacks !== imageName) {
+        _(imageCallbacks).each(function (callback) {
+          callback(image);
         });
-        callbacks[imageName] = null;
+        // so we know this image has loaded
+        callbacks[imageName] = imageName;
       }
     };
     
@@ -86,20 +89,21 @@ define(["progress"], function (progress) {
     };
 
     this.registerImageLoadCallback = function (imageName, callback) {
-      if (callbacks[imageName] === images[imageName]) {
-        // image already loaded!
-        fireCallbacks(imageName);
+      if (callbacks[imageName] === imageName) {
+        // image already loaded! just fire the callback
+        callback(images[imageName]);
+      } else {
+        if (!callbacks[imageName]) {
+          callbacks[imageName] = [];
+        }
+        callbacks[imageName].push(callback);
       }
-      if (!callbacks[imageName]) {
-        callbacks[imageName] = [];
-      }
-      callbacks[imageName].push(callback);
     };
 
     this.registerCompleteLoadCallback = function (callback) {
       if (assets.length && loadedCount == assets.length) {
         // images already loaded!
-        fireOnCompleteCallbacks();
+        callback();
       }
       onComplete.push(callback);
     };
