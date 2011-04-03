@@ -191,7 +191,8 @@ define(["game",
   collidable(Car, {
     scenery: true,
     car:     true,
-    Dude:    true
+    Dude:    true,
+    barrel:  true
   });
 
   return Car;

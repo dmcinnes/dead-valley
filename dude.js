@@ -113,6 +113,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
   collidable(Dude, {
     scenery: true,
     car:     true,
+    barrel:  true
   });
 
   return Dude;

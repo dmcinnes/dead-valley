@@ -7,9 +7,10 @@ require(
    "car",
    "dude",
    "Sky",
-   "framerate"],
+   "framerate",
+   "objects/Barrel"],
 
-  function (game, GridNode, Map, mainloop, Sprite, Car, Dude, Sky, framerate) {
+  function (game, GridNode, Map, mainloop, Sprite, Car, Dude, Sky, framerate, Barrel) {
 
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
@@ -71,6 +72,18 @@ require(
         dude.pos.y = startY;
         dude.visible = true;
         game.sprites.push(dude);
+
+        var barrel = new Barrel({
+          spriteOffset: new Vector(78, 0),
+          width: 16,
+          height: 16,
+          image: assetManager.images.objects
+        });
+        barrel.pos.x = startX + 120;
+        barrel.pos.y = startY;
+
+        barrel.visible = true;
+        game.sprites.push(barrel);
       };
 
       assetManager.onComplete = function () {
@@ -88,7 +101,7 @@ require(
         });
       };
 
-      _(['tiles', 'car1', 'dude']).each(function (image) {
+      _(['tiles', 'car1', 'dude', 'objects']).each(function (image) {
         assetManager.registerImage(image + '.png');
       });
 

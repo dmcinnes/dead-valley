@@ -193,14 +193,14 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
         cxt.scale(-1, 1);
       }
       cxt.drawImage(this.image,
-                        index * this.tileWidth,
-                        0,
-                        this.tileWidth,
-                        this.tileHeight,
-                        this.points[0].x,
-                        this.points[0].y,
-                        this.tileWidth,
-                        this.tileHeight);
+                    index * this.tileWidth,
+                    0,
+                    this.tileWidth,
+                    this.tileHeight,
+                    this.points[0].x,
+                    this.points[0].y,
+                    this.tileWidth,
+                    this.tileHeight);
       if (flipped) {
         cxt.restore();
       }
