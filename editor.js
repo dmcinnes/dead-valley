@@ -108,13 +108,20 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
   };
 
   var saveMapText = function () {
-    var text = [];
+    var tiles = [];
     var nodes = $map.children();
     for (var i = 0; i < nodes.length; i++) {
       var tileObject = TileDisplay.getTileObject(nodes.eq(i));
-      text.push(tileObject.toString());
+      tiles.push(tileObject.toString());
     }
-    return "map = \"" + text.join('') + "\";";
+    // TODO do something with these magic numbers
+    var roads = {
+      n: TileDisplay.getTileObject(nodes.eq(32)).tileOffset === 5,
+      s: TileDisplay.getTileObject(nodes.eq(4064)).tileOffset === 5,
+      e: TileDisplay.getTileObject(nodes.eq(2111)).tileOffset === 5,
+      w: TileDisplay.getTileObject(nodes.eq(2048)).tileOffset === 5
+    };
+    return "map=\"" + tiles.join('') + "\";roads=" + JSON.stringify(roads);
   };
 
   var setupComponentSizes = function () {
