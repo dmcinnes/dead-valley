@@ -16,12 +16,12 @@ body {
 
 #controls {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
 }
 #controls li {
   display: inline;
-  padding-right: 10;
+  padding-right: 10px;
 }
 #controls li:last-child {
   float: right;
@@ -37,16 +37,16 @@ body {
 }
 
 .list-tile {
-  width: 60;
-  height: 60;
+  width: 60px;
+  height: 60px;
   background-color: #F0F;
-  background-image: url(assets/tiles.png);
+  background-image: url(./assets/tiles.png);
   z-index: 5;
   margin: 3px;
 }
 .list-tile.selected {
   border: 3px solid #F50;
-  margin:0px;
+  margin: 0px;
 }
 
 .tile {
@@ -57,7 +57,7 @@ body {
 .road-matcher {
   border: 1px red solid;
   z-index: 10;
-  margin: -1;
+  margin: -1px;
 }
 
 #map-mask {
