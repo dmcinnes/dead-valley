@@ -125,10 +125,11 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
 
   var setupTileList = function () {
     var assetManager = new AssetManager('./assets/');
-    var tiles = assetManager.registerImage('tiles.png');
+    assetManager.registerImage('tiles.png');
 
-    assetManager.onComplete = function () {
+    assetManager.registerCompleteLoadCallback(function () {
       // set up the tile selection
+      var tiles = assetManager.images.tiles;
       TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
       var total = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
       for (var i = 0; i < total; i++) {
@@ -141,7 +142,7 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
       }
 
       setupComponentSizes();
-    };
+    });
 
     assetManager.loadAssets();
   };
