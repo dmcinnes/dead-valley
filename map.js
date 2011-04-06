@@ -269,7 +269,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
           }
           waitingSectionDownloads[pos] = null;
 
-          World.setTiles(pos, strings, data.roads);
+          World.setSectionData(pos, data);
 
           this.setTilesFromStrings(stuff.recipientTiles, strings);
 

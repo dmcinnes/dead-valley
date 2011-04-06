@@ -6,20 +6,25 @@ define([], function () {
   var worldMap = localStorage;
 
   var World = {
-    setTiles: function (position, tiles, roads) {
-      // console.log("Set ", position.toString());
-      worldMap[position.toString()] = tiles;
-      worldMap[position.toString() + 'r'] = JSON.stringify(roads);
+    setSectionData: function (position, data) {
+      var pos = position.toString();
+      worldMap[pos]       = data.tiles;
+      worldMap[pos + 'r'] = JSON.stringify(data.roads);
+      worldMap[pos + 's'] = JSON.stringify(data.sprites);
     },
 
     getTiles: function (position) {
       var data = worldMap[position.toString()];
-      // console.log("Get ", position.toString(), data !== undefined);
       return data;
     },
 
     getRoads: function (position) {
       var data = worldMap[position.toString() + 'r'];
+      return data && JSON.parse(data);
+    },
+
+    getSprites: function (position) {
+      var data = worldMap[position.toString() + 's'];
       return data && JSON.parse(data);
     },
 
