@@ -274,16 +274,21 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
           this.setTilesFromStrings(stuff.recipientTiles, strings);
 
           if (data.sprites) {
-            // pos of 0,0 is the upper left corner but the origin is in it's lower right corner
-            game.addSprites(data.sprites, pos.subtract({x:1, y:1}).scale(this.sectionWidth));
+            this.addSectionSprites(data.sprites, pos);
           }
 
           if (stuff.callback) {
             stuff.callback(strings);
           }
+
           break;
         default:
       }
+    };
+
+    this.addSectionSprites = function (sprites, pos) {
+      // pos of 0,0 is the upper left corner but the origin is in its lower right corner
+      game.addSprites(sprites, pos.subtract({x:1, y:1}).scale(this.sectionWidth));
     };
 
     // TODO make this method signiture less stupid and long
@@ -320,8 +325,12 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       var tiles = World.getTiles(position);
 
       if (tiles) {
-        // we've already create this one, reuse it
+        // we've already created this one, reuse it
         this.setTilesFromStrings(newSection, tiles);
+        var sprites = World.getSprites(position);
+        if (sprites) {
+          this.addSectionSprites(sprites, position);
+        }
         if (callback) {
           callback(tiles);
         }

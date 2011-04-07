@@ -9,8 +9,12 @@ define([], function () {
     setSectionData: function (position, data) {
       var pos = position.toString();
       worldMap[pos]       = data.tiles;
-      worldMap[pos + 'r'] = JSON.stringify(data.roads);
-      worldMap[pos + 's'] = JSON.stringify(data.sprites);
+      if (data.roads) {
+        worldMap[pos + 'r'] = JSON.stringify(data.roads);
+      }
+      if (data.sprites) {
+        worldMap[pos + 's'] = JSON.stringify(data.sprites);
+      }
     },
 
     getTiles: function (position) {
