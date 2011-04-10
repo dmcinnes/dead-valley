@@ -6,10 +6,27 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
   var MAP_SIZE  = 64;
   var TILE_SHEET_WIDTH;
 
-  var $tileList = $('#tile-list');
+  var SPRITES = {
+    Honda: {
+      img: 'car1',
+      offset: 0,
+      width: 24,
+      height: 40
+    },
+    barrel: {
+      img: 'objects',
+      offset: -78,
+      width: 16,
+      height: 16
+    }
+  };
 
-  var $map     = $('#map');
-  var $mapMask = $('#map-mask');
+  var $tileList   = $('#tile-list');
+
+  var $spriteList = $('#sprite-list');
+
+  var $map        = $('#map');
+  var $mapMask    = $('#map-mask');
 
   // the current selected tile from the list
   var selectedTile = 0;
@@ -152,6 +169,18 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
     });
 
     assetManager.loadAssets();
+  };
+
+  var setupSpriteList = function () {
+    _(SPRITES).each(function (val, name) {
+      var sprite = $('<li/>').attr('id', name+'-sprite').width(val.width).css({
+	'background-image': 'url(assets/' + val.img + '.png)',
+	'background-position': val.offset + ' 0',
+	width: val.width,
+	height: val.height
+      });
+      $spriteList.append(sprite);
+    });
   };
 
   var setupMapTiles = function () {
@@ -320,6 +349,7 @@ require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, Asse
   require.ready(function () {
     setupTileObject();
     setupTileList();
+    setupSpriteList();
     setupMapTiles();
     setupMouseHandling();
     setupControls();

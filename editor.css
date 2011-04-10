@@ -19,11 +19,11 @@ body {
   margin: 0px;
   padding: 0px;
 }
-#controls li {
+#controls > li {
   display: inline;
   padding-right: 10px;
 }
-#controls li:last-child {
+#controls > li:last-child {
   float: right;
 }
 
@@ -34,6 +34,29 @@ body {
   overflow-y: scroll;
   padding-left: 4px;
   padding-top: 4px;
+}
+
+#sprite-list {
+  width: 100%;
+  height: 60px;
+  padding-left: 4px;
+  padding-top: 4px;
+  margin-right: 4px;
+  border: 1px black solid;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+
+#sprite-list li {
+  display: block;
+  float: left;
+  background-repeat: no-repeat;
+  margin-left: 4px;
+}
+
+#sprite-list li.selected {
+  border: 3px solid #F50;
+  margin: 0px;
 }
 
 .list-tile {
@@ -64,7 +87,7 @@ body {
   border: 1px solid black;
   top: 20px;
   overflow: hidden;
-  float: right;
+  /* float: right; */
   overflow-x: scroll;
   overflow-y: scroll;
   z-index: 10;
