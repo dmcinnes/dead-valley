@@ -12,9 +12,10 @@ define([], function () {
       if (data.roads) {
         worldMap[pos + 'r'] = JSON.stringify(data.roads);
       }
-      if (data.sprites) {
-        worldMap[pos + 's'] = JSON.stringify(data.sprites);
-      }
+    },
+
+    saveSprites: function (position, sprites) {
+      worldMap[position.toString() + 's'] = JSON.stringify(sprites);
     },
 
     getTiles: function (position) {

@@ -138,15 +138,24 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       // TODO figure out a better magic number for this
       var road = Math.random() > 0.5;
 
+      // TODO DRY this up
       if (this.offsetX < this.shiftWestBorder) { // going left
         this.sectionOffsetX--;
+        // east is going away
+        this.saveSpritesForChunk(chunks.ne, 'ne');
+        this.saveSpritesForChunk(chunks.se, 'se');
+        // load tiles into east chunks
         this.loadMapTiles(chunks.ne, 'nw', {s:road});
         this.loadMapTiles(chunks.se, 'sw', {n:road});
+        // swap east and west
         this.swapVertical(chunks.nw, chunks.ne);
         this.swapVertical(chunks.sw, chunks.se);
+        // move the offset for a smooth transition
         this.offsetX = this.offsetX + (this.width / 2);
       } else if (this.offsetX > this.shiftEastBorder) { // going right
         this.sectionOffsetX++;
+        this.saveSpritesForChunk(chunks.nw, 'nw');
+        this.saveSpritesForChunk(chunks.sw, 'sw');
         this.loadMapTiles(chunks.nw, 'ne', {s:road});
         this.loadMapTiles(chunks.sw, 'se', {n:road});
         this.swapVertical(chunks.ne, chunks.nw);
@@ -155,6 +164,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       }
       if (this.offsetY < this.shiftNorthBorder) { // going up
         this.sectionOffsetY--;
+        this.saveSpritesForChunk(chunks.se, 'se');
+        this.saveSpritesForChunk(chunks.sw, 'sw');
         this.loadMapTiles(chunks.se, 'ne', {w:road});
         this.loadMapTiles(chunks.sw, 'nw', {e:road});
         this.swapHorizontal(chunks.ne, chunks.se);
@@ -162,6 +173,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         this.offsetY = this.offsetY + (this.height / 2);
       } else if (this.offsetY > this.shiftSouthBorder) { // going down
         this.sectionOffsetY++;
+        this.saveSpritesForChunk(chunks.ne, 'ne');
+        this.saveSpritesForChunk(chunks.nw, 'nw');
         this.loadMapTiles(chunks.ne, 'se', {w:road});
         this.loadMapTiles(chunks.nw, 'sw', {e:road});
         this.swapHorizontal(chunks.se, chunks.ne);
@@ -172,6 +185,23 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       // update the current levelData so we can grab the
       // correct tiles with lookups
       this.levelMapData = this.levelMapContext.getImageData(0, 0, gridWidth, gridHeight);
+    };
+
+    // save the sprites in a chunk that's getting removed from memory
+    this.saveSpritesForChunk = function (chunk, which) {
+      var coords = this.getSectionCoords(which);
+      var nodes = this.convertToNodes(chunk);
+      var sprites = [];
+      var saveSprite = function (sprite) {
+        // maybe call die() ?
+        sprite.reap = true;
+        sprites.push(sprite);
+      };
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].eachSprite(saveSprite);
+      }
+
+      World.saveSprites(sprites);
     };
 
     // swap tile sections around a vertical axis
