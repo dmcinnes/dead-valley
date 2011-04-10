@@ -98,7 +98,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
           car.driver = self;
           self.driving = car;
           self.visible = false;
-	  self.currentNode.leave(this);
+	  self.currentNode.leave(self);
 	  self.currentNode = null;
         }
       }
