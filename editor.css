@@ -51,11 +51,11 @@ body {
   display: block;
   float: left;
   background-repeat: no-repeat;
-  margin-left: 4px;
+  margin: 2px;
 }
 
 #sprite-list li.selected {
-  border: 3px solid #F50;
+  border: 2px solid #F50;
   margin: 0px;
 }
 
@@ -65,10 +65,10 @@ body {
   background-color: #F0F;
   background-image: url(./assets/tiles.png);
   z-index: 5;
-  margin: 3px;
+  margin: 2px;
 }
 .list-tile.selected {
-  border: 3px solid #F50;
+  border: 2px solid #F50;
   margin: 0px;
 }
 

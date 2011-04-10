@@ -17,6 +17,9 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
   // the current selected tile from the list
   var selectedTile = 0;
 
+  // the current selected sprite from the list
+  var selectedSprite = -1;
+
   // the current state of the controls
   var flipTiles    = false;
   var rotateTiles  = 0;
@@ -78,10 +81,29 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
     if (typeof(tile) === 'number') {
       tile = $tileList.children().eq(tile);
     }
-    if (tile.is('.list-tile')) {
+    if (tile && tile.is('.list-tile')) {
       tile.siblings().removeClass('selected');
       tile.addClass('selected');
       selectedTile = tile.prevAll().length;
+      selectSpriteType(); // clear selected sprite
+    } else {
+      $tileList.children().removeClass('selected');
+      selectedTile = -1;
+    }
+  };
+  
+  var selectSpriteType = function (sprite) {
+    if (typeof(sprite) === 'number') {
+      sprite = $spriteList.children().eq(sprite);
+    }
+    if (sprite) {
+      sprite.siblings().removeClass('selected');
+      sprite.addClass('selected');
+      selectedSprite = sprite.prevAll().length;
+      selectTileType(); // clear selected tile
+    } else {
+      $spriteList.children().removeClass('selected');
+      selectedSprite = -1;
     }
   };
 
@@ -220,6 +242,11 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
     $tileList.click(function (e) {
       var target = $(e.target);
       selectTileType(target);
+    });
+
+    $spriteList.click(function (e) {
+      var target = $(e.target);
+      selectSpriteType(target);
     });
 
     // map clicks/drags
