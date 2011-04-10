@@ -4,13 +4,13 @@ require(
    "map",
    "mainloop",
    "sprite",
-   "car",
+   "objects/Honda",
    "dude",
    "Sky",
    "framerate",
    "objects/Barrel"],
 
-  function (game, GridNode, Map, mainloop, Sprite, Car, Dude, Sky, framerate, Barrel) {
+  function (game, GridNode, Map, mainloop, Sprite, Honda, Dude, Sky, framerate, Barrel) {
 
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
@@ -25,28 +25,7 @@ require(
 
         game.sprites.push(Sky);
 
-        // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
-        var config = {
-          width:        24,
-          height:       40,
-          image:        assetManager.images.car1,
-          mass:         225,  // kg
-          dragArea:     0.654,
-          steeringLock: 43.0, // degrees
-          // 140 HP * 3000 RPM / 5252 = ft/lbs and * 3 px/ft * 2.2 lbs/kg
-          engineTorque: (140 * 3000 * 3 * 2.2) / 5252,
-          brakeTorque:  40,
-          wheelRadius:  1,
-          wheelPositions: [
-            new Vector(-10, -12),
-            new Vector( 10, -12),
-            new Vector(-10,  12),
-            new Vector( 10,  12)
-          ],
-          driversSide: new Vector(-26, -4)
-        };
-
-        var car = new Car(config);
+        var car = new Honda();
 
         car.pos.x = startX - 100;
         car.pos.y = startY - 200;
@@ -54,7 +33,7 @@ require(
         car.visible = true;
         game.sprites.push(car);
 
-        var car2 = new Car(config);
+        var car2 = new Honda();
 
         car2.pos.x = startX - 50;
         car2.pos.y = startY;
@@ -72,12 +51,6 @@ require(
         dude.pos.y = startY;
         dude.visible = true;
         game.sprites.push(dude);
-
-        var barrel = new Barrel();
-        barrel.pos.x = startX + 120;
-        barrel.pos.y = startY;
-
-        // game.sprites.push(barrel);
       };
 
       assetManager.registerCompleteLoadCallback(function () {

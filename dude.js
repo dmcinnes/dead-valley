@@ -86,7 +86,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
         self.visible = true;
       } else if (self.visible) {
         var cars = _(self.nearby()).select(function (sprite) {
-          return sprite.name === "car";
+          return !!sprite.isCar;
         });
         if (cars.length > 0) {
           // find the closest

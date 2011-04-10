@@ -15,7 +15,6 @@ define(["game",
 
   // TODO maybe I should just save the config directly
   var Car = function (config) {
-    config.name = 'car';
     this.init(config);
 
     this.setMass(config.mass);
@@ -187,6 +186,8 @@ define(["game",
   Car.prototype.passengersSideLocation = function () {
     return this.pos.add(this.relativeToWorld(this.passengersSide));
   };
+
+  Car.prototype.isCar = true;
 
   collidable(Car);
 
