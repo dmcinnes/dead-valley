@@ -140,10 +140,10 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
       // TODO DRY this up
       if (this.offsetX < this.shiftWestBorder) { // going left
-        this.sectionOffsetX--;
         // east is going away
         this.saveSpritesForChunk(chunks.ne, 'ne');
         this.saveSpritesForChunk(chunks.se, 'se');
+        this.sectionOffsetX--;
         // load tiles into east chunks
         this.loadMapTiles(chunks.ne, 'nw', {s:road});
         this.loadMapTiles(chunks.se, 'sw', {n:road});
@@ -153,9 +153,9 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         // move the offset for a smooth transition
         this.offsetX = this.offsetX + (this.width / 2);
       } else if (this.offsetX > this.shiftEastBorder) { // going right
-        this.sectionOffsetX++;
         this.saveSpritesForChunk(chunks.nw, 'nw');
         this.saveSpritesForChunk(chunks.sw, 'sw');
+        this.sectionOffsetX++;
         this.loadMapTiles(chunks.nw, 'ne', {s:road});
         this.loadMapTiles(chunks.sw, 'se', {n:road});
         this.swapVertical(chunks.ne, chunks.nw);
@@ -163,18 +163,18 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         this.offsetX = this.offsetX - (this.width / 2);
       }
       if (this.offsetY < this.shiftNorthBorder) { // going up
-        this.sectionOffsetY--;
         this.saveSpritesForChunk(chunks.se, 'se');
         this.saveSpritesForChunk(chunks.sw, 'sw');
+        this.sectionOffsetY--;
         this.loadMapTiles(chunks.se, 'ne', {w:road});
         this.loadMapTiles(chunks.sw, 'nw', {e:road});
         this.swapHorizontal(chunks.ne, chunks.se);
         this.swapHorizontal(chunks.nw, chunks.sw);
         this.offsetY = this.offsetY + (this.height / 2);
       } else if (this.offsetY > this.shiftSouthBorder) { // going down
-        this.sectionOffsetY++;
         this.saveSpritesForChunk(chunks.ne, 'ne');
         this.saveSpritesForChunk(chunks.nw, 'nw');
+        this.sectionOffsetY++;
         this.loadMapTiles(chunks.ne, 'se', {w:road});
         this.loadMapTiles(chunks.nw, 'sw', {e:road});
         this.swapHorizontal(chunks.se, chunks.ne);
@@ -190,18 +190,25 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     // save the sprites in a chunk that's getting removed from memory
     this.saveSpritesForChunk = function (chunk, which) {
       var coords = this.getSectionCoords(which);
-      var nodes = this.convertToNodes(chunk);
+      // pos of 0,0 is the upper left corner but the origin is in its lower right corner
+      var offset = coords.subtract({x:1, y:1}).scale(-this.sectionWidth);
+      var nodes = this.convertToNodes(chunk.data);
       var sprites = [];
-      var saveSprite = function (sprite) {
-        // maybe call die() ?
-        sprite.reap = true;
-        sprites.push(sprite);
-      };
-      for (var i = 0; i < nodes.length; i++) {
-        nodes[i].eachSprite(saveSprite);
+      var sprite;
+      var totalNodes = nodes.length;
+
+      for (var i = 0; i < totalNodes; i++) {
+        sprite = nodes[i].nextSprite;
+        while (sprite) {
+          sprite.reap = true;
+          sprites.push(sprite.toString(offset));
+          sprite = sprite.nextSprite;
+        }
       }
 
-      World.saveSprites(sprites);
+      if (sprites.length) {
+        World.saveSprites(coords, sprites);
+      }
     };
 
     // swap tile sections around a vertical axis
@@ -281,6 +288,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       }
     };
 
+    // map worker has come back with some new section data
     this.mapWorkerCallback = function (e) {
       var data = JSON.parse(e.data);
 

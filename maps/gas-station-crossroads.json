@@ -5,6 +5,8 @@ roads = {
   e: true,
   w: true
 };
-sprites = {
-  Barrel: [1620, 1620, 1650, 1620, 1680, 1620]
-}
+sprites = [
+  'Barrel,1620,1620,0',
+  'Barrel,1650,1620,0',
+  'Barrel,1680,1620,0'
+];

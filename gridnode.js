@@ -69,7 +69,7 @@ define(["game",
     }
   };
 
-  GridNode.prototype.eachSprite = function(sprite, callback) {
+  GridNode.prototype.eachSprite = function (sprite, callback) {
     var ref = this;
     while (ref.nextSprite) {
       ref = ref.nextSprite;

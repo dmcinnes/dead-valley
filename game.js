@@ -69,17 +69,23 @@ define(['assetmanager', 'controls', 'collidable'], function (AssetManager, contr
         }
       }
     },
-    addSprites: function (spriteHash, offset) {
+    addSprites: function (sprites, offset) {
+      var values, clazz, x, y, rot;
       var self = this;
-      _(spriteHash).each(function (coords, key) {
+      _(sprites).each(function (spriteString) {
+        // TODO perhaps we should have a spritemarshaler
+        values = spriteString.split(',');
+        clazz = values[0];
+        x     = parseInt(values[1]);
+        y     = parseInt(values[2]);
+        rot   = parseInt(values[3]);
         // TODO these could be cars too
-        require(['objects/'+key], function (NewSprite) {
-          for (var i = 0; i < coords.length; i += 2) {
-            var sprite = new NewSprite();
-            sprite.pos.x = coords[i]   + offset.x;
-            sprite.pos.y = coords[i+1] + offset.y;
-            self.sprites.push(sprite);
-          }
+        require(['objects/'+clazz], function (NewSprite) {
+          var sprite = new NewSprite();
+          sprite.pos.x = x + offset.x;
+          sprite.pos.y = y + offset.y;
+          sprite.pos.rot = rot;
+          self.sprites.push(sprite);
         });
       });
     }
