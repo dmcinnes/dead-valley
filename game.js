@@ -70,21 +70,22 @@ define(['assetmanager', 'controls', 'collidable'], function (AssetManager, contr
       }
     },
     addSprites: function (sprites, offset) {
-      var values, clazz, x, y, rot;
       var self = this;
       _(sprites).each(function (spriteString) {
+        var values, clazz, x, y, rot;
         // TODO perhaps we should have a spritemarshaler
         values = spriteString.split(',');
         clazz = values[0];
-        x     = parseInt(values[1]);
-        y     = parseInt(values[2]);
+        x     = parseInt(values[1]) + offset.x;
+        y     = parseInt(values[2]) + offset.y;
         rot   = parseInt(values[3]);
         // TODO these could be cars too
         require(['objects/'+clazz], function (NewSprite) {
           var sprite = new NewSprite();
-          sprite.pos.x = x + offset.x;
-          sprite.pos.y = y + offset.y;
+          sprite.pos.x = x;
+          sprite.pos.y = y;
           sprite.pos.rot = rot;
+          sprite.visible = true;
           self.sprites.push(sprite);
         });
       });
