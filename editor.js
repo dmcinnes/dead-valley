@@ -1,25 +1,11 @@
-require(['tilemarshal', 'assetmanager', 'progress'], function (tileMarshal, AssetManager, progress) {
+require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
+	function (tileMarshal, AssetManager, progress, SPRITES) {
 
   var Tile = function () {};
 
   var TILE_SIZE = 60;
   var MAP_SIZE  = 64;
   var TILE_SHEET_WIDTH;
-
-  var SPRITES = {
-    Honda: {
-      img: 'car1',
-      offset: 0,
-      width: 24,
-      height: 40
-    },
-    barrel: {
-      img: 'objects',
-      offset: -78,
-      width: 16,
-      height: 16
-    }
-  };
 
   var $tileList   = $('#tile-list');
 
