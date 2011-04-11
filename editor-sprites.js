@@ -7,7 +7,7 @@ define(function () {
       width: 24,
       height: 40
     },
-    barrel: {
+    Barrel: {
       img: 'objects',
       offset: -78,
       width: 16,

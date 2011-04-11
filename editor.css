@@ -47,14 +47,22 @@ body {
   overflow-x: scroll;
 }
 
-#sprite-list li {
+.sprite {
   display: block;
-  float: left;
   background-repeat: no-repeat;
+  z-index: 100;
+}
+
+#map .sprite {
+  position: absolute;
+}
+
+#sprite-list .sprite {
+  float: left;
   margin: 2px;
 }
 
-#sprite-list li.selected {
+#sprite-list .sprite.selected {
   border: 2px solid #F50;
   margin: 0px;
 }

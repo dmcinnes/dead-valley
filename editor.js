@@ -129,12 +129,27 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
           })(i);
 	}
       }
+
+      if (sprites) {
+	_(sprites).each(function (spriteString) {
+	  var vals = spriteString.split(',');
+	  var name = vals[0];
+	  var x    = parseInt(vals[1]);
+	  var y    = parseInt(vals[2]);
+	  var rot  = parseInt(vals[3]);
+	  var sprite = generateSpriteTile('div', name).css({
+	    left: x,
+	    top: y
+	  });
+	  $map.append(sprite);
+	});
+      }
     });
   };
 
   var saveMapText = function () {
     var tiles = [];
-    var nodes = $map.children();
+    var nodes = $map.children(':not(.sprite)');
     for (var i = 0; i < nodes.length; i++) {
       var tileObject = TileDisplay.getTileObject(nodes.eq(i));
       tiles.push(tileObject.toString());
@@ -179,14 +194,19 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
     assetManager.loadAssets();
   };
 
+  var generateSpriteTile = function (type, name) {
+    var val = SPRITES[name];
+    return $('<'+type+'/>').css({
+      'background-image': 'url(assets/' + val.img + '.png)',
+      'background-position': val.offset + ' 0',
+      width: val.width,
+      height: val.height
+    }).addClass('sprite');
+  };
+
   var setupSpriteList = function () {
     _(SPRITES).each(function (val, name) {
-      var sprite = $('<li/>').attr('id', name+'-sprite').width(val.width).css({
-	'background-image': 'url(assets/' + val.img + '.png)',
-	'background-position': val.offset + ' 0',
-	width: val.width,
-	height: val.height
-      });
+      var sprite = generateSpriteTile('li', name).attr('id', name+'-sprite');
       $spriteList.append(sprite);
     });
   };
