@@ -109,8 +109,8 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 
   var loadMap = function (text) {
     $.getScript("maps/" + text, function () {
-      if (map) {
-        progress.setTotal(map.length);
+      if (window.map) {
+        progress.setTotal(window.map.length);
 
         var line = 0;
 	var nodes = $map.children();
@@ -122,7 +122,7 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
                 index = line * MAP_SIZE + j;
                 node = nodes.eq(index);
                 tileObject = TileDisplay.getTileObject(node);
-                tileObject.setFromString(map[index]);
+                tileObject.setFromString(window.map[index]);
               }
               progress.increment(MAP_SIZE);
             }, 0);
@@ -130,8 +130,8 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 	}
       }
 
-      if (sprites) {
-	_(sprites).each(function (spriteString) {
+      if (window.sprites) {
+	_(window.sprites).each(function (spriteString) {
 	  var vals = spriteString.split(',');
 	  var name = vals[0];
 	  var x    = parseInt(vals[1]);

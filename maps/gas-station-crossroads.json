@@ -8,5 +8,6 @@ roads = {
 sprites = [
   'Barrel,1620,1620,0',
   'Barrel,1650,1620,0',
-  'Barrel,1680,1620,0'
+  'Barrel,1680,1620,0',
+  'Barrel,1920,1920,180'
 ];
