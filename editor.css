@@ -62,7 +62,7 @@ body {
   margin: 2px;
 }
 
-#sprite-list .sprite.selected {
+.sprite.selected {
   border: 2px solid #F50;
   margin: 0px;
 }

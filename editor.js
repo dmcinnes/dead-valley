@@ -13,6 +13,7 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 
   var $map        = $('#map');
   var $mapMask    = $('#map-mask');
+  var mapMaskPos  = $mapMask.position();
 
   // the current selected tile from the list
   var selectedTile = 0;
@@ -242,6 +243,24 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
     tileObject.tileRotate = rotateTiles;
   };
 
+  var selectSprite = function (event) {
+    var target = $(event.target);
+    if (target.is('.sprite')) {
+      target.siblings('.sprite').removeClass('selected');
+      target.addClass('selected');
+    }
+  };
+
+  var addSprite = function (event) {
+    $map.children('.sprite').removeClass('selected');
+    var sprite = $spriteList.children().eq(selectedSprite).clone();
+    sprite.css({
+      left: event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width(),
+      top: event.pageY + $mapMask[0].scrollTop - mapMaskPos.top - sprite.height()/2
+    });
+    $map.append(sprite);
+  };
+
   var toggleTileFlip = function (tile) {
     var tileObject = TileDisplay.getTileObject(tile);
     tileObject.tileFlip = !tileObject.tileFlip;
@@ -271,7 +290,13 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 
     // map clicks/drags
     $map.click(function (e) {
-      updateTile(e);
+      if ($(e.target).is('.sprite')) {
+	selectSprite(e);
+      } else if (selectedTile > -1) {
+	updateTile(e);
+      } else {
+       	addSprite(e);
+      }
     }).mousemove(function (e) {
       currentTarget = e.target;
       if (e.shiftKey) {
