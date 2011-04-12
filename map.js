@@ -39,11 +39,11 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
       // start in the center
       // this is the viewport offset within the current loaded view sections
-      this.offsetX = game.gridSize * gridWidth/2  - gridWidth/2 + startX;
-      this.offsetY = game.gridSize * gridHeight/2 - gridHeight/2 + startY;
+      this.offsetX = startX - game.canvasWidth / 2;
+      this.offsetY = startY - game.canvasHeight / 2;
       // viewport world coordinates
-      this.originOffsetX = -game.canvasWidth  / 2.0 + startX;
-      this.originOffsetY = -game.canvasHeight / 2.0 + startY;
+      this.originOffsetX = this.offsetX;
+      this.originOffsetY = this.offsetY;
       // upper left section coordinates
       this.sectionOffsetX = 0;
       this.sectionOffsetY = 0;
@@ -190,8 +190,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     // save the sprites in a chunk that's getting removed from memory
     this.saveSpritesForChunk = function (chunk, which) {
       var coords = this.getSectionCoords(which);
-      // pos of 0,0 is the upper left corner but the origin is in its lower right corner
-      var offset = coords.subtract({x:1, y:1}).scale(-this.sectionWidth);
+      var offset = coords.multiply(-this.sectionWidth);
       var nodes = this.convertToNodes(chunk.data);
       var sprites = [];
       var sprite;
@@ -325,8 +324,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
     };
 
     this.addSectionSprites = function (sprites, pos) {
-      // pos of 0,0 is the upper left corner but the origin is in its lower right corner
-      game.addSprites(sprites, pos.subtract({x:1, y:1}).scale(this.sectionWidth));
+      game.addSprites(sprites, pos.multiply(this.sectionWidth));
     };
 
     // TODO make this method signiture less stupid and long

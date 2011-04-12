@@ -18,8 +18,8 @@ require(
       var assetManager = game.assetManager;
 
       // want to start in the center of the right vertical road
-      var startX = 50 + 26 * game.gridSize;
-      var startY = 0;
+      var startX = 50 + 96 * game.gridSize;
+      var startY = 64 * game.gridSize;
 
       var createSprites = function () {
 
