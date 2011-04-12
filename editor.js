@@ -377,6 +377,9 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 	    cycleTileRotate(target);
 	  }
 	  break;
+	case 8: // delete is for DELETE
+	  $map.children('.sprite.selected').remove();
+	  break;
 	default:
 	  // nothing
       }
