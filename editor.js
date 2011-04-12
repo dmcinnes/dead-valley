@@ -162,7 +162,10 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
       e: TileDisplay.getTileObject(nodes.eq(2111)).tileOffset === 5,
       w: TileDisplay.getTileObject(nodes.eq(2048)).tileOffset === 5
     };
-    return "map=\"" + tiles.join('') + "\";roads=" + JSON.stringify(roads);
+    return [
+      "map=\"" + tiles.join('') + "\"",
+      "roads=" + JSON.stringify(roads)
+    ].join(';') + ';';
   };
 
   var setupComponentSizes = function () {
