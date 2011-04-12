@@ -200,7 +200,9 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         sprite = nodes[i].nextSprite;
         while (sprite) {
           sprite.reap = true;
-          sprites.push(sprite.toString(offset));
+	  // make them relative to the chunk
+	  sprite.pos.translate(offset);
+          sprites.push(sprite.toString());
           sprite = sprite.nextSprite;
         }
       }

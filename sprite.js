@@ -1,6 +1,6 @@
 // Sprite
 
-define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
+define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Vector, spriteMarshal) {
 
   var matrix   = new Matrix(2, 3);
   var context  = game.spriteContext;
@@ -225,13 +225,7 @@ define(["game", "matrix", "vector"], function (game, Matrix, Vector) {
     return matrix.vectorMultiply(world);
   };
 
-  // Save it!
-  Sprite.prototype.toString = function (offset) {
-    return [this.name,
-            Math.floor(this.pos.x + offset.x),
-            Math.floor(this.pos.y + offset.y),
-            Math.floor(this.pos.rot)].join(',');
-  };
+  spriteMarshal(Sprite);
 
   return Sprite;
 });

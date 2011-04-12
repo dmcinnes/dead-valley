@@ -8,7 +8,15 @@
 // 60  miles / hour == 264 pixels / second
 // 100 miles / hour == 440 pixels / second
 
-define(['assetmanager', 'controls', 'collidable'], function (AssetManager, controls, collidable) {
+define(['assetmanager',
+        'controls',
+	'collidable',
+	'spritemarshal'],
+	function (AssetManager,
+		  controls,
+		  collidable,
+		  spriteMarshal) {
+
   var canvas = $("#canvas");
 
   var i, sprite, spriteCount;
@@ -72,22 +80,11 @@ define(['assetmanager', 'controls', 'collidable'], function (AssetManager, contr
     addSprites: function (sprites, offset) {
       var self = this;
       _(sprites).each(function (spriteString) {
-        var values, clazz, x, y, rot;
-        // TODO perhaps we should have a spritemarshaler
-        values = spriteString.split(',');
-        clazz = values[0];
-        x     = parseInt(values[1]) + offset.x;
-        y     = parseInt(values[2]) + offset.y;
-        rot   = parseInt(values[3]);
-        // TODO these could be cars too
-        require(['objects/'+clazz], function (NewSprite) {
-          var sprite = new NewSprite();
-          sprite.pos.x = x;
-          sprite.pos.y = y;
-          sprite.pos.rot = rot;
+	spriteMarshal.marshal(spriteString, function (sprite) {
           sprite.visible = true;
-          self.sprites.push(sprite);
-        });
+          sprite.pos.translate(offset);
+	  self.sprites.push(sprite);
+	});
       });
     }
   };
