@@ -29,7 +29,6 @@ define(["game",
     this.domNode = null;
 
     this.visible    = true;
-    this.collidable = false;
 
     this.points = [ 
       new Vector(0, 0),

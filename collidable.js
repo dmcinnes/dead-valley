@@ -198,4 +198,3 @@ define(["vector"], function (Vector) {
 
   return collidable;
 });
-

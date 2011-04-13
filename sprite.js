@@ -155,7 +155,7 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
   // TODO perhaps cache transPoints vectors?
   Sprite.prototype.transformedPoints = function () {
     if (this.transPoints) return this.transPoints;
-    var trans = new Array(this.points.length);
+    var trans = [];
     matrix.configure(this.pos.rot, this.scale, this.pos.x, this.pos.y);
     var count = this.points.length;
     for (var i = 0; i < count; i++) {
@@ -186,6 +186,7 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
             cn.south.west.isEmpty(this.collidesWith));
   };
 
+  // TODO handle vertical offsets
   Sprite.prototype.drawTile = function (index, flipped, cxt) {
     cxt = cxt || context;
     if (flipped) {
