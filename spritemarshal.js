@@ -1,14 +1,15 @@
+// marshal and unmarshal sprites
+
 define(function () {
-  var spriteMarshal = function (thing) {
-    thing.prototype.toString = function () {
-      return [this.name,
-	      Math.floor(this.pos.x),
-	      Math.floor(this.pos.y),
-	      Math.floor(this.pos.rot)].join(',');
-    };
+
+  var unmarshal = function (sprite) {
+    return [sprite.name,
+            Math.floor(sprite.pos.x),
+            Math.floor(sprite.pos.y),
+            Math.floor(sprite.pos.rot)].join(',');
   };
 
-  spriteMarshal.marshal = function (spriteString, callback) {
+  var marshal = function (spriteString, callback) {
     var values, clazz, x, y, rot;
 
     values = spriteString.split(',');
@@ -25,6 +26,15 @@ define(function () {
       callback(sprite);
     });
   };
+
+  var spriteMarshal = function (thing) {
+    thing.prototype.toString = function () {
+      return unmarshal(this);
+    };
+  };
+
+  spriteMarshal.marshal   = marshal;
+  spriteMarshal.unmarshal = unmarshal;
 
   return spriteMarshal;
 });
