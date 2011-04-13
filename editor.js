@@ -111,6 +111,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
 
   var loadMap = function (text) {
     $.getScript("maps/" + text, function () {
+
+      // clear the sprites
+      $map.children('.sprite').remove();
+
       if (window.map) {
         progress.setTotal(window.map.length);
 
