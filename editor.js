@@ -1,7 +1,8 @@
 require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 	function (tileMarshal, AssetManager, progress, SPRITES) {
 
-  var Tile = function () {};
+  var Tile   = function () {};
+  var Sprite = function () {};
 
   var TILE_SIZE = 60;
   var MAP_SIZE  = 64;
@@ -150,7 +151,7 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 
   var saveMapText = function () {
     var tiles = [];
-    var nodes = $map.children(':not(.sprite)');
+    var nodes = $map.children('.tile');
     for (var i = 0; i < nodes.length; i++) {
       var tileObject = TileDisplay.getTileObject(nodes.eq(i));
       tiles.push(tileObject.toString());
@@ -162,40 +163,11 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
       e: TileDisplay.getTileObject(nodes.eq(2111)).tileOffset === 5,
       w: TileDisplay.getTileObject(nodes.eq(2048)).tileOffset === 5
     };
+    var sprites = $map.children('.sprite');
     return [
       "map=\"" + tiles.join('') + "\"",
       "roads=" + JSON.stringify(roads)
     ].join(';') + ';';
-  };
-
-  var setupComponentSizes = function () {
-    $tileList.height(window.innerHeight - 60);
-    $mapMask.height($tileList.height());
-    $mapMask.width(window.innerWidth - $tileList.width() - 60);
-  };
-
-  var setupTileList = function () {
-    var assetManager = new AssetManager('./assets/');
-    assetManager.registerImage('tiles.png');
-
-    assetManager.registerCompleteLoadCallback(function () {
-      // set up the tile selection
-      var tiles = assetManager.images.tiles;
-      TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
-      var total = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
-      for (var i = 0; i < total; i++) {
-	var tile = $('<div>', {'class':'list-tile'});
-	TileDisplay.tileOffset(tile, i);
-	$tileList.append(tile);
-	if (i == 0) {
-	  tile.addClass('selected');
-	}
-      }
-
-      setupComponentSizes();
-    });
-
-    assetManager.loadAssets();
   };
 
   var generateSpriteTile = function (type, name) {
@@ -206,37 +178,6 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
       width: val.width,
       height: val.height
     }).addClass('sprite');
-  };
-
-  var setupSpriteList = function () {
-    _(SPRITES).each(function (val, name) {
-      var sprite = generateSpriteTile('li', name).attr('id', name+'-sprite');
-      $spriteList.append(sprite);
-    });
-  };
-
-  var setupMapTiles = function () {
-    for (var top = 0; top < MAP_SIZE; top++) {
-      var tile, tileObj;
-      for (var left = 0; left < MAP_SIZE; left++) {
-        tile = $('<div>', {'class':'tile'});
-        tile.css({left:left*TILE_SIZE, top:top*TILE_SIZE});
-        tileObj = new Tile();
-        tileObj.tileDisplay = tile;
-        tile.data('tile', tileObj);
-        $map.append(tile);
-      };
-    }
-
-    var tiles = $map.children();
-
-    // mark which tiles are the road matchers
-    _([  31,   32,   33,
-       1984, 2048, 2112,
-       2047, 2111, 2175,
-       4063, 4064, 4065]).each(function (offset) {
-      tiles.eq(offset).addClass('road-matcher');
-    });
   };
 
   var updateTile = function (event) {
@@ -279,145 +220,214 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
     tileObject.tileRotate = (tileObject.tileRotate + 1) % 4;
   };
 
-  var setupMouseHandling = function () {
-    // tile selection
-    $tileList.click(function (e) {
-      var target = $(e.target);
-      selectTileType(target);
-    });
+  var setup = {
 
-    $spriteList.click(function (e) {
-      var target = $(e.target);
-      selectSpriteType(target);
-    });
+    tileObject: function () {
+      Tile.prototype.tileOffset = 0;
+      _(['tileOffset', 'tileFlip', 'tileRotate', 'collidable']).each(function (attr) {
+        Tile.prototype.__defineSetter__(attr, function (val) {
+          if (!this.values) {
+            this.values = {};
+          }
+          this.values[attr] = val;
+          if (this.callback) {
+            this.callback(this.tileDisplay, attr, val);
+          }
+        });
+        Tile.prototype.__defineGetter__(attr, function (val) {
+          return (this.values && this.values[attr]) || 0;
+        });
+      });
+      // so the view can get the data updates
+      Tile.prototype.callback = TileDisplay.update;
+      tileMarshal(Tile);
+    },
 
-    // map clicks/drags
-    $map.click(function (e) {
-      if ($(e.target).is('.sprite')) {
-	selectSprite(e);
-      } else if (selectedTile > -1) {
-	updateTile(e);
-      } else {
-       	addSprite(e);
-      }
-    }).mousemove(function (e) {
-      currentTarget = e.target;
-      if (e.shiftKey) {
-	updateTile(e);
-      }
-    }).mouseleave(function (e) {
-      currentTarget = null;
-    });
-  };
+    spriteObject: function () {
+    },
 
-  var setupControls = function () {
-    // show grid checkbox
-    $('#show-grid-checkbox').change(function (e) {
-      if ($(this).is(':checked')) {
-	$map.addClass('show-grid');
-      } else {
-	$map.removeClass('show-grid');
-      }
-    });
+    mouseHandling: function () {
+      // tile selection
+      $tileList.click(function (e) {
+        var target = $(e.target);
+        selectTileType(target);
+      });
 
-    // flip checkbox
-    $('#flip-checkbox').change(function (e) {
-      flipTiles = $(this).is(':checked');
-    });
+      $spriteList.click(function (e) {
+        var target = $(e.target);
+        selectSpriteType(target);
+      });
 
-    // rotate select box
-    $('#rotate-control').change(function (e) {
-      rotateTiles = parseInt($(this).val());
-    });
+      // map clicks/drags
+      $map.click(function (e) {
+        if ($(e.target).is('.sprite')) {
+          selectSprite(e);
+        } else if (selectedTile > -1) {
+          updateTile(e);
+        } else {
+          addSprite(e);
+        }
+      }).mousemove(function (e) {
+        currentTarget = e.target;
+        if (e.shiftKey) {
+          updateTile(e);
+        }
+      }).mouseleave(function (e) {
+        currentTarget = null;
+      });
+    },
 
-    $('#load-button').click(function () {
-      $('#load').lightbox_me();
-    });
-
-    $('#load-file').change(function (e) {
-      $('.lb_overlay').click(); // cheesy way to close the overlay
-      loadMap(e.target.files[0].fileName);
-    });
-
-    $('#save-button').click(function () {
-      var saveText = $('#save-text');
-      saveText.val(saveMapText());
-
-      $('#save').lightbox_me({
-        onLoad: function () {
-          saveText.focus().select();
+    controls: function () {
+      // show grid checkbox
+      $('#show-grid-checkbox').change(function (e) {
+        if ($(this).is(':checked')) {
+          $map.addClass('show-grid');
+        } else {
+          $map.removeClass('show-grid');
         }
       });
-    });
-  };
 
-  var setupHotKeys = function () {
-    $(window).keydown(function (e) {
-      var target = $(currentTarget);
-      target = target.is('.tile') && target;
+      // flip checkbox
+      $('#flip-checkbox').change(function (e) {
+        flipTiles = $(this).is(':checked');
+      });
 
-      switch (e.keyCode) {
-	case 67: // c is for COLLIDE
-	  if (target) {
-            toggleTileCollide(target);
-	  }
-	  break;
-	case 68: // d is for DROPPER
-	  if (target) {
-	    selectTileType(target.data('offset') || 0);
-	  }
-	  break;
-	case 70: // f is for FLIP
-	  if (e.altKey) {
-	    $('#flip-checkbox').click();
-	  } else if (target) {
-	    toggleTileFlip(target);
-	  }
-	  break;
-	case 82: // r is for ROTATE
-	  if (e.altKey) {
-	  } else if (target) {
-	    cycleTileRotate(target);
-	  }
-	  break;
-	case 8: // delete is for DELETE
-	  $map.children('.sprite.selected').remove();
-	  break;
-	default:
-	  // nothing
+      // rotate select box
+      $('#rotate-control').change(function (e) {
+        rotateTiles = parseInt($(this).val());
+      });
+
+      $('#load-button').click(function () {
+        $('#load').lightbox_me();
+      });
+
+      $('#load-file').change(function (e) {
+        $('.lb_overlay').click(); // cheesy way to close the overlay
+        loadMap(e.target.files[0].fileName);
+      });
+
+      $('#save-button').click(function () {
+        var saveText = $('#save-text');
+        saveText.val(saveMapText());
+
+        $('#save').lightbox_me({
+          onLoad: function () {
+            saveText.focus().select();
+          }
+        });
+      });
+    },
+
+    hotKeys: function () {
+      $(window).keydown(function (e) {
+        var target = $(currentTarget);
+        target = target.is('.tile') && target;
+
+        switch (e.keyCode) {
+          case 67: // c is for COLLIDE
+            if (target) {
+              toggleTileCollide(target);
+            }
+            break;
+          case 68: // d is for DROPPER
+            if (target) {
+              selectTileType(target.data('offset') || 0);
+            }
+            break;
+          case 70: // f is for FLIP
+            if (e.altKey) {
+              $('#flip-checkbox').click();
+            } else if (target) {
+              toggleTileFlip(target);
+            }
+            break;
+          case 82: // r is for ROTATE
+            if (e.altKey) {
+            } else if (target) {
+              cycleTileRotate(target);
+            }
+            break;
+          case 8: // delete is for DELETE
+            $map.children('.sprite.selected').remove();
+            break;
+          default:
+            // nothing
+        }
+      });
+    },
+
+    componentSizes: function () {
+      $tileList.height(window.innerHeight - 60);
+      $mapMask.height($tileList.height());
+      $mapMask.width(window.innerWidth - $tileList.width() - 60);
+    },
+
+    tileList: function () {
+      var assetManager = new AssetManager('./assets/');
+      assetManager.registerImage('tiles.png');
+
+      assetManager.registerCompleteLoadCallback(function () {
+        // set up the tile selection
+        var tiles = assetManager.images.tiles;
+        TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
+        var total = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
+        for (var i = 0; i < total; i++) {
+          var tile = $('<div>', {'class':'list-tile'});
+          TileDisplay.tileOffset(tile, i);
+          $tileList.append(tile);
+          if (i == 0) {
+            tile.addClass('selected');
+          }
+        }
+
+        setup.componentSizes();
+      });
+
+      assetManager.loadAssets();
+    },
+
+    spriteList: function () {
+      _(SPRITES).each(function (val, name) {
+        var sprite = generateSpriteTile('li', name).attr('id', name+'-sprite');
+        $spriteList.append(sprite);
+      });
+    },
+
+    mapTiles: function () {
+      for (var top = 0; top < MAP_SIZE; top++) {
+        var tile, tileObj;
+        for (var left = 0; left < MAP_SIZE; left++) {
+          tile = $('<div>', {'class':'tile'});
+          tile.css({left:left*TILE_SIZE, top:top*TILE_SIZE});
+          tileObj = new Tile();
+          tileObj.tileDisplay = tile;
+          tile.data('tile', tileObj);
+          $map.append(tile);
+        };
       }
-    });
-  };
 
-  var setupTileObject = function () {
-    Tile.prototype.tileOffset = 0;
-    _(['tileOffset', 'tileFlip', 'tileRotate', 'collidable']).each(function (attr) {
-      Tile.prototype.__defineSetter__(attr, function (val) {
-        if (!this.values) {
-          this.values = {};
-        }
-        this.values[attr] = val;
-        if (this.callback) {
-          this.callback(this.tileDisplay, attr, val);
-        }
+      var tiles = $map.children();
+
+      // mark which tiles are the road matchers
+      _([  31,   32,   33,
+         1984, 2048, 2112,
+         2047, 2111, 2175,
+         4063, 4064, 4065]).each(function (offset) {
+        tiles.eq(offset).addClass('road-matcher');
       });
-      Tile.prototype.__defineGetter__(attr, function (val) {
-        return (this.values && this.values[attr]) || 0;
-      });
-    });
-    // so the view can get the data updates
-    Tile.prototype.callback = TileDisplay.update;
-    tileMarshal(Tile);
+    }
+
   };
 
   require.ready(function () {
-    setupTileObject();
-    setupTileList();
-    setupSpriteList();
-    setupMapTiles();
-    setupMouseHandling();
-    setupControls();
-    setupHotKeys();
+    setup.tileObject();
+    setup.spriteObject();
+    setup.tileList();
+    setup.spriteList();
+    setup.mapTiles();
+    setup.mouseHandling();
+    setup.controls();
+    setup.hotKeys();
   });
 
 });
