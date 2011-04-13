@@ -1,5 +1,5 @@
-require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
-	function (tileMarshal, AssetManager, progress, SPRITES) {
+require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-sprites'],
+	function (tileMarshal, spriteMarshal, AssetManager, progress, SPRITES) {
 
   var Tile   = function () {};
   var Sprite = function () {};
@@ -163,21 +163,31 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
       e: TileDisplay.getTileObject(nodes.eq(2111)).tileOffset === 5,
       w: TileDisplay.getTileObject(nodes.eq(2048)).tileOffset === 5
     };
-    var sprites = $map.children('.sprite');
+    var sprites = _.map($map.children('.sprite'), function (sprite) {
+                    return spriteMarshal.unmarshal($(sprite).data('sprite'));
+                  });
     return [
       "map=\"" + tiles.join('') + "\"",
-      "roads=" + JSON.stringify(roads)
+      "roads=" + JSON.stringify(roads),
+      "sprites=" + JSON.stringify(sprites)
     ].join(';') + ';';
   };
 
   var generateSpriteTile = function (type, name) {
     var val = SPRITES[name];
-    return $('<'+type+'/>').css({
+    var spriteTile = $('<'+type+'/>').css({
       'background-image': 'url(assets/' + val.img + '.png)',
       'background-position': val.offset + ' 0',
       width: val.width,
       height: val.height
     }).addClass('sprite');
+
+    var spriteObj = new Sprite();
+    spriteObj.name = name;
+    spriteObj.spriteTile = spriteTile;
+    spriteTile.data('sprite', spriteObj);
+
+    return spriteTile;
   };
 
   var updateTile = function (event) {
@@ -197,12 +207,20 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
 
   var addSprite = function (event) {
     $map.children('.sprite').removeClass('selected');
-    var sprite = $spriteList.children().eq(selectedSprite).clone();
-    sprite.css({
-      left: event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width(),
-      top: event.pageY + $mapMask[0].scrollTop - mapMaskPos.top - sprite.height()/2
+    var node = $spriteList.children().eq(selectedSprite);
+    var spriteTile = node.clone();
+
+    // create a new sprite object
+    var spriteObj = new Sprite();
+    spriteObj.name = node.data('sprite').name;
+    spriteObj.spriteTile = spriteTile;
+    spriteTile.data('sprite', spriteObj);
+
+    spriteTile.css({
+      left: event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left - spriteTile.width(),
+      top: event.pageY + $mapMask[0].scrollTop - mapMaskPos.top - spriteTile.height()/2
     });
-    $map.append(sprite);
+    $map.append(spriteTile);
   };
 
   var toggleTileFlip = function (tile) {
@@ -234,7 +252,7 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
             this.callback(this.tileDisplay, attr, val);
           }
         });
-        Tile.prototype.__defineGetter__(attr, function (val) {
+        Tile.prototype.__defineGetter__(attr, function () {
           return (this.values && this.values[attr]) || 0;
         });
       });
@@ -244,6 +262,14 @@ require(['tilemarshal', 'assetmanager', 'progress', 'editor-sprites'],
     },
 
     spriteObject: function () {
+      Sprite.prototype.__defineGetter__('pos', function () {
+        var pos = this.spriteTile.position();
+        return {
+          x: pos.left,
+          y: pos.top,
+          rot: 0 // TODO get rotation!
+        };
+      });
     },
 
     mouseHandling: function () {
