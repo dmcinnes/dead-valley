@@ -174,13 +174,13 @@ define(["vector"], function (Vector) {
 
     var dot = vab.dotProduct(n);
     if (dot > 0) {
-      return; // moving away from each they
+      return false; // moving away from each other
     }
 
     var j =  -(1 + e) * dot;
 
     j /= n.multiply(1/we.mass + 1/they.mass).dotProduct(n) +
-         apd / we.inertia + bpd / we.inertia;
+         apd / we.inertia + bpd / they.inertia;
 
     we.vel.translate(n.multiply(j  / we.mass));
     they.vel.translate(n.multiply(-j  / they.mass));
