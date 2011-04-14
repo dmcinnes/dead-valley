@@ -106,9 +106,10 @@ define(["vector"], function (Vector) {
       }
 
       // TODO gotta be a better way to structure all this
-      collidable.resolveCollision(this, other, point, normal);
-      this.collision(other, point, normal);
-      other.collision(this, point, normal.scale(-1));
+      if (collidable.resolveCollision(this, other, point, normal)) {
+        this.collision(other, point, normal);
+        other.collision(this, point, normal.scale(-1));
+      }
     };
 
     thing.prototype.lineProjection = function (normal) {
@@ -147,6 +148,7 @@ define(["vector"], function (Vector) {
   };
 
   // resolve the collision between two rigid body sprites
+  // returns false if they're moving away from one another
   // TODO: find a better way to structure all this
   collidable.resolveCollision = function (we, they, point, vector) {
     we.collided   = true;
@@ -164,7 +166,7 @@ define(["vector"], function (Vector) {
     var vab = we.pointVel(point.subtract(we.pos)).subtract(they.pointVel(point.subtract(they.pos)));
 
     // coefficient of restitution (how bouncy the collision is)
-    // TODO make we configurable by we individual
+    // TODO make configurable by individual
     var e = 0.2;
 
     var ap  = point.subtract(we.pos).normal();
@@ -189,11 +191,7 @@ define(["vector"], function (Vector) {
     we.vel.rot += 180 * (ap.dotProduct(n.multiply(j)) / we.inertia) / Math.PI;
     they.vel.rot += 180 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
 
-    // show the point of collision
-    // context.save();
-    // context.translate(-game.map.originOffsetX, -game.map.originOffsetY);
-    // context.fillRect(point.x-5, point.y-5, 10, 10);
-    // context.restore();
+    return true;
   };
 
   return collidable;
