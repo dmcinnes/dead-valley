@@ -106,10 +106,9 @@ define(["vector"], function (Vector) {
       }
 
       // TODO gotta be a better way to structure all this
-      if (collidable.resolveCollision(this, other, point, normal)) {
-        this.collision(other, point, normal);
-        other.collision(this, point, normal.scale(-1));
-      }
+      collidable.resolveCollision(this, other, point, normal);
+      this.collision(other, point, normal);
+      other.collision(this, point, normal.scale(-1));
     };
 
     thing.prototype.lineProjection = function (normal) {
