@@ -24,13 +24,20 @@ define(["game",
     this.visible = true;
 
     this.points = [ 
-      new Vector(7, 0),
-      new Vector(28, 0),
-      new Vector(7, 10),
-      new Vector(28, 10)
+      new Vector(-10.5, -5),
+      new Vector( 10.5, -5),
+      new Vector(-10.5,  5),
+      new Vector( 10.5,  5)
     ];
+
+    window.gp = this;
   };
   GasPump1.prototype = new Sprite();
+
+  GasPump1.prototype.move = function (delta) {
+  };
+  GasPump1.prototype.transformNormals = function () {
+  };
 
   GasPump1.prototype.draw = function (delta) {
     if (!this.visible ||
@@ -43,16 +50,13 @@ define(["game",
                       spriteOffset.y,
                       this.tileWidth,
                       this.tileHeight,
-                      0,
-                      0,
+                      -18.5,
+                      -2,
                       this.tileWidth,
                       this.tileHeight);
   };
 
   collidable(GasPump1);
-
-  GasPump1.prototype.collision = function () {
-  };
 
   game.assetManager.registerImageLoadCallback('objects', function (img) {
     image = img;
