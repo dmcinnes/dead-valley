@@ -29,6 +29,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
   // the current tile targeted by the mouse
   var currentTarget = null;
 
+  var currentSprite = null;
+
   var TileDisplay = {
     findTile: function (event) {
       var target = $(event.target);
@@ -207,6 +209,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
       target.siblings('.sprite').removeClass('selected');
       target.addClass('selected');
     }
+    return target;
   };
 
   var addSprite = function (event) {
@@ -220,11 +223,16 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
     spriteObj.spriteTile = spriteTile;
     spriteTile.data('sprite', spriteObj);
 
-    spriteTile.css({
-      left: event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left - spriteTile.width(),
-      top: event.pageY + $mapMask[0].scrollTop - mapMaskPos.top - spriteTile.height()/2
-    });
+    setSpritePosition(spriteTile, event.pageX, event.pageY);
+
     $map.append(spriteTile);
+  };
+
+  var setSpritePosition = function (sprite, x, y) {
+    sprite.css({
+      left: x + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width(),
+      top: y + $mapMask[0].scrollTop - mapMaskPos.top - sprite.height()/2
+    });
   };
 
   var toggleTileFlip = function (tile) {
@@ -297,11 +305,20 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
         } else {
           addSprite(e);
         }
+      }).mousedown(function (e) {
+        var spr = selectSprite(e);
+        if (spr && spr.is('.sprite')) {
+          currentSprite = spr;
+        }
       }).mousemove(function (e) {
         currentTarget = e.target;
-        if (e.shiftKey) {
+        if (currentSprite) {
+          setSpritePosition(currentSprite, e.pageX, e.pageY);
+        } else if (e.shiftKey) {
           updateTile(e);
         }
+      }).mouseup(function (e) {
+        currentSprite = null;
       }).mouseleave(function (e) {
         currentTarget = null;
       });
