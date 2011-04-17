@@ -244,6 +244,16 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     }
   };
 
+  var rotateSelectedSprite = function (e) {
+    var sprite = $map.children('.sprite.selected');
+    if (sprite.length) {
+      var rot = sprite.data('rotate') || 0;
+      rot += e.shiftKey ? 30 : 1;
+      sprite.css('-webkit-transform', "rotate("+rot+"deg)");
+      sprite.data('rotate', rot);
+    }
+  };
+
   var setSpritePosition = function (sprite, x, y) {
     sprite.css({
       left: x + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width(),
@@ -410,6 +420,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
             if (e.altKey) {
             } else if (target) {
               cycleTileRotate(target);
+            } else {
+              rotateSelectedSprite(e);
             }
             break;
           case 8: // delete is for DELETE
