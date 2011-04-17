@@ -152,6 +152,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 	    left: x - info.center.x,
 	    top: y - info.center.y
 	  });
+          setSpriteRotation(sprite, rot);
 	  $map.append(sprite);
 	});
       }
@@ -249,9 +250,13 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     if (sprite.length) {
       var rot = sprite.data('rotate') || 0;
       rot += e.shiftKey ? 30 : 1;
-      sprite.css('-webkit-transform', "rotate("+rot+"deg)");
-      sprite.data('rotate', rot);
+      setSpriteRotation(sprite, rot);
     }
+  };
+
+  var setSpriteRotation = function (sprite, rot) {
+    sprite.css('-webkit-transform', "rotate("+rot+"deg)");
+    sprite.data('rotate', rot);
   };
 
   var setSpritePosition = function (sprite, x, y) {
@@ -302,11 +307,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     spriteObject: function () {
       Sprite.prototype.__defineGetter__('pos', function () {
         var pos = this.spriteTile.position();
+        var rot = this.spriteTile.data('rotate');
         var center = this.spriteInfo.center;
         return {
           x: pos.left + center.x,
           y: pos.top + center.y,
-          rot: 0 // TODO get rotation!
+          rot: rot
         };
       });
     },
