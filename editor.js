@@ -233,6 +233,17 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
     $map.append(spriteTile);
   };
 
+  var moveSelectedSprite = function (x, y) {
+    var sprite = $map.children('.sprite.selected');
+    if (sprite.length) {
+      var pos = sprite.position();
+      sprite.css({
+        left: pos.left + x,
+        top: pos.top + y
+      });
+    }
+  };
+
   var setSpritePosition = function (sprite, x, y) {
     sprite.css({
       left: x + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width(),
@@ -374,6 +385,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
     hotKeys: function () {
       $(window).keydown(function (e) {
         var target = $(currentTarget);
+        var left = 0, top = 0;
         target = target.is('.tile') && target;
 
         switch (e.keyCode) {
@@ -403,6 +415,23 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
           case 8: // delete is for DELETE
             $map.children('.sprite.selected').remove();
             break;
+          case 37: // left is for LEFT
+            moveSelectedSprite(-1, 0);
+            e.preventDefault();
+            break;
+          case 38: // up is for UP
+            moveSelectedSprite(0, -1);
+            e.preventDefault();
+            break;
+          case 39: // right is for RIGHT
+            moveSelectedSprite(1, 0);
+            e.preventDefault();
+            break;
+          case 40: // down is for DOWN
+            moveSelectedSprite(0, 1);
+            e.preventDefault();
+            break;
+
           default:
             // nothing
         }
