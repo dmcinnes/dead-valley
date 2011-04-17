@@ -1,19 +1,22 @@
 define(["game",
         "sprite",
         "collidable",
-        "vector"],
-       function (game, Sprite, collidable, Vector) {
+        "vector",
+        "sprite-info"],
+       function (game, Sprite, collidable, Vector, SpriteInfo) {
 
   var context = game.spriteContext;
 
-  var spriteOffset = new Vector(0, 6);
+  var info = SpriteInfo.GasPump1;
+
+  var spriteOffset = info.imageOffset;
 
   var image = null;
 
   var config = {
     name:         'gaspump',
-    width:        28,
-    height:       16
+    width:        info.width,
+    height:       info.height
   };
 
   var GasPump1 = function () {
@@ -23,11 +26,12 @@ define(["game",
     this.inertia = Number.MAX_VALUE;
     this.visible = true;
 
+    var co = info.collidableOffset;
     this.points = [ 
-      new Vector(-10.5, -5),
-      new Vector( 10.5, -5),
-      new Vector(-10.5,  5),
-      new Vector( 10.5,  5)
+      new Vector(-co.x, -co.y),
+      new Vector( co.x, -co.y),
+      new Vector(-co.x,  co.y),
+      new Vector( co.x,  co.y)
     ];
 
     window.gp = this;
@@ -50,15 +54,15 @@ define(["game",
                       spriteOffset.y,
                       this.tileWidth,
                       this.tileHeight,
-                      -18.5,
-                      -2,
+                      -info.center.x,
+                      -info.center.y,
                       this.tileWidth,
                       this.tileHeight);
   };
 
   collidable(GasPump1);
 
-  game.assetManager.registerImageLoadCallback('objects', function (img) {
+  game.assetManager.registerImageLoadCallback(info.img, function (img) {
     image = img;
   });
 

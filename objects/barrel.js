@@ -3,12 +3,15 @@
 define(["game",
         "sprite",
         "collidable",
-        "vector"],
-       function (game, Sprite, collidable, Vector) {
+        "vector",
+        "sprite-info"],
+       function (game, Sprite, collidable, Vector, SpriteInfo) {
 
   var context = game.spriteContext;
 
-  var spriteOffset = new Vector(78, 0);
+  var info = SpriteInfo.Barrel;
+
+  var spriteOffset = info.imageOffset;
 
   var friction = -0.8;
 
@@ -16,8 +19,8 @@ define(["game",
 
   var config = {
     name:         'barrel',
-    width:        16,
-    height:       16
+    width:        info.width,
+    height:       info.height
   };
 
   var Barrel = function () {
@@ -55,7 +58,7 @@ define(["game",
 
   collidable(Barrel);
 
-  game.assetManager.registerImageLoadCallback('objects', function (img) {
+  game.assetManager.registerImageLoadCallback(info.img, function (img) {
     image = img;
   });
 

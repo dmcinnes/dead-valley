@@ -38,6 +38,10 @@ define(function () {
       center: {
         x: 18,
         y: 5
+      },
+      collidableOffset: {
+        x: 10.5,
+        y: 5
       }
     },
     GasPump2: {

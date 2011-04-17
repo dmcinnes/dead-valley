@@ -1,4 +1,4 @@
-require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-sprites'],
+require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-info'],
 	function (tileMarshal, spriteMarshal, AssetManager, progress, SPRITES) {
 
   var Tile   = function () {};
