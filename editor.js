@@ -306,8 +306,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
     spriteObject: function () {
       Sprite.prototype.__defineGetter__('pos', function () {
-        var pos = this.spriteTile.position();
         var rot = this.spriteTile.data('rotate');
+        setSpriteRotation(this.spriteTile, 0); // unrotate so we get the correct position
+        var pos = this.spriteTile.position();
+        setSpriteRotation(this.spriteTile, rot);
         var center = this.spriteInfo.center;
         return {
           x: pos.left + center.x,
