@@ -198,7 +198,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
       for (var i = 0; i < totalNodes; i++) {
         sprite = nodes[i].nextSprite;
-        while (sprite) {
+        while (sprite && sprite.name !== 'Dude') {
           sprite.reap = true;
 	  // make them relative to the chunk
 	  sprite.pos.translate(offset);
@@ -510,6 +510,15 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         callback();
       }
     };
+
+    // save the sprites before we leave
+    $(window).unload($.proxy(function () {
+      var chunks = this.getLevelChunks();
+      this.saveSpritesForChunk(chunks.ne, 'ne');
+      this.saveSpritesForChunk(chunks.nw, 'nw');
+      this.saveSpritesForChunk(chunks.se, 'se');
+      this.saveSpritesForChunk(chunks.sw, 'sw');
+    }, this));
 
     this.init();
   };
