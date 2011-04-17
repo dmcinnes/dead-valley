@@ -2,7 +2,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
 	function (tileMarshal, spriteMarshal, AssetManager, progress, SPRITES) {
 
   var Tile   = function () {};
-  var Sprite = function () {};
+  var Sprite = function (spriteInfo) {
+    this.spriteInfo = spriteInfo;
+  };
 
   var TILE_SIZE = 60;
   var MAP_SIZE  = 64;
@@ -145,9 +147,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
 	  var x    = parseInt(vals[1]);
 	  var y    = parseInt(vals[2]);
 	  var rot  = parseInt(vals[3]);
+          var info = SPRITES[name];
 	  var sprite = generateSpriteTile('div', name).css({
-	    left: x,
-	    top: y
+	    left: x - info.center.x,
+	    top: y - info.center.y
 	  });
 	  $map.append(sprite);
 	});
@@ -183,12 +186,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
     var val = SPRITES[name];
     var spriteTile = $('<'+type+'/>').css({
       'background-image': 'url(assets/' + val.img + '.png)',
-      'background-position': val.offset + ' 0',
+      'background-position': -val.imageOffset.x + ' ' + -val.imageOffset.y,
       width: val.width,
       height: val.height
     }).addClass('sprite');
 
-    var spriteObj = new Sprite();
+    var spriteObj = new Sprite(val);
     spriteObj.name = name;
     spriteObj.spriteTile = spriteTile;
     spriteTile.data('sprite', spriteObj);
@@ -217,9 +220,11 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
     var node = $spriteList.children().eq(selectedSprite);
     var spriteTile = node.clone();
 
+    var oldSpriteObj = node.data('sprite');
+
     // create a new sprite object
-    var spriteObj = new Sprite();
-    spriteObj.name = node.data('sprite').name;
+    var spriteObj = new Sprite(oldSpriteObj.spriteInfo);
+    spriteObj.name = oldSpriteObj.name;
     spriteObj.spriteTile = spriteTile;
     spriteTile.data('sprite', spriteObj);
 
@@ -276,9 +281,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'editor-spr
     spriteObject: function () {
       Sprite.prototype.__defineGetter__('pos', function () {
         var pos = this.spriteTile.position();
+        var center = this.spriteInfo.center;
         return {
-          x: pos.left,
-          y: pos.top,
+          x: pos.left + center.x,
+          y: pos.top + center.y,
           rot: 0 // TODO get rotation!
         };
       });

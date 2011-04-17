@@ -63,8 +63,9 @@ body {
 }
 
 .sprite.selected {
-  border: 2px solid #F50;
-  margin: 0px;
+  border: 1px solid #F50;
+  margin-left: -1px;
+  margin-top: -1px;
 }
 
 .list-tile {

@@ -3,27 +3,55 @@ define(function () {
   return {
     Honda: {
       img: 'car1',
-      offset: 0,
       width: 24,
-      height: 40
+      height: 40,
+      imageOffset: {
+        x: 0,
+        y: 0
+      },
+      center: {
+        x: 12,
+        y: 20
+      }
     },
     Barrel: {
       img: 'objects',
-      offset: -78,
       width: 16,
-      height: 16
+      height: 16,
+      imageOffset: {
+        x: 60,
+        y: 0
+      },
+      center: {
+        x: 8,
+        y: 8
+      }
     },
     GasPump1: {
       img: 'objects',
-      offset: 0,
       width: 28,
-      height: 22
+      height: 16,
+      imageOffset: {
+        x: 0,
+        y: 0
+      },
+      center: {
+        x: 18,
+        y: 5
+      }
     },
     GasPump2: {
       img: 'objects',
-      offset: -46,
       width: 32,
-      height: 22
+      height: 17,
+      imageOffset: {
+        x: 28,
+        y: 0
+      },
+      center: {
+        x: 11,
+        y: 9
+      }
     }
   };
 
