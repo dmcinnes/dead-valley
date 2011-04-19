@@ -44,6 +44,14 @@ define([], function () {
         e: eastSection  && eastSection.w,
         w: westSection  && westSection.e
       };
+    },
+
+    usedSpace: function () {
+      var count = 0;
+      for (var i = 0; i < localStorage.length; i++) {
+        count += localStorage[localStorage.key(i)].length
+      }
+      return count * 2; // 2 bytes per character
     }
   };
 
