@@ -24,7 +24,7 @@ define(["game",
     this.brakeTorque   = config.brakeTorque;
 
     this.wheels = _(config.wheelPositions).map(function (pos) {
-      return new Wheel(pos.x, pos.y, config.wheelRadius, this.mass / 4),
+      return new Wheel(pos.x, pos.y, config.wheelRadius, this.mass / 4);
     });
 
     this.driversSide    = config.driversSide;
