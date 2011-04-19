@@ -2,9 +2,25 @@
 
 define(["game"], function (game) {
 
-  var lastFrame, thisFrame, elapsed, delta, mainLoopId;
+  var lastFrame, thisFrame, elapsed, delta, paused;
 
   var context = game.spriteContext;
+
+  var gameField = $('#canvas-mask')[0];
+
+  // shim layer with setTimeout fallback
+  // from here:
+  // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+  window.requestAnimFrame = (function () {
+    return  window.requestAnimationFrame       ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            window.oRequestAnimationFrame      ||
+            window.msRequestAnimationFrame     ||
+            function (/* function */ callback, /* DOMElement */ element) {
+              window.setTimeout(callback, 1000 / 60);
+            };
+  })();
 
   var mainLoop = function () {
     context.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
@@ -19,19 +35,24 @@ define(["game"], function (game) {
 
     game.renderSprites(delta);
     game.renderMap(delta);
+
+    if (paused) {
+    } else {
+      requestAnimFrame(mainLoop, gameField);
+    }
   };
 
   return {
     pause: function () {
-      clearInterval(mainLoopId);
-      mainLoopId = null;
+      paused = true;
     },
     play: function () {
       lastFrame = Date.now();
-      mainLoopId = setInterval(mainLoop, 50);
+      paused = false;
+      mainLoop();
     },
     isPaused: function () {
-      return !mainLoopId;
+      return paused;
     }
   };
 
