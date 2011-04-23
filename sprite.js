@@ -31,8 +31,6 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
     this.points[2] = new Vector( halfWidth,  halfHeight);
     this.points[3] = new Vector(-halfWidth,  halfHeight);
 
-    this.image    = config.image;
-
     // assuming horizontal tiles
     this.tileWidth  = config.width;
     this.tileHeight = config.height;
@@ -188,6 +186,7 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
 
   // TODO handle vertical offsets
   Sprite.prototype.drawTile = function (index, flipped, cxt) {
+    if (!this.image) return;
     cxt = cxt || context;
     if (flipped) {
       cxt.save();

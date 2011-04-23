@@ -15,8 +15,6 @@ require(
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
 
-      var assetManager = game.assetManager;
-
       // want to start in the center of the right vertical road
       var startX = 50 + 96 * game.gridSize;
       var startY = 64 * game.gridSize;
@@ -43,8 +41,7 @@ require(
 
         var dude = new Dude({
           width: 20,
-          height: 20,
-          image: assetManager.images.dude
+          height: 20
         });
 
         dude.pos.x = startX;
@@ -53,26 +50,14 @@ require(
         game.sprites.push(dude);
       };
 
-      assetManager.registerCompleteLoadCallback(function () {
+      // only load the map after the assets are loaded
+      game.map = new Map(128, 128, startX, startY, function () {
 
-        game.tileRowSize = assetManager.images.tiles.width / game.gridSize;
+        createSprites();
 
-        // assetManager.copyImageAndMutateWhite('car1', 'car1blue', 70, 70, 255);
-        // only load the map after the assets are loaded
-        game.map = new Map(128, 128, startX, startY, function () {
-
-          createSprites();
-
-          // only run the main loop after the map is loaded
-          mainloop.play();
-        });
+        // only run the main loop after the map is loaded
+        mainloop.play();
       });
-
-      _(['tiles', 'car1', 'dude', 'objects']).each(function (image) {
-        assetManager.registerImage(image + '.png');
-      });
-
-      assetManager.loadAssets();
 
       game.sprites.push(framerate);
 

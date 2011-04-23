@@ -58,7 +58,7 @@ define(["game",
 
   collidable(Barrel);
 
-  game.assetManager.registerImageLoadCallback(info.img, function (img) {
+  game.assetManager.loadImage(info.img, function (img) {
     image = img;
   });
 

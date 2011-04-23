@@ -20,12 +20,14 @@ define(['game', 'car'], function (game, Car) {
     driversSide: new Vector(-26, -4)
   };
 
-  game.assetManager.registerImageLoadCallback('car1', function (img) {
-    config.image = img;
-  });
-
   var Honda = function () {
-    return new Car(config);
+    var honda = new Car(config);
+
+    game.assetManager.loadImage('car1', function (img) {
+      honda.image = img;
+    });
+
+    return honda;
   };
 
   return Honda;

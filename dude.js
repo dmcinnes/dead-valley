@@ -117,6 +117,10 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
   };
   Dude.prototype = new Sprite();
 
+  game.assetManager.loadImage('dude', function (image) {
+    Dude.prototype.image = image;
+  });
+
   collidable(Dude);
 
   return Dude;

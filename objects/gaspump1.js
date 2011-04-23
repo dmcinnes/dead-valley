@@ -14,7 +14,7 @@ define(["game",
   var image = null;
 
   var config = {
-    name:         'gaspump',
+    name:         'gaspump1',
     width:        info.width,
     height:       info.height
   };
@@ -62,7 +62,7 @@ define(["game",
 
   collidable(GasPump1);
 
-  game.assetManager.registerImageLoadCallback(info.img, function (img) {
+  game.assetManager.loadImage(info.img, function (img) {
     image = img;
   });
 

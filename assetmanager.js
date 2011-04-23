@@ -1,116 +1,24 @@
 // AssetManager
 
-define(["progress"], function (progress) {
+define(function () {
   var AssetManager = function (base) {
-    var loadedCount = 0;
-    var assets      = [];
     var images      = {};
-    var callbacks   = {};
-    var onComplete  = [];
 
-    var fireCallbacks = function (imageName) {
-      var imageCallbacks = callbacks[imageName];
-      var image = images[imageName];
-      if (imageCallbacks && imageCallbacks !== imageName) {
-        _(imageCallbacks).each(function (callback) {
+    var loadImage = function (name, callback) {
+      if (images[name]) {
+        callback(images[name]);
+      } else {
+        var image = new Image();
+        image.onload = function () {
           callback(image);
-        });
-        // so we know this image has loaded
-        callbacks[imageName] = imageName;
-      }
-    };
-    
-    var fireOnCompleteCallbacks = function () {
-      _(onComplete).each(function (callback) {
-        callback();
-      });
-    };
-
-    var assetLoaded = function (imageName) {
-      fireCallbacks(imageName);
-      progress.increment();
-      loadedCount++;
-      if (loadedCount == assets.length) {
-        fireOnCompleteCallbacks();
-      } else {
-        loadNextAsset();
+        };
+        image.src = base + name + '.png';
       }
     };
 
-    var loadNextAsset = function () {
-      assets[loadedCount]();
+    return {
+      loadImage: loadImage
     };
-
-    this.registerImage = function (src) {
-      var image = new Image();
-      var name = src.split('.')[0];
-
-      image.onload = function () {
-        images[name] = image;
-        assetLoaded(name);
-      };
-
-      assets.push(function () {
-        image.src = base + src;
-      });
-
-      return name;
-    };
-
-    this.loadAssets = function () {
-      progress.setTotal(assets.length);
-      loadNextAsset();
-    };
-
-    // TODO fix for FF
-    this.copyImageAndMutateWhite = function (imageName, newImageName, r, g, b) {
-      var image = images[imageName];
-      var canvas = document.createElement('canvas');
-      var context = canvas.getContext('2d');
-      context.drawImage(image, 0, 0);
-      var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      var data = imageData.data;
-      var r,g,b,a;
-      for (i = 0; i < data.length; i += 4) {
-        if (data[i]   == 255 &&
-            data[i+1] == 255 &&
-            data[i+2] == 255 &&
-            data[i+3] == 255) {
-          data[i] = r;
-          data[i+1] = g;
-          data[i+2] = b;
-        }
-      }
-      context.putImageData(imageData, 0, 0);
-
-      images[newImageName] = canvas;
-
-      return canvas;
-    };
-
-    this.registerImageLoadCallback = function (imageName, callback) {
-      if (callbacks[imageName] === imageName) {
-        // image already loaded! just fire the callback
-        callback(images[imageName]);
-      } else {
-        if (!callbacks[imageName]) {
-          callbacks[imageName] = [];
-        }
-        callbacks[imageName].push(callback);
-      }
-    };
-
-    this.registerCompleteLoadCallback = function (callback) {
-      if (assets.length && loadedCount == assets.length) {
-        // images already loaded!
-        callback();
-      }
-      onComplete.push(callback);
-    };
-
-    this.__defineGetter__('loadedCount', function () { return loadedCount; });
-    this.__defineGetter__('totalCount', function () { return assets.length; });
-    this.__defineGetter__('images', function () { return images; });
   };
 
   return AssetManager;

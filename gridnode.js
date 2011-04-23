@@ -174,7 +174,9 @@ define(["game",
   GridNode.prototype.collision = function () {
   };
 
-  GridNode.prototype.tiles = game.assetManager.images.tiles;
+  game.assetManager.loadImage('tiles', function (image) {
+    GridNode.prototype.tiles = image;
+  });
 
   // mixins
   collidable(GridNode);
