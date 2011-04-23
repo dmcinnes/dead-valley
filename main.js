@@ -15,33 +15,21 @@ require(
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
 
+      game.sprites.push(Sky);
+
       // want to start in the center of the right vertical road
       var startX = 50 + 96 * game.gridSize;
       var startY = 64 * game.gridSize;
 
-      var createSprites = function () {
-
-        game.sprites.push(Sky);
-
-        var dude = new Dude({
-          width: 20,
-          height: 20
-        });
-
-        dude.pos.x = startX;
-        dude.pos.y = startY;
-        dude.visible = true;
-        game.sprites.push(dude);
-      };
-
-      // only load the map after the assets are loaded
-      game.map = new Map(128, 128, startX, startY, function () {
-
-        createSprites();
-
-        // only run the main loop after the map is loaded
-        mainloop.play();
+      var dude = new Dude({
+        width: 20,
+        height: 20
       });
+
+      dude.pos.x = startX;
+      dude.pos.y = startY;
+      dude.visible = true;
+      game.sprites.push(dude);
 
       game.sprites.push(framerate);
 
@@ -69,6 +57,12 @@ require(
       // transition sky states
       game.controls.registerKeyDownHandler('n', function () {
         Sky.gotoNextState();
+      });
+
+      // set up the map
+      game.map = new Map(128, 128, startX, startY, function () {
+        // only run the main loop after the map is loaded
+        mainloop.play();
       });
 
     });

@@ -72,7 +72,8 @@ define(['assetmanager',
     },
     renderSprites: function (delta) {
       if (this.map) {
-        for (i = 0; i < this.sprites.length; i++) {
+        spriteCount = this.sprites.length;
+        for (i = 0; i < spriteCount; i++) {
           this.sprites[i].render(delta);
         }
       }
