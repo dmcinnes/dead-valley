@@ -23,22 +23,6 @@ require(
 
         game.sprites.push(Sky);
 
-        var car = new Honda();
-
-        car.pos.x = startX - 100;
-        car.pos.y = startY - 200;
-        car.pos.rot = 180;
-        car.visible = true;
-        game.sprites.push(car);
-
-        var car2 = new Honda();
-
-        car2.pos.x = startX - 50;
-        car2.pos.y = startY;
-        car2.pos.rot = 337;
-        car2.visible = true;
-        game.sprites.push(car2);
-
         var dude = new Dude({
           width: 20,
           height: 20
