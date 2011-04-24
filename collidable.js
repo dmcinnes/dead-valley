@@ -187,8 +187,9 @@ define(["vector"], function (Vector) {
     they.vel.translate(n.multiply(-j  / they.mass));
 
     // TODO make all rot into radians
-    we.vel.rot += 180 * (ap.dotProduct(n.multiply(j)) / we.inertia) / Math.PI;
-    they.vel.rot += 180 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
+    // this used to be 180 * but I / 5 to make the collisions less jumpy
+    we.vel.rot += 34 * (ap.dotProduct(n.multiply(j)) / we.inertia) / Math.PI;
+    they.vel.rot += 34 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
 
     return true;
   };
