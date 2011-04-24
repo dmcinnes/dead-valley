@@ -82,9 +82,6 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
           node.south = this.getNode(i, j+1);
           node.west  = this.getNode(i-1, j);
           node.east  = this.getNode(i+1, j);
-
-          // TODO don't do this here, should be in loadMapTiles
-          node.setPosition(i * game.gridSize - this.offsetX + this.originOffsetX, j * game.gridSize - this.offsetY + this.originOffsetY);
         }
         node.transformedPoints();
       }
@@ -200,8 +197,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         sprite = nodes[i].nextSprite;
         while (sprite && sprite.name !== 'Dude') {
           sprite.reap = true;
-	  // make them relative to the chunk
-	  sprite.pos.translate(offset);
+          // make them relative to the chunk
+          sprite.pos.translate(offset);
           sprites.push(sprite.toString());
           sprite = sprite.nextSprite;
         }
@@ -281,11 +278,18 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       }
     };
 
-    this.setTilesFromStrings = function (tiles, strings) {
-      var i = strings.length;
-      while (i) {
-        i--;
-        tiles[i].setFromString(strings[i]);
+    this.setTilesFromStrings = function (nodes, strings, position) {
+      var start  = position.multiply(this.sectionWidth);
+      var gridSize = game.gridSize;
+      var width  = this.gridWidth / 2;
+      var height = this.gridHeight / 2;
+      for (var x = 0; x < width; x++) {
+        for (var y = 0; y < height; y++) {
+          var i = y * width + x;
+          var node = nodes[i];
+          node.setFromString(strings[i]);
+          node.setPosition(start.x + x * gridSize, start.y + y * gridSize)
+        }
       }
     };
 
@@ -310,7 +314,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
           World.setSectionData(pos, data);
 
-          this.setTilesFromStrings(stuff.recipientTiles, strings);
+          this.setTilesFromStrings(stuff.recipientTiles, strings, pos);
 
           if (data.sprites) {
             this.addSectionSprites(data.sprites, pos);
@@ -364,7 +368,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
       if (tiles) {
         // we've already created this one, reuse it
-        this.setTilesFromStrings(newSection, tiles);
+        this.setTilesFromStrings(newSection, tiles, position);
         var sprites = World.getSprites(position);
         if (sprites) {
           this.addSectionSprites(sprites, position);
@@ -375,7 +379,7 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       } else {
         // we need to generate a new section
         this.getTilesFromMapWorker(newSection,
-				   position,
+                                   position,
                                    mapWidth,
                                    mapHeight,
                                    sectionData,
@@ -429,13 +433,13 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
       self.loadMapTiles(chunks.nw, 'nw', {name:'intersection'}, function () {
         progress.increment();
         self.loadMapTiles(chunks.sw, 'sw', {name:'intersection'}, function () {
-	  progress.increment();
+          progress.increment();
           self.loadMapTiles(chunks.ne, 'ne', {name:'gas-station-crossroads'}, function () {
-	    progress.increment();
+            progress.increment();
             self.loadMapTiles(chunks.se, 'se', {name:'start-intersection'}, function () {
-	      progress.increment();
-	      loadCallback();
-	    });
+              progress.increment();
+              loadCallback();
+            });
           });
         });
       });
