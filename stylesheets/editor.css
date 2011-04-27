@@ -72,7 +72,7 @@ body {
   width: 60px;
   height: 60px;
   background-color: #F0F;
-  background-image: url(./assets/tiles.png);
+  background-image: url(../assets/tiles.png);
   z-index: 5;
   margin: 2px;
 }

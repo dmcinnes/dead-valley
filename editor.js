@@ -466,11 +466,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
     tileList: function () {
       var assetManager = new AssetManager('./assets/');
-      assetManager.registerImage('tiles.png');
 
-      assetManager.registerCompleteLoadCallback(function () {
+      assetManager.loadImage('tiles', function (tiles) {
         // set up the tile selection
-        var tiles = assetManager.images.tiles;
         TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
         var total = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
         for (var i = 0; i < total; i++) {
@@ -484,8 +482,6 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
         setup.componentSizes();
       });
-
-      assetManager.loadAssets();
     },
 
     spriteList: function () {
