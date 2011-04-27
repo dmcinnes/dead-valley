@@ -7,9 +7,9 @@ var define = function (r) {
   tileMarshal = r();
 };
 
-importScripts('json2.js',
-              'tilemarshal.js',
-              'underscore-min.js');
+importScripts('lib/json2.js',
+              'lib/underscore-min.js',
+              'tilemarshal.js');
 
 var Tile = function () {};
 Tile.prototype.tileOffset = 0;
