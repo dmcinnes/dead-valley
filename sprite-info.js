@@ -68,6 +68,10 @@ define(function () {
       center: {
         x: 11,
         y: 9
+      },
+      collidableOffset: {
+        x: 10.5,
+        y: 5
       }
     }
   };
