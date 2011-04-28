@@ -21,10 +21,7 @@ require(
       var startX = 50 + 96 * game.gridSize;
       var startY = 64 * game.gridSize;
 
-      var dude = new Dude({
-        width: 20,
-        height: 20
-      });
+      var dude = new Dude();
 
       dude.pos.x = startX;
       dude.pos.y = startY;

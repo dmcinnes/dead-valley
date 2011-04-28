@@ -9,9 +9,8 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
   var SPEED = 44; // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.03; // in seconds
 
-  var Dude = function (config) {
-    config.name = 'Dude';
-    this.init(config);
+  var Dude = function () {
+    this.init('Dude');
 
     this.driving = null;
 
@@ -23,59 +22,65 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     this.mass = 0.001;
     this.inertia = 1;
 
-    this.draw = function (delta) {
-      if (!this.visible) return;
+    this.setupKeyBindings();
+  };
+  Dude.prototype = new Sprite();
 
-      if (this.walking) {
-        this.walkingFrameCounter += delta;
-        if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
-          this.walkingFrameCounter = 0.0;
-          this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
-        }
-        this.drawTile(this.walkingFrame+1, this.direction);
-        this.drawTile(6, this.direction); // walking arms
-      } else {
-        this.drawTile(0, this.direction); // standing
-        this.drawTile(5, this.direction); // standing arms
+  Dude.prototype.draw = function (delta) {
+    if (!this.visible) return;
+
+    if (this.walking) {
+      this.walkingFrameCounter += delta;
+      if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
+        this.walkingFrameCounter = 0.0;
+        this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
       }
-    };
+      this.drawTile(this.walkingFrame+1, this.direction);
+      this.drawTile(6, this.direction); // walking arms
+    } else {
+      this.drawTile(0, this.direction); // standing
+      this.drawTile(5, this.direction); // standing arms
+    }
+  };
 
-    this.preMove = function (delta) {
-      if (!this.visible) return;
+  Dude.prototype.preMove = function (delta) {
+    if (!this.visible) return;
 
-      // clear velocity
-      this.vel.set(0, 0);
+    // clear velocity
+    this.vel.set(0, 0);
 
-      this.walking = (keyStatus.left  ||
-                      keyStatus.right ||
-                      keyStatus.up    ||
-                      keyStatus.down);
+    this.walking = (keyStatus.left  ||
+                    keyStatus.right ||
+                    keyStatus.up    ||
+                    keyStatus.down);
 
-      if (keyStatus.left) {
-        this.vel.x = -SPEED;
-        this.direction = LEFT;
-      } else if (keyStatus.right) {
-        this.vel.x = SPEED;
-        this.direction = RIGHT;
-      } 
-      if (keyStatus.up) {
-        this.vel.y = -SPEED;
-      } else if (keyStatus.down) {
-        this.vel.y = SPEED;
-      }
+    if (keyStatus.left) {
+      this.vel.x = -SPEED;
+      this.direction = LEFT;
+    } else if (keyStatus.right) {
+      this.vel.x = SPEED;
+      this.direction = RIGHT;
+    } 
+    if (keyStatus.up) {
+      this.vel.y = -SPEED;
+    } else if (keyStatus.down) {
+      this.vel.y = SPEED;
+    }
 
-      game.map.keepInView(this);
-    };
+    game.map.keepInView(this);
+  };
 
-    this.postMove = function (delta) {
-    };
+  Dude.prototype.postMove = function (delta) {
+  };
 
-    this.collision = function (other, point, vector) {
-      // the dude abides
-      this.pos.rot = 0;
-      this.vel.rot = 0;
-    };
+  Dude.prototype.collision = function (other, point, vector) {
+    // the dude abides
+    this.pos.rot = 0;
+    this.vel.rot = 0;
+  };
 
+  // TODO find a better place for this
+  Dude.prototype.setupKeyBindings = function () {
     var self = this;
     game.controls.registerKeyDownHandler('x', function () {
       if (self.driving) {
@@ -98,8 +103,8 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
           car.driver = self;
           self.driving = car;
           self.visible = false;
-	  self.currentNode.leave(self);
-	  self.currentNode = null;
+          self.currentNode.leave(self);
+          self.currentNode = null;
         }
       }
     });
@@ -109,17 +114,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
         self.driving.toggleHeadlights();
       }
     });
-
-    // game.controls.registerKeyDownHandler('p', function () {
-    //   var spr = (self.driving) ? self.driving : self;
-    //   console.log(spr.pos.x, spr.pos.y, game.sprites);
-    // });
   };
-  Dude.prototype = new Sprite();
-
-  game.assetManager.loadImage('dude', function (image) {
-    Dude.prototype.image = image;
-  });
 
   collidable(Dude);
 

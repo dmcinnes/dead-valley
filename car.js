@@ -15,7 +15,7 @@ define(["game",
 
   // TODO maybe I should just save the config directly
   var Car = function (config) {
-    this.init(config);
+    this.init(config.name);
 
     this.setMass(config.mass);
     this.dragArea = config.dragArea;

@@ -1,14 +1,14 @@
 // Sprite
 
-define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Vector, spriteMarshal) {
+define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (game, Matrix, Vector, spriteMarshal, spriteInfo) {
 
-  var matrix   = new Matrix(2, 3);
+  var Matrix   = new Matrix(2, 3);
   var context  = game.spriteContext;
 
   var Sprite = function () {
     this.children = {};
 
-    this.visible  = false;
+    this.visible  = true;
     this.reap     = false;
 
     this.collidable = false;
@@ -16,24 +16,39 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
     this.scale = 1;
 
     this.currentNode = null;
-    this.nextSprite  = null;
+    this.nextsprite  = null;
   };
 
-  Sprite.prototype.init = function (config) {
-    this.name   = config.name;
+  Sprite.prototype.init = function (name) {
+    var config = spriteInfo[name];
 
-    var halfWidth  = config.width / 2;
-    var halfHeight = config.height / 2;
+    this.name   = name;
 
-    this.points    = new Array(4);
-    this.points[0] = new Vector(-halfWidth, -halfHeight);
-    this.points[1] = new Vector( halfWidth, -halfHeight);
-    this.points[2] = new Vector( halfWidth,  halfHeight);
-    this.points[3] = new Vector(-halfWidth,  halfHeight);
+    var co;
+    if (config.collidableOffset) {
+      co = config.collidableOffset;
+    } else {
+      // if not configured assume it's centered
+      co = new Vector(config.width / 2, config.height / 2);
+    }
+    this.points = [ 
+      new Vector(-co.x, -co.y),
+      new Vector( co.x, -co.y),
+      new Vector(-co.x,  co.y),
+      new Vector( co.x,  co.y)
+    ];
 
     // assuming horizontal tiles
     this.tileWidth  = config.width;
     this.tileHeight = config.height;
+
+    this.imageOffset = config.imageOffset;
+    this.center      = config.center;
+
+    // load the image
+    game.assetManager.loadImage(config.img, $.proxy(function (img) {
+      this.image = img;
+    }, this));
 
     this.pos = new Vector(0, 0);
     this.pos.rot = 0;
@@ -92,9 +107,9 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
   // TODO: cache these
   Sprite.prototype.transformNormals = function () {
     // only rotate
-    matrix.configure(this.pos.rot, 1.0, 0, 0);
+    Matrix.configure(this.pos.rot, 1.0, 0, 0);
     for (var i = 0; i < this.normals.length; i++) {
-      this.currentNormals[i] = matrix.vectorMultiply(this.normals[i]);
+      this.currentNormals[i] = Matrix.vectorMultiply(this.normals[i]);
     }
   };
 
@@ -106,6 +121,11 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
     this.draw(delta);
 
     context.restore();
+  };
+
+  // default draw method, just draw the 0th tile
+  Sprite.prototype.draw = function (delta) {
+    this.drawTile(0);
   };
 
   Sprite.prototype.updateGrid = function () {
@@ -150,14 +170,14 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
     }
   };
 
-  // TODO perhaps cache transPoints vectors?
+  // TODO perhaps cache transpoints Vectors?
   Sprite.prototype.transformedPoints = function () {
     if (this.transPoints) return this.transPoints;
     var trans = [];
-    matrix.configure(this.pos.rot, this.scale, this.pos.x, this.pos.y);
+    Matrix.configure(this.pos.rot, this.scale, this.pos.x, this.pos.y);
     var count = this.points.length;
     for (var i = 0; i < count; i++) {
-      trans[i] = matrix.vectorMultiply(this.points[i]);
+      trans[i] = Matrix.vectorMultiply(this.points[i]);
     }
     this.transPoints = trans; // cache translated points
     return trans;
@@ -167,8 +187,8 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
     pos = pos || this.pos;
     var cn = this.currentNode;
     if (cn == null) {
-      var gridx = Math.floor(pos.x / game.gridSize);
-      var gridy = Math.floor(pos.y / game.gridSize);
+      var gridx = Math.floor(pos.x / game.gridsize);
+      var gridy = Math.floor(pos.y / game.gridsize);
       gridx = (gridx >= game.map.grid.length) ? 0 : gridx;
       gridy = (gridy >= game.map.grid[0].length) ? 0 : gridy;
       cn = game.map.grid[gridx][gridy];
@@ -193,12 +213,12 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
       cxt.scale(-1, 1);
     }
     cxt.drawImage(this.image,
-                  index * this.tileWidth,
-                  0,
+                  this.imageOffset.x + index * this.tileWidth,
+                  this.imageOffset.y,
                   this.tileWidth,
                   this.tileHeight,
-                  this.points[0].x,
-                  this.points[0].y,
+                  -this.center.x,
+                  -this.center.y,
                   this.tileWidth,
                   this.tileHeight);
     if (flipped) {
@@ -214,15 +234,15 @@ define(["game", "matrix", "vector", "spritemarshal"], function (game, Matrix, Ve
   Sprite.prototype.distance = function (other) {
     return Math.sqrt(Math.pow(other.pos.x - this.pos.x, 2) + Math.pow(other.pos.y - this.pos.y, 2));
   };
-  // take a relative vector and make it a world vector
+  // take a relative Vector and make it a world Vector
   Sprite.prototype.relativeToWorld = function (relative) {
-    matrix.configure(this.pos.rot, 1.0, 0, 0);
-    return matrix.vectorMultiply(relative);
+    Matrix.configure(this.pos.rot, 1.0, 0, 0);
+    return Matrix.vectorMultiply(relative);
   };
-  // take a world vector and make it a relative vector
+  // take a world Vector and make it a relative Vector
   Sprite.prototype.worldToRelative = function (world) {
-    matrix.configure(-this.pos.rot, 1.0, 0, 0);
-    return matrix.vectorMultiply(world);
+    Matrix.configure(-this.pos.rot, 1.0, 0, 0);
+    return Matrix.vectorMultiply(world);
   };
 
   spriteMarshal(Sprite);

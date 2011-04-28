@@ -82,7 +82,6 @@ define(['assetmanager',
       var self = this;
       _(sprites).each(function (spriteString) {
 	spriteMarshal.marshal(spriteString, function (sprite) {
-          sprite.visible = true;
           sprite.pos.translate(offset);
 	  self.sprites.push(sprite);
 	});
