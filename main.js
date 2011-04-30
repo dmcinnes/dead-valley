@@ -6,11 +6,12 @@ require(
    "sprite",
    "objects/Honda",
    "dude",
+   "Zombie",
    "Sky",
    "framerate",
    "objects/Barrel"],
 
-  function (game, GridNode, Map, mainloop, Sprite, Honda, Dude, Sky, framerate, Barrel) {
+  function (game, GridNode, Map, mainloop, Sprite, Honda, Dude, Zombie, Sky, framerate, Barrel) {
 
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
@@ -22,11 +23,14 @@ require(
       var startY = 64 * game.gridSize;
 
       var dude = new Dude();
-
       dude.pos.x = startX;
       dude.pos.y = startY;
-      dude.visible = true;
       game.sprites.push(dude);
+
+      var zombie = new Zombie();
+      zombie.pos.x = startX + 200;
+      zombie.pos.y = startY;
+      game.sprites.push(zombie);
 
       game.sprites.push(framerate);
 

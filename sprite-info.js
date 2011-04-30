@@ -14,6 +14,19 @@ define(function () {
         y: 10
       }
     },
+    Zombie: {
+      img: 'zombie',
+      width: 20,
+      height: 20,
+      imageOffset: {
+        x: 0,
+        y: 0
+      },
+      center: {
+        x: 10,
+        y: 10
+      }
+    },
     Honda: {
       img: 'car1',
       width: 24,
