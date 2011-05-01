@@ -102,15 +102,19 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
 
       if (this.target) {
         var distance = this.target.subtract(this.pos).magnitude();
-        if (distance > 10) {
+        if (distance > 5) {
           this.moveToward(this.target);
         } else {
           // got to the target
-          this.clearTarget();
+          this.target = null;
           this.vel.scale(0);
         }
+      } else if (this.targetVel) {
+        // move in the last direction seen for a bit
+        this.target = this.targetVel.normalize().scale(300).translate(this.pos);
+        this.targetVel = null;
       } else {
-        // move in the last direction seen for a bit, then wander
+        this.currentState = this.states.wandering;
       }
     },
     stalking: function () {
