@@ -5,14 +5,20 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
 
   var SPEED = 22; // 10 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.3; // in seconds
+  var SCAN_TIMEOUT_RESET = 1; // in seconds
 
   var Zombie = function () {
     this.init('Zombie');
 
+    this.target              = null;
+    this.seeTarget           = false;
     this.direction           = RIGHT;
-    this.walking             = true;
+    this.walking             = false;
     this.walkingFrame        = 0;
     this.walkingFrameCounter = 0.0;
+    this.scanTimeout         = SCAN_TIMEOUT_RESET;
+
+    this.currentState        = this.states.waiting;
 
     this.mass    = 0.001;
     this.inertia = 1;
@@ -34,9 +40,36 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     }
   };
 
+  Zombie.prototype.lookForTargets = function () {
+    this.seeTarget = false;
+    // dude is the only target for now
+    // TODO limit the distance the zombie can see
+    var dude = game.dude;
+    if (dude && this.canSee(dude)) {
+      this.target    = dude.pos.clone();
+      this.targetVel = dude.vel.clone();
+      this.seeTarget = true;
+    }
+  };
+
+  Zombie.prototype.clearTarget = function () {
+    this.target    = null;
+    this.targetVel = null;
+    this.seeTarget = false;
+  };
+
   Zombie.prototype.preMove = function (delta) {
-    var mosey = game.dude.pos.subtract(this.pos).normalize().scale(SPEED);
-    this.vel.set(mosey);
+    this.scanTimeout -= delta;
+    if (this.scanTimeout < 0) {
+      this.scanTimeout = SCAN_TIMEOUT_RESET;
+      this.lookForTargets();
+    }
+
+    if (this.seeTarget) {
+      this.currentState = this.states.stalking;
+    }
+
+    this.currentState.call(this);
 
     if (this.vel.x) {
       this.direction = (this.vel.x > 0) ? RIGHT : LEFT;
@@ -49,12 +82,50 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     this.vel.rot = 0;
   };
 
+  Zombie.prototype.moveToward = function (pos) {
+    var mosey = pos.subtract(this.pos).normalize().scale(SPEED);
+    this.vel.set(mosey);
+  };
+
   Zombie.prototype.states = {
     waiting: function () {
+      this.walking = false;
+      this.vel.scale(0);
     },
     wandering: function () {
+      this.walking = true;
+
+      // TODO move around a bit
+    },
+    searching: function () {
+      this.walking = true;
+
+      if (this.target) {
+        var distance = this.target.subtract(this.pos).magnitude();
+        if (distance > 10) {
+          this.moveToward(this.target);
+        } else {
+          // got to the target
+          this.clearTarget();
+          this.vel.scale(0);
+        }
+      } else {
+        // move in the last direction seen for a bit, then wander
+      }
+    },
+    stalking: function () {
+      var mosey = this.target.subtract(this.pos).normalize().scale(SPEED);
+      this.vel.set(mosey);
+      this.walking = true;
+
+      if (!this.seeTarget) {
+        this.currentState = this.states.searching;
+      }
     },
     attacking: function () {
+    },
+    thriller: function () {
+      // TODO hehe yes
     }
   };
 

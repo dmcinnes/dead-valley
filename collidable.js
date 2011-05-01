@@ -30,7 +30,7 @@ define(["vector"], function (Vector) {
       var ref;
       for (var i = 0; i < len; i++) {
         ref = canidates[i];
-        do {
+        while (ref) {
           // so we don't make nine extra function calls
           // every frame for every sprite because most
           // tiles are non-collidable
@@ -38,7 +38,7 @@ define(["vector"], function (Vector) {
             this.checkCollision(ref);
           }
           ref = ref.nextSprite;
-        } while (ref)
+        }
       }
     };
 

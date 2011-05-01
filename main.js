@@ -28,9 +28,19 @@ require(
       game.dude = dude;
       game.sprites.push(dude);
 
-      window.zombie = new Zombie();
+      var zombie = new Zombie();
       zombie.pos.x = startX + 200;
       zombie.pos.y = startY;
+      game.sprites.push(zombie);
+
+      zombie = new Zombie();
+      zombie.pos.x = startX + 200;
+      zombie.pos.y = 1000;
+      game.sprites.push(zombie);
+
+      zombie = new Zombie();
+      zombie.pos.x = startX + 300;
+      zombie.pos.y = 1000;
       game.sprites.push(zombie);
 
       game.sprites.push(framerate);
