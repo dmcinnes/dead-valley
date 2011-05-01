@@ -1,4 +1,7 @@
-define(["sprite", "collidable"], function (Sprite, collidable) {
+define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
+
+  var LEFT  = true;  // true, meaning do flip the sprite
+  var RIGHT = false;
 
   var SPEED = 22; // 10 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.3; // in seconds
@@ -6,14 +9,13 @@ define(["sprite", "collidable"], function (Sprite, collidable) {
   var Zombie = function () {
     this.init('Zombie');
 
-    this.walking = true;
-    this.walkingFrame = 0;
+    this.direction           = RIGHT;
+    this.walking             = true;
+    this.walkingFrame        = 0;
     this.walkingFrameCounter = 0.0;
 
-    this.mass = 0.001;
+    this.mass    = 0.001;
     this.inertia = 1;
-
-    this.vel.x = SPEED;
   };
   Zombie.prototype = new Sprite();
 
@@ -32,10 +34,28 @@ define(["sprite", "collidable"], function (Sprite, collidable) {
     }
   };
 
+  Zombie.prototype.preMove = function (delta) {
+    var mosey = game.dude.pos.subtract(this.pos).normalize().scale(SPEED);
+    this.vel.set(mosey);
+
+    if (this.vel.x) {
+      this.direction = (this.vel.x > 0) ? RIGHT : LEFT;
+    }
+  };
+
   Zombie.prototype.collision = function (other, point, vector) {
     // zombies don't rotate
     this.pos.rot = 0;
     this.vel.rot = 0;
+  };
+
+  Zombie.prototype.states = {
+    waiting: function () {
+    },
+    wandering: function () {
+    },
+    attacking: function () {
+    }
   };
 
   collidable(Zombie);

@@ -25,9 +25,10 @@ require(
       var dude = new Dude();
       dude.pos.x = startX;
       dude.pos.y = startY;
+      game.dude = dude;
       game.sprites.push(dude);
 
-      var zombie = new Zombie();
+      window.zombie = new Zombie();
       zombie.pos.x = startX + 200;
       zombie.pos.y = startY;
       game.sprites.push(zombie);
