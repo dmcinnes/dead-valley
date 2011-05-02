@@ -47,7 +47,7 @@ define(["vector"], function (Vector) {
     // checkCollision
     thing.prototype.checkCollision = function (other) {
       var normals, minDepth, nl, we, they, left, right, depth,
-          minDepth, minPoint, normalIndex, self;
+          minPoint, normalIndex, self;
 
       if (!other.visible  ||
            this === other ||
@@ -99,7 +99,12 @@ define(["vector"], function (Vector) {
         point = minPoint[0];
       }
 
-      var normal = normals[normalIndex].multiply(minDepth);
+      var normal = normals[normalIndex];
+      if (minDepth > 0) { // don't want a 0,0 normal
+        // scale the normal to the penetration depth
+        normal.scale(minDepth);
+      }
+
       // normal should always point toward 'this'
       if (point.subtract(this.pos).dotProduct(normal) > 0) {
         normal.scale(-1);
