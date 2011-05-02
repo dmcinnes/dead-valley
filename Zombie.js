@@ -41,7 +41,8 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     }
     
     // arms
-    if (this.currentState === this.states.attacking) {
+    if (this.currentState === this.states.attacking ||
+        this.attackingFrame > 0) {  // want to finish his animation
       this.attackingFrameCounter += delta;
       if (this.attackingFrameCounter > ATTACKING_ANIMATION_FRAME_RATE) {
         this.attackingFrameCounter = 0;
@@ -59,10 +60,10 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     this.seeTarget = false;
     // dude is the only target for now
     // TODO limit the distance the zombie can see
-    var dude = game.dude;
-    if (dude && this.canSee(dude)) {
-      this.target    = dude.pos.clone();
-      this.targetVel = dude.vel.clone();
+    var target = game.dude.driving || game.dude;
+    if (target && this.canSee(target)) {
+      this.target    = target.pos.clone();
+      this.targetVel = target.vel.clone();
       this.seeTarget = true;
     }
   };
@@ -96,7 +97,8 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     this.pos.rot = 0;
     this.vel.rot = 0;
     
-    if (other === game.dude) {
+    if (other === game.dude ||
+        other === game.dude.driving) {
       this.currentState = this.states.attacking;
     }
   };
