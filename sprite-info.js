@@ -11,7 +11,11 @@ define(function () {
       },
       center: {
         x: 10,
-        y: 10
+        y: 11
+      },
+      collidableOffset: {
+        x: 5,
+        y: 8
       }
     },
     Zombie: {
@@ -24,7 +28,11 @@ define(function () {
       },
       center: {
         x: 10,
-        y: 10
+        y: 11
+      },
+      collidableOffset: {
+        x: 5,
+        y: 8
       }
     },
     Honda: {

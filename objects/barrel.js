@@ -15,8 +15,6 @@ define(["sprite",
   Barrel.prototype = new Sprite();
 
   Barrel.prototype.preMove = function (delta) {
-    if (!this.visible) return;
-
     this.vel.translate(this.vel.clone().scale(friction * delta));
     this.vel.rot += this.vel.rot * friction * delta;
   };
