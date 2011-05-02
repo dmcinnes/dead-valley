@@ -3,25 +3,28 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
-  var SPEED = 22; // 10 MPH
-  var WALKING_ANIMATION_FRAME_RATE = 0.3; // in seconds
+  var SPEED = 11; // 5 MPH
+  var WALKING_ANIMATION_FRAME_RATE    = 0.3; // in seconds
+  var ATTACKING_ANIMATION_FRAME_RATE  = 0.25; // in seconds
   var SCAN_TIMEOUT_RESET = 1; // in seconds
 
   var Zombie = function () {
     this.init('Zombie');
 
-    this.target              = null;
-    this.seeTarget           = false;
-    this.direction           = RIGHT;
-    this.walking             = false;
-    this.walkingFrame        = 0;
-    this.walkingFrameCounter = 0.0;
-    this.scanTimeout         = SCAN_TIMEOUT_RESET;
+    this.target                = null;
+    this.seeTarget             = false;
+    this.direction             = RIGHT;
+    this.walking               = false;
+    this.walkingFrame          = 0;
+    this.walkingFrameCounter   = 0;
+    this.attackingFrame        = 0;
+    this.attackingFrameCounter = 0;
+    this.scanTimeout           = SCAN_TIMEOUT_RESET;
 
-    this.currentState        = this.states.waiting;
+    this.currentState          = this.states.waiting;
 
-    this.mass    = 0.001;
-    this.inertia = 1;
+    this.mass                  = 0.001;
+    this.inertia               = 1;
   };
   Zombie.prototype = new Sprite();
 
@@ -29,13 +32,25 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     if (this.walking) {
       this.walkingFrameCounter += delta;
       if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
-        this.walkingFrameCounter = 0.0;
+        this.walkingFrameCounter = 0;
         this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
       }
-      this.drawTile(this.walkingFrame+1, this.direction);
-      this.drawTile(6, this.direction); // walking arms
+      this.drawTile(this.walkingFrame+1, this.direction); // starts at 1
     } else {
       this.drawTile(0, this.direction); // standing
+    }
+    
+    // arms
+    if (this.currentState === this.states.attacking) {
+      this.attackingFrameCounter += delta;
+      if (this.attackingFrameCounter > ATTACKING_ANIMATION_FRAME_RATE) {
+        this.attackingFrameCounter = 0;
+        this.attackingFrame = (this.attackingFrame + 1) % 4; // four frames
+      }
+      this.drawTile(this.attackingFrame+6, this.direction); // starts at 6
+    } else if (this.walking) {
+      this.drawTile(6, this.direction); // walking arms
+    } else {
       this.drawTile(5, this.direction); // standing arms
     }
   };
@@ -80,6 +95,10 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     // zombies don't rotate
     this.pos.rot = 0;
     this.vel.rot = 0;
+    
+    if (other === game.dude) {
+      this.currentState = this.states.attacking;
+    }
   };
 
   Zombie.prototype.moveToward = function (pos) {
@@ -127,6 +146,8 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
       }
     },
     attacking: function () {
+      this.vel.scale(0);
+      this.walking = false;
     },
     thriller: function () {
       // TODO hehe yes
