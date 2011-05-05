@@ -145,8 +145,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         this.loadMapTiles(chunks.ne, 'nw', {s:road});
         this.loadMapTiles(chunks.se, 'sw', {n:road});
         // swap east and west
-        this.swapVertical(chunks.nw, chunks.ne);
-        this.swapVertical(chunks.sw, chunks.se);
+        this.swapVertical(chunks.ne, chunks.nw);
+        this.swapVertical(chunks.se, chunks.sw);
         // move the offset for a smooth transition
         this.offsetX = this.offsetX + (this.width / 2);
       } else if (this.offsetX > this.shiftEastBorder) { // going right
@@ -165,8 +165,8 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
         this.sectionOffsetY--;
         this.loadMapTiles(chunks.se, 'ne', {w:road});
         this.loadMapTiles(chunks.sw, 'nw', {e:road});
-        this.swapHorizontal(chunks.ne, chunks.se);
-        this.swapHorizontal(chunks.nw, chunks.sw);
+        this.swapHorizontal(chunks.se, chunks.ne);
+        this.swapHorizontal(chunks.sw, chunks.nw);
         this.offsetY = this.offsetY + (this.height / 2);
       } else if (this.offsetY > this.shiftSouthBorder) { // going down
         this.saveSpritesForChunk(chunks.ne, 'ne');
