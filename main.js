@@ -4,14 +4,14 @@ require(
    "map",
    "mainloop",
    "sprite",
-   "objects/Honda",
    "dude",
-   "Zombie",
    "Sky",
    "framerate",
-   "objects/Barrel"],
+   "sprites/Honda",
+   "sprites/Zombie",
+   "sprites/Barrel"],
 
-  function (game, GridNode, Map, mainloop, Sprite, Honda, Dude, Zombie, Sky, framerate, Barrel) {
+  function (game, GridNode, Map, mainloop, Sprite, Dude, Sky, framerate, Honda, Zombie, Barrel) {
 
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {

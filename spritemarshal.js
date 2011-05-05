@@ -18,7 +18,7 @@ define(function () {
     y     = parseInt(values[2]);
     rot   = parseInt(values[3]);
 
-    require(['objects/'+clazz], function (NewSprite) {
+    require(['sprites/'+clazz], function (NewSprite) {
       var sprite = new NewSprite();
       sprite.pos.x = x;
       sprite.pos.y = y;
