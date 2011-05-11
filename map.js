@@ -1,6 +1,6 @@
 // Map 
 
-define(["game", "gridnode", "World", "progress"], function (game, GridNode, World, progress) {
+define(["game", "gridnode", "World", "progress", "Building"], function (game, GridNode, World, progress, Building) {
 
   var Map = function (gridWidth, gridHeight, startX, startY, callback) {
     var i, j,
@@ -320,6 +320,10 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
             this.addSectionSprites(data.sprites, pos);
           }
 
+          if (data.buildings) {
+            this.addSectionBuildings(data.buildings, stuff.recipientTiles, pos);
+          }
+
           if (stuff.callback) {
             stuff.callback(strings);
           }
@@ -331,6 +335,30 @@ define(["game", "gridnode", "World", "progress"], function (game, GridNode, Worl
 
     this.addSectionSprites = function (sprites, pos) {
       game.addSprites(sprites, pos.multiply(this.sectionWidth));
+    };
+
+    this.addSectionBuildings = function (buildings, tiles, pos) {
+      var offset = pos.multiply(this.sectionWidth);
+
+      // TODO move this into a building marshal thing
+
+      _(buildings).each(function (buildingObj) {
+        var i, point, node, building, tile;
+        var pointsArr = buildingObj.points;
+        var buildingTiles = buildingObj.tiles;
+
+        var points = [];
+        for (i = 0; i < pointsArr.length; i += 2) {
+          point = offset.add({x:pointsArr[i], y:pointsArr[i+1]});
+          points.push(point);
+        }
+        building = new Building(points);
+
+        for (i = 0; i < buildingTiles.length; i++) {
+          tile = tiles[buildingTiles[i]];
+          tile.enter(building);
+        }
+      });
     };
 
     // TODO make this method signiture less stupid and long

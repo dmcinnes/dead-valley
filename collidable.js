@@ -29,11 +29,8 @@ define(["vector"], function (Vector) {
       var len = canidates.length;
       var ref;
       for (var i = 0; i < len; i++) {
-        ref = canidates[i];
+        ref = canidates[i].nextSprite;
         while (ref) {
-          // so we don't make nine extra function calls
-          // every frame for every sprite because most
-          // tiles are non-collidable
           if (ref.collidable) {
             this.checkCollision(ref);
           }

@@ -34,8 +34,13 @@ var sections = {
 importScripts('section_list.js');
 
 // sections set these variables with their data when loaded
-var map, roads, sprites;
+var map, roads, sprites, buildings;
 _(section_list).each(function (name) {
+  map       = null;
+  roads     = null;
+  sprites   = null;
+  buildings = null;
+
   importScripts('maps/'+name+'.json');
 
   var section = [];
@@ -47,11 +52,14 @@ _(section_list).each(function (name) {
     section[i] = tile;
   }
 
-  sections[name] = section;
-  // save the road directions on the map Array object
-  section.roads   = roads;
-  section.sprites = sprites;
-  section.name    = name;
+  sections[name]    = section;
+
+  // save the section metadata on the map Array object
+  section.name      = name;
+  // these are from the imported script
+  section.roads     = roads;
+  section.sprites   = sprites;
+  section.buildings = buildings;
 });
 
 // fills a map's blank tiles wth random dirt and scrub
@@ -79,8 +87,9 @@ var loadSection = function (config) {
   for (var i = 0; i < mapLength; i++) {
     tiles[i] = _.clone(section[i % sectionLength]);
   }
-  tiles.roads   = section.roads;
-  tiles.sprites = section.sprites;
+  tiles.roads     = section.roads;
+  tiles.sprites   = section.sprites;
+  tiles.buildings = section.buildings;
   return tiles;
 };
 
@@ -89,8 +98,9 @@ var cloneSection = function (section) {
   for (var i = 0; i < section.length; i++) {
     tiles[i] = _.clone(section[i]);
   }
-  tiles.roads = section.roads;
-  tiles.sprites = section.sprites;
+  tiles.roads     = section.roads;
+  tiles.sprites   = section.sprites;
+  tiles.buildings = section.buildings;
   return tiles;
 };
 
@@ -135,11 +145,12 @@ onmessage = function (e) {
   fillBlankTiles(tiles);
 
   var message = {
-    type:     'newtiles',
-    tiles:    _(tiles).map(function (t) { return t.toString(); }).join(''),
-    roads:    tiles.roads,
-    sprites:  tiles.sprites,
-    position: config.position
+    type:      'newtiles',
+    tiles:     _(tiles).map(function (t) { return t.toString(); }).join(''),
+    roads:     tiles.roads,
+    sprites:   tiles.sprites,
+    buildings: tiles.buildings,
+    position:  config.position
   };
 
   postMessage(JSON.stringify(message));
