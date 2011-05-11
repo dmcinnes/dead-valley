@@ -14,9 +14,13 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
   var $spriteList = $('#sprite-list');
 
+  var $coordDisplay = $('#coord-display');
+  var $xCoord = $('#x-coord');
+  var $yCoord = $('#y-coord');
+
   var $map        = $('#map');
   var $mapMask    = $('#map-mask');
-  var mapMaskPos  = $mapMask.position();
+  var mapMaskPos  = null; // set this one after the tile list is loaded
 
   // the current selected tile from the list
   var selectedTile = 0;
@@ -261,7 +265,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
   var setSpritePosition = function (sprite, x, y) {
     sprite.css({
-      left: x + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width(),
+      left: x + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width()/2,
       top: y + $mapMask[0].scrollTop - mapMaskPos.top - sprite.height()/2
     });
   };
@@ -279,6 +283,16 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var cycleTileRotate = function (tile) {
     var tileObject = TileDisplay.getTileObject(tile);
     tileObject.tileRotate = (tileObject.tileRotate + 1) % 4;
+  };
+
+  var updateMousePosition = function (event) {
+    $coordDisplay.show();
+    $xCoord.text(event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left);
+    $yCoord.text(event.pageY + $mapMask[0].scrollTop - mapMaskPos.top);
+  };
+
+  var clearMousePosition = function (event) {
+    $coordDisplay.hide();
   };
 
   var setup = {
@@ -352,10 +366,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         } else if (e.shiftKey) {
           updateTile(e);
         }
+        updateMousePosition(e);
       }).mouseup(function (e) {
         currentSprite = null;
       }).mouseleave(function (e) {
         currentTarget = null;
+        clearMousePosition(e);
       });
     },
 
@@ -462,6 +478,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       $tileList.height(window.innerHeight - 60);
       $mapMask.height($tileList.height());
       $mapMask.width(window.innerWidth - $tileList.width() - 60);
+      // update the mask position
+      mapMaskPos = $mapMask.position();
     },
 
     tileList: function () {
