@@ -97,9 +97,6 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
     this.pos.y   += this.vel.y   * delta;
     this.pos.rot += this.vel.rot * delta;
 
-    this.pos.x = Math.floor(this.pos.x);
-    this.pos.y = Math.floor(this.pos.y);
-
     if (this.pos.rot > 360) {
       this.pos.rot -= 360;
     } else if (this.pos.rot < 0) {
