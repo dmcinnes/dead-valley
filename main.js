@@ -19,8 +19,8 @@ require(
       game.sprites.push(Sky);
 
       // want to start in the center of the right vertical road
-      var startX = 50 + 96 * game.gridSize;
-      var startY = 64 * game.gridSize;
+      var startX = 105 * game.gridSize;
+      var startY = 26 * game.gridSize;
 
       var dude = new Dude();
       dude.pos.x = startX;
