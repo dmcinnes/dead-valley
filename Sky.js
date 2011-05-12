@@ -9,7 +9,7 @@ define(["game", "sprite"], function (game, Sprite) {
   var nightTotal      =  7 * 60;
   var transitionTotal = 90;
 
-  var counter = 45; // 1/2 the way through sunrise
+  var counter = dayTotal;
 
   var nightAlpha = 0.90;
 
@@ -50,7 +50,7 @@ define(["game", "sprite"], function (game, Sprite) {
     }
   };
 
-  var currentState = states.sunrise;
+  var currentState = states.day;
 
   var Sky = {
     run: function (delta) {
