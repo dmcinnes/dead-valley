@@ -2,8 +2,14 @@
 
 define(function () {
   var Vector = function (x, y) {
-    this.x = x;
-    this.y = y;
+    if (y === undefined) { // it's an angle
+      var rad = (x * Math.PI) / 180;
+      this.x = Math.sin(rad);
+      this.y = Math.cos(rad);
+    } else { 
+      this.x = x;
+      this.y = y;
+    }
   };
 
   Vector.prototype.set = function (other) {
