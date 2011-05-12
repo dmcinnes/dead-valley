@@ -10,12 +10,12 @@
 
 define(['assetmanager',
         'controls',
-	'collidable',
-	'spritemarshal'],
-	function (AssetManager,
-		  controls,
-		  collidable,
-		  spriteMarshal) {
+        'collidable',
+        'spritemarshal'],
+        function (AssetManager,
+                  controls,
+                  collidable,
+                  spriteMarshal) {
 
   var canvas = $("#canvas");
 
@@ -82,10 +82,10 @@ define(['assetmanager',
     addSprites: function (sprites, offset) {
       var self = this;
       _(sprites).each(function (spriteString) {
-	spriteMarshal.marshal(spriteString, function (sprite) {
+        spriteMarshal.marshal(spriteString, function (sprite) {
           sprite.pos.translate(offset);
-	  self.sprites.push(sprite);
-	});
+          self.sprites.push(sprite);
+        });
       });
     }
   };

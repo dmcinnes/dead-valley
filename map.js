@@ -384,6 +384,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       mapWorker.postMessage(JSON.stringify(message));
     };
 
+    // TODO merge this with mapWorkerCallback
     this.loadMapTiles = function (imageData, positionString, sectionData, callback) {
       var mapWidth  = imageData.width;
       var mapHeight = imageData.height;
@@ -397,10 +398,17 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       if (tiles) {
         // we've already created this one, reuse it
         this.setTilesFromStrings(newSection, tiles, position);
+
+        var buildings = World.getBuildings(position);
+        if (buildings) {
+          this.addSectionBuildings(buildings, newSection, position);
+        }
+
         var sprites = World.getSprites(position);
         if (sprites) {
           this.addSectionSprites(sprites, position);
         }
+
         if (callback) {
           callback(tiles);
         }

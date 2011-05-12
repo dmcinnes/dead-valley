@@ -12,6 +12,9 @@ define([], function () {
       if (data.roads) {
         worldMap[pos + 'r'] = JSON.stringify(data.roads);
       }
+      if (data.buildings) {
+        worldMap[pos + 'b'] = JSON.stringify(data.buildings);
+      }
     },
 
     saveSprites: function (position, sprites) {
@@ -25,6 +28,11 @@ define([], function () {
 
     getRoads: function (position) {
       var data = worldMap[position.toString() + 'r'];
+      return data && JSON.parse(data);
+    },
+
+    getBuildings: function (position) {
+      var data = worldMap[position.toString() + 'b'];
       return data && JSON.parse(data);
     },
 
