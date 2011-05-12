@@ -54,10 +54,10 @@ define(["vector"], function (Vector) {
       }
 
       // check to see if the pair has already been checked for collisions
-      // only have to check one way
       self = this;
       if (_(currentCollisionList).detect(function (pair) {
-           return (pair[0] === other && pair[1] === self);
+           return ((pair[0] === other && pair[1] === self) ||
+                   (pair[0] === self && pair[1] === other));
           })) {
         return;
       }
