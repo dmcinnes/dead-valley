@@ -8,7 +8,7 @@ var define = function (r) {
 };
 
 importScripts('lib/json2.js',
-              'lib/underscore-min.js',
+              'lib/underscore.js',
               'tilemarshal.js');
 
 var Tile = function () {};
