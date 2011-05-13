@@ -334,7 +334,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
     };
 
     this.addSectionSprites = function (sprites, pos) {
-      game.addSprites(sprites, pos.multiply(this.sectionWidth));
+      game.addSpritesFromStrings(sprites, pos.multiply(this.sectionWidth));
     };
 
     this.addSectionBuildings = function (buildings, tiles, pos) {

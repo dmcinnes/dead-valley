@@ -40,6 +40,8 @@ define(function () {
 
     isShowing: function () {
       return visible;
-    }
+    },
+
+    z: Number.MAX_VALUE
   };
 });

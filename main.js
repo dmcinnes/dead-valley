@@ -16,7 +16,7 @@ require(
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
 
-      game.sprites.push(Sky);
+      game.addSprite(Sky);
 
       // want to start in the center of the right vertical road
       var startX = 105 * game.gridSize;
@@ -26,24 +26,24 @@ require(
       dude.pos.x = startX;
       dude.pos.y = startY;
       game.dude = dude;
-      game.sprites.push(dude);
+      game.addSprite(dude);
 
       var zombie = new Zombie();
       zombie.pos.x = startX + 200;
       zombie.pos.y = startY;
-      game.sprites.push(zombie);
+      game.addSprite(zombie);
 
       zombie = new Zombie();
       zombie.pos.x = startX + 200;
       zombie.pos.y = 1000;
-      game.sprites.push(zombie);
+      game.addSprite(zombie);
 
       zombie = new Zombie();
       zombie.pos.x = startX + 300;
       zombie.pos.y = 1000;
-      game.sprites.push(zombie);
+      game.addSprite(zombie);
 
-      game.sprites.push(framerate);
+      game.addSprite(framerate);
 
       // toggle show framerate
       game.controls.registerKeyDownHandler('f', function () {

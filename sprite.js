@@ -70,6 +70,8 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
       new Vector(1, 0),
       new Vector(0, 1)
     ];
+
+    this.z = config.z;
   };
 
   Sprite.prototype.preMove  = function () {

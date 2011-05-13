@@ -21,6 +21,15 @@ define(['assetmanager',
 
   var i, sprite, spriteCount;
 
+  var sprites = [];
+
+  var sortSprites = function () {
+    // sort by z value
+    sprites.sort(function (a, b) {
+      return a.z - b.z;
+    });
+  };
+
   return {
     assetManager:  new AssetManager('./assets/'),
     controls:      controls,
@@ -34,7 +43,7 @@ define(['assetmanager',
     skyContext:    $('#sky-canvas')[0].getContext("2d"),
     map:           null,
     dude:          null,
-    sprites:       [],
+    sprites:       sprites,
     runMap: function (delta) {
       if (this.map) this.map.run(delta);
     },
@@ -79,14 +88,25 @@ define(['assetmanager',
         }
       }
     },
-    addSprites: function (sprites, offset) {
+    addSpritesFromStrings: function (sprites, offset) {
       var self = this;
+
+      // sort the sprites after we've added them all
+      var afterSpritesAdded = _.after(sprites.length, function () {
+        sortSprites();
+      });
+
       _(sprites).each(function (spriteString) {
         spriteMarshal.marshal(spriteString, function (sprite) {
           sprite.pos.translate(offset);
           self.sprites.push(sprite);
+          afterSpritesAdded();
         });
       });
+    },
+    addSprite: function (sprite) {
+      this.sprites.push(sprite);
+      sortSprites();
     }
   };
 

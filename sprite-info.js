@@ -16,7 +16,8 @@ define(function () {
       collidableOffset: {
         x: 5,
         y: 8
-      }
+      },
+      z: 100
     },
     Zombie: {
       img: 'zombie',
@@ -33,7 +34,8 @@ define(function () {
       collidableOffset: {
         x: 5,
         y: 8
-      }
+      },
+      z: 90
     },
     Honda: {
       img: 'car1',
@@ -46,7 +48,8 @@ define(function () {
       center: {
         x: 12,
         y: 20
-      }
+      },
+      z: 80
     },
     Barrel: {
       img: 'objects',
@@ -59,7 +62,8 @@ define(function () {
       center: {
         x: 8,
         y: 8
-      }
+      },
+      z: 50
     },
     GasPump1: {
       img: 'objects',
@@ -76,7 +80,8 @@ define(function () {
       collidableOffset: {
         x: 10.5,
         y: 5
-      }
+      },
+      z: 40
     },
     GasPump2: {
       img: 'objects',
@@ -93,7 +98,8 @@ define(function () {
       collidableOffset: {
         x: 10.5,
         y: 5
-      }
+      },
+      z: 40
     }
   };
 

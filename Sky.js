@@ -71,7 +71,8 @@ define(["game", "sprite"], function (game, Sprite) {
     },
     isDark: function () {
       return alpha > 0.4;
-    }
+    },
+    z: -Number.MAX_VALUE
   };
   
   return Sky;
