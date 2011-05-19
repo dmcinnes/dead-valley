@@ -86,7 +86,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
       if (self.driving) {
         // leave the car
         self.pos.set(self.driving.driversSideLocation());
-        self.driving.driver = null;
+        self.driving.leave(self);
         self.driving = null;
         self.visible = true;
       } else if (self.visible) {

@@ -1,6 +1,7 @@
 body {
   font-family: arial, helvetica, sans-serif;
 }
+#hud-canvas { position:absolute; z-index:40; }
 #sky-canvas { position:absolute; z-index:30; }
 #canvas { position:absolute; z-index:20; }
 #canvas-mask { position:relative; border:1px solid black; top:20px; left:20px; width:900px; height:600px; z-index:30; overflow:hidden; }
