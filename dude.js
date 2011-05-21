@@ -22,6 +22,9 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     this.mass = 0.001;
     this.inertia = 1;
 
+    // list of things the dude is currently touching
+    this.touching = [];
+
     this.setupKeyBindings();
   };
   Dude.prototype = new Sprite();
@@ -48,6 +51,9 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
 
     // clear velocity
     this.vel.set(0, 0);
+
+    // clear touching list
+    this.touching.splice(0);
 
     this.walking = (keyStatus.left  ||
                     keyStatus.right ||
@@ -77,6 +83,9 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     // the dude abides
     this.pos.rot = 0;
     this.vel.rot = 0;
+
+    // add other to the touching list
+    this.touching.push(other);
   };
 
   // TODO find a better place for this
@@ -90,7 +99,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
         self.driving = null;
         self.visible = true;
       } else if (self.visible) {
-        var cars = _(self.nearby()).select(function (sprite) {
+        var cars = _(self.touching).select(function (sprite) {
           return !!sprite.isCar;
         });
         if (cars.length > 0) {
