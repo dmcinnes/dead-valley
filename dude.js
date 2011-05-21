@@ -25,12 +25,17 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
     // list of things the dude is currently touching
     this.touching = [];
 
+    this.originalCenterX = this.center.x;
+
     this.setupKeyBindings();
   };
   Dude.prototype = new Sprite();
 
   Dude.prototype.draw = function (delta) {
     if (!this.visible) return;
+
+    // hack so the sprite is placed correctly when its flipped
+    this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
 
     if (this.walking) {
       this.walkingFrameCounter += delta;

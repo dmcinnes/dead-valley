@@ -25,10 +25,15 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
 
     this.mass                  = 0.001;
     this.inertia               = 1;
+
+    this.originalCenterX       = this.center.x;
   };
   Zombie.prototype = new Sprite();
 
   Zombie.prototype.draw = function (delta) {
+    // hack so the sprite is placed correctly when its flipped
+    this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
+
     if (this.walking) {
       this.walkingFrameCounter += delta;
       if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {

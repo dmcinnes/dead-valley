@@ -42,8 +42,9 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
     this.tileWidth  = config.width;
     this.tileHeight = config.height;
 
-    this.imageOffset = config.imageOffset;
-    this.center      = config.center;
+    // cloned so we can manipulate it on a per-sprite instance basis
+    this.imageOffset = $.extend({}, config.imageOffset);
+    this.center      = $.extend({}, config.center);
 
     // load the image
     game.assetManager.loadImage(config.img, $.proxy(function (img) {
