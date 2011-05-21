@@ -55,15 +55,6 @@ define(["game",
   Car.prototype.draw = function () {
     if (!this.visible) return;
 
-    if (this.collided) {
-      this.collided = false;
-      context.fillColor = 'black';
-      context.fillRect(this.points[0].x,
-                       this.points[0].y,
-                       this.tileWidth,
-                       this.tileHeight);
-    }
-
     this.drawTile(0);
     this.drawTile(1);
 
