@@ -6,8 +6,7 @@ define(["game",
         "collidable",
         "Sky",
         "Headlight",
-        "Taillight",
-        "Speedometer"],
+        "Taillight"],
 
         function (game,
                   RigidBody,
@@ -15,8 +14,7 @@ define(["game",
                   collidable,
                   Sky,
                   Headlight,
-                  Taillight,
-                  Speedometer) {
+                  Taillight) {
 
   var keyStatus = game.controls.keyStatus;
   var context   = game.spriteContext;
@@ -75,10 +73,6 @@ define(["game",
         this.drawTile(4);
         this.drawTile(5);
       }
-
-      // MPH
-      // context.fillText(Math.round(this.vel.magnitude() * 14400 / 63360).toString(), 0, 0);
-      Speedometer.render(this);
     }
 
     if (this.headlightsOn) {
@@ -200,7 +194,6 @@ define(["game",
 
   Car.prototype.leave = function (dude) {
     this.driver = null;
-    Speedometer.clear();
   };
 
   Car.prototype.isCar = true;
