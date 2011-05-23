@@ -27,6 +27,9 @@ define(["game"], function (game) {
 
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
+    if (elapsed > 100) {
+      elapsed = 100; // cap it at 10 FPS
+    }
     lastFrame = thisFrame;
     delta = elapsed / 1000;
 
