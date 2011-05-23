@@ -15,10 +15,17 @@ define([], function () {
       if (data.buildings) {
         worldMap[pos + 'b'] = JSON.stringify(data.buildings);
       }
+      if (data.sprites) {
+        this.saveSprites(position, data.sprites);
+      }
     },
 
     saveSprites: function (position, sprites) {
       worldMap[position.toString() + 's'] = JSON.stringify(sprites);
+    },
+
+    saveDude: function (dude) {
+      worldMap['dude'] = dude.toString();
     },
 
     getTiles: function (position) {
@@ -39,6 +46,10 @@ define([], function () {
     getSprites: function (position) {
       var data = worldMap[position.toString() + 's'];
       return data && JSON.parse(data);
+    },
+
+    getDude: function () {
+      return worldMap['dude'];
     },
 
     getSurroundingRoads: function (position) {

@@ -16,6 +16,7 @@ define(["collidable", "vector"],
     this.vel.rot = 0;
   };
 
+  Building.prototype.name    = 'Building';
   Building.prototype.visible = true;
   Building.prototype.mass    = Number.MAX_VALUE;
   Building.prototype.inertia = Number.MAX_VALUE;

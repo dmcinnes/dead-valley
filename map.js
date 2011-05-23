@@ -37,16 +37,15 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       this.shiftNorthBorder = game.canvasHeight;
       this.shiftSouthBorder = this.height - (2 * game.canvasHeight);
 
-      // start in the center
-      // this is the viewport offset within the current loaded view sections
-      this.offsetX = startX - game.canvasWidth / 2;
-      this.offsetY = startY - game.canvasHeight / 2;
-      // viewport world coordinates
-      this.originOffsetX = this.offsetX;
-      this.originOffsetY = this.offsetY;
       // upper left section coordinates
-      this.sectionOffsetX = 0;
-      this.sectionOffsetY = 0;
+      this.sectionOffsetX = Math.floor(startX / this.sectionWidth);
+      this.sectionOffsetY = Math.floor(startY / this.sectionHeight);
+      // this is the viewport offset within the current loaded view sections
+      this.submapOffsetX = startX - this.sectionOffsetX * this.sectionWidth - game.canvasWidth / 2;
+      this.submapOffsetY = startY - this.sectionOffsetY * this.sectionWidth - game.canvasHeight / 2;
+      // viewport world coordinates
+      this.originOffsetX = startX - game.canvasWidth / 2;
+      this.originOffsetY = startY - game.canvasHeight / 2;
 
       this.velX = 0;
       this.velY = 0;
@@ -85,18 +84,11 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         }
         node.transformedPoints();
       }
-
-      this.loadStartMapTiles($.proxy(this.loaded, this));
-
-      // test collidable tiles
-      // var test = this.getNodeByWorldCoords(0, -140);
-      // test.tileOffset = 6;
-      // test.collidable = true;
     };
 
     this.getNodeByWorldCoords = function (x, y) {
-      gridX = Math.floor((x - this.originOffsetX + this.offsetX) / game.gridSize);
-      gridY = Math.floor((y - this.originOffsetY + this.offsetY) / game.gridSize);
+      gridX = Math.floor((x - this.originOffsetX + this.submapOffsetX) / game.gridSize);
+      gridY = Math.floor((y - this.originOffsetY + this.submapOffsetY) / game.gridSize);
       return this.getNode(gridX, gridY);
     };
 
@@ -123,8 +115,8 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
     };
 
     this.updatePosition = function (delta) {
-      this.offsetX += this.velX;
-      this.offsetY += this.velY;
+      this.submapOffsetX += this.velX;
+      this.submapOffsetY += this.velY;
       this.originOffsetX += this.velX;
       this.originOffsetY += this.velY;
     };
@@ -136,7 +128,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       var road = Math.random() > 0.5;
 
       // TODO DRY this up
-      if (this.offsetX < this.shiftWestBorder) { // going left
+      if (this.submapOffsetX < this.shiftWestBorder) { // going left
         // east is going away
         this.saveSpritesForChunk(chunks.ne, 'ne');
         this.saveSpritesForChunk(chunks.se, 'se');
@@ -148,8 +140,8 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         this.swapVertical(chunks.ne, chunks.nw);
         this.swapVertical(chunks.se, chunks.sw);
         // move the offset for a smooth transition
-        this.offsetX = this.offsetX + (this.width / 2);
-      } else if (this.offsetX > this.shiftEastBorder) { // going right
+        this.submapOffsetX = this.submapOffsetX + (this.width / 2);
+      } else if (this.submapOffsetX > this.shiftEastBorder) { // going right
         this.saveSpritesForChunk(chunks.nw, 'nw');
         this.saveSpritesForChunk(chunks.sw, 'sw');
         this.sectionOffsetX++;
@@ -157,9 +149,9 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         this.loadMapTiles(chunks.sw, 'se', {n:road});
         this.swapVertical(chunks.ne, chunks.nw);
         this.swapVertical(chunks.se, chunks.sw);
-        this.offsetX = this.offsetX - (this.width / 2);
+        this.submapOffsetX = this.submapOffsetX - (this.width / 2);
       }
-      if (this.offsetY < this.shiftNorthBorder) { // going up
+      if (this.submapOffsetY < this.shiftNorthBorder) { // going up
         this.saveSpritesForChunk(chunks.se, 'se');
         this.saveSpritesForChunk(chunks.sw, 'sw');
         this.sectionOffsetY--;
@@ -167,8 +159,8 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         this.loadMapTiles(chunks.sw, 'nw', {e:road});
         this.swapHorizontal(chunks.se, chunks.ne);
         this.swapHorizontal(chunks.sw, chunks.nw);
-        this.offsetY = this.offsetY + (this.height / 2);
-      } else if (this.offsetY > this.shiftSouthBorder) { // going down
+        this.submapOffsetY = this.submapOffsetY + (this.height / 2);
+      } else if (this.submapOffsetY > this.shiftSouthBorder) { // going down
         this.saveSpritesForChunk(chunks.ne, 'ne');
         this.saveSpritesForChunk(chunks.nw, 'nw');
         this.sectionOffsetY++;
@@ -176,7 +168,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         this.loadMapTiles(chunks.nw, 'sw', {e:road});
         this.swapHorizontal(chunks.se, chunks.ne);
         this.swapHorizontal(chunks.sw, chunks.nw);
-        this.offsetY = this.offsetY - (this.height / 2);
+        this.submapOffsetY = this.submapOffsetY - (this.height / 2);
       }
 
       // update the current levelData so we can grab the
@@ -195,7 +187,9 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
 
       for (var i = 0; i < totalNodes; i++) {
         sprite = nodes[i].nextSprite;
-        while (sprite && sprite.name !== 'Dude') {
+        while (sprite &&
+               sprite.name !== 'Dude' &&
+               sprite.name !== 'Building') {
           sprite.reap = true;
           // make them relative to the chunk
           sprite.pos.translate(offset);
@@ -310,7 +304,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
             console.warn("nothing in waitingSectionDownloads for '"+pos.toString()+"'");
             return;
           }
-          waitingSectionDownloads[pos] = null;
+          delete waitingSectionDownloads[pos];
 
           World.setSectionData(pos, data);
 
@@ -460,21 +454,21 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       return chunks;
     };
 
-    this.loadStartMapTiles = function (loadCallback) {
+    this.loadStartMapTiles = function (nw, sw, ne, se) {
       var chunks = this.getLevelChunks();
 
       progress.setTotal(4);
 
       var self = this;
-      self.loadMapTiles(chunks.nw, 'nw', {name:'intersection'}, function () {
+      self.loadMapTiles(chunks.nw, 'nw', {name:nw}, function () {
         progress.increment();
-        self.loadMapTiles(chunks.sw, 'sw', {name:'intersection'}, function () {
+        self.loadMapTiles(chunks.sw, 'sw', {name:sw}, function () {
           progress.increment();
-          self.loadMapTiles(chunks.ne, 'ne', {name:'gas-station-crossroads'}, function () {
+          self.loadMapTiles(chunks.ne, 'ne', {name:ne}, function () {
             progress.increment();
-            self.loadMapTiles(chunks.se, 'se', {name:'start-intersection'}, function () {
+            self.loadMapTiles(chunks.se, 'se', {name:se}, function () {
               progress.increment();
-              loadCallback();
+              self.loaded();
             });
           });
         });
@@ -486,11 +480,11 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         return;
       }
 
-      startX = Math.floor(this.offsetX / game.gridSize) - 2;
+      startX = Math.floor(this.submapOffsetX / game.gridSize) - 2;
       if (startX < 0) {
         startX = 0;
       }
-      startY = Math.floor(this.offsetY / game.gridSize) - 2;
+      startY = Math.floor(this.submapOffsetY / game.gridSize) - 2;
       if (startY < 0) {
         startY = 0;
       }
@@ -512,8 +506,8 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         offset = i * 4;
         nodeOffset =  imageData[offset] +
                      (imageData[offset+1] << 8);
-        gridX = Math.floor(((i % imageWidth) + startX) * game.gridSize - this.offsetX);
-        gridY = Math.floor((Math.floor(i / imageWidth) + startY) * game.gridSize - this.offsetY);
+        gridX = Math.floor(((i % imageWidth) + startX) * game.gridSize - this.submapOffsetX);
+        gridY = Math.floor((Math.floor(i / imageWidth) + startY) * game.gridSize - this.submapOffsetY);
         this.nodes[nodeOffset].render(delta, gridX, gridY);
       }
     };
@@ -540,6 +534,14 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       }
     };
 
+    this.save = function () {
+      var chunks = this.getLevelChunks();
+      this.saveSpritesForChunk(chunks.ne, 'ne');
+      this.saveSpritesForChunk(chunks.nw, 'nw');
+      this.saveSpritesForChunk(chunks.se, 'se');
+      this.saveSpritesForChunk(chunks.sw, 'sw');
+    };
+
     this.loaded = function () {
       console.log('loaded');
       // run first render
@@ -550,15 +552,6 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
         callback();
       }
     };
-
-    // save the sprites before we leave
-    $(window).unload($.proxy(function () {
-      var chunks = this.getLevelChunks();
-      this.saveSpritesForChunk(chunks.ne, 'ne');
-      this.saveSpritesForChunk(chunks.nw, 'nw');
-      this.saveSpritesForChunk(chunks.se, 'se');
-      this.saveSpritesForChunk(chunks.sw, 'sw');
-    }, this));
 
     this.init();
   };

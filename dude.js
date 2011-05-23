@@ -1,6 +1,7 @@
 // The DUDE
 
-define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
+define(["game", "sprite", "collidable", "spriteMarshal"],
+       function (game, Sprite, collidable, spriteMarshal) {
 
   var keyStatus = game.controls.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
@@ -131,6 +132,7 @@ define(["game", "sprite", "collidable"], function (game, Sprite, collidable) {
   };
 
   collidable(Dude);
+  spriteMarshal(Dude);
 
   return Dude;
 

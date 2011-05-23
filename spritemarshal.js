@@ -9,27 +9,43 @@ define(function () {
             Math.floor(sprite.pos.rot)].join(',');
   };
 
+  var parseValues = function (spriteString) {
+    var values = spriteString.split(',');
+
+    return {
+      clazz: values[0],
+      x:     parseInt(values[1]),
+      y:     parseInt(values[2]),
+      rot:   parseInt(values[3])
+    };
+  };
+
   var marshal = function (spriteString, callback) {
-    var values, clazz, x, y, rot;
 
-    values = spriteString.split(',');
-    clazz = values[0];
-    x     = parseInt(values[1]);
-    y     = parseInt(values[2]);
-    rot   = parseInt(values[3]);
+    var values = parseValues(spriteString);
 
-    require(['sprites/'+clazz], function (NewSprite) {
+    require(['sprites/'+values.clazz], function (NewSprite) {
       var sprite = new NewSprite();
-      sprite.pos.x = x;
-      sprite.pos.y = y;
-      sprite.pos.rot = rot;
+      sprite.pos.x = values.x;
+      sprite.pos.y = values.y;
+      sprite.pos.rot = values.rot;
       callback(sprite);
     });
   };
 
-  var spriteMarshal = function (thing) {
-    thing.prototype.toString = function () {
+  var spriteMarshal = function (Thing) {
+    Thing.prototype.toString = function () {
       return unmarshal(this);
+    };
+
+    // if we know the class we don't have to have a callback
+    Thing.marshal = function (spriteString) {
+      var values = parseValues(spriteString);
+      var sprite     = new Thing();
+      sprite.pos.x   = values.x;
+      sprite.pos.y   = values.y;
+      sprite.pos.rot = values.rot;
+      return sprite;
     };
   };
 

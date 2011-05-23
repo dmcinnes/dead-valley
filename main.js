@@ -9,39 +9,65 @@ require(
    "framerate",
    "sprites/Honda",
    "sprites/Zombie",
-   "sprites/Barrel"],
+   "sprites/Barrel",
+   "World",
+   "spriteMarshal"],
 
-  function (game, GridNode, Map, mainloop, Sprite, Dude, Sky, framerate, Honda, Zombie, Barrel) {
+  function (game,
+            GridNode,
+            Map,
+            mainloop,
+            Sprite,
+            Dude,
+            Sky,
+            framerate,
+            Honda,
+            Zombie,
+            Barrel,
+            World,
+            spriteMarshal) {
 
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
+      var dude, startX, startY;
 
       game.addSprite(Sky);
 
-      // want to start in the center of the right vertical road
-      var startX = 105 * game.gridSize;
-      var startY = 26 * game.gridSize;
+      var dudeState = World.getDude();
 
-      var dude = new Dude();
-      dude.pos.x = startX;
-      dude.pos.y = startY;
-      game.dude = dude;
-      game.addSprite(dude);
+      if (dudeState) {
+        dude = Dude.marshal(dudeState);
+        game.dude = dude;
+        game.addSprite(dude);
+        startX = dude.pos.x;
+        startY = dude.pos.y;
+      } else {
+        // want to start in the center of the right vertical road
+        startX = 40 * game.gridSize;
+        startY = 26 * game.gridSize;
 
-      var zombie = new Zombie();
-      zombie.pos.x = startX + 200;
-      zombie.pos.y = startY;
-      game.addSprite(zombie);
+        // add our starting players
+        dude = new Dude();
+        dude.pos.x = startX;
+        dude.pos.y = startY;
+        game.dude = dude;
+        game.addSprite(dude);
 
-      zombie = new Zombie();
-      zombie.pos.x = startX + 200;
-      zombie.pos.y = 1000;
-      game.addSprite(zombie);
+        var zombie = new Zombie();
+        zombie.pos.x = startX + 200;
+        zombie.pos.y = startY;
+        game.addSprite(zombie);
 
-      zombie = new Zombie();
-      zombie.pos.x = startX + 300;
-      zombie.pos.y = 1000;
-      game.addSprite(zombie);
+        zombie = new Zombie();
+        zombie.pos.x = startX + 200;
+        zombie.pos.y = 1000;
+        game.addSprite(zombie);
+
+        zombie = new Zombie();
+        zombie.pos.x = startX + 300;
+        zombie.pos.y = 1000;
+        game.addSprite(zombie);
+      }
 
       game.addSprite(framerate);
 
@@ -75,6 +101,18 @@ require(
       game.map = new Map(128, 128, startX, startY, function () {
         // only run the main loop after the map is loaded
         mainloop.play();
+      });
+
+      if (!dudeState) {
+        game.map.loadStartMapTiles('gas-station-crossroads', 'intersection', 'intersection', 'intersection');
+      } else {
+        game.map.loadStartMapTiles();
+      }
+
+      // save the sprites before we leave
+      $(window).unload(function () {
+        game.map.save();
+        World.saveDude(game.dude);
       });
 
     });
