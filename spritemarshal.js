@@ -3,32 +3,32 @@
 define(function () {
 
   var unmarshal = function (sprite) {
-    return [sprite.name,
-            Math.floor(sprite.pos.x),
-            Math.floor(sprite.pos.y),
-            Math.floor(sprite.pos.rot)].join(',');
+    return JSON.stringify(sprite.saveMetadata());
   };
 
-  var parseValues = function (spriteString) {
-    var values = spriteString.split(',');
-
-    return {
-      clazz: values[0],
-      x:     parseInt(values[1]),
-      y:     parseInt(values[2]),
-      rot:   parseInt(values[3])
-    };
+  // recursive function to marshal all the data on the object
+  var setValues = function (object, values) {
+    if (!object) return;
+    for (var val in values) {
+      if (values.hasOwnProperty(val)) {
+        if (typeof(values[val]) === 'object') {
+          setValues(object[val], values[val]);
+        } else if (typeof(object[val]) === 'number') {
+          object[val] = parseInt(values[val]);
+        } else {
+          object[val] = values[val];
+        }
+      }
+    }
   };
 
   var marshal = function (spriteString, callback) {
+    var values = JSON.parse(spriteString);
 
-    var values = parseValues(spriteString);
-
+    // load the class specified in the sprite string
     require(['sprites/'+values.clazz], function (NewSprite) {
       var sprite = new NewSprite();
-      sprite.pos.x = values.x;
-      sprite.pos.y = values.y;
-      sprite.pos.rot = values.rot;
+      setValues(sprite, values);
       callback(sprite);
     });
   };
@@ -40,11 +40,9 @@ define(function () {
 
     // if we know the class we don't have to have a callback
     Thing.marshal = function (spriteString) {
-      var values = parseValues(spriteString);
-      var sprite     = new Thing();
-      sprite.pos.x   = values.x;
-      sprite.pos.y   = values.y;
-      sprite.pos.rot = values.rot;
+      var values = JSON.parse(spriteString);
+      var sprite = new Thing();
+      setValues(sprite, values);
       return sprite;
     };
   };

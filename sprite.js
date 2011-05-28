@@ -353,6 +353,13 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
     return Matrix.vectorMultiply(world);
   };
 
+  Sprite.prototype.saveMetadata = function () {
+    return {
+      clazz: this.name,
+      pos:   this.pos
+    };
+  };
+
   spriteMarshal(Sprite);
 
   return Sprite;
