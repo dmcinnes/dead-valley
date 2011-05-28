@@ -17,9 +17,6 @@ define(function () {
           setValues(target, value);
         } else {
           switch (typeof(target)) {
-            case 'number':
-              object[val] = parseInt(value);
-              break;
             case 'function':
               target.call(object, value);
               break;
