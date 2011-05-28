@@ -19,6 +19,9 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
     this.nextsprite  = null;
   };
 
+  // this sprite should be saved when the level chunk in reclaimed
+  Sprite.prototype.shouldSave = true;
+
   Sprite.prototype.init = function (name) {
     var config = spriteInfo[name];
 

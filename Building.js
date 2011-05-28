@@ -16,10 +16,12 @@ define(["collidable", "vector"],
     this.vel.rot = 0;
   };
 
-  Building.prototype.name    = 'Building';
-  Building.prototype.visible = true;
-  Building.prototype.mass    = Number.MAX_VALUE;
-  Building.prototype.inertia = Number.MAX_VALUE;
+  // don't save when the level is saved -- we're going to save this our own way
+  Building.prototype.shouldSave     = false;
+  Building.prototype.name           = 'Building';
+  Building.prototype.visible        = true;
+  Building.prototype.mass           = Number.MAX_VALUE;
+  Building.prototype.inertia        = Number.MAX_VALUE;
   Building.prototype.currentNormals = [
     new Vector(1, 0),
     new Vector(0, 1)

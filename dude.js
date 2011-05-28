@@ -32,6 +32,9 @@ define(["game", "sprite", "collidable", "spriteMarshal"],
   };
   Dude.prototype = new Sprite();
 
+  // don't save when the level is saved -- we're going to save this our own way
+  Dude.prototype.shouldSave = false;
+
   Dude.prototype.draw = function (delta) {
     if (!this.visible) return;
 

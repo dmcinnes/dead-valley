@@ -111,8 +111,14 @@ require(
 
       // save the sprites before we leave
       $(window).unload(function () {
+        if (World.usedSpace()) {
+          game.map.save();
+          World.saveDude(game.dude);
+        }
+      });
+
+      game.controls.registerKeyDownHandler('s', function () {
         game.map.save();
-        World.saveDude(game.dude);
       });
 
     });

@@ -187,13 +187,13 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
 
       for (var i = 0; i < totalNodes; i++) {
         sprite = nodes[i].nextSprite;
-        while (sprite &&
-               sprite.name !== 'Dude' &&
-               sprite.name !== 'Building') {
-          sprite.reap = true;
-          // make them relative to the chunk
-          sprite.pos.translate(offset);
-          sprites.push(sprite.toString());
+        while (sprite) {
+          if (sprite.shouldSave) {
+            sprite.reap = true;
+            // make them relative to the chunk
+            sprite.pos.translate(offset);
+            sprites.push(sprite.toString());
+          }
           sprite = sprite.nextSprite;
         }
       }
