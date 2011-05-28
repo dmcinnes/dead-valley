@@ -476,6 +476,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
     };
 
     this.render = function (delta) {
+      // check for 0 delta so we can do first render
       if (delta && !this.velX && !this.velY) {
         return;
       }
@@ -544,7 +545,11 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
 
     this.loaded = function () {
       console.log('loaded');
-      // run first render
+
+      // first run
+      this.run(0);
+
+      // first render
       this.render(0);
 
       // fire the callback
