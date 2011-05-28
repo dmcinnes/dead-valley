@@ -25,6 +25,7 @@ define(function () {
       this.collidable = !(code & 0x8000);
       this.tileFlip   = !!(code & 0x4000);
       this.tileRotate = (code & 0x3000) >> 12;
+      this.nextSprite = null; // clean up any sprite remnants
     };
 
     thing.prototype.oldSetFromString = function (str) {
