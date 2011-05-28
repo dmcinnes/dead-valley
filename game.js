@@ -11,7 +11,7 @@
 define(['assetmanager',
         'controls',
         'collidable',
-        'spritemarshal'],
+        'spriteMarshal'],
         function (AssetManager,
                   controls,
                   collidable,

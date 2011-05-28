@@ -11,12 +11,22 @@ define(function () {
     if (!object) return;
     for (var val in values) {
       if (values.hasOwnProperty(val)) {
-        if (typeof(values[val]) === 'object') {
-          setValues(object[val], values[val]);
-        } else if (typeof(object[val]) === 'number') {
-          object[val] = parseInt(values[val]);
+        var value  = values[val];
+        var target = object[val];
+        if (typeof(value) === 'object') {
+          setValues(target, value);
         } else {
-          object[val] = values[val];
+          switch (typeof(target)) {
+            case 'number':
+              object[val] = parseInt(value);
+              break;
+            case 'function':
+              target.call(object, value);
+              break;
+            default:
+              object[val] = value;
+              break;
+          }
         }
       }
     }

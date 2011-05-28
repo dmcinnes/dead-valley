@@ -260,7 +260,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
     };
 
     this.getSectionCoords = function (which) {
-      switch(which) {
+      switch (which) {
         case 'nw':
           return new Vector(this.sectionOffsetX,   this.sectionOffsetY);
         case 'ne':
