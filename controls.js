@@ -5,15 +5,7 @@ define(function () {
     37: 'left',
     38: 'up',
     39: 'right',
-    40: 'down',
-    70: 'f',
-    71: 'g',
-    72: 'h',
-    77: 'm',
-    78: 'n',
-    80: 'p',
-    83: 's',
-    88: 'x'
+    40: 'down'
   };
 
   var keyStatus = { keyDown:false };
@@ -21,13 +13,24 @@ define(function () {
     keyStatus[KEY_CODES[code]] = false;
   }
 
+  // set up the structure for handling key presses
+  var setupKeyStatus = function (key) {
+    var lower = key.toLowerCase();
+    var code = lower.charCodeAt(0);
+    KEY_CODES[code] = lower;
+    keyStatus[lower] = false;
+
+    code = key.toUpperCase().charCodeAt(0);
+    KEY_CODES[code] = lower;
+    keyStatus[lower] = false;
+  };
+
   var downHandlers = {};
   var upHandlers = {};
 
-  var key;
   $(window).keydown(function (e) {
     keyStatus.keyDown = true;
-    key = KEY_CODES[e.keyCode];
+    var key = KEY_CODES[e.keyCode];
     if (key) {
       e.preventDefault();
       keyStatus[key] = true;
@@ -35,7 +38,7 @@ define(function () {
     }
   }).keyup(function (e) {
     keyStatus.keyDown = false;
-    key = KEY_CODES[e.keyCode];
+    var key = KEY_CODES[e.keyCode];
     if (key) {
       e.preventDefault();
       keyStatus[key] = false;
@@ -52,6 +55,7 @@ define(function () {
   };
 
   var registerKeyDownHandler = function (key, callback) {
+    setupKeyStatus(key);
     var handlers = downHandlers[key];
     if (!handlers) {
       downHandlers[key] = handlers = [];
