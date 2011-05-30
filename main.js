@@ -36,11 +36,23 @@ require(
       var dudeState = World.getDude();
 
       if (dudeState) {
-        dude = Dude.marshal(dudeState);
+        var parsedDudeState = JSON.parse(dudeState);
+        if (parsedDudeState.clazz === 'Dude') {
+          dude = Dude.marshal(dudeState);
+        } else {
+          // Dude's driving something
+          // name is of the vehicle's class
+          dude = new Dude();
+          dude.visible = false;
+          spriteMarshal.marshal(dudeState, function (vehicle) {
+            game.addSprite(vehicle);
+            dude.enterCar(vehicle);
+          });
+        }
         game.dude = dude;
         game.addSprite(dude);
-        startX = dude.pos.x;
-        startY = dude.pos.y;
+        startX = parsedDudeState.pos.x;
+        startY = parsedDudeState.pos.y;
       } else {
         // want to start in the center of the right vertical road
         startX = 40 * game.gridSize;

@@ -97,17 +97,33 @@ define(["game", "sprite", "collidable", "spriteMarshal"],
     this.touching.push(other);
   };
 
+  Dude.prototype.enterCar = function (car) {
+    car.driver     = this;
+    car.shouldSave = false; // disable car saving -- save with Dude object
+    this.driving   = car;
+    this.visible   = false;
+    if (this.currentNode) {
+      this.currentNode.leave(this);
+      this.currentNode = null;
+    }
+  };
+
+  Dude.prototype.leaveCar = function () {
+    this.driving.shouldSave = true;
+    this.pos.set(this.driving.driversSideLocation());
+    this.driving.leave(this);
+    this.driving = null;
+    this.visible = true;
+  };
+
   // TODO find a better place for this
   Dude.prototype.setupKeyBindings = function () {
     var self = this;
     game.controls.registerKeyDownHandler('x', function () {
       if (self.driving) {
-        // leave the car
-        self.pos.set(self.driving.driversSideLocation());
-        self.driving.leave(self);
-        self.driving = null;
-        self.visible = true;
+        self.leaveCar();
       } else if (self.visible) {
+        // find all the cars we're touching
         var cars = _(self.touching).select(function (sprite) {
           return !!sprite.isCar;
         });
@@ -117,12 +133,7 @@ define(["game", "sprite", "collidable", "spriteMarshal"],
             return (self.distance(car) < self.distance(closest)) ? car : closest;
           }, cars[0]);
 
-          // get in the car
-          car.driver = self;
-          self.driving = car;
-          self.visible = false;
-          self.currentNode.leave(self);
-          self.currentNode = null;
+          self.enterCar(car);
         }
       }
     });
@@ -132,6 +143,13 @@ define(["game", "sprite", "collidable", "spriteMarshal"],
         self.driving.toggleHeadlights();
       }
     });
+  };
+
+  Dude.prototype.saveMetadata = function () {
+    var metadata = this.driving ?
+                   this.driving.saveMetadata() :
+                   Sprite.prototype.saveMetadata.call(this);
+    return metadata;
   };
 
   collidable(Dude);
