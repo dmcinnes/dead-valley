@@ -1,8 +1,8 @@
 make zombie collision response more natural
 add dead zombie state
 add dead dude state
-save barrel up/down state
-save dude state and only create new if not saved
+X save barrel up/down state
+X save dude state and only create new if not saved
 fix brakes
 add drag to car
 add car damage/destruction
@@ -16,9 +16,10 @@ create pickups
 create inventory
 create HUD for inventory
 create HUD for building inventory
+create HUD for vehicle inventory
 add trees randomly to map
 render trees -- make transparent when colliding with sprite
-make zombies/dude render in order according to height
+make zombies/dude render in order according to vertical position
 convert everything to radians
 make object capitalization consistent
 
