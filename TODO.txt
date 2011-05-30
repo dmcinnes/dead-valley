@@ -9,7 +9,7 @@ add car damage/destruction
 add building entrance
 X refactor key handler so keys don't have to be predefined
 create another gas station section on straightaway
-add map handling funcitons for custom instances of sections through the map worker
+add map handling functions for custom instances of sections through the map worker
 fix gas pump position
 tune Honda's performance
 create pickups
@@ -22,6 +22,7 @@ render trees -- make transparent when colliding with sprite
 make zombies/dude render in order according to vertical position
 convert everything to radians
 make object capitalization consistent
+add zombie blood tire tracks
 
 EDITOR
 remove current collidible code
