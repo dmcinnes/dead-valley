@@ -3,9 +3,7 @@
 define(function () {
   var Vector = function (x, y) {
     if (y === undefined) { // it's an angle
-      var rad = (x * Math.PI) / 180;
-      this.x = Math.sin(rad);
-      this.y = Math.cos(rad);
+      this.set(x);
     } else { 
       this.x = x;
       this.y = y;
@@ -16,7 +14,11 @@ define(function () {
     if (arguments.length > 1) {
       this.x = arguments[0];
       this.y = arguments[1];
-    } else {
+    } else if (typeof(other) === 'number') {
+      var rad = (other * Math.PI) / 180;
+      this.x = Math.cos(rad);
+      this.y = Math.sin(rad);
+    } else if (other) {
       this.x = other.x;
       this.y = other.y;
     }

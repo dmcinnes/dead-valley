@@ -3,7 +3,7 @@ add dead zombie state
 add dead dude state
 X save barrel up/down state
 X save dude state and only create new if not saved
-fix brakes
+X fix brakes
 add drag to car
 add car damage/destruction
 add building entrance

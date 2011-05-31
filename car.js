@@ -38,11 +38,13 @@ define(["game",
     this.driversSide    = config.driversSide;
     this.passengersSide = config.driversSide.multiply({x:-1, y:1}); // assuming we're symmetrical
 
-    this.speed = 0.0;
-    this.collided = false;
-    this.breaking = false;
+    this.collided  = false;
+    this.breaking  = false;
+    this.reversing = false;
+    this.stopped   = true;
     this.driver = null;
     this.steeringAngle = 0;
+    this.direction = new Vector(0);
 
     this.headlights = [
       this.points[0].add({x:4, y:0}),
@@ -75,17 +77,6 @@ define(["game",
       Taillight.render(this, 4, this.breaking);
       Taillight.render(this, 5, this.breaking);
     }
-
-    // _(this.wheels).each(function (wheel) {
-    //   context.beginPath();
-    //   context.strokeStyle = 'black';
-    //   context.lineWidth = 1;
-    //   context.moveTo(wheel.position.x, wheel.position.y);
-    //   context.lineTo(wheel.position.x + wheel.responseForce.x,
-    //                  wheel.position.y + wheel.responseForce.y);
-    //   context.stroke();
-    //   context.fillText(Math.round(wheel.speed), wheel.position.x, wheel.position.y);
-    // });
   };
 
   Car.prototype.setSteering = function (steering) {
@@ -103,12 +94,13 @@ define(["game",
     // front wheel drive
     this.wheels[0].addTransmissionTorque(throttle * this.engineTorque);
     this.wheels[1].addTransmissionTorque(throttle * this.engineTorque);
+    this.stopped = false;
   };
 
   Car.prototype.setBrakes = function (brakes) {
-    var self = this;
+    var torque = this.brakeTorque;
     _(this.wheels).each(function (wheel) {
-      wheel.addTransmissionTorque(-wheel.speed * self.brakeTorque * brakes);
+      wheel.applyBrakes(torque);
     });
   };
 
@@ -122,46 +114,64 @@ define(["game",
         this.setSteering(0);
       }
 
-      this.setThrottle((keyStatus.up) ? 1 : 0);
+      if (keyStatus.up) {
+        this.setThrottle(1);
+      }
 
       if (keyStatus.down) {
-        if (this.wheels[0].speed > 0 &&
-            this.wheels[1].speed > 0) {
-          this.setBrakes(1);
-          this.breaking = true;
-        } else if (!this.breaking) {
+        if ( this.reversing ||
+            !this.breaking &&
+             this.stopped) {
           // reverse
           this.setThrottle(-1);
+          this.reversing = true;
+        } else if (!this.stopped) { // if not already stopped
+          this.breaking = true;
+          // update direction vector
+          this.direction.set(this.pos.rot - 90);
+          if (this.direction.dotProduct(this.vel) < 0) { // reversing
+            this.stopped = true;
+            this.vel.set(0, 0);
+            this.acc.set(0, 0);
+            this.vel.rot = 0;
+            this.acc.rot = 0;
+            _.each(this.wheels, function (wheel) { wheel.stop(); });
+          } else {
+            this.setBrakes(1);
+          }
         }
       } else {
-        this.breaking = false;
+        this.breaking  = false;
+        this.reversing = false;
       }
     }
 
-    var worldWheelOffset,
-        worldGroundVel,
-        relativeGroundSpeed,
-        relativeResponseForce,
-        worldResponseForce;
-    for (var i = 0; i < 4; i++) {
-      worldWheelOffset = this.relativeToWorld(this.wheels[i].position);
-      // console.log(this.wheels[i].position.x, this.wheels[i].position.y, worldWheelOffset.x, worldWheelOffset.y);
-      worldGroundVel = this.pointVel(worldWheelOffset);
-      relativeGroundSpeed = this.worldToRelative(worldGroundVel);
-      relativeResponseForce = this.wheels[i].calculateForce(relativeGroundSpeed, delta);
-      worldResponseForce = this.relativeToWorld(relativeResponseForce);
+    if (!this.stopped) {
+      var worldWheelOffset,
+          worldGroundVel,
+          relativeGroundSpeed,
+          relativeResponseForce,
+          worldResponseForce;
+      for (var i = 0; i < 4; i++) {
+        worldWheelOffset = this.relativeToWorld(this.wheels[i].position);
+        // console.log(this.wheels[i].position.x, this.wheels[i].position.y, worldWheelOffset.x, worldWheelOffset.y);
+        worldGroundVel = this.pointVel(worldWheelOffset);
+        relativeGroundSpeed = this.worldToRelative(worldGroundVel);
+        relativeResponseForce = this.wheels[i].calculateForce(relativeGroundSpeed, delta);
+        worldResponseForce = this.relativeToWorld(relativeResponseForce);
 
-      this.addForce(worldResponseForce, worldWheelOffset);
-    }
+        this.addForce(worldResponseForce, worldWheelOffset);
+      }
 
-    var vel_m_s = this.vel.magnitude() / 10; // 10 pixels per meter
-    var airResistance = Math.round(-0.5 * massDensityOfAir * this.dragArea * Math.pow(vel_m_s, 2));
-    var airResistanceVec = this.vel.clone().normalize().scale(airResistance);
-    this.addForce(airResistanceVec, new Vector(0, 0));
+      var vel_m_s = this.vel.magnitude() / 10; // 10 pixels per meter
+      var airResistance = Math.round(-0.5 * massDensityOfAir * this.dragArea * Math.pow(vel_m_s, 2));
+      var airResistanceVec = this.vel.clone().normalize().scale(airResistance);
+      this.addForce(airResistanceVec, new Vector(0, 0));
 
-    if (this.currentNode && !this.currentNode.isRoad() && vel_m_s > 1) {
-      this.pos.rot += (Math.random() > 0.5) ? -1 : 1;
-      this.addForce(airResistanceVec.scale(4), new Vector(0, 0)); // slow em down too
+      if (this.currentNode && !this.currentNode.isRoad() && vel_m_s > 1) {
+        this.pos.rot += (Math.random() > 0.5) ? -1 : 1;
+        this.addForce(airResistanceVec.scale(4), new Vector(0, 0)); // slow em down too
+      }
     }
   };
 
