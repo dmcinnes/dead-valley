@@ -39,3 +39,34 @@ body {
   -moz-transform: rotate(270deg);
   -webkit-transform: rotate(270deg);
 }
+
+#life {
+  position:absolute;
+  z-index:50;
+  left:0px;
+  top:0px;
+  padding:2px;
+}
+.heart {
+  font:1.5em bold;
+  overflow:hidden;
+  float:left;
+  text-shadow: 0px 0px 2px black;
+}
+.heart.full {
+  color:#DC143C;
+}
+.heart.left-half {
+  color:#DC143C;
+}
+.heart.right-half {
+  color:#2F4F4F;
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: fliph; /*IE*/
+}
+.heart.empty {
+  color:#2F4F4F;
+}

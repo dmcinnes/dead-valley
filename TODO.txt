@@ -1,3 +1,4 @@
+add dude health
 make zombie collision response more natural
 add dead zombie state
 add dead dude state
