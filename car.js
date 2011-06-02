@@ -197,6 +197,9 @@ define(["game",
     this.driver = null;
   };
 
+  Car.prototype.takeDamage = function (damage) {
+  };
+
   Car.prototype.isCar = true;
 
   collidable(Car);

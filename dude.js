@@ -1,7 +1,7 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spriteMarshal"],
-       function (game, Sprite, collidable, spriteMarshal) {
+define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
+       function (game, Sprite, collidable, spriteMarshal, LifeMeter) {
 
   var keyStatus = game.controls.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
@@ -9,24 +9,29 @@ define(["game", "sprite", "collidable", "spriteMarshal"],
 
   var SPEED = 44; // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.03; // in seconds
+  var DAMAGE_ANIMATION_TIME = 0.3;  // in seconds
 
   var Dude = function () {
     this.init('Dude');
 
-    this.driving = null;
+    this.driving             = null;
 
-    this.direction = RIGHT;
-    this.walking = false;
-    this.walkingFrame = 0;
-    this.walkingFrameCounter = 0.0;
+    this.direction           = RIGHT;
+    this.walking             = false;
+    this.walkingFrame        = 0;
+    this.walkingFrameCounter = 0;
+    this.damageFrameCounter  = 0;
 
-    this.mass = 0.001;
-    this.inertia = 1;
+    this.mass                = 0.001;
+    this.inertia             = 1;
+
+    this.health              = 6;
+    this.takingDamage        = false;
 
     // list of things the dude is currently touching
-    this.touching = [];
+    this.touching            = [];
 
-    this.originalCenterX = this.center.x;
+    this.originalCenterX     = this.center.x;
 
     this.setupKeyBindings();
   };
@@ -48,15 +53,28 @@ define(["game", "sprite", "collidable", "spriteMarshal"],
         this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
       }
       this.drawTile(this.walkingFrame+1, this.direction);
-      this.drawTile(6, this.direction); // walking arms
     } else {
       this.drawTile(0, this.direction); // standing
-      this.drawTile(5, this.direction); // standing arms
+    }
+
+    if (this.takingDamage) {
+      this.drawTile(6, this.direction); // out arms
+    } else {
+      this.drawTile(5, this.direction); // arms
     }
   };
 
   Dude.prototype.preMove = function (delta) {
     if (!this.visible) return;
+
+    // takingDamage is only set for DAMAGE_ANIMATION_TIME
+    if (this.takingDamage) {
+      this.damageFrameCounter += delta;
+      if (this.damageFrameCounter > DAMAGE_ANIMATION_TIME) {
+        this.takingDamage = false;
+        this.damageFrameCounter = 0;
+      }
+    }
 
     // clear velocity
     this.vel.set(0, 0);
@@ -150,6 +168,18 @@ define(["game", "sprite", "collidable", "spriteMarshal"],
                    this.driving.saveMetadata() :
                    Sprite.prototype.saveMetadata.call(this);
     return metadata;
+  };
+
+  Dude.prototype.takeDamage = function (damage) {
+    this.takingDamage = true;
+
+    this.health -= damage;
+
+    LifeMeter.updateHealth(this.health);
+    
+    if (this.health <= 0) {
+      // die
+    }
   };
 
   collidable(Dude);

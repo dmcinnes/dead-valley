@@ -45,7 +45,7 @@ body {
   z-index:50;
   left:0px;
   top:0px;
-  padding:2px;
+  padding:2px 4px;
 }
 .heart {
   font:1.5em bold;

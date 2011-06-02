@@ -6,12 +6,14 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
   var SPEED = 11; // 5 MPH
   var WALKING_ANIMATION_FRAME_RATE    = 0.3; // in seconds
   var ATTACKING_ANIMATION_FRAME_RATE  = 0.25; // in seconds
+  var DAMAGE_WINDOW                   = 0.05; // in seconds
   var SCAN_TIMEOUT_RESET = 1; // in seconds
 
   var Zombie = function () {
     this.init('Zombie');
 
     this.target                = null;
+    this.targetSprite          = null;
     this.seeTarget             = false;
     this.direction             = RIGHT;
     this.walking               = false;
@@ -67,16 +69,18 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     // TODO limit the distance the zombie can see
     var target = game.dude.driving || game.dude;
     if (target && this.canSee(target)) {
-      this.target    = target.pos.clone();
-      this.targetVel = target.vel.clone();
-      this.seeTarget = true;
+      this.target       = target.pos.clone();
+      this.targetVel    = target.vel.clone();
+      this.seeTarget    = true;
+      this.targetSprite = target;
     }
   };
 
   Zombie.prototype.clearTarget = function () {
-    this.target    = null;
-    this.targetVel = null;
-    this.seeTarget = false;
+    this.target       = null;
+    this.targetSprite = null;
+    this.targetVel    = null;
+    this.seeTarget    = false;
   };
 
   Zombie.prototype.preMove = function (delta) {
@@ -105,6 +109,12 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     if (other === game.dude ||
         other === game.dude.driving) {
       this.currentState = this.states.attacking;
+
+      // are we in the window of opportunity?
+      if (this.attackingFrame === 3 && // arm stretched
+          this.attackingFrameCounter > ATTACKING_ANIMATION_FRAME_RATE - DAMAGE_WINDOW) {
+        other.takeDamage(1);
+      }
     }
   };
 

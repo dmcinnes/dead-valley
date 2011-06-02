@@ -40,6 +40,9 @@ define(['game'], function (game) {
   $life.width(width * totalContainers);
 
   var render = function (life) {
+    if (life < 0) {
+      life = 0;
+    }
     $life.empty();
     var i;
     var fullCount  = Math.floor(life / 2);
@@ -57,15 +60,10 @@ define(['game'], function (game) {
     }
   };
 
-  var counter = 6;
-  window.setInterval(function () {
-    render(counter);
-    counter--;
-    if (counter < 0) {
-      counter = 6;
-    }
-  }, 1000);
+  // render full health
+  render(totalContainers * 2);
 
   return {
+    updateHealth: render
   };
 });
