@@ -1,4 +1,4 @@
-add dude health
+X add dude health
 make zombie collision response more natural
 add dead zombie state
 add dead dude state
@@ -24,6 +24,8 @@ make zombies/dude render in order according to vertical position
 convert everything to radians
 make object capitalization consistent
 add zombie blood tire tracks
+make zombies respect building collisions
+add zombies randomly to map - based on building population of section?
 
 EDITOR
 remove current collidible code
@@ -44,3 +46,5 @@ create sprites for pickups
 add dude death animation
 add zombie death animation
 create trees
+clean up zombie outlines
+clean up zombie's standing legs (make back leg angle outward)
