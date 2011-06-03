@@ -3,14 +3,19 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
-  var SPEED = 11; // 5 MPH
-  var WALKING_ANIMATION_FRAME_RATE    = 0.3; // in seconds
-  var ATTACKING_ANIMATION_FRAME_RATE  = 0.25; // in seconds
-  var DAMAGE_WINDOW                   = 0.05; // in seconds
-  var SCAN_TIMEOUT_RESET = 1; // in seconds
+  var SPEED                          = 11; // 5 MPH
+  var WALKING_ANIMATION_FRAME_RATE   = 0.3; // in seconds
+  var ATTACKING_ANIMATION_FRAME_RATE = 0.25; // in seconds
+  var DAMAGE_WINDOW                  = 0.05; // in seconds
+  var SCAN_TIMEOUT_RESET             = 1; // in seconds
+  var MAX_WAIT_TIME                  = 20; // in seconds
+  var MAX_RANGE                      = 400; // how far a Zombie can see - in pixels
+  var WANDER_DISTANCE                = 200; // how far a Zombie can wanders in one direction - in pixels
 
   var Zombie = function () {
     this.init('Zombie');
+
+    // set some counters randomly so not all zombies are in sync
 
     this.target                = null;
     this.targetSprite          = null;
@@ -18,12 +23,13 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     this.direction             = RIGHT;
     this.walking               = false;
     this.walkingFrame          = 0;
-    this.walkingFrameCounter   = 0;
+    this.walkingFrameCounter   = WALKING_ANIMATION_FRAME_RATE * Math.random();
     this.attackingFrame        = 0;
     this.attackingFrameCounter = 0;
-    this.scanTimeout           = SCAN_TIMEOUT_RESET;
+    this.scanTimeout           = SCAN_TIMEOUT_RESET * Math.random();
+    this.waitTimeout           = MAX_WAIT_TIME * Math.random();
 
-    this.currentState          = this.states.waiting;
+    this.currentState          = this.states.wandering;
 
     this.mass                  = 0.001;
     this.inertia               = 1;
@@ -68,7 +74,7 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     // dude is the only target for now
     // TODO limit the distance the zombie can see
     var target = game.dude.driving || game.dude;
-    if (target && this.canSee(target)) {
+    if (target && this.canSee(target, MAX_RANGE)) {
       this.target       = target.pos.clone();
       this.targetVel    = target.vel.clone();
       this.seeTarget    = true;
@@ -94,7 +100,7 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
       this.currentState = this.states.stalking;
     }
 
-    this.currentState.call(this);
+    this.currentState.call(this, delta);
 
     if (this.vel.x) {
       this.direction = (this.vel.x > 0) ? RIGHT : LEFT;
@@ -124,14 +130,25 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
   };
 
   Zombie.prototype.states = {
-    waiting: function () {
+    waiting: function (delta) {
       this.walking = false;
       this.vel.scale(0);
+
+      this.waitTimeout -= delta;
+      if (this.waitTimeout < 0) {
+        // reset wait period
+        this.waitTimeout = MAX_WAIT_TIME * Math.random();
+        this.currentState = this.states.wandering;
+      }
     },
     wandering: function () {
       this.walking = true;
 
-      // TODO move around a bit
+      // create a random target to shoot for
+      var direction = new Vector(Math.random() * 360);
+      this.target = this.pos.add(direction.scale(Math.random() * WANDER_DISTANCE));
+
+      this.currentState = this.states.searching;
     },
     searching: function () {
       this.walking = true;
@@ -150,7 +167,7 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
         this.target = this.targetVel.normalize().scale(300).translate(this.pos);
         this.targetVel = null;
       } else {
-        this.currentState = this.states.wandering;
+        this.currentState = this.states.waiting;
       }
     },
     stalking: function () {

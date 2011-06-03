@@ -241,7 +241,7 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
     return Math.sqrt(Math.pow(other.pos.x - this.pos.x, 2) + Math.pow(other.pos.y - this.pos.y, 2));
   };
 
-  Sprite.prototype.canSee = function (other) {
+  Sprite.prototype.canSee = function (other, maxDistance) {
     if (this.currentNode === other.currentNode) {
       // in the same cell
       return true;
@@ -263,6 +263,11 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
     var dx = other.pos.x - this.pos.x;
     var dy = other.pos.y - this.pos.y;
     var len = Math.sqrt(dx*dx + dy*dy);
+
+    if (maxDistance && len > maxDistance) {
+      return false; // out of range
+    }
+
     if (len != 0) {
       dx /= len;
       dy /= len;
