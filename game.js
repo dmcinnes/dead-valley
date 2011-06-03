@@ -108,7 +108,8 @@ define(['assetmanager',
     addSprite: function (sprite) {
       this.sprites.push(sprite);
       sortSprites();
-    }
+    },
+    resortSprites: sortSprites
   };
 
   return game;

@@ -27,6 +27,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
 
     this.health              = 6;
     this.takingDamage        = false;
+    this.alive               = true;
 
     // list of things the dude is currently touching
     this.touching            = [];
@@ -78,6 +79,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
 
     // clear velocity
     this.vel.set(0, 0);
+
+    if (!this.alive) return; // he's dead Jim
 
     // clear touching list
     this.touching.splice(0);
@@ -171,14 +174,21 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
   };
 
   Dude.prototype.takeDamage = function (damage) {
-    this.takingDamage = true;
+    if (this.alive) {
+      this.takingDamage = true;
 
-    this.health -= damage;
+      this.health -= damage;
 
-    LifeMeter.updateHealth(this.health);
-    
-    if (this.health <= 0) {
-      // die
+      LifeMeter.updateHealth(this.health);
+
+      if (this.health <= 0) {
+        // die
+        this.alive = false;
+        this.collidable = false;
+        // move the dude to the bottom of the pile
+        this.z = 1;
+        game.resortSprites();
+      }
     }
   };
 
