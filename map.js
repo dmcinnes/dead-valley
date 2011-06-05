@@ -454,6 +454,14 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       return chunks;
     };
 
+    var screenOffset = $('#canvas-mask').offset();
+    this.worldCoordinatesFromWindow = function (x, y) {
+      return new Vector({
+        x: x - screenOffset.left + this.originOffsetX,
+        y: y - screenOffset.top + this.originOffsetY
+      });
+    };
+
     this.loadStartMapTiles = function (nw, sw, ne, se) {
       var chunks = this.getLevelChunks();
 

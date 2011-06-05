@@ -12,8 +12,6 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
   var DAMAGE_ANIMATION_TIME = 0.3;  // in seconds
   var FIRING_ANIMATION_TIME = 0.1;  // in seconds
 
-  var screenOffset = $('#canvas-mask').offset().left;
-
   var Dude = function () {
     this.init('Dude');
 
@@ -192,9 +190,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
 
   Dude.prototype.aimTowardMouse = function (event) {
     this.aiming = true;
-    var dudeX = this.pos.x - game.map.originOffsetX;
-    var cursorX = event.pageX - screenOffset;
-    this.direction = (cursorX - dudeX < 0) ? LEFT : RIGHT;
+    var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+    this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
   };
 
   Dude.prototype.setupMouseBindings = function () {
