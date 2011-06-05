@@ -10,6 +10,9 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
   var SPEED = 44; // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.03; // in seconds
   var DAMAGE_ANIMATION_TIME = 0.3;  // in seconds
+  var FIRING_ANIMATION_TIME = 0.1;  // in seconds
+
+  var screenOffset = $('#canvas-mask').offset().left;
 
   var Dude = function () {
     this.init('Dude');
@@ -21,6 +24,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
     this.walkingFrame        = 0;
     this.walkingFrameCounter = 0;
     this.damageFrameCounter  = 0;
+    this.firingFrameCounter  = 0;
 
     this.mass                = 0.001;
     this.inertia             = 1;
@@ -29,12 +33,16 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
     this.takingDamage        = false;
     this.alive               = true;
 
+    this.aiming              = false;
+    this.firing              = false;
+
     // list of things the dude is currently touching
     this.touching            = [];
 
     this.originalCenterX     = this.center.x;
 
     this.setupKeyBindings();
+    this.setupMouseBindings();
   };
   Dude.prototype = new Sprite();
 
@@ -58,8 +66,13 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
       this.drawTile(0, this.direction); // standing
     }
 
+    // TODO clean this up
     if (this.takingDamage) {
       this.drawTile(6, this.direction); // out arms
+    } else if (this.firing) {
+      this.drawTile(10, this.direction); // firing arms
+    } else if (this.aiming) {
+      this.drawTile(9, this.direction); // aiming arms
     } else {
       this.drawTile(5, this.direction); // arms
     }
@@ -68,12 +81,22 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
   Dude.prototype.preMove = function (delta) {
     if (!this.visible) return;
 
+    // TODO generalize this animation handling
     // takingDamage is only set for DAMAGE_ANIMATION_TIME
     if (this.takingDamage) {
       this.damageFrameCounter += delta;
       if (this.damageFrameCounter > DAMAGE_ANIMATION_TIME) {
         this.takingDamage = false;
         this.damageFrameCounter = 0;
+      }
+    }
+
+    // firing is only set for FIRING_ANIMATION_TIME
+    if (this.firing) {
+      this.firingFrameCounter += delta;
+      if (this.firingFrameCounter > FIRING_ANIMATION_TIME) {
+        this.firing = false;
+        this.firingFrameCounter = 0;
       }
     }
 
@@ -90,17 +113,19 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
                     keyStatus.up    ||
                     keyStatus.down);
 
-    if (keyStatus.left) {
-      this.vel.x = -SPEED;
-      this.direction = LEFT;
-    } else if (keyStatus.right) {
-      this.vel.x = SPEED;
-      this.direction = RIGHT;
-    } 
-    if (keyStatus.up) {
-      this.vel.y = -SPEED;
-    } else if (keyStatus.down) {
-      this.vel.y = SPEED;
+    if (!this.firing) {
+      if (keyStatus.left) {
+        this.vel.x = -SPEED;
+        this.direction = LEFT;
+      } else if (keyStatus.right) {
+        this.vel.x = SPEED;
+        this.direction = RIGHT;
+      } 
+      if (keyStatus.up) {
+        this.vel.y = -SPEED;
+      } else if (keyStatus.down) {
+        this.vel.y = SPEED;
+      }
     }
 
     game.map.keepInView(this);
@@ -162,6 +187,25 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
       if (self.driving) {
         self.driving.toggleHeadlights();
       }
+    });
+  };
+
+  Dude.prototype.aimTowardMouse = function (event) {
+    this.aiming = true;
+    var dudeX = this.pos.x - game.map.originOffsetX;
+    var cursorX = event.pageX - screenOffset;
+    this.direction = (cursorX - dudeX < 0) ? LEFT : RIGHT;
+  };
+
+  Dude.prototype.setupMouseBindings = function () {
+    var self = this;
+    $('#canvas-mask').mousemove(function (e) {
+      self.aimTowardMouse(e);
+    }).mousedown(function (e) {
+      self.aimTowardMouse(e);
+      self.firing = true;
+    }).mouseleave(function () {
+      self.aiming = false;
     });
   };
 

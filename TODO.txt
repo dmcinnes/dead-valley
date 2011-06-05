@@ -26,6 +26,7 @@ make object capitalization consistent
 add zombie blood tire tracks
 make zombies respect building collisions
 add zombies randomly to map - based on building population of section?
+generalize animation handling
 
 EDITOR
 remove current collidible code
