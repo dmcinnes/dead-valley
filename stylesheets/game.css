@@ -70,3 +70,28 @@ body {
 .heart.empty {
   color:#2F4F4F;
 }
+.crosshair { cursor: crosshair }
+
+#inventory {
+  position: absolute;
+  z-index: 100;
+  border: 3px solid black;
+  border-radius: 5px;
+  -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px;
+  border-spacing: 0px;
+  right: 4px;
+  top: 4px;
+  cursor: pointer;
+  display: none;
+}
+#inventory td {
+  border: 1px solid black;
+  width: 64px;
+  height: 64px;
+}
+#inventory tr:first-child td:last-child {
+  border: 1px solid black;
+  text-align: center;
+  text-transform: uppercase;
+}
