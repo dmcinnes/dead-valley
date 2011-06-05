@@ -1,7 +1,7 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
-       function (game, Sprite, collidable, spriteMarshal, LifeMeter) {
+define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory"],
+       function (game, Sprite, collidable, spriteMarshal, LifeMeter, Inventory) {
 
   var keyStatus = game.controls.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
@@ -188,19 +188,27 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
     });
   };
 
-  Dude.prototype.aimTowardMouse = function (event) {
+  Dude.prototype.aimTowardMouse = function (coords) {
     this.aiming = true;
-    var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
     this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
   };
 
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
     $('#canvas-mask').mousemove(function (e) {
-      self.aimTowardMouse(e);
+      if (Inventory.inHand()) {
+        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+        self.aimTowardMouse(coords);
+      }
     }).mousedown(function (e) {
-      self.aimTowardMouse(e);
-      self.firing = true;
+      var firearm = Inventory.inHand();
+      if (firearm) {
+        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+        self.aimTowardMouse(coords);
+        if (firearm.fire(coords)) {
+          self.firing = true;
+        }
+      }
     }).mouseleave(function () {
       self.aiming = false;
     });

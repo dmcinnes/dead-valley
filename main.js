@@ -11,6 +11,7 @@ require(
    "sprites/Honda",
    "sprites/Zombie",
    "sprites/Barrel",
+   "inventory/Pistol",
    "World",
    "spriteMarshal"],
 
@@ -26,6 +27,7 @@ require(
             Honda,
             Zombie,
             Barrel,
+            Pistol,
             World,
             spriteMarshal) {
 
@@ -134,6 +136,9 @@ require(
       game.controls.registerKeyDownHandler('s', function () {
         game.map.save();
       });
+
+      // give the dude a pistol!
+      Inventory.putInHand(new Pistol());
 
     });
 
