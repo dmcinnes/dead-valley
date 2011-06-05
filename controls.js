@@ -1,6 +1,7 @@
 define(function () {
   // TODO generate all alpha key codes
   var KEY_CODES = {
+    27: 'esc',
     32: 'space',
     37: 'left',
     38: 'up',
