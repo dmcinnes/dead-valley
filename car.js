@@ -41,7 +41,7 @@ define(["game",
     this.collided  = false;
     this.breaking  = false;
     this.reversing = false;
-    this.stopped   = true;
+    this.stopped   = false;
     this.driver = null;
     this.steeringAngle = 0;
     this.direction = new Vector(0);
@@ -193,8 +193,14 @@ define(["game",
     return this.pos.add(this.relativeToWorld(this.passengersSide));
   };
 
+  Car.prototype.enter = function (dude) {
+    this.driver = dude;
+    this.shouldSave = false; // disable car saving -- save with Dude object
+  };
+
   Car.prototype.leave = function (dude) {
     this.driver = null;
+    this.stopped = false;
   };
 
   Car.prototype.takeDamage = function (damage) {

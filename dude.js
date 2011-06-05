@@ -119,10 +119,9 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter"],
   };
 
   Dude.prototype.enterCar = function (car) {
-    car.driver     = this;
-    car.shouldSave = false; // disable car saving -- save with Dude object
-    this.driving   = car;
-    this.visible   = false;
+    car.enter(this);
+    this.driving = car;
+    this.visible = false;
     if (this.currentNode) {
       this.currentNode.leave(this);
       this.currentNode = null;
