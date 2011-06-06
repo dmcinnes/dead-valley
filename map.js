@@ -543,6 +543,109 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       }
     };
 
+    this.rayTrace = function (start, end, maxDistance) {
+      var TILE_WIDTH = game.gridSize;
+
+      // where are they
+      var x0 = Math.floor(start.x / TILE_WIDTH);
+      var y0 = Math.floor(start.y / TILE_WIDTH);
+      var x1 = Math.floor(end.y   / TILE_WIDTH);
+      var y1 = Math.floor(end.y   / TILE_WIDTH);
+
+      var X = x0;
+      var Y = y0;
+
+      var dx = end.x - start.x;
+      var dy = end.y - start.y;
+      var len = Math.sqrt(dx*dx + dy*dy);
+
+      if (maxDistance && len > maxDistance) {
+        return false; // out of range
+      }
+
+      var startNode = this.getNodeByWorldCoords(start.x, start.y);
+      var endNode   = this.getNodeByWorldCoords(end.x, end.y);
+      var node = startNode;
+
+      if (len != 0) {
+        dx /= len;
+        dy /= len;
+      }
+
+      var stepX, tMaxX, tDeltaX,
+          stepY, tMaxY, tDeltaY;
+
+      if (dx < 0) {
+        stepX   = -1;
+        tMaxX   = (((x0)*TILE_WIDTH) - start.x) / dx;
+        tDeltaX = TILE_WIDTH / -dx;
+      } else if (0 < dx) {
+        stepX   = 1;
+        tMaxX   = (((x0+1)*TILE_WIDTH) - start.x) / dx;
+        tDeltaX = TILE_WIDTH / dx;
+      } else {
+        // dx is 0, we should only walk in y
+        stepX   = 0;
+        tMaxX   = Number.MAX_VALUE;
+        tDeltaX = 0;
+      }
+
+      if (dy < 0) {
+        stepY   = -1;
+        tMaxY   = (((y0)*TILE_WIDTH) - start.y) / dy;
+        tDeltaY = TILE_WIDTH / -dy;
+      } else if (0 < dy) {
+        stepY   = 1;
+        tMaxY   = (((y0+1)*TILE_WIDTH) - start.y) / dy;
+        tDeltaY = TILE_WIDTH / dy;
+      } else {
+        // dy is 0, we should only walk in x
+        stepY   = 0;
+        tMaxY   = Number.MAX_VALUE;
+        tDeltaY = 0;
+      }
+
+      while (node) {
+
+        if (node === endNode) {
+          return true;
+        }
+
+        if (node && node.collidable) {
+          return false;
+        }
+
+        if (tMaxX < tMaxY) {
+          if (stepX < 0) {
+            // we crossed the west edge; get new edge and neighbor
+            node = node.west;
+          } else {
+            // we crossed the east edge; get new edge and neighbor
+            node = node.east;
+          }
+
+          // traverse the grid
+          tMaxX += tDeltaX;
+          X     += stepX;
+
+        } else {
+          if (stepY < 0) {
+            // we crossed the north edge; get new edge and neighbor
+            node = node.north;
+          } else {
+            // we crossed the south edge; get new edge and neighbor
+            node = node.south;
+          }
+
+          // traverse the grid
+          tMaxY += tDeltaY;
+          Y     += stepY;
+        }
+      }
+
+      return false;
+    };
+
     this.save = function () {
       var chunks = this.getLevelChunks();
       this.saveSpritesForChunk(chunks.ne, 'ne');
