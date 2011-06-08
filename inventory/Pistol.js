@@ -8,7 +8,7 @@ define(['Firearm'], function (Firearm) {
   Pistol.prototype = new Firearm();
 
   Pistol.prototype.damage = 1;
-  Pistol.prototype.ammoCapacity = 8;
+  Pistol.prototype.ammoCapacity = 1000; // for testing
 
   return Pistol;
 });

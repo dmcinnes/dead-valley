@@ -205,7 +205,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
       if (firearm) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
-        if (firearm.fire(coords)) {
+        if (firearm.fire(self.pos.add({x:20, y:0}), coords)) {
           self.firing = true;
         }
       }

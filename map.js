@@ -543,7 +543,7 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       }
     };
 
-    this.rayTrace = function (start, end, maxDistance) {
+    this.rayTrace = function (start, end, maxDistance, spriteCollisionCallback) {
       var TILE_WIDTH = game.gridSize;
 
       // where are they
@@ -607,12 +607,23 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
 
       while (node) {
 
-        if (node === endNode) {
-          return true;
+        // check sprites for collisions
+        var sprite = node.nextSprite;
+        while (sprite) {
+          if (sprite.collidable) {
+            var collision = sprite.checkRayCollision(start, end);
+            if (spriteCollisionCallback) {
+              spriteCollisionCallback(collision, sprite);
+            }
+            if (collision) {
+              return false;
+            }
+          }
+          sprite = sprite.nextSprite;
         }
 
-        if (node && node.collidable) {
-          return false;
+        if (node === endNode) {
+          return true;
         }
 
         if (tMaxX < tMaxY) {

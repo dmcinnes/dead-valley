@@ -185,6 +185,38 @@ define(["vector"], function (Vector) {
     return true;
   };
 
+  var checkRayCollision = function (start, end) {
+    var points  = this.transformedPoints();
+
+    var rayVector = end.subtract(start);
+
+    // found this here:
+    // http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+    var segmentCount = points.length;
+    for (var i = 0; i < segmentCount; i++) {
+      var j = (i + 1) % (segmentCount - 1); // wrap to 0 at end
+      var segmentVector = points[j].subtract(points[i]);
+      var segmentNormal = segmentVector.normal();
+      // only hit facing edges
+      if (segmentNormal.dotProduct(rayVector) > 0) {
+        var first = points[i].subtract(start);
+        var denom = rayVector.crossProduct(segmentVector);
+        if (denom !== 0) {
+          var t = first.crossProduct(segmentVector) / denom; // ray scale
+          var u = first.crossProduct(rayVector)     / denom; // segment scale
+          // all between 0 and 1
+          if (t < 1 && t > 0 && u < 1 && u > 0) {
+            return {
+              point: start.add(rayVector.scale(t)),
+              normal: segmentNormal
+            }
+          }
+        }
+      }
+    }
+    return false;
+  };
+
   // make whatever object passed to us 'collidable'
   var collidable = function (thing, collidesWith) {
     thing.prototype.collidesWith = collidesWith;
@@ -195,6 +227,7 @@ define(["vector"], function (Vector) {
     thing.prototype.checkCollision         = checkCollision;
     thing.prototype.lineProjection         = lineProjection;
     thing.prototype.pointVel               = pointVel;
+    thing.prototype.checkRayCollision      = checkRayCollision;
   };
 
   collidable.clearCurrentCollisionList = function () {

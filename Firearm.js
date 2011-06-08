@@ -5,10 +5,16 @@ define(['game'], function (game) {
   };
 
   Firearm.prototype.damage = 1;
+  Firearm.prototype.range = 1000;
 
-  Firearm.prototype.fire = function (point) {
+  Firearm.prototype.fire = function (start, end) {
     if (this.hasAmmo()) {
       this.decrementAmmo();
+      game.map.rayTrace(start, end, this.range, function (result, sprite) {
+        if (result) { // hit!
+          console.log(result.point.toString(), result.normal.toString(), sprite.name);
+        }
+      });
       return true;
     }
     return false;
