@@ -6,152 +6,141 @@ define(["vector"], function (Vector) {
 
   var currentCollisionList = [];
 
-  var collidable = function (thing, collidesWith) {
-    thing.prototype.collidesWith = collidesWith;
-    thing.prototype.collidable   = true;
-
-    thing.prototype.findCollisionCanidates = function () {
-      if (!this.visible || !this.currentNode) return [];
-      var cn = this.currentNode;
-      var canidates = [];
-      return [cn,
-              cn.north,
-              cn.south,
-              cn.east,
-              cn.west,
-              cn.north.east,
-              cn.north.west,
-              cn.south.east,
-              cn.south.west];
-    };
-
-    thing.prototype.checkCollisionsAgainst = function (canidates) {
-      var len = canidates.length;
-      var ref;
-      for (var i = 0; i < len; i++) {
-        ref = canidates[i].nextSprite;
-        while (ref) {
-          if (ref.collidable) {
-            this.checkCollision(ref);
-          }
-          ref = ref.nextSprite;
-        }
-      }
-    };
-
-    // TODO figure out collidable sprite pairs first
-    // and eliminate duplicates before running
-    // checkCollision
-    thing.prototype.checkCollision = function (other) {
-      var normals, minDepth, nl, we, they, left, right, depth,
-          minPoint, normalIndex, self;
-
-      if (!other.visible  ||
-           this === other ||
-          (this.collidesWith &&
-          !this.collidesWith[other.name])) {
-        return;
-      }
-
-      // check to see if the pair has already been checked for collisions
-      self = this;
-      if (_(currentCollisionList).detect(function (pair) {
-           return ((pair[0] === other && pair[1] === self) ||
-                   (pair[0] === self && pair[1] === other));
-          })) {
-        return;
-      }
-      // put the pair in the list for further checks
-      currentCollisionList.push([this, other]);
-
-      normals = this.currentNormals.concat(other.currentNormals);
-
-      minDepth = Number.MAX_VALUE;
-
-      nl = normals.length;
-      for (i = 0; i < nl; i++) {
-        we   = this.lineProjection(normals[i]);
-        they = other.lineProjection(normals[i]);
-        if (we[1] < they[0] || we[0] > they[1]) {
-          return; // no collision!
-        } else {
-          left = Math.abs(we[1] - they[0]);
-          right = Math.abs(they[1] - we[0]);
-          depth = Math.min(left, right);
-          if (depth < minDepth) {
-            minDepth = depth;
-            minPoint = (right < left) ?
-                         [we[2], they[3]] :
-                         [we[3], they[2]];
-            normalIndex = i;
-          }
-        }
-      }
-      
-      // we're edge on if the min depth is on our normal, so use "they"'s point
-      var point;
-      if (normalIndex < this.currentNormals.length) {
-        point = minPoint[1];
-      } else {
-        point = minPoint[0];
-      }
-
-      var normal = normals[normalIndex];
-      if (minDepth > 0) { // don't want a 0,0 normal
-        // scale the normal to the penetration depth
-        normal.scale(minDepth);
-      }
-
-      // normal should always point toward 'this'
-      if (point.subtract(this.pos).dotProduct(normal) > 0) {
-        normal.scale(-1);
-      }
-
-      // TODO gotta be a better way to structure all this
-      collidable.resolveCollision(this, other, point, normal);
-      this.collision(other, point, normal);
-      other.collision(this, point, normal.scale(-1));
-    };
-
-    thing.prototype.lineProjection = function (normal) {
-      var min, max, points, count, dot, pmin, pmax;
-
-      min = Number.MAX_VALUE;
-      max = -Number.MAX_VALUE;
-      points = this.transformedPoints();
-      count = points.length;
-      for (var j = 0; j < count; j++) {
-        dot = normal.dotProduct(points[j]);
-        min = Math.min(min, dot);
-        max = Math.max(max, dot);
-        if (dot === min) {
-          pmin = points[j];
-        } 
-        if (dot === max) {
-          pmax = points[j];
-        }
-      }
-      return [min, max, pmin, pmax];
-    };
-
-    //velocity of a point on body
-    thing.prototype.pointVel = function (worldOffset) {
-      return new Vector(-worldOffset.y, worldOffset.x)
-                    .scale(this.vel.rot * Math.PI / 180.0)
-                    .translate(this.vel);
-    };
+  var findCollisionCanidates = function () {
+    if (!this.visible || !this.currentNode) return [];
+    var cn = this.currentNode;
+    var canidates = [];
+    return [cn,
+            cn.north,
+            cn.south,
+            cn.east,
+            cn.west,
+            cn.north.east,
+            cn.north.west,
+            cn.south.east,
+            cn.south.west];
   };
 
-  collidable.clearCurrentCollisionList = function () {
-    if (currentCollisionList.length > 0) {
-      currentCollisionList.splice(0); // empty the array
+  var checkCollisionsAgainst = function (canidates) {
+    var len = canidates.length;
+    var ref;
+    for (var i = 0; i < len; i++) {
+      ref = canidates[i].nextSprite;
+      while (ref) {
+        if (ref.collidable) {
+          this.checkCollision(ref);
+        }
+        ref = ref.nextSprite;
+      }
     }
+  };
+
+  // TODO figure out collidable sprite pairs first
+  // and eliminate duplicates before running
+  // checkCollision
+  var checkCollision = function (other) {
+    var normals, minDepth, nl, we, they, left, right, depth,
+        minPoint, normalIndex, self;
+
+    if (!other.visible  ||
+         this === other ||
+        (this.collidesWith &&
+        !this.collidesWith[other.name])) {
+      return;
+    }
+
+    // check to see if the pair has already been checked for collisions
+    self = this;
+    if (_(currentCollisionList).detect(function (pair) {
+         return ((pair[0] === other && pair[1] === self) ||
+                 (pair[0] === self && pair[1] === other));
+        })) {
+      return;
+    }
+    // put the pair in the list for further checks
+    currentCollisionList.push([this, other]);
+
+    normals = this.currentNormals.concat(other.currentNormals);
+
+    minDepth = Number.MAX_VALUE;
+
+    nl = normals.length;
+    for (i = 0; i < nl; i++) {
+      we   = this.lineProjection(normals[i]);
+      they = other.lineProjection(normals[i]);
+      if (we[1] < they[0] || we[0] > they[1]) {
+        return; // no collision!
+      } else {
+        left = Math.abs(we[1] - they[0]);
+        right = Math.abs(they[1] - we[0]);
+        depth = Math.min(left, right);
+        if (depth < minDepth) {
+          minDepth = depth;
+          minPoint = (right < left) ?
+                       [we[2], they[3]] :
+                       [we[3], they[2]];
+          normalIndex = i;
+        }
+      }
+    }
+    
+    // we're edge on if the min depth is on our normal, so use "they"'s point
+    var point;
+    if (normalIndex < this.currentNormals.length) {
+      point = minPoint[1];
+    } else {
+      point = minPoint[0];
+    }
+
+    var normal = normals[normalIndex];
+    if (minDepth > 0) { // don't want a 0,0 normal
+      // scale the normal to the penetration depth
+      normal.scale(minDepth);
+    }
+
+    // normal should always point toward 'this'
+    if (point.subtract(this.pos).dotProduct(normal) > 0) {
+      normal.scale(-1);
+    }
+
+    // TODO gotta be a better way to structure all this
+    resolveCollision(this, other, point, normal);
+    this.collision(other, point, normal);
+    other.collision(this, point, normal.scale(-1));
+  };
+
+  var lineProjection = function (normal) {
+    var min, max, points, count, dot, pmin, pmax;
+
+    min = Number.MAX_VALUE;
+    max = -Number.MAX_VALUE;
+    points = this.transformedPoints();
+    count = points.length;
+    for (var j = 0; j < count; j++) {
+      dot = normal.dotProduct(points[j]);
+      min = Math.min(min, dot);
+      max = Math.max(max, dot);
+      if (dot === min) {
+        pmin = points[j];
+      } 
+      if (dot === max) {
+        pmax = points[j];
+      }
+    }
+    return [min, max, pmin, pmax];
+  };
+
+  //velocity of a point on body
+  var pointVel = function (worldOffset) {
+    return new Vector(-worldOffset.y, worldOffset.x)
+                  .scale(this.vel.rot * Math.PI / 180.0)
+                  .translate(this.vel);
   };
 
   // resolve the collision between two rigid body sprites
   // returns false if they're moving away from one another
   // TODO: find a better way to structure all this
-  collidable.resolveCollision = function (we, they, point, vector) {
+  var resolveCollision = function (we, they, point, vector) {
     we.collided   = true;
     they.collided = true;
 
@@ -194,6 +183,24 @@ define(["vector"], function (Vector) {
     they.vel.rot += 34 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
 
     return true;
+  };
+
+  // make whatever object passed to us 'collidable'
+  var collidable = function (thing, collidesWith) {
+    thing.prototype.collidesWith = collidesWith;
+    thing.prototype.collidable   = true;
+
+    thing.prototype.findCollisionCanidates = findCollisionCanidates;
+    thing.prototype.checkCollisionsAgainst = checkCollisionsAgainst;
+    thing.prototype.checkCollision         = checkCollision;
+    thing.prototype.lineProjection         = lineProjection;
+    thing.prototype.pointVel               = pointVel;
+  };
+
+  collidable.clearCurrentCollisionList = function () {
+    if (currentCollisionList.length > 0) {
+      currentCollisionList.splice(0); // empty the array
+    }
   };
 
   return collidable;
