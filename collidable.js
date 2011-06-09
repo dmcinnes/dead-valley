@@ -210,7 +210,7 @@ define(["vector"], function (Vector) {
               point:     start.add(rayVector.scale(t)),
               normal:    segmentNormal.normalize(),
               direction: rayVector.normalize()
-            }
+            };
           }
         }
       }
