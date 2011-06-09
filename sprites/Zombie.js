@@ -74,11 +74,19 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     // dude is the only target for now
     // TODO limit the distance the zombie can see
     var target = game.dude.driving || game.dude;
-    if (target && game.map.rayTrace(this.pos, target.pos, MAX_RANGE)) {
-      this.target       = target.pos.clone();
-      this.targetVel    = target.vel.clone();
-      this.seeTarget    = true;
-      this.targetSprite = target;
+    if (target) {
+      var see = false;
+      game.map.rayTrace(this.pos, target.pos, MAX_RANGE, function (collision, sprite) {
+	if (sprite === target) {
+	  see = true;
+	}
+      });
+      if (see) {
+	this.target       = target.pos.clone();
+	this.targetVel    = target.vel.clone();
+	this.seeTarget    = true;
+	this.targetSprite = target;
+      }
     }
   };
 
