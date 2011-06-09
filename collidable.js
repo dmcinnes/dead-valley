@@ -207,9 +207,9 @@ define(["vector"], function (Vector) {
           // all between 0 and 1
           if (t < 1 && t > 0 && u < 1 && u > 0) {
             return {
-              point:  start.add(rayVector.scale(t)),
-              normal: segmentNormal.normalize(),
-              impact: rayVector.normalize()
+              point:     start.add(rayVector.scale(t)),
+              normal:    segmentNormal.normalize(),
+              direction: rayVector.normalize()
             }
           }
         }
