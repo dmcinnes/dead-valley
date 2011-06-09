@@ -30,7 +30,7 @@ define(["sprite",
       if (velMag > 0) {
         this.vel.rot = 0;
         // follow the rolling direction
-        this.pos.rot = (Math.atan(this.vel.y / this.vel.x) * 180 / Math.PI) + 90;
+        this.pos.rot = (Math.atan2(this.vel.y, this.vel.x) * 180 / Math.PI) - 90;
       }
     } else {
       this.vel.rot += this.vel.rot * friction * delta;
