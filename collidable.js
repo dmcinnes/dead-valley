@@ -194,7 +194,7 @@ define(["vector"], function (Vector) {
     // http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
     var segmentCount = points.length;
     for (var i = 0; i < segmentCount; i++) {
-      var j = (i + 1) % (segmentCount - 1); // wrap to 0 at end
+      var j = (i + 1) % segmentCount; // wrap to 0 at end
       var segmentVector = points[j].subtract(points[i]);
       var segmentNormal = segmentVector.normal();
       // only hit facing edges
@@ -207,8 +207,9 @@ define(["vector"], function (Vector) {
           // all between 0 and 1
           if (t < 1 && t > 0 && u < 1 && u > 0) {
             return {
-              point: start.add(rayVector.scale(t)),
-              normal: segmentNormal
+              point:  start.add(rayVector.scale(t)),
+              normal: segmentNormal.normalize(),
+              impact: rayVector.normalize()
             }
           }
         }

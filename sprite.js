@@ -37,8 +37,8 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
     this.points = [
       new Vector(-co.x, -co.y),
       new Vector( co.x, -co.y),
-      new Vector(-co.x,  co.y),
-      new Vector( co.x,  co.y)
+      new Vector( co.x,  co.y),
+      new Vector(-co.x,  co.y)
     ];
 
     // assuming horizontal tiles

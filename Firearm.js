@@ -1,6 +1,7 @@
 // Firearm
 
 define(['game'], function (game) {
+
   var Firearm = function () {
   };
 
@@ -12,6 +13,9 @@ define(['game'], function (game) {
       this.decrementAmmo();
       game.map.rayTrace(start, end, this.range, function (result, sprite) {
         if (result) { // hit!
+          result.point.translate({x:-game.map.originOffsetX, y:-game.map.originOffsetY});
+          game.hudContext.rect(result.point.x, result.point.y, 3, 3);
+          game.hudContext.fill();
           console.log(result.point.toString(), result.normal.toString(), sprite.name);
         }
       });
