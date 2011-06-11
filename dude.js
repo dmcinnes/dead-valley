@@ -1,7 +1,7 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory"],
-       function (game, Sprite, collidable, spriteMarshal, LifeMeter, Inventory) {
+define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory", "fx/BloodSplatter"],
+       function (game, Sprite, collidable, spriteMarshal, LifeMeter, Inventory, BloodSplatter) {
 
   var keyStatus = game.controls.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
@@ -224,6 +224,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
   Dude.prototype.takeDamage = function (damage) {
     if (this.alive) {
       this.takingDamage = true;
+
+      BloodSplatter.splat(this.pos.clone(), 'red');
 
       this.health -= damage;
 

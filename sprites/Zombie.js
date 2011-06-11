@@ -1,4 +1,5 @@
-define(["sprite", "collidable", "game", "fx/BulletHit"], function (Sprite, collidable, game, BulletHit) {
+define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
+       function (Sprite, collidable, game, BulletHit, BloodSplatter) {
 
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
@@ -204,6 +205,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit"], function (Sprite, colli
 
   Zombie.prototype.bulletHit = function (hit, damage) {
     bulletHit.fireSparks(hit);
+    BloodSplatter.splat(this.pos.clone(), 'green');
   };
 
   collidable(Zombie);
