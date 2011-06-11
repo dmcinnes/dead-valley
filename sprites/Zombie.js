@@ -11,7 +11,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   var SCAN_TIMEOUT_RESET             = 1; // in seconds
   var MAX_WAIT_TIME                  = 20; // in seconds
   var MAX_RANGE                      = 400; // how far a Zombie can see - in pixels
-  var WANDER_DISTANCE                = 200; // how far a Zombie can wanders in one direction - in pixels
+  var WANDER_DISTANCE                = 200; // how far a Zombie wanders in one direction - in pixels
 
   var bulletHit = new BulletHit({
     color:     'green',
