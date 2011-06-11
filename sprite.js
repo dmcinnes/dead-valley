@@ -1,6 +1,7 @@
 // Sprite
 
-define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (game, Matrix, Vector, spriteMarshal, spriteInfo) {
+define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info", "fx/BulletHit"],
+       function (game, Matrix, Vector, spriteMarshal, spriteInfo, BulletHit) {
 
   var Matrix   = new Matrix(2, 3);
   var context  = game.spriteContext;
@@ -257,6 +258,10 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info"], function (g
       clazz: this.name,
       pos:   this.pos
     };
+  };
+
+  Sprite.prototype.bulletHit = function (hit, damage) {
+    game.sprites.push(new BulletHit(hit));
   };
 
   spriteMarshal(Sprite);

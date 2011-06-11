@@ -1,6 +1,6 @@
 // Firearm
 
-define(['game', 'BulletHit'], function (game, BulletHit) {
+define(['game'], function (game) {
 
   var Firearm = function () {
   };
@@ -13,7 +13,7 @@ define(['game', 'BulletHit'], function (game, BulletHit) {
       this.decrementAmmo();
       game.map.rayTrace(start, end, this.range, function (result, sprite) {
         if (result) { // hit!
-          game.sprites.push(new BulletHit(result));
+          sprite.bulletHit(result, this.damage);
         }
       });
       return true;

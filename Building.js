@@ -1,5 +1,5 @@
-define(["collidable", "vector"],
-       function (collidable, Vector) {
+define(["game", "collidable", "vector", "fx/BulletHit"],
+       function (game, collidable, Vector, BulletHit) {
 
   var Building = function (points) {
     this.points = points;
@@ -32,6 +32,10 @@ define(["collidable", "vector"],
   };
 
   Building.prototype.collision = function () {
+  };
+
+  Building.prototype.bulletHit = function (hit, damage) {
+    game.sprites.push(new BulletHit(hit));
   };
 
   collidable(Building);
