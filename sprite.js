@@ -3,12 +3,12 @@
 define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info", "fx/BulletHit"],
        function (game, Matrix, Vector, spriteMarshal, spriteInfo, BulletHit) {
 
-  var Matrix   = new Matrix(2, 3);
-  var context  = game.spriteContext;
+  var Matrix  = new Matrix(2, 3);
+  var context = game.spriteContext;
+
+  var bulletHit;
 
   var Sprite = function () {
-    this.children = {};
-
     this.visible  = true;
     this.reap     = false;
 
@@ -261,7 +261,10 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info", "fx/BulletHi
   };
 
   Sprite.prototype.bulletHit = function (hit, damage) {
-    game.sprites.push(new BulletHit(hit));
+    if (!bulletHit) {
+      bulletHit = new BulletHit();
+    }
+    bulletHit.fireSparks(hit);
   };
 
   spriteMarshal(Sprite);

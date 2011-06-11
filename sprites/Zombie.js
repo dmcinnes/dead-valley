@@ -1,4 +1,4 @@
-define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
+define(["sprite", "collidable", "game", "fx/BulletHit"], function (Sprite, collidable, game, BulletHit) {
 
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
@@ -11,6 +11,12 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
   var MAX_WAIT_TIME                  = 20; // in seconds
   var MAX_RANGE                      = 400; // how far a Zombie can see - in pixels
   var WANDER_DISTANCE                = 200; // how far a Zombie can wanders in one direction - in pixels
+
+  var bulletHit = new BulletHit({
+    color:     'green',
+    minLength: 10,
+    range:     15
+  });
 
   var Zombie = function () {
     this.init('Zombie');
@@ -194,6 +200,10 @@ define(["sprite", "collidable", "game"], function (Sprite, collidable, game) {
     thriller: function () {
       // TODO hehe yes
     }
+  };
+
+  Zombie.prototype.bulletHit = function (hit, damage) {
+    bulletHit.fireSparks(hit);
   };
 
   collidable(Zombie);

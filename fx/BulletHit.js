@@ -1,57 +1,78 @@
 
 define(['game', 'Sprite'], function (game, Sprite) {
-  var LIFETIME = 0.2; // seconds
-
-  var length = 10;
 
   var context = game.spriteContext;
 
-  var BulletHit = function (result) {
+  var defaultConfig = {
+    color:     'white',
+    minLength: -5,
+    range:     -10,
+    lifetime:  0.2,
+    size:      2
+  };
+
+  var Sparks = function (result, config) {
+    this.pos     = result.point;
+    this.pos.rot = 0;
+    this.life    = 0;
+
     var norm     = result.normal;
     var dir      = result.direction;
     // generates a reflection about the normal
     var reflect  = norm.multiply(2 * dir.dotProduct(norm) / norm.dotProduct(norm)).subtract(dir);
 
-    this.pos     = result.point;
-    this.pos.rot = 0; // (Math.atan2(dir.y, dir.x) * 180 / Math.PI) + 90;
-    this.life    = 0;
+    // allow overrides
+    $.extend(this, config);
 
-    this.sparks = [
-      norm.multiply(-5 - Math.random() * 10),
-      dir.multiply(-5 - Math.random() * 10),
-      reflect.multiply(-5 - Math.random() * 10)
-    ];
+    this.sparks = this.createSparks(norm, dir, reflect, config);
 
     _.each(this.sparks, function (spark) {
-      spark.life = LIFETIME - LIFETIME * Math.random();
+      spark.life = config.lifetime - config.lifetime * Math.random();
     });
   };
-  BulletHit.prototype = new Sprite();
+  Sparks.prototype = new Sprite();
 
-  BulletHit.prototype.postMove = function (delta) {
+  Sparks.prototype.createSparks = function (norm, dir, reflect, config) {
+    return [
+      norm.multiply(this.minLength    + Math.random() * this.range),
+      dir.multiply(this.minLength     + Math.random() * this.range),
+      reflect.multiply(this.minLength + Math.random() * this.range)
+    ];
+  };
+
+  Sparks.prototype.postMove = function (delta) {
     this.life += delta;
-    if (this.life > LIFETIME) {
+    if (this.life > this.lifetime) {
       this.die();
     }
   };
 
-  BulletHit.prototype.draw = function (delta) {
-    context.fillStyle = 'white';
+  Sparks.prototype.draw = function (delta) {
+    context.fillStyle = this.color;
+    var size = this.size;
     var life = this.life;
-    var percent = life / LIFETIME;
+    var percent = life / this.lifetime;
     var pos;
     _.each(this.sparks, function (spark) {
       if (life < spark.life) {
         pos = spark.multiply(percent);
-        context.fillRect(pos.x, pos.y, 2, 2);
+        context.fillRect(pos.x, pos.y, size, size);
       }
     });
   };
 
   // don't need these methods
-  BulletHit.prototype.move             = function () {};
-  BulletHit.prototype.transformNormals = function () {};
-  BulletHit.prototype.updateGrid       = function () {};
+  Sparks.prototype.move             = function () {};
+  Sparks.prototype.transformNormals = function () {};
+  Sparks.prototype.updateGrid       = function () {};
+
+  var BulletHit = function (config) {
+    this.config = $.extend({}, defaultConfig, config);
+  };
+
+  BulletHit.prototype.fireSparks = function (result) {
+    game.sprites.push(new Sparks(result, this.config));
+  };
 
   return BulletHit;
 });
