@@ -31,6 +31,8 @@ define(['game', 'Sprite'], function (game, Sprite) {
 
   Splatter.prototype.draw = function (delta) {
     context.fillStyle = this.color;
+    context.shadowBlur = 1;
+    context.globalAlpha = 1 - this.life / maxLife;
     var count = this.dots.length;
     for (var i = 0; i < count; i++) {
       var vector = this.dots[i];
