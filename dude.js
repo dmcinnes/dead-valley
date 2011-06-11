@@ -225,7 +225,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
     if (this.alive) {
       this.takingDamage = true;
 
-      BloodSplatter.splat(this.pos.clone(), 'red');
+      BloodSplatter.splat(this.pos.clone(), '#900');
 
       this.health -= damage;
 
