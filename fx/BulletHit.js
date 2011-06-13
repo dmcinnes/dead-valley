@@ -8,7 +8,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
     minLength: -5,
     range:     -10,
     lifetime:  0.2,
-    size:      2
+    size:      1
   };
 
   var Sparks = function (result, config) {

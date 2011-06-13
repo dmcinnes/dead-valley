@@ -23,7 +23,8 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   var bulletHit = new BulletHit({
     color:     'green',
     minLength: 10,
-    range:     15
+    range:     15,
+    size:      2
   });
 
   var Zombie = function () {
