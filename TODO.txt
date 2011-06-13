@@ -24,7 +24,7 @@ make zombies/dude render in order according to vertical position
 convert everything to radians
 make object capitalization consistent
 add zombie blood tire tracks
-make zombies respect building collisions
+make zombies follow building edges
 add zombies randomly to map - based on building population of section?
 generalize animation handling
 
@@ -47,5 +47,5 @@ create sprites for pickups
 add dude death animation
 X add zombie death animation
 create trees
-clean up zombie outlines
+X clean up zombie outlines
 clean up zombie's standing legs (make back leg angle outward)
