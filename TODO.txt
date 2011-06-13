@@ -1,6 +1,6 @@
 X add dude health
 make zombie collision response more natural
-add dead zombie state
+X add dead zombie state
 add dead dude state
 X save barrel up/down state
 X save dude state and only create new if not saved
@@ -45,7 +45,7 @@ create crate sprite
 add rifle/shotgun to dude's sprite
 create sprites for pickups
 add dude death animation
-add zombie death animation
+X add zombie death animation
 create trees
 clean up zombie outlines
 clean up zombie's standing legs (make back leg angle outward)
