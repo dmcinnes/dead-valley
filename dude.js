@@ -130,6 +130,10 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
       }
     }
 
+    if (this.walking) {
+      this.aiming = false;
+    }
+
     game.map.keepInView(this);
   };
 
