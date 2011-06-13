@@ -7,11 +7,13 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   var SPEED                          = 11; // 5 MPH
   var WALKING_ANIMATION_FRAME_RATE   = 0.3; // in seconds
   var ATTACKING_ANIMATION_FRAME_RATE = 0.25; // in seconds
+  var DYING_ANIMATION_FRAME_RATE     = 0.25; // in seconds
   var DAMAGE_WINDOW                  = 0.05; // in seconds
   var SCAN_TIMEOUT_RESET             = 1; // in seconds
   var MAX_WAIT_TIME                  = 20; // in seconds
   var MAX_RANGE                      = 400; // how far a Zombie can see - in pixels
   var WANDER_DISTANCE                = 200; // how far a Zombie wanders in one direction - in pixels
+  var HEALTH                         = 6;
 
   var bulletHit = new BulletHit({
     color:     'green',
@@ -41,6 +43,8 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
     this.mass                  = 0.001;
     this.inertia               = 1;
 
+    this.health                = HEALTH;
+
     this.originalCenterX       = this.center.x;
   };
   Zombie.prototype = new Sprite();
@@ -48,6 +52,18 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   Zombie.prototype.draw = function (delta) {
     // hack so the sprite is placed correctly when its flipped
     this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
+
+    if (this.health <= 0) {
+      if (this.walkingFrame < 1) {
+        this.walkingFrameCounter += delta;
+        if (this.walkingFrameCounter > 0.5) {
+          this.walkingFrameCounter = 0;
+          this.walkingFrame += 1;
+        }
+      }
+      this.drawTile(this.walkingFrame + 10, this.direction);
+      return;
+    }
 
     if (this.walking) {
       this.walkingFrameCounter += delta;
@@ -105,6 +121,10 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   };
 
   Zombie.prototype.preMove = function (delta) {
+    if (this.health <= 0) {
+      return;
+    }
+
     this.scanTimeout -= delta;
     if (this.scanTimeout < 0) {
       this.scanTimeout = SCAN_TIMEOUT_RESET;
@@ -206,6 +226,13 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   Zombie.prototype.bulletHit = function (hit, damage) {
     bulletHit.fireSparks(hit);
     BloodSplatter.splat(this.pos.clone(), 'green');
+    this.health -= damage;
+    if (this.health <= 0) {
+      this.vel.scale(0);
+      this.walkingFrame = 0;
+      this.walkingFrameCounter = 0;
+      this.collidable = false;
+    }
   };
 
   collidable(Zombie);

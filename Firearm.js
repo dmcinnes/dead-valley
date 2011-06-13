@@ -11,9 +11,10 @@ define(['game'], function (game) {
   Firearm.prototype.fire = function (start, end) {
     if (this.hasAmmo()) {
       this.decrementAmmo();
+      var damage = this.damage;
       game.map.rayTrace(start, end, this.range, function (result, sprite) {
         if (result) { // hit!
-          sprite.bulletHit(result, this.damage);
+          sprite.bulletHit(result, damage);
         }
       });
       return true;
