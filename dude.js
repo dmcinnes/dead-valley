@@ -3,6 +3,8 @@
 define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory", "fx/BloodSplatter"],
        function (game, Sprite, collidable, spriteMarshal, LifeMeter, Inventory, BloodSplatter) {
 
+  var context = game.spriteContext;
+
   var keyStatus = game.controls.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
@@ -33,6 +35,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
 
     this.aiming              = false;
     this.firing              = false;
+
+    this.aimDirection        = 0;
 
     // list of things the dude is currently touching
     this.touching            = [];
@@ -68,11 +72,11 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
     if (this.takingDamage) {
       this.drawTile(6, this.direction); // out arms
     } else if (this.firing) {
-      this.drawTile(10, this.direction); // firing arms
+      this.renderArm(10);
     } else if (this.aiming) {
-      this.drawTile(9, this.direction); // aiming arms
+      this.renderArm(9);
     } else {
-      this.drawTile(5, this.direction); // arms
+      this.drawTile(7, this.direction); // arms
     }
   };
 
@@ -191,6 +195,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
   Dude.prototype.aimTowardMouse = function (coords) {
     this.aiming = true;
     this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
+    var dir = coords.subtract(this.pos);
+    this.aimDirection = Math.atan2(dir.y, dir.x); // radians
   };
 
   Dude.prototype.setupMouseBindings = function () {
@@ -240,6 +246,31 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
         game.resortSprites();
       }
     }
+  };
+
+  // TODO clean up these magic numbers
+  Dude.prototype.renderArm = function (frame) {
+    context.save();
+    if (this.direction) {
+      context.translate(-this.center.x + 8, -this.center.y + 8);
+      context.rotate(this.aimDirection - Math.PI);
+      context.scale(-1, 1);
+    } else {
+      context.translate(-this.center.x + 5, -this.center.y + 8);
+      context.rotate(this.aimDirection);
+    }
+    var width  = this.tileWidth;
+    var height = 9;
+    context.drawImage(this.image,
+		      this.imageOffset.x + frame * this.tileWidth,
+		      this.imageOffset.y,
+		      width,
+		      height,
+		      -5,
+		      -8,
+		      width,
+		      height);
+    context.restore();
   };
 
   collidable(Dude);
