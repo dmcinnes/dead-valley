@@ -54,14 +54,18 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
     this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
 
     if (this.health <= 0) {
-      if (this.walkingFrame < 1) {
+      // reusing the walking frame and counter
+      if (this.walkingFrame != 7) { // final frame
         this.walkingFrameCounter += delta;
         if (this.walkingFrameCounter > 0.5) {
           this.walkingFrameCounter = 0;
-          this.walkingFrame += 1;
+          // have to do some trickery to get the last frame to render
+          // because it's all long
+          this.walkingFrame = 7;
+          this.tileWidth = 31;
         }
       }
-      this.drawTile(this.walkingFrame + 10, this.direction);
+      this.drawTile(this.walkingFrame, this.direction);
       return;
     }
 
@@ -229,7 +233,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
     this.health -= damage;
     if (this.health <= 0) {
       this.vel.scale(0);
-      this.walkingFrame = 0;
+      this.walkingFrame = 10;
       this.walkingFrameCounter = 0;
       this.collidable = false;
     }
