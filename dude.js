@@ -14,6 +14,10 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
   var DAMAGE_ANIMATION_TIME = 0.3;  // in seconds
   var FIRING_ANIMATION_TIME = 0.1;  // in seconds
 
+  var ARM_OFFSET_X    = 5;
+  var ARM_OFFSET_Y    = 8;
+  var ARM_FLIP_OFFSET = 2;
+
   var Dude = function () {
     this.init('Dude');
 
@@ -256,24 +260,22 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
   Dude.prototype.renderArm = function (frame) {
     context.save();
     if (this.direction) {
-      context.translate(-this.center.x + 8, -this.center.y + 8);
+      context.translate(-this.center.x + ARM_OFFSET_X + ARM_FLIP_OFFSET, -this.center.y + ARM_OFFSET_Y);
       context.rotate(this.aimDirection - Math.PI);
       context.scale(-1, 1);
     } else {
-      context.translate(-this.center.x + 5, -this.center.y + 8);
+      context.translate(-this.center.x + ARM_OFFSET_X, -this.center.y + ARM_OFFSET_Y);
       context.rotate(this.aimDirection);
     }
-    var width  = this.tileWidth;
-    var height = 9;
     context.drawImage(this.image,
 		      this.imageOffset.x + frame * this.tileWidth,
 		      this.imageOffset.y,
-		      width,
-		      height,
-		      -5,
-		      -8,
-		      width,
-		      height);
+		      this.tileWidth,
+		      this.tileHeight,
+		      -ARM_OFFSET_X,
+		      -ARM_OFFSET_Y,
+		      this.tileWidth,
+		      this.tileHeight);
     context.restore();
   };
 
