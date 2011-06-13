@@ -1,6 +1,8 @@
 define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
        function (Sprite, collidable, game, BulletHit, BloodSplatter) {
 
+  var context = game.spriteContext;
+
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
@@ -14,6 +16,9 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   var MAX_RANGE                      = 400; // how far a Zombie can see - in pixels
   var WANDER_DISTANCE                = 200; // how far a Zombie wanders in one direction - in pixels
   var HEALTH                         = 6;
+
+  var BODY_OFFSET = 231;
+  var BODY_WIDTH  = 29;
 
   var bulletHit = new BulletHit({
     color:     'green',
@@ -49,23 +54,38 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   };
   Zombie.prototype = new Sprite();
 
+  // draw the 'dead' zombie
+  Zombie.prototype.drawBody = function () {
+    if (this.direction) {
+      context.save();
+      context.scale(-1, 1);
+    }
+    context.drawImage(this.image,
+                      BODY_OFFSET,
+                      this.imageOffset.y,
+                      BODY_WIDTH,
+                      this.tileHeight,
+                      -this.center.x,
+                      -this.center.y,
+                      BODY_WIDTH,
+                      this.tileHeight);
+    if (this.direction) {
+      context.restore();
+    }
+  };
+
   Zombie.prototype.draw = function (delta) {
     // hack so the sprite is placed correctly when its flipped
     this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
 
     if (this.health <= 0) {
       // reusing the walking frame and counter
-      if (this.walkingFrame != 7) { // final frame
+      if (this.walkingFrameCounter < 0.5) {
         this.walkingFrameCounter += delta;
-        if (this.walkingFrameCounter > 0.5) {
-          this.walkingFrameCounter = 0;
-          // have to do some trickery to get the last frame to render
-          // because it's all long
-          this.walkingFrame = 7;
-          this.tileWidth = 31;
-        }
+        this.drawTile(10, this.direction);
+      } else {
+        this.drawBody();
       }
-      this.drawTile(this.walkingFrame, this.direction);
       return;
     }
 
@@ -233,7 +253,6 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
     this.health -= damage;
     if (this.health <= 0) {
       this.vel.scale(0);
-      this.walkingFrame = 10;
       this.walkingFrameCounter = 0;
       this.collidable = false;
     }

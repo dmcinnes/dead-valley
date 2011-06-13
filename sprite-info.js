@@ -22,18 +22,18 @@ define(function () {
     Zombie: {
       img: 'zombie',
       width: 20,
-      height: 20,
+      height: 22,
       imageOffset: {
         x: 0,
         y: 0
       },
       center: {
         x: 10,
-        y: 11
+        y: 12
       },
       collidableOffset: {
         x: 5,
-        y: 8
+        y: 9
       },
       z: 90
     },
