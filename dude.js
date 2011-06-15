@@ -61,26 +61,28 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
     // hack so the sprite is placed correctly when its flipped
     this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
 
-    if (this.walking) {
-      this.walkingFrameCounter += delta;
-      if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
-        this.walkingFrameCounter = 0.0;
-        this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
+    if (this.alive) {
+      if (this.walking) {
+        this.walkingFrameCounter += delta;
+        if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
+          this.walkingFrameCounter = 0.0;
+          this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
+        }
+        this.drawTile(this.walkingFrame+1, this.direction);
+      } else {
+        this.drawTile(0, this.direction); // standing
       }
-      this.drawTile(this.walkingFrame+1, this.direction);
-    } else {
-      this.drawTile(0, this.direction); // standing
-    }
 
-    // TODO clean this up
-    if (this.takingDamage) {
-      this.drawTile(6, this.direction); // out arms
-    } else if (this.firing) {
-      this.renderArm(10);
-    } else if (this.aiming) {
-      this.renderArm(9);
+      this.drawArms();
+
     } else {
-      this.drawTile(7, this.direction); // arms
+      // reusing the walkingFrameCounter 
+      if (this.walkingFrameCounter < 0.6) {
+        this.walkingFrameCounter += delta;
+        this.drawTile(11, this.direction);
+      } else {
+        this.drawTile(12, this.direction);
+      }
     }
   };
 
@@ -210,13 +212,13 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
     $('#canvas-mask').mousemove(function (e) {
-      if (Inventory.inHand()) {
+      if (self.alive && Inventory.inHand()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
       }
     }).mousedown(function (e) {
       var firearm = Inventory.inHand();
-      if (firearm) {
+      if (self.alive && firearm) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
         if (firearm.fire(self.pos, coords)) {
@@ -252,12 +254,31 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
         // move the dude to the bottom of the pile
         this.z = 1;
         game.resortSprites();
+
+        // reset the frame counter
+        this.walkingFrameCounter = 0;
       }
     }
   };
 
-  // TODO clean up these magic numbers
-  Dude.prototype.renderArm = function (frame) {
+  Dude.prototype.drawArms = function () {
+    if (this.firing) {
+      this.drawAimedArm(10);
+    } else if (this.aiming) {
+      this.drawAimedArm(9);
+    } else {
+      // arm tiles are like this:
+      // 5. normal
+      // 6. with gun
+      // 7. out
+      // 8. out with gun
+      var offset = Inventory.inHand() ? 2 : 0;
+      offset += this.takingDamage ? 1 : 0;
+      this.drawTile(5 + offset, this.direction);
+    }
+  };
+
+  Dude.prototype.drawAimedArm = function (frame) {
     context.save();
     if (this.direction) {
       context.translate(-this.center.x + ARM_OFFSET_X + ARM_FLIP_OFFSET, -this.center.y + ARM_OFFSET_Y);
