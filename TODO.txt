@@ -35,6 +35,7 @@ add building boundries creation
 add building entrance creation
 
 ART
+add spiderwebbed windows to car's sprite
 add destroyed car state to car's sprite
 update color on gas station
 fix parking lot corner tile
