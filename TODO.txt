@@ -1,7 +1,7 @@
 X add dude health
 make zombie collision response more natural
 X add dead zombie state
-add dead dude state
+X add dead dude state
 X save barrel up/down state
 X save dude state and only create new if not saved
 X fix brakes
@@ -27,6 +27,7 @@ add zombie blood tire tracks
 make zombies follow building edges
 add zombies randomly to map - based on building population of section?
 generalize animation handling
+create event listeners model for HUD/health meter
 
 EDITOR
 remove current collidible code
@@ -44,7 +45,7 @@ create truck sprite
 create crate sprite
 add rifle/shotgun to dude's sprite
 create sprites for pickups
-add dude death animation
+X add dude death animation
 X add zombie death animation
 create trees
 X clean up zombie outlines
