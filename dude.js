@@ -1,7 +1,7 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory", "fx/BloodSplatter"],
-       function (game, Sprite, collidable, spriteMarshal, LifeMeter, Inventory, BloodSplatter) {
+define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodSplatter"],
+       function (game, Sprite, collidable, spriteMarshal, Inventory, BloodSplatter) {
 
   var context = game.spriteContext;
 
@@ -245,7 +245,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "LifeMeter", "Inventory
 
       this.health -= damage;
 
-      LifeMeter.updateHealth(this.health);
+      this.fireEvent('health changed', this.health);
 
       if (this.health <= 0) {
         // die

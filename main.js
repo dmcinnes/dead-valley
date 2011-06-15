@@ -12,6 +12,7 @@ require(
    "sprites/Zombie",
    "sprites/Barrel",
    "inventory/Pistol",
+   "LifeMeter",
    "World",
    "spriteMarshal"],
 
@@ -28,6 +29,7 @@ require(
             Zombie,
             Barrel,
             Pistol,
+            LifeMeter,
             World,
             spriteMarshal) {
 
@@ -53,8 +55,6 @@ require(
             dude.enterCar(vehicle);
           });
         }
-        game.dude = dude;
-        game.addSprite(dude);
         startX = parsedDudeState.pos.x;
         startY = parsedDudeState.pos.y;
       } else {
@@ -66,8 +66,6 @@ require(
         dude = new Dude();
         dude.pos.x = startX;
         dude.pos.y = startY;
-        game.dude = dude;
-        game.addSprite(dude);
 
         var zombie = new Zombie();
         zombie.pos.x = startX + 200;
@@ -84,6 +82,9 @@ require(
         zombie.pos.y = 1000;
         game.addSprite(zombie);
       }
+
+      // Call me The DUDE
+      game.newDude(dude);
 
       game.addSprite(framerate);
 

@@ -27,7 +27,7 @@ add zombie blood tire tracks
 make zombies follow building edges
 add zombies randomly to map - based on building population of section?
 generalize animation handling
-create event listeners model for HUD/health meter
+X create event listeners model for HUD/health meter
 
 EDITOR
 remove current collidible code

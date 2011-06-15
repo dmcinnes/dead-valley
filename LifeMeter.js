@@ -1,11 +1,12 @@
+// LifeMeter
+
 define(['game'], function (game) {
 
   var totalContainers = 3;
   var width, leftHalf, rightHalf;
 
-  var $life = $('#life')
-
-  var $heart          = $("<div>&hearts;</div>").addClass('heart');
+  var $life  = $('#life')
+  var $heart = $("<div>&hearts;</div>").addClass('heart');
 
   var fullHeart = function () {
     return $heart.clone().addClass('full');
@@ -60,10 +61,14 @@ define(['game'], function (game) {
     }
   };
 
-  // render full health
-  render(totalContainers * 2);
+  game.gameEvents.subscribe('new dude', function (dude) {
+    // render current dude's health
+    render(dude.health);
 
-  return {
-    updateHealth: render
-  };
+    // subscribe to future updates
+    dude.subscribe('health changed', function (newValue) {
+      render(newValue);
+    });
+  });
+
 });

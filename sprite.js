@@ -1,7 +1,7 @@
 // Sprite
 
-define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info", "fx/BulletHit"],
-       function (game, Matrix, Vector, spriteMarshal, spriteInfo, BulletHit) {
+define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-info", "fx/BulletHit"],
+       function (game, Matrix, Vector, eventMachine, spriteMarshal, spriteInfo, BulletHit) {
 
   var Matrix  = new Matrix(2, 3);
   var context = game.spriteContext;
@@ -268,6 +268,7 @@ define(["game", "Matrix", "Vector", "spriteMarshal", "Sprite-info", "fx/BulletHi
   };
 
   spriteMarshal(Sprite);
+  eventMachine(Sprite);
 
   return Sprite;
 });

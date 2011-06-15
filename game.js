@@ -11,10 +11,12 @@
 define(['assetmanager',
         'controls',
         'collidable',
+        'eventMachine',
         'spriteMarshal'],
         function (AssetManager,
                   controls,
                   collidable,
+                  eventMachine,
                   spriteMarshal) {
 
   var canvas = $("#canvas");
@@ -45,12 +47,16 @@ define(['assetmanager',
     map:           null,
     dude:          null,
     sprites:       sprites,
+    gameEvents:    eventMachine(),
+
     runMap: function (delta) {
       if (this.map) this.map.run(delta);
     },
+
     renderMap: function (delta) {
       if (this.map) this.map.render(delta);
     },
+
     runSprites: function (delta) {
       if (this.map) {
 
@@ -81,6 +87,7 @@ define(['assetmanager',
 
       }
     },
+
     renderSprites: function (delta) {
       if (this.map) {
         spriteCount = this.sprites.length;
@@ -89,6 +96,7 @@ define(['assetmanager',
         }
       }
     },
+
     addSpritesFromStrings: function (sprites, offset) {
       var self = this;
 
@@ -105,12 +113,23 @@ define(['assetmanager',
         });
       });
     },
+
     addSprite: function (sprite) {
       this.sprites.push(sprite);
       sortSprites();
     },
-    resortSprites: sortSprites
-  };
 
-  return game;
+    resortSprites: sortSprites,
+
+    newDude: function (dude) {
+      if (this.dude) {
+	this.dude.die();
+      }
+      this.dude = dude;
+
+      this.addSprite(dude);
+
+      this.gameEvents.fireEvent('new dude', dude);
+    }
+  };
 });
