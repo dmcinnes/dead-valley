@@ -35,7 +35,6 @@ define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodS
 
     this.health              = 6;
     this.takingDamage        = false;
-    this.alive               = true;
 
     this.aiming              = false;
     this.firing              = false;
@@ -61,7 +60,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodS
     // hack so the sprite is placed correctly when its flipped
     this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
 
-    if (this.alive) {
+    if (this.alive()) {
       if (this.walking) {
         this.walkingFrameCounter += delta;
         if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
@@ -111,7 +110,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodS
     // clear velocity
     this.vel.set(0, 0);
 
-    if (!this.alive) return; // he's dead Jim
+    if (!this.alive()) return; // he's dead Jim
 
     // clear touching list
     this.touching.splice(0);
@@ -212,13 +211,13 @@ define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodS
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
     $('#canvas-mask').mousemove(function (e) {
-      if (self.alive && Inventory.inHand()) {
+      if (self.alive() && Inventory.inHand()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
       }
     }).mousedown(function (e) {
       var firearm = Inventory.inHand();
-      if (self.alive && firearm) {
+      if (self.alive() && firearm) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
         if (firearm.fire(self.pos, coords)) {
@@ -234,11 +233,12 @@ define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodS
     var metadata = this.driving ?
                    this.driving.saveMetadata() :
                    Sprite.prototype.saveMetadata.call(this);
+    metadata.health = this.health;
     return metadata;
   };
 
   Dude.prototype.takeDamage = function (damage) {
-    if (this.alive) {
+    if (this.alive()) {
       this.takingDamage = true;
 
       BloodSplatter.splat(this.pos.clone(), '#900');
@@ -249,8 +249,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodS
 
       if (this.health <= 0) {
         // die
-        this.alive = false;
         this.collidable = false;
+
         // move the dude to the bottom of the pile
         this.z = 1;
         game.resortSprites();
@@ -298,6 +298,10 @@ define(["game", "sprite", "collidable", "spriteMarshal", "Inventory", "fx/BloodS
 		      this.tileWidth,
 		      this.tileHeight);
     context.restore();
+  };
+
+  Dude.prototype.alive = function () {
+    return this.health > 0;
   };
 
   collidable(Dude);

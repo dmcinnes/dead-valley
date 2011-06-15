@@ -253,10 +253,18 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
     BloodSplatter.splat(this.pos.clone(), 'green');
     this.health -= damage;
     if (this.health <= 0) {
+      // DEEEEEED
       this.vel.scale(0);
       this.walkingFrameCounter = 0;
       this.collidable = false;
+      this.shouldSave = false;
     }
+  };
+
+  Zombie.prototype.saveMetadata = function () {
+    var metadata = Sprite.prototype.saveMetadata.call(this);
+    metadata.health = this.health;
+    return metadata;
   };
 
   collidable(Zombie);
