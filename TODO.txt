@@ -28,6 +28,7 @@ make zombies follow building edges
 add zombies randomly to map - based on building population of section?
 generalize animation handling
 X create event listeners model for HUD/health meter
+add WASD control scheme
 
 EDITOR
 remove current collidible code
