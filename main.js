@@ -13,7 +13,7 @@ require(
    "sprites/Zombie",
    "sprites/Barrel",
    "inventory/Pistol",
-   "LifeMeter",
+   "hud/LifeMeter",
    "World",
    "spriteMarshal"],
 
