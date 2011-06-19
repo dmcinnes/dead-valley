@@ -1,6 +1,6 @@
 // Pistol
 
-define(['Firearm', 'inventory/InventoryAsset'], function (Firearm, InventoryAsset) {
+define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem) {
   var Pistol = function () {
     // start with fully loaded for now
     this.reload();
@@ -10,7 +10,7 @@ define(['Firearm', 'inventory/InventoryAsset'], function (Firearm, InventoryAsse
   Pistol.prototype.damage = 1;
   Pistol.prototype.ammoCapacity = 1000; // for testing
 
-  InventoryAsset(Pistol, 1, 2, 'pistol');
+  InventoryItem(Pistol, 1, 2, 'pistol');
 
   return Pistol;
 });

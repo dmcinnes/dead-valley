@@ -1,8 +1,8 @@
-// InventoryAsset
+// InventoryItem
 
 define(function () {
 
-  var inventoryAsset = function (object, width, height, image) {
+  var InventoryItem = function (object, width, height, image) {
     object.prototype.width = width;
     object.prototype.height = height;
     object.prototype.image = 'assets/inventory/' + image + '.png';
@@ -10,5 +10,5 @@ define(function () {
     object.y = null;
   };
 
-  return inventoryAsset;
+  return InventoryItem;
 });
