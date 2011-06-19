@@ -7,7 +7,7 @@ require(
    "dude",
    "Sky",
    "framerate",
-   "Inventory",
+   "DudeInventory",
    "hud/InventoryDisplay",
    "sprites/Honda",
    "sprites/Zombie",
@@ -25,7 +25,7 @@ require(
             Dude,
             Sky,
             framerate,
-            Inventory,
+            DudeInventory,
             InventoryDisplay,
             Honda,
             Zombie,
@@ -141,7 +141,9 @@ require(
       });
 
       // give the dude a pistol!
-      Inventory.putInHand(new Pistol());
+      DudeInventory.putInHand(new Pistol());
+
+      new InventoryDisplay(DudeInventory, $('#dude-inventory'));
 
     });
 

@@ -72,20 +72,23 @@ body {
 }
 .crosshair { cursor: crosshair }
 
-#inventory {
+#dude-inventory {
   position: absolute;
+  display: none;
+  right: 4px;
+  top: 4px;
   z-index: 100;
+}
+
+.inventory {
   border: 3px solid black;
   border-radius: 5px;
   -moz-border-radius: 5px; 
   -webkit-border-radius: 5px;
   border-spacing: 0px;
-  right: 4px;
-  top: 4px;
   cursor: pointer;
-  display: none;
 }
-#inventory td {
+.inventory td {
   border: 1px solid black;
   width: 64px;
   height: 64px;

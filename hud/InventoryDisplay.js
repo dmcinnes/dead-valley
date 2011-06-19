@@ -1,20 +1,36 @@
 // Inventory Display
 define(['game', 'Inventory'], function (game, Inventory) {
-  var $inv = $('#inventory');
-
-  var setupControls = function () {
+  var setupControls = function ($node) {
     game.controls.registerKeyDownHandler('i', function () {
-      $inv.toggle();
+      $node.toggle();
     });
 
     game.controls.registerKeyDownHandler('esc', function () {
-      $inv.hide();
+      $node.hide();
     });
   };
 
-  var render = function () {
+  var render = function (inv, parent) {
+    var i, j;
+    var row
+    var table = $("<table/>").addClass("inventory");
+    for (i = 0; i < inv.height; i++) {
+      row = $("<tr/>");
+      for (j = 0; j < inv.width; j++) {
+        row.append($("<td/>"));
+      }
+      table.append(row);
+    }
+    parent.append(table);
   };
 
-  setupControls();
+  var InventoryDisplay = function (inventory, parent) {
+    this.inventory = inventory;
+    this.parent = parent;
+    render(inventory, parent);
+    setupControls(parent);
+  };
+
+  return InventoryDisplay;
 
 });
