@@ -1,6 +1,6 @@
 // Pistol
 
-define(['Firearm', 'InventoryAsset'], function (Firearm, InventoryAsset) {
+define(['Firearm', 'inventory/InventoryAsset'], function (Firearm, InventoryAsset) {
   var Pistol = function () {
     // start with fully loaded for now
     this.reload();

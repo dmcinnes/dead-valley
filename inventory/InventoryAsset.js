@@ -1,13 +1,13 @@
 // InventoryAsset
 
-define(['game'], function (game) {
+define(function () {
 
   var inventoryAsset = function (object, width, height, image) {
     object.prototype.width = width;
     object.prototype.height = height;
-    game.assetManager.load('inventory/' + image, function (image) {
-      object.prototype.image = image;
-    });
+    object.prototype.image = 'assets/inventory/' + image + '.png';
+    object.x = null;
+    object.y = null;
   };
 
   return inventoryAsset;

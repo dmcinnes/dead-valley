@@ -38,6 +38,7 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
 
   var Inventory = function (width, height) {
     this.slots = [];
+    this.items = [];
     this.width = width;
     this.height = height;
     setupSlots(this);
@@ -46,35 +47,43 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
   Inventory.prototype = {
     isAvailable: function (item, x, y) {
       return checkRange(x, y, item.width, item.height, this) &&
-             slotIterator(x, y, item.width, item.height, slots, function (slot) {
+             slotIterator(x, y, item.width, item.height, this.slots, function (slot) {
                return !slot;
              });
     },
 
     addItem: function (item, x, y) {
       if (this.isAvailable(item, x, y)) {
-        slotIterator(x, y, item.width, item.height, slots, function (slot, i, j) {
-          slots[i][j] = item;
+        var self = this;
+        slotIterator(x, y, item.width, item.height, this.slots, function (slot, i, j) {
+          self.slots[i][j] = item;
         });
-        this.fireEvent('itemAdded', item, x, y);
+        item.x = x;
+        item.y = y;
+        this.items.push(item);
+        this.fireEvent('itemAdded', item);
+      }
+    },
+
+    removeItemAt: function (x, y) {
+      var item = this.slots[x][y];
+      if (item) {
+        this.removeItem(item);
       }
     },
 
     removeItem: function (item) {
-      // where does the item start
-      var x, y;
-      slotIterator(0, 0, WIDTH, HEIGHT, slots, function (slot, i, j) {
-        if (slot === item) {
-          x = i;
-          y = j;
-          return false;
-        }
-      });
-      if (x && y) {
-        slotIterator(x, y, item.width, item.height, slots, function (slot, i, j) {
-          slots[i][j] = null;
+      if (typeof(item.x) === 'number' && typeof(item.y) === 'number') {
+        var self = this;
+        slotIterator(item.x, item.y, item.width, item.height, this.slots, function (slot, i, j) {
+          self.slots[i][j] = null;
         });
-        this.fireEvent('itemRemoved', item, x, y);
+        this.items.splice(this.items.indexOf(item), 1);
+
+        this.fireEvent('itemRemoved', item);
+
+        item.x = null;
+        item.y = null;
       }
     }
   };
