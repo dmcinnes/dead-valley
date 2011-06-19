@@ -12,6 +12,9 @@ define(['game', 'Inventory'], function (game, Inventory) {
     });
   };
 
+  var render = function () {
+  };
+
   setupControls();
 
 });

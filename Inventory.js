@@ -1,6 +1,6 @@
 // Inventory
 
-define(['game'], function (game) {
+define(['game', 'eventmachine'], function (game, eventMachine) {
   var inHand = null;
 
   var slots = [];
@@ -15,10 +15,6 @@ define(['game'], function (game) {
         slots[i].push(null);
       }
     }
-  };
-
-  var putInHand = function (object) {
-    inHand = object;
   };
 
   var checkRange = function (x, y, width, height) {
@@ -45,45 +41,60 @@ define(['game'], function (game) {
     return true;
   };
 
-  var isAvailable = function (item, x, y) {
-    return checkRange(x, y, item.width, item.height) &&
-           slotIterator(x, y, item.width, item.height, function (slot) {
-             return !slot;
-           });
-  };
 
-  var addItem = function (item, x, y) {
-    if (isAvailable(item, x, y)) {
-      slotIterator(x, y, item.width, item.height, function (slot, i, j) {
-        slots[i][j] = item;
-      });
-    }
-  };
+  var Inventory = {
+    putInHand: function (item) {
+      inHand = item;
+      this.fireEvent('itemPutInHand', item);
+    },
 
-  var removeItem = function (item) {
-    // where does the item start
-    var x, y;
-    slotIterator(0, 0, WIDTH, HEIGHT, function (slot, i, j) {
-      if (slot === item) {
-        x = i;
-        y = j;
-        return false;
+    removeFromHand: function () {
+      this.fireEvent('itemRemovedFromHand', inHand);
+      inHand = null;
+    },
+
+    inHand: function () {
+      return inHand;
+    },
+
+    isAvailable: function (item, x, y) {
+      return checkRange(x, y, item.width, item.height) &&
+             slotIterator(x, y, item.width, item.height, function (slot) {
+               return !slot;
+             });
+    },
+
+    addItem: function (item, x, y) {
+      if (this.isAvailable(item, x, y)) {
+        slotIterator(x, y, item.width, item.height, function (slot, i, j) {
+          slots[i][j] = item;
+        });
+        this.fireEvent('itemAdded', item, x, y);
       }
-    });
-    if (x && y) {
-      slotIterator(x, y, item.width, item.height, function (slot, i, j) {
-        slots[i][j] = null;
+    },
+
+    removeItem: function (item) {
+      // where does the item start
+      var x, y;
+      slotIterator(0, 0, WIDTH, HEIGHT, function (slot, i, j) {
+        if (slot === item) {
+          x = i;
+          y = j;
+          return false;
+        }
       });
+      if (x && y) {
+        slotIterator(x, y, item.width, item.height, function (slot, i, j) {
+          slots[i][j] = null;
+        });
+        this.fireEvent('itemRemoved', item, x, y);
+      }
     }
   };
+
+  eventMachine(Inventory);
 
   setupSlots(WIDTH, HEIGHT);
 
-  return {
-    inHand: function () { return inHand },
-    putInHand: putInHand,
-    addItem: addItem,
-    removeItem: removeItem,
-    isAvailable: isAvailable
-  };
+  return Inventory;
 });
