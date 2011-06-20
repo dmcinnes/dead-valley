@@ -90,11 +90,17 @@ body {
 }
 .inventory td {
   border: 1px solid black;
-  width: 64px;
-  height: 64px;
+  /* 66 because of the border */
+  width: 66px;
+  height: 66px;
 }
 #inventory tr:first-child td:last-child {
   border: 1px solid black;
   text-align: center;
   text-transform: uppercase;
+}
+.inventory .inventory-item {
+}
+.ui-draggable {
+  z-index: 200;
 }

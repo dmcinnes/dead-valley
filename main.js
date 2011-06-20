@@ -143,7 +143,7 @@ require(
       // give the dude a pistol!
       DudeInventory.putInHand(new Pistol());
 
-      DudeInventory.addItem(new Pistol(), 0, 0);
+      DudeInventory.addItem(new Pistol(), 1, 1);
 
       new InventoryDisplay(DudeInventory, $('#dude-inventory'));
 

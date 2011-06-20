@@ -16,8 +16,8 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
            y >= 0 &&
            width >= 0 &&
            height >= 0 &&
-           x + width < inv.width &&
-           y + height < inv.height;
+           x + width - 1 < inv.width &&
+           y + height - 1 < inv.height;
   };
 
   var slotIterator = function (x, y, width, height, slots, callback) {
