@@ -279,6 +279,9 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeInventory", "fx/Bl
   };
 
   Dude.prototype.drawAimedArm = function (frame) {
+    if (!this.image) {
+      return;
+    }
     context.save();
     if (this.direction) {
       context.translate(-this.center.x + ARM_OFFSET_X + ARM_FLIP_OFFSET, -this.center.y + ARM_OFFSET_Y);
