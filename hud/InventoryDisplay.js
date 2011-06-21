@@ -1,7 +1,9 @@
 // Inventory Display
 define(['game', 'Inventory'], function (game, Inventory) {
 
-  var draggingItem = null;
+  var draggingItem, draggingItemOriginalPos, draggingItemOriginalInv;
+
+  var cellSize = 70;
 
   var findCellPosition = function (cell) {
     // TODO nicer way of finding this?
@@ -11,6 +13,15 @@ define(['game', 'Inventory'], function (game, Inventory) {
     }
   };
 
+  // dropping anywhere else reverts the drag
+  $('body').droppable().bind('drop' ,function () {
+    draggingItemOriginalInv.addItem(draggingItem,
+                                    draggingItemOriginalPos.x,
+                                    draggingItemOriginalPos.y);
+    draggingItem = null;
+    draggingItemOriginalPos = null;
+    draggingItemOriginalInv = null;
+  });
 
   var InventoryDisplay = function (inventory, parent) {
     this.inventory = inventory;
@@ -18,6 +29,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
     this.setupControls();
     this.createTable();
+
     this.updateTable();
     this.setupEventHandlers();
   };
@@ -26,26 +38,34 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
     itemEventHandlers: {
       dragstart: function (event, ui) {
-        console.log("drag start!", event, ui);
         var image = $(event.target);
         draggingItem = image.data('item');
+        draggingItemOriginalPos = {
+          x: draggingItem.x,
+          y: draggingItem.y
+        };
+        draggingItemOriginalInv = this.inventory;
         this.inventory.removeItem(draggingItem);
       }
     },
 
     tableEventHandlers: {
       drop: function (event, ui) {
-        var targetCell = $(event.target);
-        var pos = findCellPosition(targetCell);
-        console.log("dropped!", event, ui, pos.x, pos.y);
-        if (this.inventory.isAvailable(draggingItem, pos.x, pos.y)) {
-          this.inventory.addItem(draggingItem, pos.x, pos.y);
+        var tablePos = $(this.table).parent().offset();
+        var posX = Math.round((ui.offset.left - tablePos.left) / cellSize);
+        var posY = Math.round((ui.offset.top - tablePos.top) / cellSize);
+        if (this.inventory.isAvailable(draggingItem, posX, posY)) {
+          this.inventory.addItem(draggingItem, posX, posY);
         } else {
           // put it back where it was
-          this.inventory.addItem(draggingItem, draggingItem.x, draggingItem.y);
+          draggingItemOriginalInv.addItem(draggingItem,
+                                          draggingItemOriginalPos.x,
+                                          draggingItemOriginalPos.y);
         }
         draggingItem = null;
-        return true;
+        draggingItemOriginalPos = null;
+        draggingItemOriginalInv = null;
+        return false;
       }
     },
 
@@ -69,19 +89,20 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
       this.inventory.subscribe('itemRemoved', $.proxy(this.removeItem, this));
 
-      var items = this.table.find('.inventory-item');
-      _.each(this.itemEventHandlers, function (handler, key) {
-        items.bind(key, $.proxy(handler, self));
-      });
-
-      var cells = this.table.find('td');
       _.each(this.tableEventHandlers, function (handler, key) {
-        cells.bind(key, $.proxy(handler, self));
+        self.table.bind(key, $.proxy(handler, self));
       });
 
       var body = $('body');
       _.each(this.bodyEventHandlers, function (handler, key) {
         cells.bind(key, $.proxy(handler, self));
+      });
+    },
+
+    setupItemEventHandlers: function (itemNode) {
+      var self = this;
+      _.each(this.itemEventHandlers, function (handler, key) {
+        itemNode.bind(key, $.proxy(handler, self));
       });
     },
 
@@ -94,11 +115,15 @@ define(['game', 'Inventory'], function (game, Inventory) {
         row = $("<tr/>");
         for (j = 0; j < colCount; j++) {
           td = $("<td/>");
-          td.droppable();
           row.append(td);
         }
         table.append(row);
       }
+
+      table.droppable({
+        greedy:    true,
+        tolerance: 'touch'
+      });
       this.parent.append(table);
       this.table = table;
     },
@@ -110,10 +135,13 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var start = this.table.find("tr:eq("+y+") td:eq("+x+")");
       var image = $("<img/>").attr('src', item.image).addClass('inventory-item');
       image.draggable({
-        helper: 'clone',
-        appendTo: 'body'
+        helper:      'clone',
+        appendTo:    'body',
+        containment: 'body',
+        scroll:      false
       });
       image.data('item', item);
+      this.setupItemEventHandlers(image);
       start.append(image);
       start.attr('rowspan', item.height);
       start.attr('colspan', item.width);
