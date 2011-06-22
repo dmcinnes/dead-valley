@@ -90,9 +90,9 @@ body {
 }
 .inventory td {
   border: 1px solid black;
-  /* 66 because of the border */
-  width: 66px;
-  height: 66px;
+  /* 46 because of the border */
+  width: 46px;
+  height: 46px;
 }
 #inventory tr:first-child td:last-child {
   border: 1px solid black;

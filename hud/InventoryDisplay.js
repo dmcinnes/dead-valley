@@ -3,7 +3,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
   var draggingItem, draggingItemOriginalPos, draggingItemOriginalInv;
 
-  var cellSize = 70;
+  // magic number!
+  var cellSize = 50;
 
   var findCellPosition = function (cell) {
     // TODO nicer way of finding this?
