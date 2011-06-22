@@ -7,6 +7,7 @@ require(
    "dude",
    "Sky",
    "framerate",
+   "Inventory",
    "DudeInventory",
    "hud/InventoryDisplay",
    "sprites/Honda",
@@ -25,6 +26,7 @@ require(
             Dude,
             Sky,
             framerate,
+            Inventory,
             DudeInventory,
             InventoryDisplay,
             Honda,
@@ -146,6 +148,18 @@ require(
       DudeInventory.addItem(new Pistol(), 1, 1);
 
       new InventoryDisplay(DudeInventory, $('#dude-inventory'));
+
+      var wielding = new Inventory(2, 3);
+      new InventoryDisplay(wielding, $('#dude-inventory'));
+
+      // TODO put this somewhere else
+      game.controls.registerKeyDownHandler('i', function () {
+        $('#dude-inventory').toggle();
+      });
+
+      game.controls.registerKeyDownHandler('esc', function () {
+        $('#dude-inventory').hide();
+      });
 
     });
 

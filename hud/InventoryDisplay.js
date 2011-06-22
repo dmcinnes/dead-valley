@@ -28,7 +28,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
     this.inventory = inventory;
     this.parent = parent;
 
-    this.setupControls();
     this.createTable();
 
     this.updateTable();
@@ -52,7 +51,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
     tableEventHandlers: {
       drop: function (event, ui) {
-        var tablePos = $(this.table).parent().offset();
+        var tablePos = $(this.table).offset();
         var posX = Math.round((ui.offset.left - tablePos.left) / cellSize);
         var posY = Math.round((ui.offset.top - tablePos.top) / cellSize);
         if (this.inventory.isAvailable(draggingItem, posX, posY)) {
@@ -68,19 +67,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
         draggingItemOriginalInv = null;
         return false;
       }
-    },
-
-    setupControls: function () {
-      var self = this;
-
-      // TODO this should only be for the Dude's inventory
-      game.controls.registerKeyDownHandler('i', function () {
-        self.parent.toggle();
-      });
-
-      game.controls.registerKeyDownHandler('esc', function () {
-        self.parent.hide();
-      });
     },
 
     setupEventHandlers: function () {

@@ -81,6 +81,7 @@ body {
 }
 
 .inventory {
+  float: left;
   border: 3px solid black;
   border-radius: 5px;
   -moz-border-radius: 5px; 
