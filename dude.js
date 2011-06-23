@@ -1,7 +1,7 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spriteMarshal", "DudeInventory", "fx/BloodSplatter"],
-       function (game, Sprite, collidable, spriteMarshal, DudeInventory, BloodSplatter) {
+define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodSplatter"],
+       function (game, Sprite, collidable, spriteMarshal, DudeHands, BloodSplatter) {
 
   var context = game.spriteContext;
 
@@ -211,12 +211,12 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeInventory", "fx/Bl
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
     $('#canvas-mask').mousemove(function (e) {
-      if (self.alive() && DudeInventory.inHand()) {
+      if (self.alive() && DudeHands.weapon()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
       }
     }).mousedown(function (e) {
-      var firearm = DudeInventory.inHand();
+      var firearm = DudeHands.weapon();
       if (self.alive() && firearm) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
@@ -272,7 +272,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeInventory", "fx/Bl
       // 6. with gun
       // 7. out
       // 8. out with gun
-      var offset = DudeInventory.inHand() ? 2 : 0;
+      var offset = DudeHands.weapon() ? 2 : 0;
       offset += this.takingDamage ? 1 : 0;
       this.drawTile(5 + offset, this.direction);
     }

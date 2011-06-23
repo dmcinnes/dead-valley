@@ -4,6 +4,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
   var draggingItem, draggingItemOriginalPos, draggingItemOriginalInv;
 
   // magic number!
+  // a single block is 44x44 but some extra crap is put in there
   var cellSize = 50;
 
   var findCellPosition = function (cell) {

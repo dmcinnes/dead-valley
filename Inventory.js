@@ -85,6 +85,10 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
         item.x = null;
         item.y = null;
       }
+    },
+
+    itemAt: function (x, y) {
+      return this.slots[x][y];
     }
   };
 

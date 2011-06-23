@@ -8,7 +8,7 @@ require(
    "Sky",
    "framerate",
    "Inventory",
-   "DudeInventory",
+   "DudeHands",
    "hud/InventoryDisplay",
    "sprites/Honda",
    "sprites/Zombie",
@@ -27,7 +27,7 @@ require(
             Sky,
             framerate,
             Inventory,
-            DudeInventory,
+            DudeHands,
             InventoryDisplay,
             Honda,
             Zombie,
@@ -142,15 +142,15 @@ require(
         game.map.save();
       });
 
+      // TODO put inventory creation somewhere else
+      var inventory = new Inventory(9, 3);
+
       // give the dude a pistol!
-      DudeInventory.putInHand(new Pistol());
+      inventory.addItem(new Pistol(), 1, 1);
 
-      DudeInventory.addItem(new Pistol(), 1, 1);
+      new InventoryDisplay(inventory, $('#dude-inventory'));
 
-      new InventoryDisplay(DudeInventory, $('#dude-inventory'));
-
-      var wielding = new Inventory(2, 3);
-      new InventoryDisplay(wielding, $('#dude-inventory'));
+      new InventoryDisplay(DudeHands, $('#dude-inventory'));
 
       // TODO put this somewhere else
       game.controls.registerKeyDownHandler('i', function () {
