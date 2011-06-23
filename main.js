@@ -14,6 +14,7 @@ require(
    "sprites/Zombie",
    "sprites/Barrel",
    "inventory/Pistol",
+   "inventory/AK_47",
    "hud/LifeMeter",
    "World",
    "spriteMarshal"],
@@ -33,6 +34,7 @@ require(
             Zombie,
             Barrel,
             Pistol,
+            AK_47,
             LifeMeter,
             World,
             spriteMarshal) {
@@ -147,6 +149,8 @@ require(
 
       // give the dude a pistol!
       inventory.addItem(new Pistol(), 1, 1);
+      // and why not, an AK
+      inventory.addItem(new AK_47(), 5, 0);
 
       new InventoryDisplay(inventory, $('#dude-inventory'));
 
