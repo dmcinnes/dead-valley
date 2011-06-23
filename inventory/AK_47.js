@@ -10,7 +10,11 @@ define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem)
   AK_47.prototype.damage = 3;
   AK_47.prototype.ammoCapacity = 30;
 
-  InventoryItem(AK_47, 2, 3, 'AK-47');
+  InventoryItem(AK_47, {
+    width:  2, 
+    height: 3, 
+    image:  'AK-47'
+  });
 
   return AK_47
 });

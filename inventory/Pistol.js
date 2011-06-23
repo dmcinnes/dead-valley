@@ -10,7 +10,11 @@ define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem)
   Pistol.prototype.damage = 1;
   Pistol.prototype.ammoCapacity = 1000; // for testing
 
-  InventoryItem(Pistol, 1, 2, 'pistol');
+  InventoryItem(Pistol, {
+    width:  1, 
+    height: 2, 
+    image:  'pistol'
+  });
 
   return Pistol;
 });
