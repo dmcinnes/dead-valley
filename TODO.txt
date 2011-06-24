@@ -28,7 +28,7 @@ make zombies follow building edges
 add zombies randomly to map - based on building population of section?
 generalize animation handling
 X create event listeners model for HUD/health meter
-add WASD control scheme
+X add WASD control scheme
 change inventory to use click to pickup and click to drop
 disable inventory when paused
 handle dropping ammo on guns

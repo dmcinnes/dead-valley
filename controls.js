@@ -15,8 +15,9 @@ define(function () {
   }
 
   // set up the structure for handling key presses
-  var setupKeyStatus = function (key) {
-    var lower = key.toLowerCase();
+  // support specifying the destination key
+  var setupKeyStatus = function (key, dest) {
+    var lower = dest || key.toLowerCase();
     var code = lower.charCodeAt(0);
     KEY_CODES[code] = lower;
     keyStatus[lower] = false;
@@ -63,6 +64,12 @@ define(function () {
     }
     handlers.push(callback);
   };
+
+  // link WASD keys to arrow keys
+  setupKeyStatus('a', 'left');
+  setupKeyStatus('w', 'up');
+  setupKeyStatus('d', 'right');
+  setupKeyStatus('s', 'down');
 
   return {
     keyStatus: keyStatus,

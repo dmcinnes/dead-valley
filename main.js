@@ -140,10 +140,6 @@ require(
         }
       });
 
-      game.controls.registerKeyDownHandler('s', function () {
-        game.map.save();
-      });
-
       // TODO put inventory creation somewhere else
       var inventory = new Inventory(9, 3);
 
