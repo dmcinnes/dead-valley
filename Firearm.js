@@ -28,10 +28,27 @@ define(['game'], function (game) {
 
   Firearm.prototype.decrementAmmo = function () {
     this.ammo--;
+    this.updateDisplay();
   };
 
   Firearm.prototype.reload = function () {
     this.ammo = this.ammoCapacity;
+    this.updateDisplay();
+  };
+
+  Firearm.prototype.displayNode = function () {
+    if (!this.display) {
+      this.display = $("<div/>")
+	.append($("<span/>").addClass('readout').text(this.ammo))
+	.append($("<img/>").attr('src', this.image));
+    }
+    return this.display;
+  };
+
+  Firearm.prototype.updateDisplay = function () {
+    if (this.display) {
+      this.display.find('.readout').text(this.ammo);
+    }
   };
 
   return Firearm;

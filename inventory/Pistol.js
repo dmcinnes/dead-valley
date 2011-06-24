@@ -8,7 +8,7 @@ define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem)
   Pistol.prototype = new Firearm();
 
   Pistol.prototype.damage = 1;
-  Pistol.prototype.ammoCapacity = 1000; // for testing
+  Pistol.prototype.ammoCapacity = 12;
 
   InventoryItem(Pistol, {
     width:  1, 

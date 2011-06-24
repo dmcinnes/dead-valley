@@ -3,9 +3,13 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
   var draggingItem, draggingItemOriginalPos, draggingItemOriginalInv;
 
-  // magic number!
+  // magic numbers!
   // a single block is 44x44 but some extra crap is put in there
   var cellSize = 50;
+  var itemOffset = {
+    top:  3,
+    left: 3
+  };
 
   var findCellPosition = function (cell) {
     // TODO nicer way of finding this?
@@ -60,7 +64,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
         if (this.inventory.isAvailable(draggingItem, posX, posY)) {
           this.inventory.addItem(draggingItem, posX, posY);
         } else {
-          // TODO enable this when we're not dragging anymore
           // item = this.inventory.singleItemOverlay(draggingItem, posX, posY);
           if (item) {
             // swap em
@@ -136,17 +139,18 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var y = item.y;
       var start = this.table.find("tr:eq("+y+") td:eq("+x+")");
       var pos = start.position();
-      var image = $("<img/>").attr('src', item.image).addClass('inventory-item');
-      image.css({left:pos.left, top:pos.top});
-      image.draggable({
+      var displayNode = item.displayNode();
+      displayNode.css({left:pos.left + itemOffset.left, top:pos.top + itemOffset.top});
+      displayNode.addClass('inventory-item');
+      displayNode.draggable({
         helper:      'clone',
         appendTo:    'body',
         containment: 'body',
         scroll:      false
       });
-      image.data('item', item);
-      this.setupItemEventHandlers(image);
-      start.append(image);
+      displayNode.data('item', item);
+      this.setupItemEventHandlers(displayNode);
+      start.append(displayNode);
       for (i = 0; i < item.width; i++) {
         for (j = 0; j < item.height; j++) {
           this.table.find("tr:eq("+(y+j)+") td:eq("+(x+i)+")").addClass('occupied');

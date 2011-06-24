@@ -98,8 +98,14 @@ body {
 .inventory .occupied {
   background: rgba(100,100,100,0.4);
 }
-.inventory .inventory-item {
+.inventory-item {
   position: absolute;
+}
+.inventory-item .readout {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  color: #BBB;
 }
 .ui-draggable {
   z-index: 200;
