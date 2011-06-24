@@ -25,9 +25,10 @@ define(['game', 'Inventory'], function (game, Inventory) {
     draggingItemOriginalInv = null;
   });
 
-  var InventoryDisplay = function (inventory, parent) {
+  var InventoryDisplay = function (inventory, parent, config) {
     this.inventory = inventory;
-    this.parent = parent;
+    this.parent    = parent;
+    this.config    = config || {};
 
     this.createTable();
 
@@ -99,6 +100,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var rowCount = this.inventory.height;
       var colCount = this.inventory.width;
       var table = $("<table/>").addClass("inventory");
+      table.attr('id', this.config.id);
       for (i = 0; i < rowCount; i++) {
         row = $("<tr/>");
         for (j = 0; j < colCount; j++) {

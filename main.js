@@ -154,7 +154,7 @@ require(
 
       new InventoryDisplay(inventory, $('#dude-inventory'));
 
-      new InventoryDisplay(DudeHands, $('#dude-inventory'));
+      new InventoryDisplay(DudeHands, $('#dude-inventory'), { id:'dude-hands' });
 
       var dudeInventory = $('#dude-inventory');
 
