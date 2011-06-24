@@ -74,7 +74,7 @@ body {
 
 #dude-inventory {
   position: absolute;
-  display: none;
+  visibility: hidden;
   right: 4px;
   top: 4px;
   z-index: 100;
@@ -95,12 +95,8 @@ body {
   width: 46px;
   height: 46px;
 }
-#inventory tr:first-child td:last-child {
-  border: 1px solid black;
-  text-align: center;
-  text-transform: uppercase;
-}
 .inventory .inventory-item {
+  position: absolute;
 }
 .ui-draggable {
   z-index: 200;

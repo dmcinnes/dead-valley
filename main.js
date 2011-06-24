@@ -156,13 +156,18 @@ require(
 
       new InventoryDisplay(DudeHands, $('#dude-inventory'));
 
+      var dudeInventory = $('#dude-inventory');
+
       // TODO put this somewhere else
       game.controls.registerKeyDownHandler('i', function () {
-        $('#dude-inventory').toggle();
+        dudeInventory.css('visibility',
+                          (dudeInventory.css('visibility') === 'hidden') ?
+                            'visible' :
+                            'hidden');
       });
 
       game.controls.registerKeyDownHandler('esc', function () {
-        $('#dude-inventory').hide();
+        dudeInventory.css('visibility', 'hidden');
       });
 
     });

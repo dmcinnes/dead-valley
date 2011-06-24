@@ -117,11 +117,10 @@ define(['game', 'Inventory'], function (game, Inventory) {
     },
 
     renderItem: function (item) {
-      var i, j, row, col;
-      var x = item.x;
-      var y = item.y;
-      var start = this.table.find("tr:eq("+y+") td:eq("+x+")");
+      var start = this.table.find("tr:eq("+item.y+") td:eq("+item.x+")");
+      var pos = start.position();
       var image = $("<img/>").attr('src', item.image).addClass('inventory-item');
+      image.css({left:pos.left, top:pos.top});
       image.draggable({
         helper:      'clone',
         appendTo:    'body',
@@ -131,44 +130,13 @@ define(['game', 'Inventory'], function (game, Inventory) {
       image.data('item', item);
       this.setupItemEventHandlers(image);
       start.append(image);
-      start.attr('rowspan', item.height);
-      start.attr('colspan', item.width);
-      for (i = item.width-1; i >= 0; i--) {
-        for (j = item.height-1; j >= 0; j--) {
-          if (i > 0 || j > 0) { // got to keep the original
-            row = y + j;
-            col = x + i;
-            this.table.find("tr:eq("+row+") td:eq("+col+")").remove();
-          }
-        }
-      }
     },
 
     removeItem: function (item) {
-      var i, j, row, col, node;
       var x = item.x;
       var y = item.y;
       var start = this.table.find("tr:eq("+y+") td:eq("+x+")");
       start.empty();
-      start.removeAttr('rowspan');
-      start.removeAttr('colspan');
-      var rows = item.height;
-      var cols = item.width;
-      for (j = 0; j < rows; j++) {
-        for (i = 0; i < cols; i++) {
-          if (i > 0 || j > 0) { // kept the original
-            row = y + j;
-            col = x + i;
-            node = this.table.find("tr:eq("+row+") td:eq("+col+")");
-            if (node.length) {
-              node.before($("<td/>"));
-            } else {
-              // end of the row
-              this.table.find("tr:eq("+row+")").append($("<td/>"));
-            }
-          }
-        }
-      }
     },
 
     updateTable: function () {
@@ -179,5 +147,4 @@ define(['game', 'Inventory'], function (game, Inventory) {
   };
 
   return InventoryDisplay;
-
 });
