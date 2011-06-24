@@ -53,16 +53,28 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
     tableEventHandlers: {
       drop: function (event, ui) {
+        var item;
         var tablePos = $(this.table).offset();
         var posX = Math.round((ui.offset.left - tablePos.left) / cellSize);
         var posY = Math.round((ui.offset.top - tablePos.top) / cellSize);
         if (this.inventory.isAvailable(draggingItem, posX, posY)) {
           this.inventory.addItem(draggingItem, posX, posY);
         } else {
-          // put it back where it was
-          draggingItemOriginalInv.addItem(draggingItem,
-                                          draggingItemOriginalPos.x,
-                                          draggingItemOriginalPos.y);
+          // TODO enable this when we're not dragging anymore
+          // item = this.inventory.singleItemOverlay(draggingItem, posX, posY);
+          if (item) {
+            // swap em
+            this.inventory.removeItem(item);
+            draggingItemOriginalInv.addItem(item,
+                                            draggingItemOriginalPos.x,
+                                            draggingItemOriginalPos.y);
+            this.inventory.addItem(draggingItem, posX, posY);
+          } else {
+            // put it back where it was
+            draggingItemOriginalInv.addItem(draggingItem,
+                                            draggingItemOriginalPos.x,
+                                            draggingItemOriginalPos.y);
+          }
         }
         draggingItem = null;
         draggingItemOriginalPos = null;

@@ -52,6 +52,21 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
              });
     },
 
+    // if the item at this position overlays a single object, return it
+    // otherwise return null
+    singleItemOverlay: function (item, x, y) {
+      var found = null;
+      if (checkRange(x, y, item.width, item.height, this)) {
+        slotIterator(x, y, item.width, item.height, this.slots, function (slot) {
+          if (found && slot && slot !== found) {
+            return false;
+          }
+          found = slot;
+        });
+      }
+      return found;
+    },
+
     addItem: function (item, x, y) {
       if (this.isAvailable(item, x, y)) {
         var self = this;

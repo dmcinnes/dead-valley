@@ -106,6 +106,7 @@ body {
 }
 
 #dude-hands {
+  margin-left: 6px;
 }
 #dude-hands td:first-child {
   border: 0px;
