@@ -13,9 +13,9 @@ create another gas station section on straightaway
 add map handling functions for custom instances of sections through the map worker
 fix gas pump position
 tune Honda's performance
-create pickups
-create inventory
-create HUD for inventory
+X create pickups
+X create inventory
+X create HUD for inventory
 create HUD for building inventory
 create HUD for vehicle inventory
 add trees randomly to map
@@ -29,6 +29,11 @@ add zombies randomly to map - based on building population of section?
 generalize animation handling
 X create event listeners model for HUD/health meter
 add WASD control scheme
+change inventory to use click to pickup and click to drop
+disable inventory when paused
+handle dropping ammo on guns
+display gun ammo count in inventory
+HUD ammo count
 
 EDITOR
 remove current collidible code
@@ -41,14 +46,18 @@ add destroyed car state to car's sprite
 update color on gas station
 fix parking lot corner tile
 fix parking spaces
-create house
-create police station
-create truck sprite
-create crate sprite
+house
+police station
+truck sprite
+crate sprite
 add rifle/shotgun to dude's sprite
-create sprites for pickups
+X create sprites for pickups
 X add dude death animation
 X add zombie death animation
-create trees
+trees
+shrubs
 X clean up zombie outlines
 clean up zombie's standing legs (make back leg angle outward)
+ammo sprites
+shotgun sprite
+
