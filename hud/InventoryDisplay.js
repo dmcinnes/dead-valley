@@ -119,7 +119,10 @@ define(['game', 'Inventory'], function (game, Inventory) {
     },
 
     renderItem: function (item) {
-      var start = this.table.find("tr:eq("+item.y+") td:eq("+item.x+")");
+      var i, j;
+      var x = item.x;
+      var y = item.y;
+      var start = this.table.find("tr:eq("+y+") td:eq("+x+")");
       var pos = start.position();
       var image = $("<img/>").attr('src', item.image).addClass('inventory-item');
       image.css({left:pos.left, top:pos.top});
@@ -132,6 +135,11 @@ define(['game', 'Inventory'], function (game, Inventory) {
       image.data('item', item);
       this.setupItemEventHandlers(image);
       start.append(image);
+      for (i = 0; i < item.width; i++) {
+        for (j = 0; j < item.height; j++) {
+          this.table.find("tr:eq("+(y+j)+") td:eq("+(x+i)+")").addClass('occupied');
+        }
+      }
     },
 
     removeItem: function (item) {
@@ -139,6 +147,11 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var y = item.y;
       var start = this.table.find("tr:eq("+y+") td:eq("+x+")");
       start.empty();
+      for (i = 0; i < item.width; i++) {
+        for (j = 0; j < item.height; j++) {
+          this.table.find("tr:eq("+(y+j)+") td:eq("+(x+i)+")").removeClass('occupied');
+        }
+      }
     },
 
     updateTable: function () {

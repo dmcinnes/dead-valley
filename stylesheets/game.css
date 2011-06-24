@@ -95,9 +95,23 @@ body {
   width: 46px;
   height: 46px;
 }
+.inventory .occupied {
+  background: rgba(100,100,100,0.4);
+}
 .inventory .inventory-item {
   position: absolute;
 }
 .ui-draggable {
   z-index: 200;
+}
+
+#dude-hands {
+}
+#dude-hands td:first-child {
+  border: 0px;
+  border-right: 1px solid black;
+}
+#dude-hands td:last-child {
+  border: 0px;
+  border-left: 1px solid black;
 }
