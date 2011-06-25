@@ -1,4 +1,4 @@
-define(['game', 'Keyboard'], function (game, Keyboard) {
+define(['game', 'mainloop', 'Keyboard'], function (game, mainloop, Keyboard) {
 
   var keys = {
     i:   'toggle inventory',
@@ -12,7 +12,9 @@ define(['game', 'Keyboard'], function (game, Keyboard) {
 
   _.each(keys, function (value, key) {
     Keyboard.registerKeyDownHandler(key, function (e) {
-      game.events.fireEvent(value, e);
+      if (!mainloop.isPaused() || key === 'p') { // only allow to get unpaused
+        game.events.fireEvent(value, e);
+      }
     });
   });
 

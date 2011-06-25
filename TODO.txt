@@ -30,7 +30,7 @@ generalize animation handling
 X create event listeners model for HUD/health meter
 X add WASD control scheme
 change inventory to use click to pickup and click to drop
-disable inventory toggle when paused
+X disable inventory toggle when paused
 handle dropping ammo on guns
 X display gun ammo count in inventory
 HUD ammo count
