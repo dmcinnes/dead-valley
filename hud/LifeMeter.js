@@ -61,7 +61,7 @@ define(['game'], function (game) {
     }
   };
 
-  game.gameEvents.subscribe('new dude', function (dude) {
+  game.events.subscribe('new dude', function (dude) {
     // render current dude's health
     render(dude.health);
 

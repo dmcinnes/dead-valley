@@ -1,12 +1,12 @@
 require(
   ["game",
+   "Controls",
    "gridnode",
    "map",
    "mainloop",
    "sprite",
    "dude",
    "Sky",
-   "framerate",
    "Inventory",
    "DudeHands",
    "hud/InventoryDisplay",
@@ -16,17 +16,19 @@ require(
    "inventory/Pistol",
    "inventory/AK_47",
    "hud/LifeMeter",
+   "hud/Framerate",
+   "hud/Pause",
    "World",
    "spriteMarshal"],
 
   function (game,
+            Controls,
             GridNode,
             Map,
             mainloop,
             Sprite,
             Dude,
             Sky,
-            framerate,
             Inventory,
             DudeHands,
             InventoryDisplay,
@@ -36,6 +38,8 @@ require(
             Pistol,
             AK_47,
             LifeMeter,
+            Framerate,
+            Pause,
             World,
             spriteMarshal) {
 
@@ -92,33 +96,8 @@ require(
       // Call me The DUDE
       game.newDude(dude);
 
-      game.addSprite(framerate);
-
-      // toggle show framerate
-      game.keyboard.registerKeyDownHandler('f', function () {
-        if (framerate.isShowing()) {
-          framerate.hide();
-        } else {
-          framerate.show();
-        }
-      });
-
-      var parseNode = $('#pause');
-      // toggle pause
-      game.keyboard.registerKeyDownHandler('p', function () {
-        if (mainloop.isPaused()) {
-          mainloop.play();
-          parseNode.removeClass('active');
-        } else {
-          mainloop.pause();
-          parseNode.addClass('active');
-        }
-      });
-
-      // transition sky states
-      game.keyboard.registerKeyDownHandler('n', function () {
-        Sky.gotoNextState();
-      });
+      // framerate HUD
+      game.addSprite(Framerate);
 
       // set up the map
       game.map = new Map(128, 128, startX, startY, function () {
@@ -148,23 +127,11 @@ require(
       // and why not, an AK
       inventory.addItem(new AK_47(), 5, 0);
 
-      new InventoryDisplay(inventory, $('#dude-inventory'));
-
-      new InventoryDisplay(DudeHands, $('#dude-inventory'), { id:'dude-hands' });
-
       var dudeInventory = $('#dude-inventory');
 
-      // TODO put this somewhere else
-      game.keyboard.registerKeyDownHandler('i', function () {
-        dudeInventory.css('visibility',
-                          (dudeInventory.css('visibility') === 'hidden') ?
-                            'visible' :
-                            'hidden');
-      });
+      new InventoryDisplay(inventory, dudeInventory);
 
-      game.keyboard.registerKeyDownHandler('esc', function () {
-        dudeInventory.css('visibility', 'hidden');
-      });
+      new InventoryDisplay(DudeHands, dudeInventory, { id:'dude-hands' });
 
     });
 

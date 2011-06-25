@@ -1,4 +1,4 @@
-define(function () {
+define(['game'], function (game) {
 
   var node = $('#framerate');
   var visible = $('#framerate').hasClass('active');
@@ -9,6 +9,26 @@ define(function () {
   var render = function (framerate) {
     node.text(framerate);
   };
+
+  var show = function () {
+    frameCount = 0;
+    elapsedCounter = 0.0;
+    visible = true;
+    node.addClass('active');
+  };
+
+  var hide = function () {
+    visible = false;
+    node.removeClass('active');
+  };
+
+  game.events.subscribe('toggle framerate', function () {
+    if (visible) {
+      hide();
+    } else {
+      show();
+    }
+  });
 
   return {
     run: function (delta) {
@@ -23,23 +43,8 @@ define(function () {
       }
     },
 
+    // game renderSprites needs this
     render: function (delta) {
-    },
-
-    show: function () {
-      frameCount = 0;
-      elapsedCounter = 0.0;
-      visible = true;
-      node.addClass('active');
-    },
-
-    hide: function () {
-      visible = false;
-      node.removeClass('active');
-    },
-
-    isShowing: function () {
-      return visible;
     },
 
     z: Number.MAX_VALUE

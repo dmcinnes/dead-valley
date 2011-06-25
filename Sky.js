@@ -74,6 +74,11 @@ define(["game", "sprite"], function (game, Sprite) {
     },
     z: -Number.MAX_VALUE
   };
+
+  // for testing
+  game.events.subscribe('transition sky', function () {
+    Sky.gotoNextState();
+  });
   
   return Sky;
 });

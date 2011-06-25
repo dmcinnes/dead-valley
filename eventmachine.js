@@ -9,6 +9,8 @@ define(function () {
       this._eventHandlers[eventName] = [];
     }
     this._eventHandlers[eventName].push(callback);
+
+    return this; // for chaining
   };
 
   var unsubscribe = function (eventName, callback) {
@@ -18,6 +20,8 @@ define(function () {
         this._eventHandlers[eventName] = _.without(handlers, callback);
       }
     }
+
+    return this; // for chaining
   };
 
   // fire the given event -- extra args gets passed to callback
@@ -29,6 +33,8 @@ define(function () {
         _.invoke(handlers, 'apply', this, args);
       }
     }
+
+    return this; // for chaining
   };
 
   var eventMachine = function (Thing) {

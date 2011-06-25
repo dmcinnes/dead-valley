@@ -39,21 +39,34 @@ define(["game"], function (game) {
     game.renderSprites(delta);
     game.renderMap(delta);
 
-    if (paused) {
-    } else {
+    if (!paused) {
       requestAnimFrame(mainLoop, gameField);
     }
   };
 
+  var pause = function () {
+    paused = true;
+    game.events.fireEvent('pause');
+  };
+
+  var play = function () {
+    lastFrame = Date.now();
+    paused = false;
+    mainLoop();
+    game.events.fireEvent('play');
+  };
+
+  game.events.subscribe('toggle pause', function () {
+    if (paused) {
+      play();
+    } else {
+      pause();
+    }
+  });
+
   return {
-    pause: function () {
-      paused = true;
-    },
-    play: function () {
-      lastFrame = Date.now();
-      paused = false;
-      mainLoop();
-    },
+    pause: pause,
+    play: play,
     isPaused: function () {
       return paused;
     }

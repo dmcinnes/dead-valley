@@ -47,7 +47,7 @@ define(['assetmanager',
     map:           null,
     dude:          null,
     sprites:       sprites,
-    gameEvents:    eventMachine(),
+    events:        eventMachine(),
 
     runMap: function (delta) {
       if (this.map) this.map.run(delta);
@@ -129,7 +129,7 @@ define(['assetmanager',
 
       this.addSprite(dude);
 
-      this.gameEvents.fireEvent('new dude', dude);
+      this.events.fireEvent('new dude', dude);
     }
   };
 });

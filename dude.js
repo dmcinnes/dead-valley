@@ -46,7 +46,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
 
     this.originalCenterX     = this.center.x;
 
-    this.setupKeyBindings();
+    this.setupEventHandlers();
     this.setupMouseBindings();
   };
   Dude.prototype = new Sprite();
@@ -172,61 +172,11 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
     this.visible = true;
   };
 
-  // TODO find a better place for this
-  Dude.prototype.setupKeyBindings = function () {
-    var self = this;
-    game.keyboard.registerKeyDownHandler('x', function () {
-      if (self.driving) {
-        self.leaveCar();
-      } else if (self.visible) {
-        // find all the cars we're touching
-        var cars = _(self.touching).select(function (sprite) {
-          return !!sprite.isCar;
-        });
-        if (cars.length > 0) {
-          // find the closest
-          var car = _(cars).reduce(function (closest, car) {
-            return (self.distance(car) < self.distance(closest)) ? car : closest;
-          }, cars[0]);
-
-          self.enterCar(car);
-        }
-      }
-    });
-
-    game.keyboard.registerKeyDownHandler('h', function () {
-      if (self.driving) {
-        self.driving.toggleHeadlights();
-      }
-    });
-  };
-
   Dude.prototype.aimTowardMouse = function (coords) {
     this.aiming = true;
     this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
     var dir = coords.subtract(this.pos);
     this.aimDirection = Math.atan2(dir.y, dir.x); // radians
-  };
-
-  Dude.prototype.setupMouseBindings = function () {
-    var self = this;
-    $('#canvas-mask').mousemove(function (e) {
-      if (self.alive() && DudeHands.weapon()) {
-        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
-        self.aimTowardMouse(coords);
-      }
-    }).mousedown(function (e) {
-      var firearm = DudeHands.weapon();
-      if (self.alive() && firearm) {
-        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
-        self.aimTowardMouse(coords);
-        if (firearm.fire(self.pos, coords)) {
-          self.firing = true;
-        }
-      }
-    }).mouseleave(function () {
-      self.aiming = false;
-    });
   };
 
   Dude.prototype.saveMetadata = function () {
@@ -305,6 +255,61 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
 
   Dude.prototype.alive = function () {
     return this.health > 0;
+  };
+
+  Dude.prototype.enterOrExit = function () {
+    if (this.driving) {
+      this.leaveCar();
+    } else if (this.visible) {
+      // find all the cars we're touching
+      var cars = _(this.touching).select(function (sprite) {
+        return !!sprite.isCar;
+      });
+      if (cars.length > 0) {
+        // find the closest
+        var self = this;
+        var car = _(cars).reduce(function (closest, car) {
+          return (self.distance(car) < self.distance(closest)) ? car : closest;
+        }, cars[0]);
+
+        this.enterCar(car);
+      }
+    }
+  };
+
+  Dude.prototype.setupEventHandlers = function () {
+    var self = this;
+
+    game.events.subscribe('dude enter/exit', function () {
+      self.enterOrExit();
+    });
+
+    game.events.subscribe('dude toggle headlights', function () {
+      if (self.driving) {
+        self.driving.toggleHeadlights();
+      }
+    });
+  };
+
+  Dude.prototype.setupMouseBindings = function () {
+    var self = this;
+    $('#canvas-mask').mousemove(function (e) {
+      if (self.alive() && DudeHands.weapon()) {
+        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+        self.aimTowardMouse(coords);
+      }
+    }).mousedown(function (e) {
+      var firearm = DudeHands.weapon();
+      if (self.alive() && firearm) {
+        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+        self.aimTowardMouse(coords);
+        if (firearm.fire(self.pos, coords)) {
+          self.firing = true;
+        }
+      }
+    }).mouseleave(function () {
+      self.aiming = false;
+    });
   };
 
   collidable(Dude);

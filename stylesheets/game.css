@@ -74,7 +74,6 @@ body {
 
 #dude-inventory {
   position: absolute;
-  visibility: hidden;
   right: 4px;
   top: 4px;
   z-index: 100;
@@ -88,6 +87,7 @@ body {
   -webkit-border-radius: 5px;
   border-spacing: 0px;
   cursor: pointer;
+  visibility: hidden;
 }
 .inventory td {
   border: 1px solid black;
