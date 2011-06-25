@@ -1,5 +1,5 @@
 define(function () {
-  // TODO generate all alpha key codes
+  // predefine non-single character keycodes
   var KEY_CODES = {
     27: 'esc',
     32: 'space',

@@ -34,6 +34,7 @@ disable inventory when paused
 handle dropping ammo on guns
 X display gun ammo count in inventory
 HUD ammo count
+support touching list without having to actively run into things
 
 EDITOR
 remove current collidible code
