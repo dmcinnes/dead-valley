@@ -95,7 +95,7 @@ require(
       game.addSprite(framerate);
 
       // toggle show framerate
-      game.controls.registerKeyDownHandler('f', function () {
+      game.keyboard.registerKeyDownHandler('f', function () {
         if (framerate.isShowing()) {
           framerate.hide();
         } else {
@@ -105,7 +105,7 @@ require(
 
       var parseNode = $('#pause');
       // toggle pause
-      game.controls.registerKeyDownHandler('p', function () {
+      game.keyboard.registerKeyDownHandler('p', function () {
         if (mainloop.isPaused()) {
           mainloop.play();
           parseNode.removeClass('active');
@@ -116,7 +116,7 @@ require(
       });
 
       // transition sky states
-      game.controls.registerKeyDownHandler('n', function () {
+      game.keyboard.registerKeyDownHandler('n', function () {
         Sky.gotoNextState();
       });
 
@@ -155,14 +155,14 @@ require(
       var dudeInventory = $('#dude-inventory');
 
       // TODO put this somewhere else
-      game.controls.registerKeyDownHandler('i', function () {
+      game.keyboard.registerKeyDownHandler('i', function () {
         dudeInventory.css('visibility',
                           (dudeInventory.css('visibility') === 'hidden') ?
                             'visible' :
                             'hidden');
       });
 
-      game.controls.registerKeyDownHandler('esc', function () {
+      game.keyboard.registerKeyDownHandler('esc', function () {
         dudeInventory.css('visibility', 'hidden');
       });
 

@@ -5,7 +5,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
 
   var context = game.spriteContext;
 
-  var keyStatus = game.controls.keyStatus;
+  var keyStatus = game.keyboard.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
@@ -175,7 +175,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
   // TODO find a better place for this
   Dude.prototype.setupKeyBindings = function () {
     var self = this;
-    game.controls.registerKeyDownHandler('x', function () {
+    game.keyboard.registerKeyDownHandler('x', function () {
       if (self.driving) {
         self.leaveCar();
       } else if (self.visible) {
@@ -194,7 +194,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
       }
     });
 
-    game.controls.registerKeyDownHandler('h', function () {
+    game.keyboard.registerKeyDownHandler('h', function () {
       if (self.driving) {
         self.driving.toggleHeadlights();
       }

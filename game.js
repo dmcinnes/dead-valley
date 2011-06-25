@@ -9,12 +9,12 @@
 // 100 miles / hour == 440 pixels / second
 
 define(['assetmanager',
-        'controls',
+        'Keyboard',
         'collidable',
         'eventMachine',
         'spriteMarshal'],
         function (AssetManager,
-                  controls,
+                  Keyboard,
                   collidable,
                   eventMachine,
                   spriteMarshal) {
@@ -34,7 +34,7 @@ define(['assetmanager',
 
   return {
     assetManager:  new AssetManager('./assets/'),
-    controls:      controls,
+    keyboard:      Keyboard,
     gridSize:      60,
     tileRowSize:   9,  // should be set by asset manager
                        // this is the number of tiles in row

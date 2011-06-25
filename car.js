@@ -16,7 +16,7 @@ define(["game",
                   Headlight,
                   Taillight) {
 
-  var keyStatus = game.controls.keyStatus;
+  var keyStatus = game.keyboard.keyStatus;
   var context   = game.spriteContext;
 
   var massDensityOfAir = 1.2; // kg/m^3
