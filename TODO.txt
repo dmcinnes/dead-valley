@@ -30,11 +30,13 @@ generalize animation handling
 X create event listeners model for HUD/health meter
 X add WASD control scheme
 change inventory to use click to pickup and click to drop
-disable inventory when paused
+disable inventory toggle when paused
 handle dropping ammo on guns
 X display gun ammo count in inventory
 HUD ammo count
 support touching list without having to actively run into things
+don't move the arm if the mouse is over an inventory hud
+X disable mouse clicks when paused
 
 EDITOR
 remove current collidible code

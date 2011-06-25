@@ -8,16 +8,22 @@
     <script data-main="main" src="require.js"></script>
   </head>
   <body>
-    <div id="canvas-mask" class="crosshair">
-      <div id="dude-inventory"></div>
-      <canvas id="hud-canvas" width="900" height="600"></canvas>
-      <canvas id="sky-canvas" width="900" height="600"></canvas>
-      <canvas id="canvas" width="900" height="600"></canvas>
-      <div id="background"></div>
-      <div id="framerate"></div>
-      <div id="pause">PAUSE</div>
-      <div id="life"></div>
-      <div id="progress"><div id="progress-slider"></div></div>
+    <div id="container">
+      <div id="canvas-mask" class="crosshair">
+        <div id="dude-inventory"></div>
+        <canvas id="hud-canvas" width="900" height="600"></canvas>
+        <canvas id="sky-canvas" width="900" height="600"></canvas>
+        <canvas id="canvas" width="900" height="600"></canvas>
+        <div id="background"></div>
+        <div id="framerate"></div>
+        <div id="life"></div>
+        <div id="progress"><div id="progress-slider"></div></div>
+      </div>
+      <div id="pause-overlay">
+        <div id="pause-text-container">
+          <div id="pause">PAUSE</div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
