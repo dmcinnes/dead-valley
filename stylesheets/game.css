@@ -150,6 +150,9 @@ body {
 .ui-draggable {
   z-index: 200;
 }
+.click-dragging {
+  z-index: 200;
+}
 
 #dude-hands {
   margin-left: 6px;
