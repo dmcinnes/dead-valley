@@ -33,15 +33,24 @@ define(['game', 'Inventory'], function (game, Inventory) {
       currentDraggable.hide();
 
       // find the inteded target
-      var target = document.elementFromPoint(e.pageX, e.pageY);
+      var target = $(document.elementFromPoint(e.pageX, e.pageY)).parents('.inventory');
 
       // re-show helper
       currentDraggable.show();
 
       // pass the click on to the intended target
-      $(target).trigger(e);
+      if (target.length) {
+        target.trigger(e);
+      }
     }
   });
+ 
+  var clearCurrentDraggable = function () {
+    if (currentDraggable) {
+      currentDraggable.remove();
+      currentDraggable = currentDraggableOffset = null;
+    }
+  };
 
   /** The InventoryDisplay Object **/
 
@@ -79,19 +88,17 @@ define(['game', 'Inventory'], function (game, Inventory) {
     },
 
     tableEventHandlers: {
-      drop: function (event, ui) {
+      drop: function (e, ui) {
         var item;
         var tablePos = $(this.table).offset();
         var posX = Math.round((ui.offset.left - tablePos.left) / cellSize);
         var posY = Math.round((ui.offset.top - tablePos.top) / cellSize);
+
         if (this.inventory.isAvailable(draggingItem, posX, posY)) {
           // successful drag!
 
           // clear current draggable if we have one
-          if (currentDraggable) {
-            currentDraggable.remove();
-            currentDraggable = currentDraggableOffset = null;
-          }
+          clearCurrentDraggable();
 
           // add the item to the inventory
           this.inventory.addItem(draggingItem, posX, posY);
@@ -108,20 +115,36 @@ define(['game', 'Inventory'], function (game, Inventory) {
           if (item) {
             // TODO check if the item accepts what we're dropping
             // swap em
+
+            // save off the draggingItem, clickDragStart overwrites it
+            var newItem = draggingItem;
+
+            // figure out the offset -- center it
+            var offset = {
+              left: (cellSize/2) * item.width,
+              top:  (cellSize/2) * item.height
+            };
             // start dragging the dropped on thing
-            this.clickDragStart(item, currentDraggableOffset || ui.offset);
+            this.clickDragStart(item, offset);
+
             // add the dropped item to the inventory
             this.inventory.addItem(newItem, posX, posY);
 
+            // don't clear current draggable here, we're overwriting it
+
           } else if (draggingItemOriginalInv) {
             // put it back where it was
-            draggingItemOriginalInv.addItem(draggingItem,
-                                            draggingItemOriginalPos.x,
-                                            draggingItemOriginalPos.y);
+            if (draggingItemOriginalInv.addItem(draggingItem,
+                                                draggingItemOriginalPos.x,
+                                                draggingItemOriginalPos.y)) {
+              // it was able to put it back so clear the draggable
+              clearCurrentDraggable();
+            }
           }
+          // otherwise don't do anything
         }
         // stop the drop event from bubbling to the body
-        return false;
+        e.stopPropagation();
       },
 
       click: function (e) {

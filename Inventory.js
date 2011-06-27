@@ -61,7 +61,9 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
           if (found && slot && slot !== found) {
             return false;
           }
-          found = slot;
+          if (slot) {
+            found = slot;
+          }
         });
       }
       return found;
@@ -77,7 +79,9 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
         item.y = y;
         this.items.push(item);
         this.fireEvent('itemAdded', item);
+        return true;
       }
+      return false;
     },
 
     removeItemAt: function (x, y) {
