@@ -15,6 +15,7 @@ require(
    "sprites/Barrel",
    "inventory/Pistol",
    "inventory/AK_47",
+   "inventory/Flashlight",
    "hud/LifeMeter",
    "hud/Framerate",
    "hud/Pause",
@@ -37,6 +38,7 @@ require(
             Barrel,
             Pistol,
             AK_47,
+            Flashlight,
             LifeMeter,
             Framerate,
             Pause,
@@ -124,8 +126,9 @@ require(
 
       // give the dude a pistol!
       inventory.addItem(new Pistol(), 1, 1);
-      // and why not, an AK
+      // and why not, an AK and a falshlight
       inventory.addItem(new AK_47(), 5, 0);
+      inventory.addItem(new Flashlight(), 3, 0);
 
       var dudeInventory = $('#dude-inventory');
 

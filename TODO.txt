@@ -39,6 +39,7 @@ X don't move the arm if the mouse is over an inventory hud
 X disable mouse clicks when paused
 flashlight
 lantern
+shotgun
 fix Zombie hitbox
 save inventory state
 
@@ -67,7 +68,7 @@ X clean up zombie outlines
 clean up zombie's standing legs (make back leg angle outward)
 ammo sprites
 shotgun sprite
-flashlight sprite
+X flashlight sprite
 lantern sprite
 add L&R hand graphics to DudeHands HUD
 add custom cursor hand graphics for inventory
