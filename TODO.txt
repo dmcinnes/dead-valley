@@ -40,7 +40,7 @@ X disable mouse clicks when paused
 flashlight
 lantern
 fix Zombie hitbox
-add custom cursor hand graphics for inventory
+save inventory state
 
 EDITOR
 remove current collidible code
@@ -69,7 +69,8 @@ ammo sprites
 shotgun sprite
 flashlight sprite
 lantern sprite
-add L&R hand graphics to to DudeHands HUD
+add L&R hand graphics to DudeHands HUD
+add custom cursor hand graphics for inventory
 
 CARS
 Police Car
