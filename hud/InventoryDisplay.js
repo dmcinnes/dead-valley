@@ -132,14 +132,14 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
             // don't clear current draggable here, we're overwriting it
 
-          } else if (draggingItemOriginalInv) {
-            // put it back where it was
-            if (draggingItemOriginalInv.addItem(draggingItem,
-                                                draggingItemOriginalPos.x,
-                                                draggingItemOriginalPos.y)) {
-              // it was able to put it back so clear the draggable
-              clearCurrentDraggable();
-            }
+          } else {
+            // figure out the offset -- center it
+            var offset = currentDraggableOffset || {
+              left: (cellSize/2) * draggingItem.width,
+              top:  (cellSize/2) * draggingItem.height
+            };
+            // restart dragging the dropped thing
+            this.clickDragStart(draggingItem, offset);
           }
           // otherwise don't do anything
         }
@@ -283,7 +283,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
     // this is run when we start the drag on a click
     clickDragStart: function (item, offset) {
       // create a 'helper' object to follow the mouse around
-      currentDraggable = item.displayNode();
+      currentDraggable = item.displayNode().clone();
       currentDraggable.addClass('inventory-item click-dragging');
       // keep track of the offset so we render the dragging correctly
       currentDraggableOffset = offset;

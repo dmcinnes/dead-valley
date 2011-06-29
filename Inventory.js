@@ -59,6 +59,7 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
       if (checkRange(x, y, item.width, item.height, this)) {
         slotIterator(x, y, item.width, item.height, this.slots, function (slot) {
           if (found && slot && slot !== found) {
+            found = null;
             return false;
           }
           if (slot) {
