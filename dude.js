@@ -293,7 +293,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
 
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
-    $('#canvas-mask').mousemove(function (e) {
+    $('#click-overlay').mousemove(function (e) {
       if (self.alive() && DudeHands.weapon()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);

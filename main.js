@@ -132,7 +132,6 @@ require(
       new InventoryDisplay(inventory, dudeInventory);
 
       new InventoryDisplay(DudeHands, dudeInventory, { id:'dude-hands' });
-
     });
 
 });

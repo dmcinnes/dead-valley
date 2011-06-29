@@ -26,7 +26,7 @@ make object capitalization consistent
 add zombie blood tire tracks
 make zombies follow building edges
 add zombies randomly to map - based on building population of section?
-generalize animation handling
+generalize sprite animation handling
 X create event listeners model for HUD/health meter
 X add WASD control scheme
 X change inventory to use click to pickup and click to drop
@@ -35,11 +35,12 @@ handle dropping ammo on guns
 X display gun ammo count in inventory
 HUD ammo count
 support touching list without having to actively run into things
-don't move the arm if the mouse is over an inventory hud
+X don't move the arm if the mouse is over an inventory hud
 X disable mouse clicks when paused
 flashlight
 lantern
 fix Zombie hitbox
+add custom cursor hand graphics for inventory
 
 EDITOR
 remove current collidible code
