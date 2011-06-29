@@ -45,7 +45,17 @@ body {
 #click-overlay { position:absolute; z-index:100; width:900px; height:600px; }
 #sky-canvas { position:absolute; z-index:30; }
 #canvas { position:absolute; z-index:20; }
-#canvas-mask { position:relative; z-index:30; overflow:hidden; }
+#canvas-mask {
+  position:relative;
+  z-index:30;
+  overflow:hidden;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
 #background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }
 .tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); z-index:5; background-position:60 0px; }
 #framerate { position:absolute; color:#000; z-index:150; right:5px; top:5px; display:none; background-color:#FFF; padding:4px; }
