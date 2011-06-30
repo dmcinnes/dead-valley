@@ -32,14 +32,15 @@ X add WASD control scheme
 X change inventory to use click to pickup and click to drop
 X disable inventory toggle when paused
 handle dropping ammo on guns
+ejecting ammo from guns
 X display gun ammo count in inventory
 HUD ammo count
 support touching list without having to actively run into things
 X don't move the arm if the mouse is over an inventory hud
 X disable mouse clicks when paused
-X flashlight
 fix Zombie hitbox
 save inventory state
+update inventory to be usable at night
 
 *EDITOR*
 remove current collidible code
@@ -85,3 +86,4 @@ bat
 golf club
 rubber hose
 spare tire
+X flashlight
