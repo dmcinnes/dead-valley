@@ -32,5 +32,24 @@ define(['Inventory'], function (Inventory) {
     }
   };
 
+  inventory.hasAimableItem = function () {
+    for (var i = 0; i < 2; i++) {
+      var item = inventory.itemAt(i, 0);
+      if (item && item.aimable) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  inventory.renderItems = function (dude) {
+    for (var i = 0; i < 2; i++) {
+      var item = inventory.itemAt(i, 0);
+      if (item && item.render) {
+        item.render(dude);
+      }
+    }
+  };
+
   return inventory;
 });

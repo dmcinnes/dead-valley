@@ -128,7 +128,9 @@ require(
       inventory.addItem(new Pistol(), 1, 1);
       // and why not, an AK and a falshlight
       inventory.addItem(new AK_47(), 5, 0);
-      inventory.addItem(new Flashlight(), 3, 0);
+
+      DudeHands.addItem(new Flashlight(), 0, 0);
+      DudeHands.addItem(new Pistol(), 1, 0);
 
       var dudeInventory = $('#dude-inventory');
 

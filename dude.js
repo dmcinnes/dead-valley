@@ -226,6 +226,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
       offset += this.takingDamage ? 1 : 0;
       this.drawTile(5 + offset, this.direction);
     }
+    DudeHands.renderItems(this);
   };
 
   Dude.prototype.drawAimedArm = function (frame) {
@@ -294,7 +295,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
     $('#click-overlay').mousemove(function (e) {
-      if (self.alive() && DudeHands.weapon()) {
+      if (self.alive() && DudeHands.hasAimableItem()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
       }
