@@ -39,7 +39,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
     this.aiming              = false;
     this.firing              = false;
 
-    this.aimDirection        = 0;
+    this.aimDirection        = null;
 
     // list of things the dude is currently touching
     this.touching            = [];
@@ -230,7 +230,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
   };
 
   Dude.prototype.drawAimedArm = function (frame) {
-    if (!this.image) {
+    if (!this.image || !this.aimDirection) {
       return;
     }
     context.save();
@@ -309,7 +309,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
         }
       }
     }).mouseleave(function () {
-      self.aiming = false;
+      self.aiming       = false;
+      self.aimDirection = null;
     });
   };
 

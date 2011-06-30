@@ -7,6 +7,7 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
   var length    = 100;
   var halfWidth = 30;
   var lampHW    = 3;
+  var offset    = -10;
 
   var Flashlight = function () {
   };
@@ -16,8 +17,9 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
     context.shadowBlur = 15.0;
     context.globalCompositeOperation = 'destination-out';
     dude.configureTransform(context);
-    if (dude.aiming) {
+    if (dude.aimDirection) {
       context.rotate(dude.aimDirection + Math.PI/2);
+      context.translate(0, offset);
       context.beginPath();
       context.moveTo(-lampHW, 0);
       context.lineTo(-halfWidth, -length);
