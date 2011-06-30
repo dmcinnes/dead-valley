@@ -94,11 +94,11 @@ define(['game', 'Inventory'], function (game, Inventory) {
         var posX = Math.round((ui.offset.left - tablePos.left) / cellSize);
         var posY = Math.round((ui.offset.top - tablePos.top) / cellSize);
 
+        // clear current draggable if we have one
+        clearCurrentDraggable();
+
         if (this.inventory.isAvailable(draggingItem, posX, posY)) {
           // successful drag!
-
-          // clear current draggable if we have one
-          clearCurrentDraggable();
 
           // add the item to the inventory
           this.inventory.addItem(draggingItem, posX, posY);
@@ -129,9 +129,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
             // add the dropped item to the inventory
             this.inventory.addItem(newItem, posX, posY);
-
-            // don't clear current draggable here, we're overwriting it
-
           } else {
             // figure out the offset -- center it
             var offset = currentDraggableOffset || {
@@ -141,7 +138,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
             // restart dragging the dropped thing
             this.clickDragStart(draggingItem, offset);
           }
-          // otherwise don't do anything
         }
         // stop the drop event from bubbling to the body
         e.stopPropagation();
