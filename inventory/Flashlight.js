@@ -14,15 +14,20 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
   Flashlight.prototype.render = function (dude) {
     context.save();
     context.shadowBlur = 15.0;
-    dude.configureTransform(context);
-    context.rotate(dude.aimDirection + Math.PI/2);
     context.globalCompositeOperation = 'destination-out';
-    context.beginPath();
-    context.moveTo(-lampHW, 0);
-    context.lineTo(-halfWidth, -length);
-    context.arc(0, -length, halfWidth, Math.PI, Math.PI*2);
-    context.lineTo(lampHW, 0);
-    context.arc(0, 0, lampHW, 0, Math.PI);
+    dude.configureTransform(context);
+    if (dude.aiming) {
+      context.rotate(dude.aimDirection + Math.PI/2);
+      context.beginPath();
+      context.moveTo(-lampHW, 0);
+      context.lineTo(-halfWidth, -length);
+      context.arc(0, -length, halfWidth, Math.PI, Math.PI*2);
+      context.lineTo(lampHW, 0);
+      context.arc(0, 0, lampHW, 0, Math.PI);
+    } else {
+      context.beginPath();
+      context.arc(-2, 0, halfWidth/4, 0, Math.PI*2);
+    }
     context.fill();
     context.restore();
   };
