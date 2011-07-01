@@ -1,4 +1,4 @@
-// Pistol
+// AK-47
 
 define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem) {
   var AK_47 = function () {
@@ -16,5 +16,5 @@ define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem)
     image:  'AK-47'
   });
 
-  return AK_47
+  return AK_47;
 });
