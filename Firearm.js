@@ -5,9 +5,10 @@ define(['game'], function (game) {
   var Firearm = function () {
   };
 
-  Firearm.prototype.damage  = 1;
-  Firearm.prototype.range   = 1000;
-  Firearm.prototype.aimable = true;
+  Firearm.prototype.damage    = 1;
+  Firearm.prototype.range     = 1000;
+  Firearm.prototype.aimable   = true;
+  Firearm.prototype.isHandgun = false;
 
   Firearm.prototype.fire = function (start, end) {
     if (this.hasAmmo()) {

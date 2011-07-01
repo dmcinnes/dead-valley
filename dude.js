@@ -78,9 +78,9 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
       // reusing the walkingFrameCounter 
       if (this.walkingFrameCounter < 0.6) {
         this.walkingFrameCounter += delta;
-        this.drawTile(11, this.direction);
+        this.drawTile(14, this.direction);
       } else {
-        this.drawTile(12, this.direction);
+        this.drawTile(15, this.direction);
       }
     }
   };
@@ -212,17 +212,20 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
   };
 
   Dude.prototype.drawArms = function () {
+    var weapon = DudeHands.weapon();
     if (this.firing) {
-      this.drawAimedArm(10);
+      this.drawAimedArm(weapon.isHandgun ? 10 : 13);
     } else if (this.aiming) {
-      this.drawAimedArm(9);
+      this.drawAimedArm(weapon.isHandgun ? 9 : 12);
+    } else if (weapon && !weapon.isHandgun) {
+      this.drawTile(11); // draw arms with rifle
     } else {
       // arm tiles are like this:
       // 5. normal
       // 6. with gun
       // 7. out
       // 8. out with gun
-      var offset = DudeHands.weapon() ? 2 : 0;
+      var offset = weapon ? 2 : 0;
       offset += this.takingDamage ? 1 : 0;
       this.drawTile(5 + offset, this.direction);
     }
