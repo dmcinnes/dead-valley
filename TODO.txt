@@ -1,21 +1,28 @@
 X add dude health
-make zombie collision response more natural
 X add dead zombie state
 X add dead dude state
 X save barrel up/down state
 X save dude state and only create new if not saved
 X fix brakes
+X refactor key handler so keys don't have to be predefined
+X create pickups
+X create inventory
+X create HUD for inventory
+X create event listeners model for HUD/health meter
+X add WASD control scheme
+X change inventory to use click to pickup and click to drop
+X disable inventory toggle when paused
+X display gun ammo count in inventory
+X don't move the arm if the mouse is over an inventory hud
+X disable mouse clicks when paused
+make zombie collision response more natural
 add drag to car
 add car damage/destruction
 add building entrance
-X refactor key handler so keys don't have to be predefined
 create another gas station section on straightaway
 add map handling functions for custom instances of sections through the map worker
 fix gas pump position
 tune Honda's performance
-X create pickups
-X create inventory
-X create HUD for inventory
 create HUD for building inventory
 create HUD for vehicle inventory
 add trees randomly to map
@@ -27,18 +34,12 @@ add zombie blood tire tracks
 make zombies follow building edges
 add zombies randomly to map - based on building population of section?
 generalize sprite animation handling
-X create event listeners model for HUD/health meter
-X add WASD control scheme
-X change inventory to use click to pickup and click to drop
-X disable inventory toggle when paused
 handle dropping ammo on guns
 ejecting ammo from guns
-X display gun ammo count in inventory
 HUD ammo count
 support touching list without having to actively run into things
-X don't move the arm if the mouse is over an inventory hud
-X disable mouse clicks when paused
 fix Zombie hitbox
+support headshots
 save inventory state
 update inventory to be usable at night
 
@@ -48,6 +49,11 @@ add building boundries creation
 add building entrance creation
 
 *ART*
+X add rifle/shotgun to dude's sprite
+X create sprites for pickups
+X add dude death animation
+X add zombie death animation
+X clean up zombie outlines
 add spiderwebbed windows to car's sprite
 add destroyed car state to car's sprite
 update color on gas station
@@ -57,16 +63,12 @@ house
 police station
 truck sprite
 crate sprite
-add rifle/shotgun to dude's sprite
-X create sprites for pickups
-X add dude death animation
-X add zombie death animation
 trees
 shrubs
-X clean up zombie outlines
 clean up zombie's standing legs (make back leg angle outward)
 add L&R hand graphics to DudeHands HUD
 add custom cursor hand graphics for inventory
+clean up extra pixel when rendering arms with rifle
 
 *CARS*
 Police Car
@@ -79,11 +81,14 @@ Sports Car
 Bus
 
 *PICKUPS*
+X flashlight
+X shotgun
 lantern
-shotgun
 rifle
 bat
 golf club
 rubber hose
 spare tire
-X flashlight
+pistol ammo
+rifle ammo
+shotgun shells
