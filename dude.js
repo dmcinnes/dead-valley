@@ -218,7 +218,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
     } else if (this.aiming) {
       this.drawAimedArm(weapon.isHandgun ? 9 : 12);
     } else if (weapon && !weapon.isHandgun) {
-      this.drawTile(11); // draw arms with rifle
+      this.drawTile(11, this.direction); // draw arms with rifle
     } else {
       // arm tiles are like this:
       // 5. normal
