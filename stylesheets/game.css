@@ -131,6 +131,14 @@ body {
   visibility: hidden;
 }
 
+#other-inventory {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  z-index: 110;
+  visibility: hidden;
+}
+
 .inventory {
   float: left;
   border: 3px solid black;
