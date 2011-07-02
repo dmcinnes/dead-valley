@@ -203,10 +203,6 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "Inventory
         // die
         this.collidable = false;
 
-        // move the dude to the bottom of the pile
-        this.z = 1;
-        game.resortSprites();
-
         // reset the frame counter
         this.walkingFrameCounter = 0;
       }

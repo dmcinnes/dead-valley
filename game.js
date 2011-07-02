@@ -28,7 +28,11 @@ define(['assetmanager',
   var sortSprites = function () {
     // sort by z value
     sprites.sort(function (a, b) {
-      return a.z - b.z;
+      var diff = a.z - b.z;
+      if (diff === 0) {
+        diff = a.pos.y - b.pos.y;
+      }
+      return diff;
     });
   };
 
@@ -89,6 +93,7 @@ define(['assetmanager',
 
     renderSprites: function (delta) {
       if (this.map) {
+        sortSprites();
         spriteCount = this.sprites.length;
         for (i = 0; i < spriteCount; i++) {
           this.sprites[i].render(delta);
@@ -99,26 +104,17 @@ define(['assetmanager',
     addSpritesFromStrings: function (sprites, offset) {
       var self = this;
 
-      // sort the sprites after we've added them all
-      var afterSpritesAdded = _.after(sprites.length, function () {
-        sortSprites();
-      });
-
       _(sprites).each(function (spriteString) {
         spriteMarshal.marshal(spriteString, function (sprite) {
           sprite.pos.translate(offset);
           self.sprites.push(sprite);
-          afterSpritesAdded();
         });
       });
     },
 
     addSprite: function (sprite) {
       this.sprites.push(sprite);
-      sortSprites();
     },
-
-    resortSprites: sortSprites,
 
     newDude: function (dude) {
       if (this.dude) {

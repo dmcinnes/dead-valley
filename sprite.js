@@ -76,7 +76,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       new Vector(0, 1)
     ];
 
-    this.z = config.z;
+    // sprites default to a z-index of 100
+    this.z = config.z || 100;
   };
 
   Sprite.prototype.preMove  = function () {
