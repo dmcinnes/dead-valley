@@ -1,5 +1,5 @@
-define(["game", "collidable", "vector", "fx/BulletHit"],
-       function (game, collidable, Vector, BulletHit) {
+define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
+       function (game, collidable, Vector, BulletHit, Inventory) {
 
   var bulletHit = new BulletHit();
 
@@ -16,6 +16,8 @@ define(["game", "collidable", "vector", "fx/BulletHit"],
 
     this.vel = new Vector(0, 0);
     this.vel.rot = 0;
+
+    this.inventory = new Inventory(12, 8);
   };
 
   // don't save when the level is saved -- we're going to save this our own way
