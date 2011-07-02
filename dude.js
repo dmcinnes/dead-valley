@@ -215,22 +215,24 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "Inventory
 
   Dude.prototype.drawArms = function () {
     var weapon = DudeHands.weapon();
-    if (this.firing) {
-      this.drawAimedArm(weapon.isHandgun ? 10 : 13);
-    } else if (this.aiming) {
-      this.drawAimedArm(weapon.isHandgun ? 9 : 12);
-    } else if (weapon && !weapon.isHandgun) {
-      this.drawTile(11, this.direction); // draw arms with rifle
+    if (weapon) {
+      if (this.firing) {
+        this.drawAimedArm(weapon.isHandgun ? 10 : 13);
+      } else if (this.aiming) {
+        this.drawAimedArm(weapon.isHandgun ? 9 : 12);
+      } else if (weapon && !weapon.isHandgun) {
+        this.drawTile(11, this.direction); // draw arms with rifle
+      } else {
+        // 7. with gun
+        // 8. out with gun
+        this.drawTile(7 + (this.takingDamage ? 1 : 0), this.direction);
+      }
     } else {
-      // arm tiles are like this:
       // 5. normal
-      // 6. with gun
-      // 7. out
-      // 8. out with gun
-      var offset = weapon ? 2 : 0;
-      offset += this.takingDamage ? 1 : 0;
-      this.drawTile(5 + offset, this.direction);
+      // 6. out
+      this.drawTile(5 + (this.takingDamage ? 1 : 0), this.direction);
     }
+    // activate what's in the dude's hands
     DudeHands.renderItems(this);
   };
 
