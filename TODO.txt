@@ -15,6 +15,7 @@ X disable inventory toggle when paused
 X display gun ammo count in inventory
 X don't move the arm if the mouse is over an inventory hud
 X disable mouse clicks when paused
+X create HUD for vehicle inventory
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -24,7 +25,6 @@ add map handling functions for custom instances of sections through the map work
 fix gas pump position
 tune Honda's performance
 create HUD for building inventory
-create HUD for vehicle inventory
 add trees randomly to map
 render trees -- make transparent when colliding with sprite
 make zombies/dude render in order according to vertical position
@@ -32,7 +32,7 @@ convert everything to radians
 make object capitalization consistent
 add zombie blood tire tracks
 make zombies follow building edges
-add zombies randomly to map - based on building population of section?
+add zombies randomly to map based on building population of section
 generalize sprite animation handling
 handle dropping ammo on guns
 ejecting ammo from guns
@@ -42,6 +42,10 @@ fix Zombie hitbox
 support headshots
 save inventory state
 update inventory to be usable at night
+car inventory should disappear when walk away
+create HUD for vehicle status
+broken headlights
+headlight repair
 
 *EDITOR*
 remove current collidible code
@@ -92,3 +96,5 @@ spare tire
 pistol ammo
 rifle ammo
 shotgun shells
+food
+medkit
