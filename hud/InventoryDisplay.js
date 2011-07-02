@@ -151,19 +151,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
       }
     },
 
-    gameEventHandlers: {
-      'toggle inventory': function () {
-        this.table.css('visibility',
-                       (this.table.css('visibility') === 'hidden') ?
-                         'visible' :
-                         'hidden');
-      },
-
-      'hide inventory': function () {
-        this.table.css('visibility', 'hidden');
-      }
-    },
-
     setupEventHandlers: function () {
       var self = this;
 
@@ -178,10 +165,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var body = $('body');
       _.each(this.bodyEventHandlers, function (handler, key) {
         cells.bind(key, $.proxy(handler, self));
-      });
-
-      _.each(this.gameEventHandlers, function (handler, key) {
-        game.events.subscribe(key, $.proxy(handler, self));
       });
     },
 
@@ -288,6 +271,22 @@ define(['game', 'Inventory'], function (game, Inventory) {
       this.dragStart(item);
 
       $('body').append(currentDraggable);
+    },
+
+    toggle: function () {
+      if (this.table.css('visibility') === 'hidden') {
+        this.show();
+      } else {
+        this.hide();
+      }
+    },
+
+    show: function () {
+      this.table.css('visibility', 'visible');
+    },
+
+    hide: function () {
+      this.table.css('visibility', 'hidden');
     }
   };
 

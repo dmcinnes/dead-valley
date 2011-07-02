@@ -1,7 +1,7 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodSplatter"],
-       function (game, Sprite, collidable, spriteMarshal, DudeHands, BloodSplatter) {
+define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "Inventory", "fx/BloodSplatter"],
+       function (game, Sprite, collidable, spriteMarshal, DudeHands, Inventory, BloodSplatter) {
 
   var context = game.spriteContext;
 
@@ -45,6 +45,8 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "fx/BloodS
     this.touching            = [];
 
     this.originalCenterX     = this.center.x;
+
+    this.inventory           = new Inventory(9, 3);
 
     this.setupEventHandlers();
     this.setupMouseBindings();

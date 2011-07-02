@@ -7,9 +7,7 @@ require(
    "sprite",
    "dude",
    "Sky",
-   "Inventory",
-   "DudeHands",
-   "hud/InventoryDisplay",
+   "hud/Hud",
    "sprites/Honda",
    "sprites/Zombie",
    "sprites/Barrel",
@@ -17,9 +15,6 @@ require(
    "inventory/AK_47",
    "inventory/Shotgun",
    "inventory/Flashlight",
-   "hud/LifeMeter",
-   "hud/Framerate",
-   "hud/Pause",
    "World",
    "spriteMarshal"],
 
@@ -31,9 +26,7 @@ require(
             Sprite,
             Dude,
             Sky,
-            Inventory,
-            DudeHands,
-            InventoryDisplay,
+            Hud,
             Honda,
             Zombie,
             Barrel,
@@ -41,9 +34,6 @@ require(
             AK_47,
             Shotgun,
             Flashlight,
-            LifeMeter,
-            Framerate,
-            Pause,
             World,
             spriteMarshal) {
 
@@ -100,9 +90,6 @@ require(
       // Call me The DUDE
       game.newDude(dude);
 
-      // framerate HUD
-      game.addSprite(Framerate);
-
       // set up the map
       game.map = new Map(128, 128, startX, startY, function () {
         // only run the main loop after the map is loaded
@@ -123,22 +110,13 @@ require(
         }
       });
 
-      // TODO put inventory creation somewhere else
-      var inventory = new Inventory(9, 3);
-
       // give the dude a pistol!
-      inventory.addItem(new Pistol(), 1, 1);
+      dude.inventory.addItem(new Pistol(), 1, 1);
       // and why not, an AK and a falshlight
-      inventory.addItem(new AK_47(), 5, 0);
-      inventory.addItem(new Flashlight(), 0, 0);
-
-      DudeHands.addItem(new Shotgun(), 0, 0);
-
-      var dudeInventory = $('#dude-inventory');
-
-      new InventoryDisplay(inventory, dudeInventory);
-
-      new InventoryDisplay(DudeHands, dudeInventory, { id:'dude-hands' });
+      dude.inventory.addItem(new AK_47(), 5, 0);
+      dude.inventory.addItem(new Flashlight(), 0, 0);
+      // shotty
+      dude.inventory.addItem(new Shotgun(), 7, 0);
     });
 
 });
