@@ -46,6 +46,7 @@ car inventory should disappear when walk away
 create HUD for vehicle status
 broken headlights
 headlight repair
+fix barrel 'sliding'
 
 *EDITOR*
 remove current collidible code
