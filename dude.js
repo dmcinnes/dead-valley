@@ -114,9 +114,6 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "Inventory
 
     if (!this.alive()) return; // he's dead Jim
 
-    // clear touching list
-    this.touching.splice(0);
-
     this.walking = (keyStatus.left  ||
                     keyStatus.right ||
                     keyStatus.up    ||
@@ -145,6 +142,14 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "Inventory
   };
 
   Dude.prototype.postMove = function (delta) {
+    this.updateTouchingList();
+  };
+
+  Dude.prototype.updateTouchingList = function () {
+    // remove sprites that we are moving away from
+    this.touching = _.reject(this.touching, function (sprite) {
+      return this.pos.subtract(sprite.pos).dotProduct(this.vel) > 0;
+    }, this);
   };
 
   Dude.prototype.collision = function (other, point, vector) {
