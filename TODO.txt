@@ -16,6 +16,7 @@ X display gun ammo count in inventory
 X don't move the arm if the mouse is over an inventory hud
 X disable mouse clicks when paused
 X create HUD for vehicle inventory
+X support touching list without having to actively run into things
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -37,7 +38,6 @@ generalize sprite animation handling
 handle dropping ammo on guns
 ejecting ammo from guns
 HUD ammo count
-support touching list without having to actively run into things
 fix Zombie hitbox
 support headshots
 save inventory state
