@@ -82,7 +82,6 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
           node.west  = this.getNode(i-1, j);
           node.east  = this.getNode(i+1, j);
         }
-        node.transformedPoints();
       }
     };
 
@@ -282,7 +281,6 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
           var i = y * width + x;
           var node = nodes[i];
           node.setFromString(strings[i]);
-          node.setPosition(start.x + x * gridSize, start.y + y * gridSize)
         }
       }
     };
