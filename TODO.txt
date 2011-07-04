@@ -47,6 +47,7 @@ create HUD for vehicle status
 broken headlights
 headlight repair
 fix barrel 'sliding'
+fix weird map loading bug with gas station and start intersection
 
 *EDITOR*
 remove current collidible code
