@@ -104,9 +104,9 @@ define(["vector"], function (Vector) {
     }
 
     // TODO gotta be a better way to structure all this
-    resolveCollision(this, other, point, normal);
-    this.collision(other, point, normal);
-    other.collision(this, point, normal.scale(-1));
+    var vab = resolveCollision(this, other, point, normal);
+    this.collision(other, point, normal, vab);
+    other.collision(this, point, normal.scale(-1), vab);
   };
 
   var lineProjection = function (normal) {
@@ -166,10 +166,10 @@ define(["vector"], function (Vector) {
 
     var dot = vab.dotProduct(n);
     if (dot > 0) {
-      return false; // moving away from each other
+      return vab; // moving away from each other, no need to resolve
     }
 
-    var j =  -(1 + e) * dot;
+    var j = -(1 + e) * dot;
 
     j /= n.multiply(1/we.mass + 1/they.mass).dotProduct(n) +
          apd / we.inertia + bpd / they.inertia;
@@ -182,7 +182,7 @@ define(["vector"], function (Vector) {
     we.vel.rot += 34 * (ap.dotProduct(n.multiply(j)) / we.inertia) / Math.PI;
     they.vel.rot += 34 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
 
-    return true;
+    return vab;
   };
 
   var checkRayCollision = function (start, end) {

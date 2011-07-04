@@ -167,7 +167,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
     }
   };
 
-  Zombie.prototype.collision = function (other, point, vector) {
+  Zombie.prototype.collision = function (other, point, vector, vab) {
     // zombies don't rotate
     this.pos.rot = 0;
     this.vel.rot = 0;
@@ -181,6 +181,10 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
           this.attackingFrameCounter > ATTACKING_ANIMATION_FRAME_RATE - DAMAGE_WINDOW) {
         other.takeDamage(1);
       }
+    }
+    var magnitude = vab.magnitude();
+    if (magnitude > 132) { // 30 MPH
+      this.takeDamage(Math.floor(magnitude / 88)); // every 20 MPH
     }
   };
 
@@ -250,14 +254,22 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
 
   Zombie.prototype.bulletHit = function (hit, damage) {
     bulletHit.fireSparks(hit);
-    BloodSplatter.splat(this.pos.clone(), 'green');
-    this.health -= damage;
-    if (this.health <= 0) {
-      // DEEEEEED
-      this.vel.scale(0);
-      this.walkingFrameCounter = 0;
-      this.collidable = false;
-      this.shouldSave = false;
+    this.takeDamage(damage);
+  };
+
+  Zombie.prototype.takeDamage = function (damage) {
+    if (this.health > 0) {
+      // splat zombie blood at his feet
+      var splatPos = this.pos.clone().translate({x:0, y:4});
+      BloodSplatter.splat(splatPos, 'green', damage);
+      this.health -= damage;
+      if (this.health <= 0) {
+        // DEEEEEED
+        this.vel.scale(0);
+        this.walkingFrameCounter = 0;
+        this.collidable = false;
+        this.shouldSave = false;
+      }
     }
   };
 

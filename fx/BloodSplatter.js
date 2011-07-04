@@ -5,14 +5,16 @@ define(['game', 'Sprite'], function (game, Sprite) {
 
   var context = game.spriteContext;
 
-  var Splatter = function (pos, color) {
+  var Splatter = function (pos, color, str) {
     this.pos     = pos;
     this.pos.rot = 0;
     this.color   = color;
     this.life    = 0;
 
+    str = str || 0;
+
     this.dots = [];
-    var count = Math.round(Math.random() * 5);
+    var count = Math.round(Math.random() * 5) + str;
     for (var i = 0; i < count; i++) {
       var vector = new Vector(360 * Math.random());
       vector.scale(Math.random() * 5);

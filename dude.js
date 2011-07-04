@@ -198,7 +198,7 @@ define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "Inventory
     if (this.alive()) {
       this.takingDamage = true;
 
-      BloodSplatter.splat(this.pos.clone(), '#900');
+      BloodSplatter.splat(this.pos.clone(), '#900', damage);
 
       this.health -= damage;
 
