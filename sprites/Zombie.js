@@ -269,6 +269,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
         this.walkingFrameCounter = 0;
         this.collidable = false;
         this.shouldSave = false;
+        this.z--; // always underfoot
       }
     }
   };
