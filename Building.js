@@ -44,9 +44,11 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
   };
 
   Building.prototype.enter = function (dude) {
+    game.events.fireEvent('enter building', this);
   };
 
   Building.prototype.leave = function (dude) {
+    game.events.fireEvent('leave building', this);
   };
 
   collidable(Building);

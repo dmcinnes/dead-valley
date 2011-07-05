@@ -54,7 +54,7 @@ define(["game",
     ];
     this.headlightsOn = false;
 
-    this.inventory = new Inventory(config.cargoSpace.width, config.cargoSpace.height);
+    this.inventory = new Inventory(config.cargoSpace.width, config.cargoSpace.height, true);
   };
   Car.prototype = new RigidBody();
 
@@ -200,12 +200,14 @@ define(["game",
   Car.prototype.enter = function (dude) {
     this.driver = dude;
     this.shouldSave = false; // disable car saving -- save with Dude object
+    game.events.fireEvent("enter car", this);
   };
 
   Car.prototype.leave = function (dude) {
     this.driver = null;
     this.stopped = false;
     this.shouldSave = true; // reenable car saving
+    game.events.fireEvent("leave car", this);
   };
 
   Car.prototype.takeDamage = function (damage) {

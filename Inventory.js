@@ -36,11 +36,12 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
   };
 
 
-  var Inventory = function (width, height) {
-    this.slots = [];
-    this.items = [];
-    this.width = width;
+  var Inventory = function (width, height, touch) {
+    this.slots  = [];
+    this.items  = [];
+    this.width  = width;
     this.height = height;
+    this.touch  = touch || false; // don't allow touch access by default
     setupSlots(this);
   };
 

@@ -288,6 +288,10 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
     hide: function () {
       this.table.css('visibility', 'hidden');
+    },
+
+    visible: function () {
+      return this.table.css('visibility') === 'visible';
     }
   };
 

@@ -19,6 +19,8 @@ X create HUD for vehicle inventory
 X support touching list without having to actively run into things
 X make zombies/dude render in order according to vertical position
 X add building entrance
+X building inventory should disappear when leave
+X building inventory should appear when entering
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -43,8 +45,6 @@ support headshots
 save inventory state
 update inventory to be usable at night
 car inventory should disappear when walk away
-building inventory should disappear when leave
-building inventory should appear when entering
 create HUD for vehicle status
 broken headlights
 headlight repair
