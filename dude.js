@@ -1,6 +1,6 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spriteMarshal", "DudeHands", "Inventory", "fx/BloodSplatter"],
+define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory", "fx/BloodSplatter"],
        function (game, Sprite, collidable, spriteMarshal, DudeHands, Inventory, BloodSplatter) {
 
   var context = game.spriteContext;

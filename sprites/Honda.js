@@ -1,4 +1,4 @@
-define(['game', 'car', 'Inventory'], function (game, Car, Inventory) {
+define(['game', 'car'], function (game, Car) {
   // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
   var config = {
     name:         'Honda',
@@ -15,14 +15,17 @@ define(['game', 'car', 'Inventory'], function (game, Car, Inventory) {
       new Vector(-10,  12),
       new Vector( 10,  12)
     ],
-    driversSide: new Vector(-26, -4)
+    driversSide: new Vector(-26, -4),
+    cargoSpace: {
+      width:  9,
+      height: 4
+    }
   };
 
   var Honda = function () {
-    this.inventory = new Inventory(9, 4);
+    var car = new Car(config);
+    return car;
   };
-  Honda.prototype = new Car(config);
 
   return Honda;
-
 });

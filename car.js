@@ -6,7 +6,8 @@ define(["game",
         "collidable",
         "Sky",
         "Headlight",
-        "Taillight"],
+        "Taillight",
+        "Inventory"],
 
         function (game,
                   RigidBody,
@@ -14,7 +15,8 @@ define(["game",
                   collidable,
                   Sky,
                   Headlight,
-                  Taillight) {
+                  Taillight,
+                  Inventory) {
 
   var keyStatus = game.keyboard.keyStatus;
   var context   = game.spriteContext;
@@ -26,7 +28,7 @@ define(["game",
     this.init(config.name);
 
     this.setMass(config.mass);
-    this.dragArea = config.dragArea;
+    this.dragArea      = config.dragArea;
     this.steeringLock  = config.steeringLock;
     this.engineTorque  = config.engineTorque;
     this.brakeTorque   = config.brakeTorque;
@@ -38,19 +40,21 @@ define(["game",
     this.driversSide    = config.driversSide;
     this.passengersSide = config.driversSide.multiply({x:-1, y:1}); // assuming we're symmetrical
 
-    this.collided  = false;
-    this.breaking  = false;
-    this.reversing = false;
-    this.stopped   = false;
-    this.driver = null;
+    this.collided      = false;
+    this.breaking      = false;
+    this.reversing     = false;
+    this.stopped       = false;
+    this.driver        = null;
     this.steeringAngle = 0;
-    this.direction = new Vector(0);
+    this.direction     = new Vector(0);
 
     this.headlights = [
       this.points[0].add({x:4, y:0}),
       this.points[1].add({x:-4, y:0})
     ];
     this.headlightsOn = false;
+
+    this.inventory = new Inventory(config.cargoSpace.width, config.cargoSpace.height);
   };
   Car.prototype = new RigidBody();
 

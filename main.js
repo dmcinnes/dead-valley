@@ -16,7 +16,7 @@ require(
    "inventory/Shotgun",
    "inventory/Flashlight",
    "World",
-   "spriteMarshal"],
+   "spritemarshal"],
 
   function (game,
             Controls,
