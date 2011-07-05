@@ -329,6 +329,9 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
       game.addSpritesFromStrings(sprites, pos.multiply(this.sectionWidth));
     };
 
+    // buildings: list of building JSON objects
+    // tiles: the section tiles the building goes into
+    // pos: the position of the recipient section
     this.addSectionBuildings = function (buildings, tiles, pos) {
       var offset = pos.multiply(this.sectionWidth);
 
@@ -336,19 +339,26 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
 
       _(buildings).each(function (buildingObj) {
         var i, point, node, building, tile;
-        var pointsArr = buildingObj.points;
+        var pointsArr     = buildingObj.points;
         var buildingTiles = buildingObj.tiles;
+        var entrances     = buildingObj.entrances;
 
         var points = [];
         for (i = 0; i < pointsArr.length; i += 2) {
           point = offset.add({x:pointsArr[i], y:pointsArr[i+1]});
           points.push(point);
         }
+
         building = new Building(points);
 
         for (i = 0; i < buildingTiles.length; i++) {
           tile = tiles[buildingTiles[i]];
           tile.enter(building);
+        }
+
+        for (i = 0; i < entrances.length; i++) {
+          tile = tiles[entrances[i]];
+          tile.entrance = building;
         }
       });
     };

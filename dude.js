@@ -22,6 +22,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
     this.init('Dude');
 
     this.driving             = null;
+    this.inside              = null;
 
     this.direction           = RIGHT;
     this.walking             = false;
@@ -172,10 +173,25 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
   };
 
   Dude.prototype.leaveCar = function () {
-    this.driving.shouldSave = true;
     this.pos.set(this.driving.driversSideLocation());
     this.driving.leave(this);
     this.driving = null;
+    this.visible = true;
+  };
+
+  Dude.prototype.enterBuilding = function (building) {
+    building.enter(this);
+    this.inside = building;
+    this.visible = false;
+    if (this.currentNode) {
+      this.currentNode.leave(this);
+      this.currentNode = null;
+    }
+  };
+
+  Dude.prototype.leaveBuilding = function () {
+    this.inside.leave(this);
+    this.inside = null;
     this.visible = true;
   };
 
@@ -266,22 +282,23 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
     return this.health > 0;
   };
 
+  // TODO combine enter/leave building with enter/leave car
   Dude.prototype.enterOrExit = function () {
     if (this.driving) {
       this.leaveCar();
+    } else if (this.inside) {
+      this.leaveBuilding();
     } else if (this.visible) {
-      // find all the cars we're touching
-      var cars = _(this.touching).select(function (sprite) {
-        return !!sprite.isCar;
-      });
-      if (cars.length > 0) {
-        // find the closest
-        var self = this;
-        var car = _(cars).reduce(function (closest, car) {
-          return (self.distance(car) < self.distance(closest)) ? car : closest;
-        }, cars[0]);
-
-        this.enterCar(car);
+      // iterate through the touching list and enter the first one that we can enter
+      for (var i = 0; i < this.touching.length; i++) {
+	var sprite = this.touching[i];
+	if (sprite.isCar) {
+	  this.enterCar(sprite);
+	} else if (sprite.isBuilding &&
+		   this.currentNode &&
+		   this.currentNode.entrance === sprite) {
+	  this.enterBuilding(sprite);
+	}
       }
     }
   };

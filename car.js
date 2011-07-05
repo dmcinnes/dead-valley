@@ -205,6 +205,7 @@ define(["game",
   Car.prototype.leave = function (dude) {
     this.driver = null;
     this.stopped = false;
+    this.shouldSave = true; // reenable car saving
   };
 
   Car.prototype.takeDamage = function (damage) {

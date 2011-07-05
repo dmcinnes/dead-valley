@@ -25,6 +25,8 @@ define(["game",
     this.tileFlip   = false;
     this.tileRotate = 0;
 
+    this.entrance = null;
+
     this.domNode = null;
   };
 

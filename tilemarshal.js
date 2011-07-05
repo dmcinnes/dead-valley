@@ -26,6 +26,7 @@ define(function () {
       this.tileFlip   = !!(code & 0x4000);
       this.tileRotate = (code & 0x3000) >> 12;
       this.nextSprite = null; // clean up any sprite remnants
+      this.entrance   = null;
     };
 
     thing.prototype.oldSetFromString = function (str) {

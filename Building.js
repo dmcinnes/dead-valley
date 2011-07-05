@@ -24,6 +24,7 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
   Building.prototype.shouldSave     = false;
   Building.prototype.name           = 'Building';
   Building.prototype.visible        = true;
+  Building.prototype.isBuilding     = true;
   Building.prototype.mass           = Number.MAX_VALUE;
   Building.prototype.inertia        = Number.MAX_VALUE;
   Building.prototype.currentNormals = [
@@ -40,6 +41,12 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
 
   Building.prototype.bulletHit = function (hit, damage) {
     bulletHit.fireSparks(hit);
+  };
+
+  Building.prototype.enter = function (dude) {
+  };
+
+  Building.prototype.leave = function (dude) {
   };
 
   collidable(Building);
