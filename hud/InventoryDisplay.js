@@ -112,31 +112,29 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
           // are we on top of a thing
           item = this.inventory.singleItemOverlay(draggingItem, posX, posY);
-          if (item) {
-            // TODO check if the item accepts what we're dropping
+
+          if (item && item.acceptsDrop(draggingItem)) {
+            // give it to the thing
+            item.accept(draggingItem);
+
+            // only restart the drag if there's something to drag after the drop
+            if (draggingItem.viable()) {
+              this.restartDrag(draggingItem, currentDraggableOffset);
+            }
+          } else if (item) {
             // swap em
 
             // save off the draggingItem, clickDragStart overwrites it
             var newItem = draggingItem;
 
-            // figure out the offset -- center it
-            var offset = {
-              left: (cellSize/2) * item.width,
-              top:  (cellSize/2) * item.height
-            };
             // start dragging the dropped on thing
-            this.clickDragStart(item, offset);
+            this.restartDrag(item);
 
             // add the dropped item to the inventory
             this.inventory.addItem(newItem, posX, posY);
           } else {
-            // figure out the offset -- center it
-            var offset = currentDraggableOffset || {
-              left: (cellSize/2) * draggingItem.width,
-              top:  (cellSize/2) * draggingItem.height
-            };
             // restart dragging the dropped thing
-            this.clickDragStart(draggingItem, offset);
+            this.restartDrag(draggingItem, currentDraggableOffset);
           }
         }
         // stop the drop event from bubbling to the body
@@ -272,6 +270,16 @@ define(['game', 'Inventory'], function (game, Inventory) {
       this.dragStart(item);
 
       $('body').append(currentDraggable);
+    },
+
+    restartDrag: function (item, offset) {
+      // figure out the offset -- center it
+      offset = offset || {
+        left: (cellSize/2) * item.width,
+        top:  (cellSize/2) * item.height
+      };
+      // restart dragging the dropped thing
+      this.clickDragStart(item, offset);
     },
 
     toggle: function () {

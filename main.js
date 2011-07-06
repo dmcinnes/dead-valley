@@ -119,7 +119,9 @@ require(
       dude.inventory.addItem(new Flashlight(), 0, 0);
       // shotty
       dude.inventory.addItem(new Shotgun(), 7, 0);
-      dude.inventory.addItem(new ShotgunShells(), 2, 0);
+      dude.inventory.addItem(new ShotgunShells(12), 2, 0);
+      dude.inventory.addItem(new ShotgunShells(12), 2, 1);
+      dude.inventory.addItem(new ShotgunShells(98), 2, 2);
     });
 
 });

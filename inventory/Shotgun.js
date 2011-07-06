@@ -1,6 +1,7 @@
 // The Ubiquitous Shotgun
 
-define(['game', 'Firearm', 'inventory/InventoryItem'], function (game, Firearm, InventoryItem) {
+define(['game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem'],
+       function (game, Firearm, ShotgunShells, InventoryItem) {
   var numberOfPellets = 9;
   var spreadFactor = Math.tan(Math.PI / 18); // actually 1/2 of the spread
 
@@ -32,9 +33,10 @@ define(['game', 'Firearm', 'inventory/InventoryItem'], function (game, Firearm, 
   };
 
   InventoryItem(Shotgun, {
-    width:  2, 
-    height: 3, 
-    image:  'shotgun'
+    width:   2, 
+    height:  3, 
+    image:   'shotgun',
+    accepts: [ShotgunShells]
   });
 
   return Shotgun;

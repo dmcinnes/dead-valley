@@ -57,5 +57,8 @@ define(['game'], function (game) {
     }
   };
 
+  Firearm.prototype.accept = function (ammo) {
+  };
+
   return Firearm;
 });
