@@ -91,6 +91,7 @@ Bus
 *PICKUPS*
 X flashlight
 X shotgun
+X shotgun shells
 lantern
 rifle
 bat
@@ -99,6 +100,5 @@ rubber hose
 spare tire
 pistol ammo
 rifle ammo
-shotgun shells
 food
 medkit

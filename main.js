@@ -14,6 +14,7 @@ require(
    "inventory/Pistol",
    "inventory/AK_47",
    "inventory/Shotgun",
+   "inventory/ShotgunShells",
    "inventory/Flashlight",
    "World",
    "spritemarshal"],
@@ -33,6 +34,7 @@ require(
             Pistol,
             AK_47,
             Shotgun,
+            ShotgunShells,
             Flashlight,
             World,
             spriteMarshal) {
@@ -117,6 +119,7 @@ require(
       dude.inventory.addItem(new Flashlight(), 0, 0);
       // shotty
       dude.inventory.addItem(new Shotgun(), 7, 0);
+      dude.inventory.addItem(new ShotgunShells(), 2, 0);
     });
 
 });
