@@ -42,6 +42,11 @@ define(['game'], function (game) {
     this.updateDisplay();
   };
 
+  Firearm.prototype.setAmmo = function (ammo) {
+    this.ammo = ammo;
+    this.updateDisplay();
+  };
+
   Firearm.prototype.displayNode = function () {
     if (!this.display) {
       this.display = $("<div/>")
@@ -57,7 +62,16 @@ define(['game'], function (game) {
     }
   };
 
-  Firearm.prototype.accept = function (ammo) {
+  // accept dropped ammo
+  Firearm.prototype.accept = function (shells) {
+    var total = this.ammo + shells.count;
+    if (total > this.ammoCapacity) {
+      this.setAmmo(this.ammoCapacity);
+      shells.setCount(total - this.ammoCapacity);
+    } else {
+      this.setAmmo(total);
+      shells.setCount(0);
+    }
   };
 
   return Firearm;

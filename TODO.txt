@@ -22,6 +22,7 @@ X add building entrance
 X building inventory should disappear when leave
 X building inventory should appear when entering
 X create HUD for building inventory
+X handle dropping ammo on guns
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -37,7 +38,6 @@ add zombie blood tire tracks
 make zombies follow building edges
 add zombies randomly to map based on building population of section
 generalize sprite animation handling
-handle dropping ammo on guns
 ejecting ammo from guns
 HUD ammo count
 fix Zombie hitbox
@@ -50,6 +50,7 @@ broken headlights
 headlight repair
 fix barrel 'sliding'
 fix weird map loading bug with gas station and start intersection
+add reload key
 
 *EDITOR*
 remove current collidible code
