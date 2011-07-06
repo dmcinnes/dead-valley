@@ -21,6 +21,7 @@ X make zombies/dude render in order according to vertical position
 X add building entrance
 X building inventory should disappear when leave
 X building inventory should appear when entering
+X create HUD for building inventory
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -28,7 +29,6 @@ create another gas station section on straightaway
 add map handling functions for custom instances of sections through the map worker
 fix gas pump position
 tune Honda's performance
-create HUD for building inventory
 add trees randomly to map
 render trees -- make transparent when colliding with sprite
 convert everything to radians
