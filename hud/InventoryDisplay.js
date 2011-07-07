@@ -11,6 +11,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
     top:  3,
     left: 3
   };
+  var doubleClickTimeout = 200; // in ms
 
   // dropping anywhere else reverts the drag
   $('body').droppable().bind('drop' ,function () {
@@ -59,6 +60,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
     this.parent    = parent;
     this.config    = config || {};
 
+    this.clicks    = 0;
+
     this.createTable();
 
     this.renderAll();
@@ -75,12 +78,18 @@ define(['game', 'Inventory'], function (game, Inventory) {
       },
       click: function (event) {
         if (!currentDraggable) {
-          var target = $(event.target).parentsUntil('td').andSelf().filter('.inventory-item');
-          var pos = target.offset();
-          this.clickDragStart(
-            target.data('item'),
-            {left:event.pageX - pos.left, top:event.pageY - pos.top}
-          );
+          this.clicks++;
+          var self = this;
+          if (this.clicks === 1) {
+            setTimeout(function () {
+              if (self.clicks === 1) {
+                self.itemSingleClick(event);
+              } else {
+                self.itemDoubleClick(event);
+              }
+              self.clicks = 0;
+            }, doubleClickTimeout);
+          }
         }
         // so the table click handler doesn't fire
         event.stopPropagation();
@@ -167,6 +176,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
       _.each(this.itemEventHandlers, function (handler, key) {
         itemNode.bind(key, $.proxy(handler, self));
       });
+      itemNode.data('clicks', 0);
     },
 
     clearEventHandlers: function () {
@@ -194,6 +204,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
         greedy:    true,
         tolerance: 'touch'
       });
+
       this.parent.append(table);
       this.table = table;
     },
@@ -280,6 +291,33 @@ define(['game', 'Inventory'], function (game, Inventory) {
       };
       // restart dragging the dropped thing
       this.clickDragStart(item, offset);
+    },
+
+    // start a drag
+    itemSingleClick: function (event) {
+      var target = $(event.target).parentsUntil('td').andSelf().filter('.inventory-item');
+      var pos = target.offset();
+      this.clickDragStart(
+        target.data('item'),
+        {left:event.pageX - pos.left, top:event.pageY - pos.top}
+      );
+    },
+
+    // send the double clicked target to the configured inv
+    itemDoubleClick: function (event) {
+      var targetInventory = this.config.doubleClickTarget;
+      if (targetInventory) {
+        var target = $(event.target).parentsUntil('td').andSelf().filter('.inventory-item');
+        var item = target.data('item');
+        // save off the current coords
+        var x = item.x;
+        var y = item.y;
+        this.inventory.removeItem(item);
+        if (!targetInventory.stuffItemIn(item)) {
+          // if it doesn't work out, add it back
+          this.inventory.addItem(item, x, y);
+        }
+      }
     },
 
     toggle: function () {

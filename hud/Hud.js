@@ -38,7 +38,9 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
     dudeInventory.show();
     dudeHands.show();
     if (otherInventory) {
-      otherInventoryDisplay = new InventoryDisplay(otherInventory, $otherInventoryDiv);
+      otherInventoryDisplay = new InventoryDisplay(otherInventory,
+                                                   $otherInventoryDiv,
+                                                   { doubleClickTarget:game.dude.inventory });
       otherInventoryDisplay.show();
     }
     inventoryShown = true;
@@ -74,8 +76,13 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
     removeOtherInventory();
   }).subscribe('new dude', function (dude) {
     $dudeInventoryDiv.empty();
-    dudeInventory = new InventoryDisplay(game.dude.inventory, $dudeInventoryDiv);
-    dudeHands = new InventoryDisplay(DudeHands, $dudeInventoryDiv, { id:'dude-hands' });
+    dudeInventory = new InventoryDisplay(game.dude.inventory,
+                                         $dudeInventoryDiv,
+                                         { doubleClickTarget: DudeHands });
+    dudeHands = new InventoryDisplay(DudeHands,
+                                     $dudeInventoryDiv,
+                                     { id:'dude-hands',
+                                       doubleClickTarget: game.dude.inventory });
   });
 
   // framerate HUD

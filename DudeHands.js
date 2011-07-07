@@ -10,7 +10,7 @@ define(['Inventory'], function (Inventory) {
 
   // ditto
   inventory.addItem = function (item, x, y) {
-    Inventory.prototype.addItem.call(this, item, x, 0);
+    return Inventory.prototype.addItem.call(this, item, x, 0);
   };
 
   inventory.leftHand = function () {

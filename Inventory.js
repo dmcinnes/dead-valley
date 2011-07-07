@@ -110,6 +110,26 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
 
     itemAt: function (x, y) {
       return this.slots[x][y];
+    },
+
+    // try to fit the item in,
+    // return true if successful, false otherwise
+    stuffItemIn: function (item) {
+      var self = this;
+      var added = false;
+      slotIterator(0,
+                   0,
+                   this.width - item.width + 1,
+                   this.height - item.height + 1,
+                   this.slots,
+                   function (slot, i, j) {
+                     if (self.addItem(item, i, j)) {
+                       added = true;
+                       return false; // break
+                     }
+                   });
+
+      return added;
     }
   };
 
