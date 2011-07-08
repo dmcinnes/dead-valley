@@ -176,7 +176,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
       _.each(this.itemEventHandlers, function (handler, key) {
         itemNode.bind(key, $.proxy(handler, self));
       });
-      itemNode.data('clicks', 0);
     },
 
     clearEventHandlers: function () {
@@ -270,12 +269,20 @@ define(['game', 'Inventory'], function (game, Inventory) {
     },
 
     // this is run when we start the drag on a click
-    clickDragStart: function (item, offset) {
+    clickDragStart: function (item, offset, event) {
       // create a 'helper' object to follow the mouse around
       currentDraggable = item.displayNode().clone();
       currentDraggable.addClass('inventory-item click-dragging');
       // keep track of the offset so we render the dragging correctly
       currentDraggableOffset = offset;
+
+      // if we have an event, set the offset
+      if (event) {
+        currentDraggable.css({
+          left: event.pageX - currentDraggableOffset.left,
+          top:  event.pageY - currentDraggableOffset.top
+        });
+      }
 
       // finish the start of the drag as a draggable
       this.dragStart(item);
@@ -299,7 +306,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var pos = target.offset();
       this.clickDragStart(
         target.data('item'),
-        {left:event.pageX - pos.left, top:event.pageY - pos.top}
+        {left:event.pageX - pos.left, top:event.pageY - pos.top},
+        event
       );
     },
 
