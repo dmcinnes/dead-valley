@@ -13,6 +13,7 @@ define(['game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem']
 
   Shotgun.prototype.damage       = 1; // though each round fires nine pellets
   Shotgun.prototype.ammoCapacity = 9;
+  Shotgun.prototype.ammoType     = ShotgunShells;
   Shotgun.prototype.range        = 300;
 
   Shotgun.prototype.traceBullet = function (start, end) {

@@ -7,7 +7,8 @@ define(['game', 'mainloop', 'Keyboard'], function (game, mainloop, Keyboard) {
     p:   'toggle pause',
     n:   'transition sky',
     x:   'dude enter/exit',
-    h:   'dude toggle headlights'
+    h:   'dude toggle headlights',
+    r:   'reload'
   };
 
   _.each(keys, function (value, key) {

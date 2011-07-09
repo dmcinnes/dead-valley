@@ -308,11 +308,21 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
 
     game.events.subscribe('dude enter/exit', function () {
       self.enterOrExit();
-    });
-
-    game.events.subscribe('dude toggle headlights', function () {
+    }).subscribe('dude toggle headlights', function () {
       if (self.driving) {
         self.driving.toggleHeadlights();
+      }
+    }).subscribe('reload', function () {
+      // TODO move this to a better place
+      var firearm = DudeHands.weapon();
+      if (firearm) {
+        do {
+          var ammo = self.inventory.findItem(firearm.ammoType);
+          firearm.accept(ammo);
+          if (!ammo.viable()) {
+            self.inventory.removeItem(ammo);
+          }
+        } while (!firearm.isFull() && ammo)
       }
     });
   };

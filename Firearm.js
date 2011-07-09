@@ -47,6 +47,10 @@ define(['game'], function (game) {
     this.updateDisplay();
   };
 
+  Firearm.prototype.isFull = function () {
+    return this.ammo === this.ammoCapacity;
+  };
+
   Firearm.prototype.displayNode = function () {
     if (!this.display) {
       this.display = $("<div/>")

@@ -130,6 +130,12 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
                    });
 
       return added;
+    },
+
+    findItem: function (clazz) {
+      return _.detect(this.items, function (item) {
+        return item instanceof clazz;
+      });
     }
   };
 
