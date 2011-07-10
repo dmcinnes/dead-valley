@@ -48,6 +48,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
     this.originalCenterX     = this.center.x;
 
     this.inventory           = new Inventory(9, 3);
+    this.hands               = new DudeHands();
 
     this.setupEventHandlers();
     this.setupMouseBindings();
@@ -206,7 +207,9 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
     var metadata = this.driving ?
                    this.driving.saveMetadata() :
                    Sprite.prototype.saveMetadata.call(this);
-    metadata.health = this.health;
+    metadata.health    = this.health;
+    metadata.inventory = this.inventory.saveMetadata();
+    metadata.hands     = this.hands.saveMetadata();
     return metadata;
   };
 
@@ -231,7 +234,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
   };
 
   Dude.prototype.drawArms = function () {
-    var weapon = DudeHands.weapon();
+    var weapon = this.hands.weapon();
     if (weapon) {
       if (this.firing) {
         this.drawAimedArm(weapon.isHandgun ? 10 : 13);
@@ -250,7 +253,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
       this.drawTile(5 + (this.takingDamage ? 1 : 0), this.direction);
     }
     // activate what's in the dude's hands
-    DudeHands.renderItems(this);
+    this.hands.renderItems(this);
   };
 
   Dude.prototype.drawAimedArm = function (frame) {
@@ -314,7 +317,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
       }
     }).subscribe('reload', function () {
       // TODO move this to a better place
-      var firearm = DudeHands.weapon();
+      var firearm = self.hands.weapon();
       if (firearm) {
         do {
           var ammo = self.inventory.findItem(firearm.ammoType);
@@ -330,12 +333,12 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
     $('#click-overlay').mousemove(function (e) {
-      if (self.alive() && DudeHands.hasAimableItem()) {
+      if (self.alive() && self.hands.hasAimableItem()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
       }
     }).mousedown(function (e) {
-      var firearm = DudeHands.weapon();
+      var firearm = self.hands.weapon();
       if (self.alive() && firearm) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);

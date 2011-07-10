@@ -24,6 +24,7 @@ X building inventory should appear when entering
 X create HUD for building inventory
 X handle dropping ammo on guns
 X add reload key
+X save inventory state
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -43,7 +44,6 @@ ejecting ammo from guns
 HUD ammo count
 fix Zombie hitbox
 support headshots
-save inventory state
 update inventory to be usable at night
 car inventory should disappear when walk away
 create HUD for vehicle status

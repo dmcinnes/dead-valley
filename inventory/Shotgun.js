@@ -37,7 +37,8 @@ define(['game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem']
     width:   2, 
     height:  3, 
     image:   'shotgun',
-    accepts: [ShotgunShells]
+    accepts: [ShotgunShells],
+    clazz:   'Shotgun'
   });
 
   return Shotgun;

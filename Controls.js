@@ -1,4 +1,4 @@
-define(['game', 'mainloop', 'Keyboard'], function (game, mainloop, Keyboard) {
+define(['game', 'mainloop', 'Keyboard', 'World'], function (game, mainloop, Keyboard, World) {
 
   var keys = {
     i:   'toggle inventory',
@@ -17,6 +17,11 @@ define(['game', 'mainloop', 'Keyboard'], function (game, mainloop, Keyboard) {
         game.events.fireEvent(value, e);
       }
     });
+  });
+
+  Keyboard.registerKeyDownHandler('s', function (e) {
+    game.map.save();
+    World.saveDude(game.dude);
   });
 
 });

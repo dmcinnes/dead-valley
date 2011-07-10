@@ -14,7 +14,8 @@ define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem)
   InventoryItem(Pistol, {
     width:  1, 
     height: 2, 
-    image:  'pistol'
+    image:  'pistol',
+    clazz:  'Pistol'
   });
 
   return Pistol;

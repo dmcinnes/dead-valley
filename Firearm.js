@@ -78,5 +78,11 @@ define(['game'], function (game) {
     }
   };
 
+  Firearm.prototype.saveMetadata = function () {
+    return {
+      ammo: this.ammo
+    };
+  };
+
   return Firearm;
 });

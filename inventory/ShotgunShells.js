@@ -11,7 +11,8 @@ define(['inventory/InventoryItem', 'Ammo'], function (InventoryItem, Ammo) {
     width:   1, 
     height:  1, 
     image:   'shotgun_shell',
-    accepts: [ShotgunShells]
+    accepts: [ShotgunShells],
+    clazz:   'ShotgunShells'
   });
 
   return ShotgunShells;

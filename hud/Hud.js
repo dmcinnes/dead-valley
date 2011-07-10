@@ -1,6 +1,6 @@
 // Place where we handle all the HUD interaction details
-define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Framerate', 'DudeHands'],
-       function (game, InventoryDisplay, LifeMeter, Pause, Framerate, DudeHands) {
+define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Framerate'],
+       function (game, InventoryDisplay, LifeMeter, Pause, Framerate) {
 
   var dudeInventory, dudeHands;
   var inventoryShown = false;
@@ -78,8 +78,8 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
     $dudeInventoryDiv.empty();
     dudeInventory = new InventoryDisplay(game.dude.inventory,
                                          $dudeInventoryDiv,
-                                         { doubleClickTarget: DudeHands });
-    dudeHands = new InventoryDisplay(DudeHands,
+                                         { doubleClickTarget: game.dude.hands });
+    dudeHands = new InventoryDisplay(game.dude.hands,
                                      $dudeInventoryDiv,
                                      { id:'dude-hands',
                                        doubleClickTarget: game.dude.inventory });

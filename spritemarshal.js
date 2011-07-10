@@ -13,17 +13,12 @@ define(function () {
       if (values.hasOwnProperty(val)) {
         var value  = values[val];
         var target = object[val];
-        if (typeof(value) === 'object') {
+        if (typeof(target) === 'function') {
+          target.call(object, value);
+        } else if (typeof(value) === 'object') {
           setValues(target, value);
         } else {
-          switch (typeof(target)) {
-            case 'function':
-              target.call(object, value);
-              break;
-            default:
-              object[val] = value;
-              break;
-          }
+          object[val] = value;
         }
       }
     }

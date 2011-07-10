@@ -43,5 +43,11 @@ define(['game'], function (game) {
     return this.count > 0;
   };
 
+  Ammo.prototype.saveMetadata = function () {
+    return {
+      count: this.count
+    };
+  };
+
   return Ammo;
 });

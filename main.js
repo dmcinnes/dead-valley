@@ -73,6 +73,17 @@ require(
         dude.pos.x = startX;
         dude.pos.y = startY;
 
+        // give the dude a pistol!
+        dude.inventory.addItem(new Pistol(), 1, 1);
+        // and why not, an AK and a falshlight
+        dude.inventory.addItem(new AK_47(), 5, 0);
+        dude.inventory.addItem(new Flashlight(), 0, 0);
+        // shotty
+        dude.inventory.addItem(new Shotgun(), 7, 0);
+        dude.inventory.addItem(new ShotgunShells(12), 2, 0);
+        dude.inventory.addItem(new ShotgunShells(12), 2, 1);
+        dude.inventory.addItem(new ShotgunShells(98), 2, 2);
+
         var zombie = new Zombie();
         zombie.pos.x = startX + 200;
         zombie.pos.y = startY;
@@ -111,17 +122,6 @@ require(
           World.saveDude(game.dude);
         }
       });
-
-      // give the dude a pistol!
-      dude.inventory.addItem(new Pistol(), 1, 1);
-      // and why not, an AK and a falshlight
-      dude.inventory.addItem(new AK_47(), 5, 0);
-      dude.inventory.addItem(new Flashlight(), 0, 0);
-      // shotty
-      dude.inventory.addItem(new Shotgun(), 7, 0);
-      dude.inventory.addItem(new ShotgunShells(12), 2, 0);
-      dude.inventory.addItem(new ShotgunShells(12), 2, 1);
-      dude.inventory.addItem(new ShotgunShells(98), 2, 2);
     });
 
 });

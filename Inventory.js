@@ -136,6 +136,30 @@ define(['game', 'eventmachine'], function (game, eventMachine) {
       return _.detect(this.items, function (item) {
         return item instanceof clazz;
       });
+    },
+
+    // for marshalling inventory
+    setInventory: function (items) {
+      var self = this;
+      _.each(items, function (itemData) {
+        require(['inventory/'+itemData.clazz], function (InventoryClass) {
+          var item = new InventoryClass();
+          for (var val in itemData) {
+            item[val] = itemData[val];
+          }
+          self.addItem(item, itemData.x, itemData.y);
+        });
+      });
+    },
+
+    saveMetadata: function () {
+      var itemList = _.map(this.items, function (item) {
+        return item.saveMetadata();
+      });
+
+      return {
+        setInventory: itemList
+      };
     }
   };
 

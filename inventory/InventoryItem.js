@@ -33,6 +33,15 @@ define(function () {
       object.prototype.viable = viable;
     }
 
+    var oldSave = object.prototype.saveMetadata || function () { return {}; };
+    object.prototype.saveMetadata = function () {
+      return $.extend({ clazz: config.clazz,
+                        x:     this.x,
+                        y:     this.y },
+                      oldSave.call(this),
+                      config.saveMetadata || {});
+    };
+
     object.x = null;
     object.y = null;
   };
