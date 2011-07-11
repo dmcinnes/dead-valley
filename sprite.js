@@ -146,7 +146,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       return;
     }
 
-    if (newNode != this.currentNode) {
+    if (newNode !== this.currentNode) {
       if (this.currentNode) {
         this.currentNode.leave(this);
       }

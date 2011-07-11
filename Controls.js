@@ -19,6 +19,7 @@ define(['game', 'mainloop', 'Keyboard', 'World'], function (game, mainloop, Keyb
     });
   });
 
+  // TODO remove this -- just for testing
   Keyboard.registerKeyDownHandler('s', function (e) {
     game.map.save();
     World.saveDude(game.dude);

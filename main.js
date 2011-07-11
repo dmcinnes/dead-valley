@@ -57,7 +57,6 @@ require(
         // other sprites are loaded with the map
         game.events.subscribe('before start', function () {
           if (dude.driving) {
-            dude.driving = null;
             var car = _.detect(game.sprites, function (sprite) {
               return sprite.isCar && sprite.pos.equals(dude.pos);
             });
@@ -66,8 +65,10 @@ require(
             }
           }
           if (dude.inside) {
-            // TODO this
-            dude.inside = null;
+            dude.updateGrid(); // otherwise currentNode is null
+            if (dude.currentNode.entrance) {
+              dude.enterBuilding(dude.currentNode.entrance);
+            }
           }
         });
 
