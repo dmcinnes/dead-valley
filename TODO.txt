@@ -25,6 +25,9 @@ X create HUD for building inventory
 X handle dropping ammo on guns
 X add reload key
 X save inventory state
+X save car inventory state
+support inventory save when dude is in car
+save building inventory state
 make zombie collision response more natural
 add drag to car
 add car damage/destruction

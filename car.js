@@ -2,6 +2,7 @@
 
 define(["game",
         "rigidbody",
+        "sprite",
         "wheel",
         "collidable",
         "Sky",
@@ -11,6 +12,7 @@ define(["game",
 
         function (game,
                   RigidBody,
+                  Sprite,
                   Wheel,
                   collidable,
                   Sky,
@@ -211,6 +213,12 @@ define(["game",
   };
 
   Car.prototype.takeDamage = function (damage) {
+  };
+
+  Car.prototype.saveMetadata = function () {
+    var data = Sprite.prototype.saveMetadata.call(this);
+    data.inventory = this.inventory.saveMetadata();
+    return data;
   };
 
   Car.prototype.isCar = true;
