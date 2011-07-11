@@ -26,7 +26,8 @@ X handle dropping ammo on guns
 X add reload key
 X save inventory state
 X save car inventory state
-support inventory save when dude is in car
+X support inventory save when dude is in car
+support saving when dude is in a building
 save building inventory state
 make zombie collision response more natural
 add drag to car

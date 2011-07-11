@@ -204,12 +204,15 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
   };
 
   Dude.prototype.saveMetadata = function () {
-    var metadata = this.driving ?
-                   this.driving.saveMetadata() :
-                   Sprite.prototype.saveMetadata.call(this);
+    if (this.driving) {
+      this.pos.set(this.driving.pos);
+    }
+    var metadata = Sprite.prototype.saveMetadata.call(this);
     metadata.health    = this.health;
     metadata.inventory = this.inventory.saveMetadata();
     metadata.hands     = this.hands.saveMetadata();
+    metadata.driving   = !!this.driving;
+    metadata.inside    = !!this.inside;
     return metadata;
   };
 

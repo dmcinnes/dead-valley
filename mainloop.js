@@ -64,6 +64,12 @@ define(["game"], function (game) {
     }
   });
 
+  game.events.subscribe('map loaded', function () {
+    game.events.fireEvent('before start');
+    // only run the main loop after the map is loaded
+    play();
+  });
+
   return {
     pause: pause,
     play: play,

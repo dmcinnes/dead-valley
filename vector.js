@@ -79,6 +79,10 @@ define(function () {
     return new Vector(-this.y, this.x);
   };
 
+  Vector.prototype.equals = function (other) {
+    return this.x === other.x && this.y === other.y;
+  };
+
   Vector.prototype.clone = function () {
     return new Vector(this.x, this.y);
   };

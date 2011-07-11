@@ -49,20 +49,28 @@ require(
 
       if (dudeState) {
         var parsedDudeState = JSON.parse(dudeState);
-        if (parsedDudeState.clazz === 'Dude') {
-          dude = Dude.marshal(dudeState);
-        } else {
-          // Dude's driving something
-          // name is of the vehicle's class
-          dude = new Dude();
-          dude.visible = false;
-          spriteMarshal.marshal(dudeState, function (vehicle) {
-            game.addSprite(vehicle);
-            dude.enterCar(vehicle);
-          });
-        }
+        dude = Dude.marshal(dudeState);
         startX = parsedDudeState.pos.x;
         startY = parsedDudeState.pos.y;
+
+        // wait until the map has loaded
+        // other sprites are loaded with the map
+        game.events.subscribe('before start', function () {
+          if (dude.driving) {
+            dude.driving = null;
+            var car = _.detect(game.sprites, function (sprite) {
+              return sprite.isCar && sprite.pos.equals(dude.pos);
+            });
+            if (car) {
+              dude.enterCar(car);
+            }
+          }
+          if (dude.inside) {
+            // TODO this
+            dude.inside = null;
+          }
+        });
+
       } else {
         // want to start in the center of the right vertical road
         startX = 40 * game.gridSize;
@@ -105,8 +113,7 @@ require(
 
       // set up the map
       game.map = new Map(128, 128, startX, startY, function () {
-        // only run the main loop after the map is loaded
-        mainloop.play();
+        game.events.fireEvent('map loaded');
       });
 
       if (!dudeState) {
