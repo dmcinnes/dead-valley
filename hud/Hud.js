@@ -1,6 +1,6 @@
 // Place where we handle all the HUD interaction details
-define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Framerate'],
-       function (game, InventoryDisplay, LifeMeter, Pause, Framerate) {
+define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Framerate', 'Firearm'],
+       function (game, InventoryDisplay, LifeMeter, Pause, Framerate, Firearm) {
 
   var dudeInventory, dudeHands;
   var inventoryShown = false;
@@ -83,6 +83,21 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
                                      $dudeInventoryDiv,
                                      { id:'dude-hands',
                                        doubleClickTarget: game.dude.inventory });
+  });
+
+  // eject ammo on right click
+  $("#canvas-mask .inventory .inventory-item").live('mousedown', function (e) {
+    if (e.button == 2) { // right click
+      var item = $(this).data('item');
+      if (item instanceof Firearm && item.ammoType) {
+        var count = item.eject();
+        if (count) {
+          var ammo = new item.ammoType(count);
+          dudeInventory.restartDrag(ammo, null, e);
+        }
+      }
+      e.preventDefault();
+    }
   });
 
   // framerate HUD

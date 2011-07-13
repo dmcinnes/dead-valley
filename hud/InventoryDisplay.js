@@ -232,6 +232,11 @@ define(['game', 'Inventory'], function (game, Inventory) {
           this.table.find("tr:eq("+(y+j)+") td:eq("+(x+i)+")").addClass('occupied');
         }
       }
+
+      // disable context menu
+      displayNode[0].oncontextmenu = function() {
+        return false;
+      };
     },
 
     // remove the item from its place
@@ -273,6 +278,10 @@ define(['game', 'Inventory'], function (game, Inventory) {
       // create a 'helper' object to follow the mouse around
       currentDraggable = item.displayNode().clone();
       currentDraggable.addClass('inventory-item click-dragging');
+      // disable context menu
+      currentDraggable[0].oncontextmenu = function() {
+        return false;
+      };
       // keep track of the offset so we render the dragging correctly
       currentDraggableOffset = offset;
 
@@ -290,14 +299,14 @@ define(['game', 'Inventory'], function (game, Inventory) {
       $('body').append(currentDraggable);
     },
 
-    restartDrag: function (item, offset) {
+    restartDrag: function (item, offset, event) {
       // figure out the offset -- center it
       offset = offset || {
         left: (cellSize/2) * item.width,
         top:  (cellSize/2) * item.height
       };
       // restart dragging the dropped thing
-      this.clickDragStart(item, offset);
+      this.clickDragStart(item, offset, event);
     },
 
     // start a drag

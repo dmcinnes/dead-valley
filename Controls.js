@@ -6,9 +6,10 @@ define(['game', 'mainloop', 'Keyboard', 'World'], function (game, mainloop, Keyb
     f:   'toggle framerate',
     p:   'toggle pause',
     n:   'transition sky',
-    x:   'dude enter/exit',
+    e:   'dude enter/exit',
     h:   'dude toggle headlights',
-    r:   'reload'
+    r:   'reload',
+    x:   'eject ammo'
   };
 
   _.each(keys, function (value, key) {

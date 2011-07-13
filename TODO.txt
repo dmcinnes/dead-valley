@@ -28,6 +28,7 @@ X save inventory state
 X save car inventory state
 X support inventory save when dude is in car
 X support saving when dude is in a building
+X ejecting ammo from guns
 save building inventory state
 make zombie collision response more natural
 add drag to car
@@ -44,7 +45,6 @@ add zombie blood tire tracks
 make zombies follow building edges
 add zombies randomly to map based on building population of section
 generalize sprite animation handling
-ejecting ammo from guns
 HUD ammo count
 fix Zombie hitbox
 support headshots

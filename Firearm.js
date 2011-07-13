@@ -47,6 +47,13 @@ define(['game'], function (game) {
     this.updateDisplay();
   };
 
+  Firearm.prototype.eject = function () {
+    var count = this.ammo;
+    this.ammo = 0;
+    this.updateDisplay();
+    return count;
+  };
+
   Firearm.prototype.isFull = function () {
     return this.ammo === this.ammoCapacity;
   };
