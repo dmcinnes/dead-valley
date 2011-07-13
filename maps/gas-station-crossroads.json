@@ -4,5 +4,6 @@ sprites=["{\"clazz\":\"Barrel\",\"pos\":{\"x\":2223,\"y\":1366,\"rot\":240}}","{
 buildings = [{
   points: [2280,1380,2460,1380,2460,1500,2280,1500],
   tiles: [1510,1511,1512,1574,1575,1576],
-  entrances: [1639]
+  entrances: [1639],
+  inventory: [{"clazz":"Flashlight","x":6,"y":0}]
 }];

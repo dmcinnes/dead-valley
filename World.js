@@ -28,6 +28,10 @@ define([], function () {
       worldMap['dude'] = dude.toString();
     },
 
+    saveBuildings: function (position, buildings) {
+      worldMap[position.toString() + 'b'] = JSON.stringify(buildings);
+    },
+
     getTiles: function (position) {
       var data = worldMap[position.toString()];
       return data;

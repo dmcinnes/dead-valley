@@ -1,6 +1,7 @@
 // Map 
 
-define(["game", "gridnode", "World", "progress", "Building"], function (game, GridNode, World, progress, Building) {
+define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
+       function (game, GridNode, World, progress, Building, BuildingMarshal) {
 
   var Map = function (gridWidth, gridHeight, startX, startY, callback) {
     var i, j,
@@ -176,11 +177,13 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
     };
 
     // save the sprites in a chunk that's getting removed from memory
+    // also does buildings
     this.saveSpritesForChunk = function (chunk, which) {
       var coords = this.getSectionCoords(which);
       var offset = coords.multiply(-this.sectionWidth);
       var nodes = this.convertToNodes(chunk.data);
       var sprites = [];
+      var buildings = [];
       var sprite;
       var totalNodes = nodes.length;
 
@@ -192,6 +195,8 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
             // make them relative to the chunk
             sprite.pos.translate(offset);
             sprites.push(sprite.toString());
+          } else if (sprite instanceof Building) {
+            buildings.push(BuildingMarshal.unmarshal(sprite));
           }
           sprite = sprite.nextSprite;
         }
@@ -199,6 +204,10 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
 
       if (sprites.length) {
         World.saveSprites(coords, sprites);
+      }
+      if (buildings.length) {
+        // have to uniq, building spans multiple nodes
+        World.saveBuildings(coords, _.uniq(buildings));
       }
     };
 
@@ -335,27 +344,21 @@ define(["game", "gridnode", "World", "progress", "Building"], function (game, Gr
     this.addSectionBuildings = function (buildings, tiles, pos) {
       var offset = pos.multiply(this.sectionWidth);
 
-      // TODO move this into a building marshal thing
-
       _(buildings).each(function (buildingObj) {
-        var i, point, node, building, tile;
-        var pointsArr     = buildingObj.points;
         var buildingTiles = buildingObj.tiles;
         var entrances     = buildingObj.entrances;
 
-        var points = [];
-        for (i = 0; i < pointsArr.length; i += 2) {
-          point = offset.add({x:pointsArr[i], y:pointsArr[i+1]});
-          points.push(point);
-        }
+        var building = BuildingMarshal.marshal(buildingObj, offset);
 
-        building = new Building(points);
+        var tile;
 
+        // put the building in our tiles so we can collide with it
         for (i = 0; i < buildingTiles.length; i++) {
           tile = tiles[buildingTiles[i]];
           tile.enter(building);
         }
 
+        // put the entrances into the tiles so we can get in it 
         for (i = 0; i < entrances.length; i++) {
           tile = tiles[entrances[i]];
           tile.entrance = building;

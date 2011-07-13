@@ -29,7 +29,7 @@ X save car inventory state
 X support inventory save when dude is in car
 X support saving when dude is in a building
 X ejecting ammo from guns
-save building inventory state
+X save building inventory state
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
