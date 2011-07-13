@@ -9,6 +9,14 @@ define(function () {
     });
   };
 
+  // the HTML node to show in the inventory for this object
+  var displayNode = function () {
+    if (!this.display) {
+      this.display = $("<img/>").attr('src', this.image);
+    }
+    return this.display;
+  };
+
   var viable = function () {
     return true;
   };
@@ -19,19 +27,17 @@ define(function () {
     object.prototype.image       = 'assets/inventory/' + config.image + '.png';
     object.prototype.acceptables = config.accepts || [];
 
+    // only override displayNode if it's not defined
     if (!object.prototype.displayNode) {
-      var display = $("<img/>").attr('src', object.prototype.image);
-      object.prototype.displayNode = function () {
-        return display;
-      };
+      object.prototype.displayNode = displayNode;
     }
-
-    object.prototype.acceptsDrop = acceptsDrop;
     
     // only override viable if it's not defined
     if (!object.prototype.viable) {
       object.prototype.viable = viable;
     }
+
+    object.prototype.acceptsDrop = acceptsDrop;
 
     var oldSave = object.prototype.saveMetadata || function () { return {}; };
     object.prototype.saveMetadata = function () {
