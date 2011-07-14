@@ -20,10 +20,25 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   var BODY_OFFSET = 231;
   var BODY_WIDTH  = 29;
 
+  // from center
+  var HEAD_OFFSET = {
+    x: -3,
+    y: -5
+  };
+
+  var HEADSHOT_RADIUS = 2;
+
   var bulletHit = new BulletHit({
     color:     'green',
     minLength: 10,
     range:     15,
+    size:      2
+  });
+
+  var headshotBulletHit = new BulletHit({
+    color:     'green',
+    minLength: 15,
+    range:     20,
     size:      2
   });
 
@@ -253,8 +268,24 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
   };
 
   Zombie.prototype.bulletHit = function (hit, damage) {
-    bulletHit.fireSparks(hit);
-    this.takeDamage(damage);
+    // find distance to gunshot vector from center of head
+    var head = this.pos.add(HEAD_OFFSET);
+    var vec = hit.point.subtract(head);
+    var headNormal = hit.normal.normal();
+    var dot = headNormal.dotProduct(vec);
+    var distance = Math.abs(dot) / Math.abs(headNormal.magnitude());
+
+    if (distance < HEADSHOT_RADIUS) {
+      // HEADSHOT!
+      // 3 times more damaging
+      this.takeDamage(damage * 3);
+      hit.point = head;
+      headshotBulletHit.fireSparks(hit);
+    } else {
+      this.takeDamage(damage);
+      bulletHit.fireSparks(hit);
+    }
+
   };
 
   Zombie.prototype.takeDamage = function (damage) {

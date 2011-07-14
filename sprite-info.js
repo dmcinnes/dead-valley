@@ -31,8 +31,8 @@ define(function () {
         y: 12
       },
       collidableOffset: {
-        x: 5,
-        y: 9
+        x: 10,
+        y: 12
       }
     },
     Honda: {

@@ -32,6 +32,8 @@ X ejecting ammo from guns
 X save building inventory state
 X car inventory should disappear when walk away
 X fix weird map loading bug with gas station and start intersection
+X support headshots
+X fix Zombie hitbox
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -48,8 +50,6 @@ make zombies follow building edges
 add zombies randomly to map based on building population of section
 generalize sprite animation handling
 HUD ammo count
-fix Zombie hitbox
-support headshots
 update inventory to be usable at night
 create HUD for vehicle status
 broken headlights

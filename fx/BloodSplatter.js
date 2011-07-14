@@ -47,9 +47,9 @@ define(['game', 'Sprite'], function (game, Sprite) {
   Splatter.prototype.transformNormals = function () {};
   Splatter.prototype.updateGrid       = function () {};
 
-  var splat = function (pos, color) {
+  var splat = function (pos, color, strength) {
     // put it at the beginning of the sprite list so it renders first
-    game.sprites.unshift(new Splatter(pos, color));
+    game.sprites.unshift(new Splatter(pos, color, strength));
   };
 
   return {
