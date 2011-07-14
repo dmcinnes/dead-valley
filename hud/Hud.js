@@ -63,19 +63,26 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
   }).subscribe('hide inventory', function () {
     hideInventory();
   }).subscribe('enter building', function (building) {
-    otherInventory = building.inventory;
-    showInventory();
+    // show the building inventory when we enter if inventory is up
+    if (inventoryShown) {
+      otherInventory = building.inventory;
+      showInventory();
+    }
   }).subscribe('leave building', function (building) {
+    // remove the building inventory when we exit
     removeOtherInventory();
   }).subscribe('enter car', function (car) {
   }).subscribe('leave car', function (car) {
+    // remove the car inventory when we exit the car
     removeOtherInventory();
   }).subscribe('started touching', function (sprite) {
+    // show the car inventory when we touch it if inventory is up
     if (inventoryShown && sprite.isCar) {
       otherInventory = sprite.inventory;
       showInventory();
     }
   }).subscribe('stopped touching', function (sprite) {
+    // remove the car inventory when we stop touching it
     if (otherInventory === sprite.inventory) {
       removeOtherInventory();
     }
