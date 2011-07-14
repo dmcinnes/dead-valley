@@ -68,12 +68,17 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
   }).subscribe('leave building', function (building) {
     removeOtherInventory();
   }).subscribe('enter car', function (car) {
-    // if (inventoryShown) {
-    //   otherInventory = car.inventory;
-    //   showInventory();
-    // }
   }).subscribe('leave car', function (car) {
     removeOtherInventory();
+  }).subscribe('started touching', function (sprite) {
+    if (inventoryShown && sprite.isCar) {
+      otherInventory = sprite.inventory;
+      showInventory();
+    }
+  }).subscribe('stopped touching', function (sprite) {
+    if (otherInventory === sprite.inventory) {
+      removeOtherInventory();
+    }
   }).subscribe('new dude', function (dude) {
     $dudeInventoryDiv.empty();
     dudeInventory = new InventoryDisplay(game.dude.inventory,

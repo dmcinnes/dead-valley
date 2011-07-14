@@ -30,6 +30,7 @@ X support inventory save when dude is in car
 X support saving when dude is in a building
 X ejecting ammo from guns
 X save building inventory state
+X car inventory should disappear when walk away
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -49,12 +50,12 @@ HUD ammo count
 fix Zombie hitbox
 support headshots
 update inventory to be usable at night
-car inventory should disappear when walk away
 create HUD for vehicle status
 broken headlights
 headlight repair
 fix barrel 'sliding'
 fix weird map loading bug with gas station and start intersection
+support shooting out of car
 
 *EDITOR*
 remove current collidible code

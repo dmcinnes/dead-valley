@@ -150,7 +150,10 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
   Dude.prototype.updateTouchingList = function () {
     // remove sprites that we are moving away from
     this.touching = _.reject(this.touching, function (sprite) {
-      return this.pos.subtract(sprite.pos).dotProduct(this.vel) > 0;
+      if (this.pos.subtract(sprite.pos).dotProduct(this.vel) > 0) {
+        game.events.fireEvent('stopped touching', sprite);
+        return true;
+      }
     }, this);
   };
 
@@ -160,7 +163,10 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
     this.vel.rot = 0;
 
     // add other to the touching list
-    this.touching.push(other);
+    if (!_.include(this.touching, other)) {
+      this.touching.push(other);
+      game.events.fireEvent('started touching', other);
+    }
   };
 
   Dude.prototype.enterCar = function (car) {
