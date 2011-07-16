@@ -70,6 +70,7 @@ X add zombie death animation
 X clean up zombie outlines
 X fix parking lot corner tile
 X fix parking spaces
+X shack
 add spiderwebbed windows to car's sprite
 add destroyed car state to car's sprite
 update color on gas station
