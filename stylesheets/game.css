@@ -186,3 +186,12 @@ body {
   border: 0px;
   border-left: 1px solid black;
 }
+
+#fuel-gauge {
+  position: absolute;
+  left: 10px;
+  top: 30px;
+  display: none;
+  z-index: 110;
+  border: 2px solid black;
+}

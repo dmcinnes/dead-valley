@@ -1,6 +1,12 @@
 // Place where we handle all the HUD interaction details
-define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Framerate', 'Firearm'],
-       function (game, InventoryDisplay, LifeMeter, Pause, Framerate, Firearm) {
+define(['game',
+       'hud/InventoryDisplay',
+       'hud/LifeMeter',
+       'hud/Pause',
+       'hud/Framerate',
+       'hud/FuelGauge',
+       'Firearm'],
+       function (game, InventoryDisplay, LifeMeter, Pause, Framerate, FuelGauge, Firearm) {
 
   var dudeInventory, dudeHands;
   var inventoryShown = false;
@@ -43,6 +49,9 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
                                                    { doubleClickTarget:game.dude.inventory });
       otherInventoryDisplay.show();
     }
+    if (game.dude.driving) {
+      FuelGauge.show(game.dude.driving);
+    }
     inventoryShown = true;
   };
   
@@ -50,6 +59,7 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
     dudeInventory.hide();
     dudeHands.hide();
     removeOtherInventory();
+    FuelGauge.hide();
     inventoryShown = false;
   };
 
@@ -72,9 +82,14 @@ define(['game', 'hud/InventoryDisplay', 'hud/LifeMeter', 'hud/Pause', 'hud/Frame
     // remove the building inventory when we exit
     removeOtherInventory();
   }).subscribe('enter car', function (car) {
+    // only show the fuel gauge inside the car
+    if (inventoryShown) {
+      FuelGauge.show(car);
+    }
   }).subscribe('leave car', function (car) {
     // remove the car inventory when we exit the car
     removeOtherInventory();
+    FuelGauge.hide();
   }).subscribe('started touching', function (sprite) {
     // show the car inventory when we touch it if inventory is up
     if (inventoryShown && sprite.isCar) {

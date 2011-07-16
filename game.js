@@ -29,7 +29,7 @@ define(['assetmanager',
     // sort by z value
     sprites.sort(function (a, b) {
       var diff = a.z - b.z;
-      if (diff === 0) {
+      if (diff === 0 && a.z !== Number.MAX_VALUE) {
         diff = a.pos.y - b.pos.y;
       }
       return diff;

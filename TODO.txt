@@ -34,6 +34,7 @@ X car inventory should disappear when walk away
 X fix weird map loading bug with gas station and start intersection
 X support headshots
 X fix Zombie hitbox
+X add fuel gauge
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -56,6 +57,9 @@ broken headlights
 headlight repair
 fix barrel 'sliding'
 support shooting out of car
+add fuel consumption -- cars don't work without fuel
+getting fuel from gas pumps
+transfering fuel between cars
 
 *EDITOR*
 remove current collidible code
@@ -84,6 +88,7 @@ clean up zombie's standing legs (make back leg angle outward)
 add L&R hand graphics to DudeHands HUD
 add custom cursor hand graphics for inventory
 clean up extra pixel when rendering arms with rifle
+fuel gauge tick markers
 
 *CARS*
 Police Car

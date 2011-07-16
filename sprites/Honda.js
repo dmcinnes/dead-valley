@@ -19,7 +19,9 @@ define(['game', 'car'], function (game, Car) {
     cargoSpace: {
       width:  9,
       height: 4
-    }
+    },
+    fuelCapacity: 10,
+    mpg: 30
   };
 
   var Honda = function () {

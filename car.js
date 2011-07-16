@@ -56,6 +56,12 @@ define(["game",
     ];
     this.headlightsOn = false;
 
+    this.fuelCapacity = config.fuelCapacity;
+    this.mpg          = config.mpg;
+
+    // if it's not given make it random
+    this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
+
     this.inventory = new Inventory(config.cargoSpace.width, config.cargoSpace.height, true);
   };
   Car.prototype = new RigidBody();
@@ -211,6 +217,10 @@ define(["game",
   };
 
   Car.prototype.takeDamage = function (damage) {
+  };
+
+  Car.prototype.percentFuelRemaining = function () {
+    return this.currentFuel / this.fuelCapacity;
   };
 
   Car.prototype.saveMetadata = function () {
