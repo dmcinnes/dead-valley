@@ -68,11 +68,11 @@ X create sprites for pickups
 X add dude death animation
 X add zombie death animation
 X clean up zombie outlines
+X fix parking lot corner tile
+X fix parking spaces
 add spiderwebbed windows to car's sprite
 add destroyed car state to car's sprite
 update color on gas station
-fix parking lot corner tile
-fix parking spaces
 house
 police station
 truck sprite
