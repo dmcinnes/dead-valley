@@ -1,4 +1,4 @@
-define([], function () {
+define(['game'], function (game) {
 
   var div = $('#fuel-gauge');
 
@@ -12,6 +12,7 @@ define([], function () {
   var tip        = 2;
   var roundThing = 8;
 
+  var displayedAngle = 0;
   var angle = 0;
 
   var updateAngle = function (car) {
@@ -23,6 +24,7 @@ define([], function () {
   };
 
   var render = function () {
+    displayedAngle = angle;
     clear();
 
     context.save();
@@ -57,6 +59,13 @@ define([], function () {
   var hide = function () {
     div.hide();
   };
+
+  game.events.subscribe('fuel consumed', function (car) {
+    updateAngle(car);
+    if (displayedAngle - angle > 0.01) { // less than 1 degree
+      render();
+    }
+  });
 
   return {
     update: update,

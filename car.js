@@ -56,8 +56,12 @@ define(["game",
     ];
     this.headlightsOn = false;
 
-    this.fuelCapacity = config.fuelCapacity;
-    this.mpg          = config.mpg;
+    this.fuelCapacity    = config.fuelCapacity;
+
+    // 60 mph / (60 min/hr * 60 sec/min) = mi/sec
+    // mi/sec / mi/gal = gal/sec
+    this.fuelConsumption = (1 / 60) / config.mpg; // gal/sec
+    this.fuelConsumption *= 10; // scale it up for the game
 
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
@@ -103,10 +107,13 @@ define(["game",
   };
 
   Car.prototype.setThrottle = function (throttle) {
-    // front wheel drive
-    this.wheels[0].addTransmissionTorque(throttle * this.engineTorque);
-    this.wheels[1].addTransmissionTorque(throttle * this.engineTorque);
-    this.stopped = false;
+    // gotta have fuel to drive
+    if (this.currentFuel > 0) {
+      // front wheel drive
+      this.wheels[0].addTransmissionTorque(throttle * this.engineTorque);
+      this.wheels[1].addTransmissionTorque(throttle * this.engineTorque);
+      this.stopped = false;
+    }
   };
 
   Car.prototype.setBrakes = function (brakes) {
@@ -114,6 +121,17 @@ define(["game",
     _(this.wheels).each(function (wheel) {
       wheel.applyBrakes(torque);
     });
+  };
+
+  Car.prototype.consumeFuel = function (delta) {
+    if (this.currentFuel > 0) {
+      var previous = this.currentFuel;
+      this.currentFuel -= this.fuelConsumption * delta;
+      if (this.currentFuel < 0) {
+        this.currentFuel = 0;
+      }
+      game.events.fireEvent('fuel consumed', this);
+    }
   };
 
   Car.prototype.preMove = function (delta) {
@@ -128,6 +146,7 @@ define(["game",
 
       if (keyStatus.up) {
         this.setThrottle(1);
+        this.consumeFuel(delta);
       }
 
       if (keyStatus.down) {
@@ -137,6 +156,7 @@ define(["game",
           // reverse
           this.setThrottle(-1);
           this.reversing = true;
+          this.consumeFuel(delta);
         } else if (!this.stopped) { // if not already stopped
           this.breaking = true;
           // update direction vector
