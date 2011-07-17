@@ -6,11 +6,14 @@ define(['game'], function (game) {
   var width  = div.width();
   var height = div.height();
 
+  var angleWidth = 120;
+  var verticalOffset = 60;
+
   var displayedAngle = 0;
   var angle = 0;
 
   var updateAngle = function (car) {
-    angle = 180 * car.percentFuelRemaining() - 90;
+    angle = angleWidth * car.percentFuelRemaining() - verticalOffset;
     if (Math.abs(displayedAngle - angle) > 1) {
       displayedAngle = angle;
       needle.transform({rotate:displayedAngle+"deg"});

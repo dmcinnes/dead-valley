@@ -21,6 +21,7 @@ define(['game', 'car'], function (game, Car) {
       height: 4
     },
     fuelCapacity: 10,
+    currentFuel: 10,
     mpg: 30
   };
 
