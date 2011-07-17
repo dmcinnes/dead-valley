@@ -189,9 +189,28 @@ body {
 
 #fuel-gauge {
   position: absolute;
+  width: 120px;
+  height: 60px;
   left: 10px;
   top: 30px;
   display: none;
   z-index: 110;
   border: 2px solid black;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  overflow: hidden;
+}
+
+#fuel-gauge-needle {
+  position: absolute;
+  width: 16px;
+  height: 58px;
+  left: 52px;
+  bottom: -8px;
+  background-image:url(../assets/gauge-needle.png);
+  -moz-transform-origin: 8px 50px;
+  -webkit-transform-origin: 8px 50px;
+  -o-transform-origin: 8px 50px;
+  -ms-transform-origin: 8px 50px;
+  transform-origin: 8px 50px;
 }

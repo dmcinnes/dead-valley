@@ -5,6 +5,7 @@
     <script src="lib/underscore.js"></script>
     <script src="lib/jquery-1.6.1.min.js"></script>
     <script src="lib/jquery-ui-1.8.13.custom.js"></script>
+    <script src="lib/jquery.transform-0.9.3.js"></script>
     <script data-main="main" src="require.js"></script>
   </head>
   <body>
@@ -12,7 +13,9 @@
       <div id="canvas-mask">
         <div id="dude-inventory"></div>
         <div id="other-inventory"></div>
-        <canvas id="fuel-gauge" width="120" height="60"></canvas>
+        <div id="fuel-gauge">
+          <div id="fuel-gauge-needle"></div>
+        </div>
         <div id="click-overlay" class="crosshair"></div>
         <canvas id="sky-canvas" width="900" height="600"></canvas>
         <canvas id="canvas" width="900" height="600"></canvas>
