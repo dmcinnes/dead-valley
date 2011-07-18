@@ -197,6 +197,8 @@ body {
   z-index: 110;
   border-top-left-radius: 60px;
   border-top-right-radius: 60px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   overflow: hidden;
   background-image:url(../assets/fuel-gauge.png);
   background-color:black;
