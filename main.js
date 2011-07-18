@@ -125,9 +125,11 @@ require(
 
       // save the sprites before we leave
       $(window).unload(function () {
+        // don't save if the world has been cleared
+        // -- cleared the world for a reason
         if (World.usedSpace()) {
-          game.map.save();
           World.saveDude(game.dude);
+          game.map.save();
         }
       });
     });
