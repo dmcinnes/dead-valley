@@ -41,6 +41,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
     this.firing              = false;
 
     this.aimDirection        = null;
+    this.aimPoint            = null;
 
     // list of things the dude is currently touching
     this.touching            = [];
@@ -138,6 +139,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
 
     if (this.walking) {
       this.aiming = false;
+      this.aimTowardMouse(); // update so flashlight follows
     }
 
     game.map.keepInView(this);
@@ -203,7 +205,9 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
   };
 
   Dude.prototype.aimTowardMouse = function (coords) {
+    coords = coords || this.aimPoint;
     this.aiming = true;
+    this.aimPoint = coords;
     this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
     var dir = coords.subtract(this.pos);
     this.aimDirection = Math.atan2(dir.y, dir.x); // radians
@@ -336,6 +340,8 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
           }
         } while (!firearm.isFull() && ammo)
       }
+    }).subscribe('map scroll', function (vec) {
+      self.aimPoint.translate(vec);
     });
   };
 
@@ -358,6 +364,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
     }).mouseleave(function () {
       self.aiming       = false;
       self.aimDirection = null;
+      self.aimPoint     = null;
     });
   };
 

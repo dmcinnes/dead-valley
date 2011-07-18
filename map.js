@@ -119,6 +119,10 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
       this.submapOffsetY += this.velY;
       this.originOffsetX += this.velX;
       this.originOffsetY += this.velY;
+
+      if (this.velX || this.velY) {
+        game.events.fireEvent('map scroll', new Vector(this.velX, this.velY));
+      }
     };
 
     this.shiftLevel = function () {

@@ -4,7 +4,7 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
 
   var context = game.skyContext;
   
-  var length    = 100;
+  var maxLength = 120;
   var halfWidth = 30;
   var lampHW    = 3;
   var offset    = -10;
@@ -18,12 +18,14 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
     context.globalCompositeOperation = 'destination-out';
     dude.configureTransform(context);
     if (dude.aimDirection) {
+      var vector = dude.aimPoint.subtract(dude.pos);
+      var length = Math.min(vector.magnitude(), maxLength);
       context.rotate(dude.aimDirection + Math.PI/2);
       context.translate(0, offset);
       context.beginPath();
       context.moveTo(-lampHW, 0);
       context.lineTo(-halfWidth, -length);
-      context.arc(0, -length, halfWidth, Math.PI, Math.PI*2);
+      context.arc(0, -length, halfWidth, 0, Math.PI*2);
       context.lineTo(lampHW, 0);
       context.arc(0, 0, lampHW, 0, Math.PI);
     } else {
