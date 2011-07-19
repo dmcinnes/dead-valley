@@ -31,6 +31,9 @@ define(function () {
   var upHandlers = {};
 
   $(window).keydown(function (e) {
+    if (e.metaKey || e.controlKey) { // ignore
+      return;
+    }
     keyStatus.keyDown = true;
     var key = KEY_CODES[e.keyCode];
     if (key) {
@@ -39,6 +42,9 @@ define(function () {
       fireKeyHandlers(key, downHandlers);
     }
   }).keyup(function (e) {
+    if (e.metaKey || e.controlKey) { // ignore
+      return;
+    }
     keyStatus.keyDown = false;
     var key = KEY_CODES[e.keyCode];
     if (key) {
