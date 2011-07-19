@@ -15,6 +15,10 @@ define(["sprite",
   GasPump1.prototype.transformNormals = function () {
   };
 
+  GasPump1.prototype.tip = function () {
+    return "hello";
+  };
+
   collidable(GasPump1);
 
   return GasPump1;

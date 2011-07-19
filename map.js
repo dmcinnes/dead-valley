@@ -477,6 +477,13 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
       });
     };
 
+    this.canvasCoordinatesFromWorld = function (x, y) {
+      return new Vector({
+        x: x - this.originOffsetX,
+        y: y - this.originOffsetY
+      });
+    };
+
     this.loadStartMapTiles = function (nw, sw, ne, se) {
       var chunks = this.getLevelChunks();
 

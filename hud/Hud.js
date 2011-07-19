@@ -5,6 +5,7 @@ define(['game',
        'hud/Pause',
        'hud/Framerate',
        'hud/FuelGauge',
+       'hud/Tip',
        'Firearm'],
        function (game, InventoryDisplay, LifeMeter, Pause, Framerate, FuelGauge, Firearm) {
 

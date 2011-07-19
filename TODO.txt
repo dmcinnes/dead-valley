@@ -36,6 +36,7 @@ X support headshots
 X fix Zombie hitbox
 X add fuel gauge
 X add fuel consumption -- cars don't work without fuel
+add tooltips for dude touch interactions
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
