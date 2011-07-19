@@ -75,6 +75,7 @@ X clean up zombie outlines
 X fix parking lot corner tile
 X fix parking spaces
 X shack
+X fuel gauge tick markers
 add spiderwebbed windows to car's sprite
 add destroyed car state to car's sprite
 update color on gas station
@@ -88,7 +89,6 @@ clean up zombie's standing legs (make back leg angle outward)
 add L&R hand graphics to DudeHands HUD
 add custom cursor hand graphics for inventory
 clean up extra pixel when rendering arms with rifle
-fuel gauge tick markers
 
 *CARS*
 Police Car
