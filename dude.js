@@ -206,11 +206,13 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
 
   Dude.prototype.aimTowardMouse = function (coords) {
     coords = coords || this.aimPoint;
-    this.aiming = true;
-    this.aimPoint = coords;
-    this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
-    var dir = coords.subtract(this.pos);
-    this.aimDirection = Math.atan2(dir.y, dir.x); // radians
+    if (coords) {
+      this.aiming = true;
+      this.aimPoint = coords;
+      this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
+      var dir = coords.subtract(this.pos);
+      this.aimDirection = Math.atan2(dir.y, dir.x); // radians
+    }
   };
 
   Dude.prototype.saveMetadata = function () {
