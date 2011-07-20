@@ -8,8 +8,8 @@ define(['game'], function (game) {
       tip.html(sprite.tip());
       var pos = sprite.pos;
       pos = game.map.canvasCoordinatesFromWorld(pos.x, pos.y);
-      tip.css({left:pos.x, top:pos.y});
       canvasMask.append(tip);
+      tip.css({left:pos.x - tip.outerWidth()/2, top:pos.y - tip.outerHeight() - 10});
     }
   }).subscribe('stopped touching', function (sprite) {
     tip.detach();
