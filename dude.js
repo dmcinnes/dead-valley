@@ -343,7 +343,9 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
         } while (!firearm.isFull() && ammo)
       }
     }).subscribe('map scroll', function (vec) {
-      self.aimPoint.translate(vec);
+      if (self.aimPoint) {
+        self.aimPoint.translate(vec);
+      }
     });
   };
 
