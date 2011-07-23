@@ -4,12 +4,14 @@ define(['game'], function (game) {
   var canvasMask = $('#canvas-mask');
 
   game.events.subscribe('started touching', function (sprite) {
-    if (sprite.tip) {
-      tip.html(sprite.tip());
+    var tipText = sprite.tip && sprite.tip();
+    if (tipText) {
+      tip.html(tipText);
       var pos = sprite.pos;
       pos = game.map.canvasCoordinatesFromWorld(pos.x, pos.y);
       canvasMask.append(tip);
-      tip.css({left:pos.x - tip.outerWidth()/2, top:pos.y - tip.outerHeight() - sprite.tileHeight});
+      var offset = tip.outerWidth() * 0.3 + 10; // magic numbers from CSS
+      tip.css({left:pos.x - offset, top:pos.y - tip.outerHeight() - sprite.tileHeight});
     }
   }).subscribe('stopped touching', function (sprite) {
     tip.detach();
