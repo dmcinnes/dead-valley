@@ -1,7 +1,24 @@
 // The DUDE
 
-define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory", "fx/BloodSplatter"],
-       function (game, Sprite, collidable, spriteMarshal, DudeHands, Inventory, BloodSplatter) {
+define(["game",
+       "sprite",
+       "collidable",
+       "spritemarshal",
+       "DudeHands",
+       "Inventory",
+       "GasPump",
+       "Car",
+       "fx/BloodSplatter"],
+
+       function (game,
+                 Sprite,
+                 collidable,
+                 spriteMarshal,
+                 DudeHands,
+                 Inventory,
+                 GasPump,
+                 Car,
+                 BloodSplatter) {
 
   var context = game.spriteContext;
 
@@ -332,6 +349,7 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
       }
     }).subscribe('reload', function () {
       // TODO move this to a better place
+      // Firearm base class?
       var firearm = self.hands.weapon();
       if (firearm) {
         do {
@@ -346,6 +364,30 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
       if (self.aimPoint) {
         self.aimPoint.translate(vec);
       }
+    }).subscribe('mousedown', function (event, clickedSprite) {
+      if (self.alive()) {
+
+        // TODO maybe a better place for this
+        if (clickedSprite && clickedSprite.isCar) {
+          var pump = _.find(self.touching, function (sprite) {
+            return !!sprite.startFuelingCar;
+          });
+          if (pump) {
+            pump.startFuelingCar(clickedSprite);
+            return;
+          }
+        } 
+
+        var firearm = self.hands.weapon();
+        if (firearm) {
+          var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+          self.aimTowardMouse(coords);
+          if (firearm.fire(self.pos, coords)) {
+            self.firing = true;
+          }
+        }
+
+      }
     });
   };
 
@@ -355,15 +397,6 @@ define(["game", "sprite", "collidable", "spritemarshal", "DudeHands", "Inventory
       if (self.alive() && self.hands.hasAimableItem()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
         self.aimTowardMouse(coords);
-      }
-    }).mousedown(function (e) {
-      var firearm = self.hands.weapon();
-      if (self.alive() && firearm) {
-        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
-        self.aimTowardMouse(coords);
-        if (firearm.fire(self.pos, coords)) {
-          self.firing = true;
-        }
       }
     }).mouseleave(function () {
       self.aiming       = false;

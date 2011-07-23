@@ -36,7 +36,8 @@ X support headshots
 X fix Zombie hitbox
 X add fuel gauge
 X add fuel consumption -- cars don't work without fuel
-add tooltips for dude touch interactions
+X add tooltips for dude touch interactions
+X getting fuel from gas pumps
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -59,7 +60,6 @@ broken headlights
 headlight repair
 fix barrel 'sliding'
 support shooting out of car
-getting fuel from gas pumps
 transfering fuel between cars
 
 *EDITOR*
@@ -89,6 +89,7 @@ shrubs
 clean up zombie's standing legs (make back leg angle outward)
 add L&R hand graphics to DudeHands HUD
 add custom cursor hand graphics for inventory
+add custom cursor hand graphics for filling up the gas tank
 clean up extra pixel when rendering arms with rifle
 
 *CARS*

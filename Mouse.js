@@ -17,7 +17,7 @@ define(['game'], function (game) {
     return true;
   };
 
-  $('#click-overlay').mousedown(function (event) {
+  var determineMouseEventCollisions = function (event) {
     var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
     var node   = game.map.getNodeByWorldCoords(coords.x, coords.y);
 
@@ -48,9 +48,15 @@ define(['game'], function (game) {
       }
     }
 
-    if (clicked) {
-      game.events.fireEvent('sprite clicked', clicked);
-    }
+    return clicked;
+  };
+
+  $('#click-overlay').mousedown(function (event) {
+    game.events.fireEvent('mousedown', event, determineMouseEventCollisions(event));
+  }).mouseup(function (event) {
+    game.events.fireEvent('mouseup', event, determineMouseEventCollisions(event));
+  }).click(function (event) {
+    game.events.fireEvent('click', event, determineMouseEventCollisions(event));
   });
 
 });
