@@ -1,21 +1,9 @@
-define(["sprite",
-        "collidable"],
-       function (Sprite, collidable) {
+define(["GasPump"], function (GasPump) {
 
   var GasPump2 = function () {
     this.init('GasPump2');
-
-    this.mass    = Number.MAX_VALUE;
-    this.inertia = Number.MAX_VALUE;
   };
-  GasPump2.prototype = new Sprite();
-
-  GasPump2.prototype.move = function (delta) {
-  };
-  GasPump2.prototype.transformNormals = function () {
-  };
-
-  collidable(GasPump2);
+  GasPump2.prototype = new GasPump();
 
   return GasPump2;
 });
