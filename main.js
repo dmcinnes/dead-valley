@@ -17,6 +17,7 @@ require(
    "inventory/ShotgunShells",
    "inventory/Flashlight",
    "World",
+   "Mouse",
    "spritemarshal"],
 
   function (game,
@@ -37,6 +38,7 @@ require(
             ShotgunShells,
             Flashlight,
             World,
+            Mouse,
             spriteMarshal) {
 
     // TODO clean this up so main isn't so cluttered
