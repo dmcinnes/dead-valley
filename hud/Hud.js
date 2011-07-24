@@ -7,7 +7,7 @@ define(['game',
        'hud/FuelGauge',
        'hud/Tip',
        'Firearm'],
-       function (game, InventoryDisplay, LifeMeter, Pause, Framerate, FuelGauge, Firearm) {
+       function (game, InventoryDisplay, LifeMeter, Pause, Framerate, FuelGauge, Tip, Firearm) {
 
   var dudeInventory, dudeHands;
   var inventoryShown = false;
