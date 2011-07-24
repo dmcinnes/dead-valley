@@ -37,10 +37,11 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
   };
 
   InventoryItem(Flashlight, {
-    width:  1, 
-    height: 3, 
-    image:  'flashlight',
-    clazz:  'Flashlight'
+    width:       1, 
+    height:      3, 
+    image:       'flashlight',
+    clazz:       'Flashlight',
+    description: "Flashlight"
   });
 
   Flashlight.prototype.aimable = true;

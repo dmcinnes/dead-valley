@@ -11,7 +11,7 @@ define(['game'], function (game) {
     if (!this.display) {
       this.display = $("<div/>")
 	.append($("<span/>").addClass('readout').text(this.count))
-	.append($("<img/>").attr('src', this.image));
+	.append($("<img/>").attr('src', this.image).attr('title', this.description));
     }
     return this.display;
   };

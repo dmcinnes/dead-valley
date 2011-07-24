@@ -20,7 +20,8 @@ define(['Firearm', 'inventory/InventoryItem', 'inventory/Nine_mm'],
     height: 2, 
     image:  'pistol',
     accepts: [Nine_mm],
-    clazz:  'Pistol'
+    clazz:  'Pistol',
+    description: '9mm Glock'
   });
 
   return Pistol;

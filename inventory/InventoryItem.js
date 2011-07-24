@@ -12,7 +12,7 @@ define(function () {
   // the HTML node to show in the inventory for this object
   var displayNode = function () {
     if (!this.display) {
-      this.display = $("<img/>").attr('src', this.image);
+      this.display = $("<img/>").attr('src', this.image).attr('title', this.description);
     }
     return this.display;
   };
@@ -26,6 +26,7 @@ define(function () {
     object.prototype.height      = config.height;
     object.prototype.image       = 'assets/inventory/' + config.image + '.png';
     object.prototype.acceptables = config.accepts || [];
+    object.prototype.description = config.description || '';
 
     // only override displayNode if it's not defined
     if (!object.prototype.displayNode) {

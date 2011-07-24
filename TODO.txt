@@ -38,6 +38,7 @@ X add fuel gauge
 X add fuel consumption -- cars don't work without fuel
 X add tooltips for dude touch interactions
 X getting fuel from gas pumps
+X add inventory tool tips
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -62,7 +63,6 @@ fix barrel 'sliding'
 support shooting out of car
 transfering fuel between cars
 make tip not obscure sprites
-add inventory tool tips
 
 *EDITOR*
 remove current collidible code

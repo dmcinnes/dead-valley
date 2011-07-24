@@ -8,11 +8,12 @@ define(['inventory/InventoryItem', 'Ammo'], function (InventoryItem, Ammo) {
   Nine_mm.prototype = new Ammo();
 
   InventoryItem(Nine_mm, {
-    width:   1, 
-    height:  1, 
-    image:   '9mm',
-    accepts: [Nine_mm],
-    clazz:   'Nine_mm'
+    width:       1, 
+    height:      1, 
+    image:       '9mm',
+    accepts:     [Nine_mm],
+    clazz:       'Nine_mm',
+    description: "9mm Ammunition"
   });
 
   return Nine_mm;

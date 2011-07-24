@@ -34,11 +34,12 @@ define(['game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem']
   };
 
   InventoryItem(Shotgun, {
-    width:   2, 
-    height:  3, 
-    image:   'shotgun',
-    accepts: [ShotgunShells],
-    clazz:   'Shotgun'
+    width:       2, 
+    height:      3, 
+    image:       'shotgun',
+    accepts:     [ShotgunShells],
+    clazz:       'Shotgun',
+    description: "Mossberg 590 Shotgun"
   });
 
   return Shotgun;

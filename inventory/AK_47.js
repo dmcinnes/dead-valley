@@ -14,7 +14,8 @@ define(['Firearm', 'inventory/InventoryItem'], function (Firearm, InventoryItem)
     width:  2, 
     height: 3, 
     image:  'AK-47',
-    clazz: 'AK_47'
+    clazz: 'AK_47',
+    description: 'AK-47'
   });
 
   return AK_47;
