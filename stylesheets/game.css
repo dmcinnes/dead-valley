@@ -228,6 +228,7 @@ body {
   -moz-border-radius   : 10px;
   border-radius        : 10px;
   white-space: nowrap;
+  opacity: 0.8;
 }
 
 .tip:after {
@@ -238,10 +239,6 @@ body {
   border-top: 10px solid #ffcb66;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  /* At time of this creation, only Fx4 doing pseduo transitions */
-  /* -webkit-transition: all 0.4s ease; */
-  /* -moz-transition   : all 0.4s ease; */
-  /* opacity: 0; */
   left: 30%;
   top: 90%;
 }

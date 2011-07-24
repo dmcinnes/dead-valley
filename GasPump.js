@@ -4,7 +4,7 @@ define(["game",
         "collidable"],
        function (game, Sprite, eventmachine, collidable) {
 
-  var MAX_FUEL         = 1000;
+  var MAX_FUEL         = 100;
   var BROKEN_PERCENT   = 0.3;
   var FUELING_RATE     = 0.5; // gallons per second
   var FUELING_DISTANCE = 40;
@@ -38,8 +38,7 @@ define(["game",
   GasPump.prototype.preMove = function (delta) {
     if (this.fueling &&
         !this.broken &&
-        this.currentFuel &&
-        this.fueling.percentFuelRemaining() < 1) {
+        this.currentFuel) {
 
       var transferred = FUELING_RATE * delta;
       if (transferred > this.currentFuel) {

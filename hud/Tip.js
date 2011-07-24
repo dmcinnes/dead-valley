@@ -1,7 +1,7 @@
 define(['game'], function (game) {
   var tip = $("<div/>").addClass('tip');
 
-  var canvasMask = $('#canvas-mask');
+  var parent = $('#click-overlay');
 
   var currentSprite = null;
 
@@ -12,7 +12,7 @@ define(['game'], function (game) {
       tip.html(tipText);
       var pos = sprite.pos;
       pos = game.map.canvasCoordinatesFromWorld(pos.x, pos.y);
-      canvasMask.append(tip);
+      parent.append(tip);
       var offset = tip.outerWidth() * 0.3 + 10; // magic numbers from CSS
       tip.css({left:pos.x - offset,
                top:pos.y - tip.outerHeight() - sprite.tileHeight});
