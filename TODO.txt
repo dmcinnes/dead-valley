@@ -64,6 +64,8 @@ support shooting out of car
 transfering fuel between cars
 make tip not obscure sprites
 vertically center items in dude's hands
+add names to building and car's inventory displays
+gas pumps can take damage
 
 *EDITOR*
 remove current collidible code
@@ -119,3 +121,4 @@ spare tire
 rifle ammo
 food
 medkit
+gas can
