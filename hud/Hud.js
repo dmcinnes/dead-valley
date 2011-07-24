@@ -86,6 +86,8 @@ define(['game',
     // only show the fuel gauge inside the car
     if (inventoryShown) {
       FuelGauge.show(car);
+      otherInventory = car.inventory;
+      showInventory();
     }
   }).subscribe('leave car', function (car) {
     // remove the car inventory when we exit the car
