@@ -1,13 +1,23 @@
 // Place where we handle all the HUD interaction details
 define(['game',
        'hud/InventoryDisplay',
+       'hud/DudeHandsInventoryDisplay',
        'hud/LifeMeter',
        'hud/Pause',
        'hud/Framerate',
        'hud/FuelGauge',
        'hud/Tip',
        'Firearm'],
-       function (game, InventoryDisplay, LifeMeter, Pause, Framerate, FuelGauge, Tip, Firearm) {
+
+       function (game,
+                 InventoryDisplay,
+                 DudeHandsInventoryDisplay,
+                 LifeMeter,
+                 Pause,
+                 Framerate,
+                 FuelGauge,
+                 Tip,
+                 Firearm) {
 
   var dudeInventory, dudeHands;
   var inventoryShown = false;
@@ -109,10 +119,7 @@ define(['game',
     dudeInventory = new InventoryDisplay(game.dude.inventory,
                                          $dudeInventoryDiv,
                                          { doubleClickTarget: game.dude.hands });
-    dudeHands = new InventoryDisplay(game.dude.hands,
-                                     $dudeInventoryDiv,
-                                     { id:'dude-hands',
-                                       doubleClickTarget: game.dude.inventory });
+    dudeHands = DudeHandsInventoryDisplay($dudeInventoryDiv);
   }).subscribe('start fueling', function (car) {
     FuelGauge.show(car);
   }).subscribe('stop fueling', function (car) {

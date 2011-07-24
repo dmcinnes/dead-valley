@@ -4,15 +4,6 @@ define(['game', 'Inventory'], function (game, Inventory) {
   var draggingItem, draggingItemOriginalPos, draggingItemOriginalInv,
       currentDraggable, currentDraggableOffset;
 
-  // magic numbers!
-  // a single block is 44x44 but some extra crap is put in there
-  var cellSize = 50;
-  var itemOffset = {
-    top:  3,
-    left: 3
-  };
-  var doubleClickTimeout = 200; // in ms
-
   // dropping anywhere else reverts the drag
   $('body').droppable().bind('drop' ,function () {
     draggingItemOriginalInv.addItem(draggingItem,
@@ -70,6 +61,18 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
   InventoryDisplay.prototype = {
 
+    // magic numbers!
+    // a single block is 44x44 but some extra crap is put in there
+    cellSize: 50,
+
+    itemOffset: {
+      top:  3,
+      left: 3
+    },
+
+    doubleClickTimeout: 200, // in ms
+
+
     itemEventHandlers: {
       dragstart: function (event, ui) {
         var draggable = $(event.target);
@@ -88,7 +91,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
                 self.itemDoubleClick(event);
               }
               self.clicks = 0;
-            }, doubleClickTimeout);
+            }, self.doubleClickTimeout);
           }
         }
         // so the table click handler doesn't fire
@@ -100,8 +103,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
       drop: function (e, ui) {
         var item;
         var tablePos = $(this.table).offset();
-        var posX = Math.round((ui.offset.left - tablePos.left) / cellSize);
-        var posY = Math.round((ui.offset.top - tablePos.top) / cellSize);
+        var posX = Math.round((ui.offset.left - tablePos.left) / this.cellSize);
+        var posY = Math.round((ui.offset.top - tablePos.top) / this.cellSize);
 
         // clear current draggable if we have one
         clearCurrentDraggable();
@@ -181,6 +184,11 @@ define(['game', 'Inventory'], function (game, Inventory) {
     clearEventHandlers: function () {
       this.inventory.unsubscribe('itemAdded', this.itemAddedEventHandler);
       this.inventory.unsubscribe('itemRemoved', this.itemRemovedEventHandler);
+
+      var self = this;
+      _.each(this.tableEventHandlers, function (handler, key) {
+        self.table.unbind(key);
+      });
     },
 
     // create the table markup
@@ -216,7 +224,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var start = this.table.find("tr:eq("+y+") td:eq("+x+")");
       var pos = start.position();
       var displayNode = item.displayNode();
-      displayNode.css({left:pos.left + itemOffset.left, top:pos.top + itemOffset.top});
+      displayNode.css({left:pos.left + this.itemOffset.left, top:pos.top + this.itemOffset.top});
       displayNode.addClass('inventory-item');
       displayNode.draggable({
         helper:      'clone',
@@ -237,6 +245,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
       displayNode[0].oncontextmenu = function() {
         return false;
       };
+
+      return displayNode;
     },
 
     // remove the item from its place
@@ -302,8 +312,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
     restartDrag: function (item, offset, event) {
       // figure out the offset -- center it
       offset = offset || {
-        left: (cellSize/2) * item.width,
-        top:  (cellSize/2) * item.height
+        left: (this.cellSize/2) * item.width,
+        top:  (this.cellSize/2) * item.height
       };
       // restart dragging the dropped thing
       this.clickDragStart(item, offset, event);
