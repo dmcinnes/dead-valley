@@ -59,4 +59,8 @@ define(['game'], function (game) {
     game.events.fireEvent('click', event, determineMouseEventCollisions(event));
   });
 
+  $('#pause-overlay').mousedown(function (event) {
+    game.events.fireEvent('toggle pause');
+  });
+
 });
