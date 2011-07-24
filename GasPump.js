@@ -41,16 +41,19 @@ define(["game",
         this.currentFuel) {
 
       var transferred = FUELING_RATE * delta;
+
+      // do we have enough fuel to give?
       if (transferred > this.currentFuel) {
         transferred = this.currentFuel;
       }
+
+      // can the car take it?
       if (transferred + this.fueling.currentFuel > this.fueling.fuelCapacity) {
         transferred = this.fueling.fuelCapacity - this.fueling.currentFuel;
       }
 
       this.fueling.currentFuel += transferred;
       this.currentFuel         -= transferred;
-      this.totalTransfer       += transferred;
 
       if (!this.currentFuel) { // ran out of fuel
         this.fireEvent('tip data change');
@@ -66,7 +69,6 @@ define(["game",
   GasPump.prototype.startFuelingCar = function (car) {
     if (!this.broken && this.distance(car) < FUELING_DISTANCE) {
       this.fueling = car;
-      this.totalTransfer = 0;
       game.events.fireEvent('start fueling', this.fueling);
     }
   };
