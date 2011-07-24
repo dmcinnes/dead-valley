@@ -61,6 +61,7 @@ headlight repair
 fix barrel 'sliding'
 support shooting out of car
 transfering fuel between cars
+make tip not obscure sprites
 
 *EDITOR*
 remove current collidible code
