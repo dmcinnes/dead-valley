@@ -1,7 +1,8 @@
 define(["game",
         "sprite",
+        "eventmachine",
         "collidable"],
-       function (game, Sprite, collidable) {
+       function (game, Sprite, eventmachine, collidable) {
 
   var MAX_FUEL = 1000;
   var BROKEN_PERCENT = 0.3;
@@ -26,6 +27,10 @@ define(["game",
     var self = this;
     game.events.subscribe('mouseup', function () {
       self.stopFueling();
+    }).subscribe('stopped touching', function (sprite) {
+      if (self === sprite) {
+        self.stopFueling();
+      }
     });
   };
 
@@ -44,7 +49,10 @@ define(["game",
       }
 
       this.fueling.currentFuel += transferred;
-      this.currentFuel -= transferred;
+      this.currentFuel         -= transferred;
+      this.totalTransfer       += transferred;
+
+      this.fireEvent('tip data change');
     }
   };
 
@@ -52,6 +60,7 @@ define(["game",
   GasPump.prototype.startFuelingCar = function (car) {
     if (!this.broken) {
       this.fueling = car;
+      this.totalTransfer = 0;
     }
   };
 
@@ -64,6 +73,12 @@ define(["game",
       return "Broken";
     } else if (this.currentFuel === 0) {
       return "Empty";
+    } else if (this.fueling) {
+      var precision = 3;
+      if (this.totalTransfer >= 10) {
+        precision++;
+      }
+      return this.totalTransfer.toString().substring(0, precision);
     } else {
       return "Has Gas";
     }
@@ -77,6 +92,7 @@ define(["game",
   };
 
   collidable(GasPump);
+  eventmachine(GasPump);
 
   return GasPump;
 });
