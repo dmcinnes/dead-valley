@@ -62,6 +62,7 @@ fix barrel 'sliding'
 support shooting out of car
 transfering fuel between cars
 make tip not obscure sprites
+add inventory tool tips
 
 *EDITOR*
 remove current collidible code
@@ -107,13 +108,13 @@ Bus
 X flashlight
 X shotgun
 X shotgun shells
+X 9mm ammo
 lantern
 rifle
 bat
 golf club
 rubber hose
 spare tire
-pistol ammo
 rifle ammo
 food
 medkit
