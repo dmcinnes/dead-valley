@@ -1,4 +1,5 @@
-// Pistol
+// Flashlight
+// Everybody's got a little light under the sun
 
 define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
 

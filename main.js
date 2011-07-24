@@ -11,7 +11,7 @@ require(
    "sprites/Honda",
    "sprites/Zombie",
    "sprites/Barrel",
-   "inventory/Pistol",
+   "inventory/Glock19",
    "inventory/AK_47",
    "inventory/Shotgun",
    "inventory/ShotgunShells",
@@ -33,7 +33,7 @@ require(
             Honda,
             Zombie,
             Barrel,
-            Pistol,
+            Glock19,
             AK_47,
             Shotgun,
             ShotgunShells,
@@ -87,8 +87,8 @@ require(
         dude.pos.y = startY;
 
         // give the dude a pistol!
-        dude.inventory.addItem(new Pistol(), 1, 1);
-        // and why not, an AK and a falshlight
+        dude.inventory.addItem(new Glock19(), 1, 1);
+        // and why not, an AK and a flashlight
         dude.inventory.addItem(new AK_47(), 5, 0);
         dude.inventory.addItem(new Flashlight(), 0, 0);
         // shotty
