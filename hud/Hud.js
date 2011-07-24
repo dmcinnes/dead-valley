@@ -113,6 +113,10 @@ define(['game',
                                      $dudeInventoryDiv,
                                      { id:'dude-hands',
                                        doubleClickTarget: game.dude.inventory });
+  }).subscribe('start fueling', function (car) {
+    FuelGauge.show(car);
+  }).subscribe('stop fueling', function (car) {
+    FuelGauge.hide(car);
   });
 
   // eject ammo on right click

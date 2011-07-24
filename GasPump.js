@@ -23,7 +23,7 @@ define(["game",
     Sprite.prototype.init.call(this, config);
 
     this.currentFuel = Math.random() * MAX_FUEL;
-    this.broken = Math.random() < BROKEN_PERCENT;
+    this.broken      = Math.random() < BROKEN_PERCENT;
 
     var self = this;
     game.events.subscribe('mouseup', function () {
@@ -52,21 +52,28 @@ define(["game",
       this.currentFuel         -= transferred;
       this.totalTransfer       += transferred;
 
-      this.fireEvent('tip data change');
+      if (!this.currentFuel) { // ran out of fuel
+        this.fireEvent('tip data change');
+      }
+
+      if (transferred) {
+        game.events.fireEvent('fuel level updated', this.fueling);
+      }
     }
   };
 
   // Fill 'er Up
   GasPump.prototype.startFuelingCar = function (car) {
-    console.log(this.distance(car));
     if (!this.broken && this.distance(car) < FUELING_DISTANCE) {
       this.fueling = car;
       this.totalTransfer = 0;
+      game.events.fireEvent('start fueling', this.fueling);
     }
   };
 
   GasPump.prototype.stopFueling = function () {
     this.fueling = null;
+    game.events.fireEvent('stop fueling', this.fueling);
   };
 
   GasPump.prototype.tip = function () {
@@ -74,15 +81,6 @@ define(["game",
       return "Broken";
     } else if (this.currentFuel === 0) {
       return "Empty";
-    } else if (this.fueling) {
-      if (this.fueling.percentFuelRemaining() === 1) {
-        return "Full";
-      }
-      var precision = 3;
-      if (this.totalTransfer >= 10) {
-        precision++;
-      }
-      return this.totalTransfer.toString().substring(0, precision);
     } else {
       return "Has Gas";
     }

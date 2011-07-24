@@ -21,6 +21,12 @@ define(['game'], function (game) {
     return false;
   };
 
+  var removeTip = function () {
+    tip.detach();
+    currentSprite.unsubscribe('tip data change', setTipText);
+    currentSprite = null;
+  };
+
   game.events.subscribe('started touching', function (sprite) {
     if (setTipText(sprite)) {
       currentSprite = sprite;
@@ -28,10 +34,10 @@ define(['game'], function (game) {
     }
   }).subscribe('stopped touching', function (sprite) {
     if (currentSprite === sprite) {
-      currentSprite = null;
-      tip.detach();
-      sprite.unsubscribe('tip data change', setTipText);
+      removeTip();
     }
+  }).subscribe('mousedown', function (vec) {
+    tip.detach();
   }).subscribe('map scroll', function (vec) {
     var pos = tip.position();
     tip.css({left:pos.left - vec.x, top:pos.top - vec.y});

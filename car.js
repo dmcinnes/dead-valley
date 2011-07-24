@@ -130,7 +130,7 @@ define(["game",
       if (this.currentFuel < 0) {
         this.currentFuel = 0;
       }
-      game.events.fireEvent('fuel consumed', this);
+      game.events.fireEvent('fuel level updated', this);
     }
   };
 

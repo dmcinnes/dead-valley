@@ -31,7 +31,7 @@ define(['game'], function (game) {
     div.hide();
   };
 
-  game.events.subscribe('fuel consumed', function (car) {
+  game.events.subscribe('fuel level updated', function (car) {
     updateAngle(car);
   });
 
