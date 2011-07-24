@@ -4,9 +4,10 @@ define(["game",
         "collidable"],
        function (game, Sprite, eventmachine, collidable) {
 
-  var MAX_FUEL = 1000;
-  var BROKEN_PERCENT = 0.3;
-  var FUELING_RATE = 0.5; // gallons per second
+  var MAX_FUEL         = 1000;
+  var BROKEN_PERCENT   = 0.3;
+  var FUELING_RATE     = 0.5; // gallons per second
+  var FUELING_DISTANCE = 40;
 
   var GasPump = function () {
     this.mass    = Number.MAX_VALUE;
@@ -58,7 +59,8 @@ define(["game",
 
   // Fill 'er Up
   GasPump.prototype.startFuelingCar = function (car) {
-    if (!this.broken) {
+    console.log(this.distance(car));
+    if (!this.broken && this.distance(car) < FUELING_DISTANCE) {
       this.fueling = car;
       this.totalTransfer = 0;
     }
@@ -74,6 +76,9 @@ define(["game",
     } else if (this.currentFuel === 0) {
       return "Empty";
     } else if (this.fueling) {
+      if (this.fueling.percentFuelRemaining() === 1) {
+        return "Full";
+      }
       var precision = 3;
       if (this.totalTransfer >= 10) {
         precision++;
