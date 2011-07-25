@@ -18,10 +18,10 @@ define(['game',
       var displayNode = InventoryDisplay.prototype.renderItem.call(this, item);
 
       // change the top pos of the node to center it in the hand
-      var height = item.height * this.cellSize;
+      var height = item.height * (this.cellSize - this.itemOffset.top);
       var offset = (this.table.innerHeight() - height) / 2;
       var pos = displayNode.position();
-      displayNode.css('top', pos.top + offset - this.itemOffset.top);
+      displayNode.css('top', pos.top + offset);
  
       // mark all covered nodes as occupied
       for (var i = 0; i < item.width; i++) {
