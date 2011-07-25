@@ -14,9 +14,11 @@ define(['Building'], function (Building) {
         points.push(point);
       }
 
-      var building = new Building(points);
+      var building  = new Building(points);
+      building.name = buildingObj.name;
 
       building.inventory.setInventory(inventory);
+      building.inventory.name = building.name;
 
       // save this so we can use it later for unmarshalling
       building.buildingObject = buildingObj;

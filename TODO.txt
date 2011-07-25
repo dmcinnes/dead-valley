@@ -73,6 +73,7 @@ make zombies attracted to light
 remove current collidible code
 add building boundries creation
 add building entrance creation
+name buildings
 
 *ART*
 X add rifle/shotgun to dude's sprite
