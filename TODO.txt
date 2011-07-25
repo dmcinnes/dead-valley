@@ -41,6 +41,7 @@ X getting fuel from gas pumps
 X add inventory tool tips
 X vertically center items in dude's hands
 X add names to building and car's inventory displays
+X update inventory to be usable at night
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -57,7 +58,6 @@ make zombies follow building edges
 add zombies randomly to map based on building population of section
 generalize sprite animation handling
 HUD ammo count
-update inventory to be usable at night
 create HUD for vehicle status
 broken headlights
 headlight repair

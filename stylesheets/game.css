@@ -141,7 +141,7 @@ body {
 
 .inventory {
   float: left;
-  border: 3px solid black;
+  border: 3px solid #034;
   border-radius: 5px;
   -moz-border-radius: 5px; 
   -webkit-border-radius: 5px;
@@ -150,13 +150,17 @@ body {
   visibility: hidden;
 }
 .inventory td {
-  border: 1px solid black;
+  border: 1px solid #034;
   /* 46 because of the border */
   width: 46px;
   height: 46px;
 }
+.inventory caption {
+  color: #AAA;
+  font-weight: bold;
+}
 .inventory .occupied {
-  background: rgba(100,100,100,0.4);
+  background: rgba(70,100,120,0.3);
 }
 .inventory-item {
   position: absolute;
@@ -180,11 +184,11 @@ body {
 }
 #dude-hands td:first-child {
   border: 0px;
-  border-right: 1px solid black;
+  border-right: 1px solid #034;
 }
 #dude-hands td:last-child {
   border: 0px;
-  border-left: 1px solid black;
+  border-left: 1px solid #034;
 }
 
 #fuel-gauge {
