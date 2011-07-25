@@ -66,6 +66,8 @@ transfering fuel between cars
 make tip not obscure sprites
 add names to building and car's inventory displays
 gas pumps can take damage
+make zombies attracted to noise
+make zombies attracted to light
 
 *EDITOR*
 remove current collidible code
