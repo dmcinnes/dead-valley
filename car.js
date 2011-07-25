@@ -66,7 +66,12 @@ define(["game",
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
 
-    this.inventory = new Inventory(config.cargoSpace.width, config.cargoSpace.height, true);
+    this.inventory = new Inventory({
+      name:   "Car",
+      width:  config.cargoSpace.width, 
+      height: config.cargoSpace.height,
+      touch:  true
+    });
   };
   Car.prototype = new RigidBody();
 

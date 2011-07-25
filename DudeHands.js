@@ -3,7 +3,7 @@
 define(['Inventory'], function (Inventory) {
   var DudeHands = function () {
   };
-  DudeHands.prototype = new Inventory(2, 3);
+  DudeHands.prototype = new Inventory({width:2, height:3});
 
   // everything goes in the top slot
   DudeHands.prototype.isAvailable = function (item, x, y) {

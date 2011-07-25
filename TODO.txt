@@ -40,6 +40,7 @@ X add tooltips for dude touch interactions
 X getting fuel from gas pumps
 X add inventory tool tips
 X vertically center items in dude's hands
+X add names to building and car's inventory displays
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -64,7 +65,6 @@ fix barrel 'sliding'
 support shooting out of car
 transfering fuel between cars
 make tip not obscure sprites
-add names to building and car's inventory displays
 gas pumps can take damage
 make zombies attracted to noise
 make zombies attracted to light

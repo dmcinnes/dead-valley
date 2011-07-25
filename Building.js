@@ -17,7 +17,7 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
     this.vel = new Vector(0, 0);
     this.vel.rot = 0;
 
-    this.inventory = new Inventory(12, 8);
+    this.inventory = new Inventory({width:12, height:8, name:this.name});
   };
 
   // don't save when the level is saved -- we're going to save this our own way

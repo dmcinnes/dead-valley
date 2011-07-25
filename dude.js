@@ -65,7 +65,7 @@ define(["game",
 
     this.originalCenterX     = this.center.x;
 
-    this.inventory           = new Inventory(9, 3);
+    this.inventory           = new Inventory({width:9, height:3});
     this.hands               = new DudeHands();
 
     this.setupEventHandlers();

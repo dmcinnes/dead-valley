@@ -198,6 +198,13 @@ define(['game', 'Inventory'], function (game, Inventory) {
       var colCount = this.inventory.width;
       var table = $("<table/>").addClass("inventory");
       table.attr('id', this.config.id);
+
+      if (this.inventory.name) {
+        var caption = $("<caption/>");
+        caption.text(this.inventory.name);
+        table.append(caption);
+      }
+
       for (i = 0; i < rowCount; i++) {
         row = $("<tr/>");
         for (j = 0; j < colCount; j++) {
