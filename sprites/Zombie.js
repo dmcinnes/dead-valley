@@ -1,5 +1,5 @@
-define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
-       function (Sprite, collidable, game, BulletHit, BloodSplatter) {
+define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
+       function (Sprite, collidable, game, BulletHit, BloodSplatter, TireTracks) {
 
   var context = game.spriteContext;
 
@@ -200,6 +200,20 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter"],
     var magnitude = vab.magnitude();
     if (magnitude > 132) { // 30 MPH
       this.takeDamage(Math.floor(magnitude / 88)); // every 20 MPH
+    }
+    if (this.health <= 0 &&
+        other === game.dude.driving) {
+      var car = other;
+      var closestWheel;
+      var closestDistance = Number.MAX_VALUE;
+      _.each(car.wheels, function (wheel) {
+        var distance = car.pos.add(wheel.position).subtract(this.pos).magnitude();
+        closestDistance = Math.min(distance, closestDistance);
+        if (distance === closestDistance) {
+          closestWheel = wheel;
+        }
+      }, this);
+      TireTracks.splat(car, closestWheel, 'green');
     }
   };
 
