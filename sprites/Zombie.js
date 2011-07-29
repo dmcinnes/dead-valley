@@ -301,6 +301,13 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         this.ignoreCollisionResolution = true;
         this.shouldSave = false;
         this.z--; // always underfoot
+        // set the points for the now prone zombie
+        this.points = [
+          new Vector(-15, 0),
+          new Vector( 15, 0),
+          new Vector( 15, 9),
+          new Vector(-15, 9)
+        ];
       }
     }
   };
