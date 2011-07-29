@@ -1,22 +1,5 @@
 define(['game'], function (game) {
 
-  var checkSpritePointCollision = function (sprite, point) {
-    var minDepth = Number.MAX_VALUE;
-    var normals = sprite.currentNormals;
-
-    for (var i = 0; i < normals.length; i++) {
-      var normal = normals[i];
-      var spriteProj = sprite.lineProjection(normal);
-      var pointProj  = normal.dotProduct(point);
-
-      if (pointProj < spriteProj[0] || pointProj > spriteProj[1]) {
-        return false; // no collision!
-      }
-    }
-
-    return true;
-  };
-
   var determineMouseEventCollisions = function (event) {
     var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
     var node   = game.map.getNodeByWorldCoords(coords.x, coords.y);
@@ -38,7 +21,7 @@ define(['game'], function (game) {
     for (var i = 0; i < nodeCount; i++) {
       var ref = nodes[i].nextSprite;
       while (ref) {
-        if (checkSpritePointCollision(ref, coords)) {
+        if (ref.checkPointCollision(coords)) {
           // only take the highest z valued sprite
           if (!clicked || clicked.z < ref.z) {
             clicked = ref;

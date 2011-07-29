@@ -104,9 +104,14 @@ define(["vector"], function (Vector) {
     }
 
     // TODO gotta be a better way to structure all this
-    var vab = resolveCollision(this, other, point, normal);
-    this.collision(other, point, normal, vab);
-    other.collision(this, point, normal.scale(-1), vab);
+    if (this.ignoreCollisionResolution || other.ignoreCollisionResolution) {
+      this.touch(other, point, normal);
+      other.touch(this, point, normal);
+    } else {
+      var vab = resolveCollision(this, other, point, normal);
+      this.collision(other, point, normal, vab);
+      other.collision(this, point, normal.scale(-1), vab);
+    }
   };
 
   var lineProjection = function (normal) {
@@ -218,6 +223,24 @@ define(["vector"], function (Vector) {
     return false;
   };
 
+  var checkPointCollision = function (point) {
+    var minDepth = Number.MAX_VALUE;
+    var normals = this.currentNormals;
+
+    for (var i = 0; i < normals.length; i++) {
+      var normal = normals[i];
+      var spriteProj = this.lineProjection(normal);
+      var pointProj  = normal.dotProduct(point);
+
+      if (pointProj < spriteProj[0] || pointProj > spriteProj[1]) {
+        return false; // no collision!
+      }
+    }
+
+    return true;
+  };
+
+
   // make whatever object passed to us 'collidable'
   var collidable = function (thing, collidesWith) {
     thing.prototype.collidesWith = collidesWith;
@@ -229,6 +252,11 @@ define(["vector"], function (Vector) {
     thing.prototype.lineProjection         = lineProjection;
     thing.prototype.pointVel               = pointVel;
     thing.prototype.checkRayCollision      = checkRayCollision;
+    thing.prototype.checkPointCollision    = checkPointCollision;
+    
+    if (!thing.prototype.touch) {
+      thing.prototype.touch = function () {};
+    }
   };
 
   collidable.clearCurrentCollisionList = function () {

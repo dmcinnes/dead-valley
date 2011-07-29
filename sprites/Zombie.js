@@ -201,20 +201,6 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     if (magnitude > 132) { // 30 MPH
       this.takeDamage(Math.floor(magnitude / 88)); // every 20 MPH
     }
-    if (this.health <= 0 &&
-        other === game.dude.driving) {
-      var car = other;
-      var closestWheel;
-      var closestDistance = Number.MAX_VALUE;
-      _.each(car.wheels, function (wheel) {
-        var distance = car.pos.add(wheel.position).subtract(this.pos).magnitude();
-        closestDistance = Math.min(distance, closestDistance);
-        if (distance === closestDistance) {
-          closestWheel = wheel;
-        }
-      }, this);
-      TireTracks.splat(car, closestWheel, 'green');
-    }
   };
 
   Zombie.prototype.moveToward = function (pos) {
@@ -312,10 +298,20 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         // DEEEEEED
         this.vel.scale(0);
         this.walkingFrameCounter = 0;
-        this.collidable = false;
+        this.ignoreCollisionResolution = true;
         this.shouldSave = false;
         this.z--; // always underfoot
       }
+    }
+  };
+
+  Zombie.prototype.touch = function (other, point, normal) {
+    if (other === game.dude.driving) {
+      _.each(other.wheels, function (wheel) {
+        if (this.checkPointCollision(other.pos.add(wheel.position))) {
+          TireTracks.splat(other, wheel, 'green');
+        }
+      }, this);
     }
   };
 
