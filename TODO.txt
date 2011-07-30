@@ -42,6 +42,7 @@ X add inventory tool tips
 X vertically center items in dude's hands
 X add names to building and car's inventory displays
 X update inventory to be usable at night
+X add zombie blood tire tracks
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -53,7 +54,6 @@ add trees randomly to map
 render trees -- make transparent when colliding with sprite
 convert everything to radians
 make object capitalization consistent
-add zombie blood tire tracks
 make zombies follow building edges
 add zombies randomly to map based on building population of section
 generalize sprite animation handling

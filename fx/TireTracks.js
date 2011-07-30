@@ -8,12 +8,13 @@ define(['game', 'Sprite'], function (game, Sprite) {
 
   var context = game.spriteContext;
 
-  var TireTracks = function (car, wheel, color) {
+  var TireTracks = function (car, wheel, color, length) {
     this.pos     = new Vector(0, 0);
     this.pos.rot = 0;
     this.car     = car;
     this.wheel   = wheel;
     this.color   = color;
+    this.length  = length || maxLength;
     this.life    = 0;
     this.dots    = [];
 
@@ -24,7 +25,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
   TireTracks.prototype.z = 1;
 
   TireTracks.prototype.move = function () {
-    if (this.dots.length < maxLength &&
+    if (this.dots.length < this.length &&
         Math.abs(this.wheel.speed) > 4) {
       var pos = this.car.pos.add(this.wheel.position);
       // make sure we're not too close to the last one
@@ -44,7 +45,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
       if (this.life > maxLife) {
         this.die();
       }
-      if (this.wheel && this.dots.length == maxLength) {
+      if (this.wheel && this.dots.length == this.length) {
         this.wheel.tracks = null;
         this.wheel = null;
       }
@@ -76,11 +77,11 @@ define(['game', 'Sprite'], function (game, Sprite) {
   TireTracks.prototype.transformNormals = function () {};
   TireTracks.prototype.updateGrid       = function () {};
 
-  var splat = function (car, wheel, color) {
+  var splat = function (car, wheel, color, length) {
     // ignore if wheel is already tracking something
     if (!wheel.tracks) {
       // put it at the beginning of the sprite list so it renders first
-      game.sprites.unshift(new TireTracks(car, wheel, color));
+      game.sprites.unshift(new TireTracks(car, wheel, color, length));
     }
   };
 

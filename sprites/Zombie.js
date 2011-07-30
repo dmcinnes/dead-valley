@@ -66,6 +66,8 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
 
     this.health                = HEALTH;
 
+    this.tireTrackLength       = 30;
+
     this.originalCenterX       = this.center.x;
   };
   Zombie.prototype = new Sprite();
@@ -313,10 +315,14 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   };
 
   Zombie.prototype.touch = function (other, point, normal) {
-    if (other === game.dude.driving) {
+    if (other === game.dude.driving &&
+        this.tireTrackLength > 0) {
       _.each(other.wheels, function (wheel) {
-        if (this.checkPointCollision(other.pos.add(wheel.position))) {
-          TireTracks.splat(other, wheel, 'green');
+        if (!wheel.tracks &&
+            this.tireTrackLength > 0 &&
+            this.checkPointCollision(other.pos.add(wheel.position))) {
+          this.tireTrackLength -= Math.floor(Math.random() * 5);
+          TireTracks.splat(other, wheel, '#070', this.tireTrackLength);
         }
       }, this);
     }
