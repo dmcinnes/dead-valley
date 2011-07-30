@@ -68,6 +68,8 @@ make tip not obscure sprites
 gas pumps can take damage
 make zombies attracted to noise
 make zombies attracted to light
+fix prone zombie bullet collision
+fix bullets not travelling past mouse cursor
 
 *EDITOR*
 remove current collidible code
@@ -125,3 +127,5 @@ rifle ammo
 food
 medkit
 gas can
+cake
+twinkie
