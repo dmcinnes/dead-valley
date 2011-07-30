@@ -13,7 +13,9 @@ define(['game'], function (game) {
   Firearm.prototype.fire = function (start, end) {
     if (this.hasAmmo()) {
       this.decrementAmmo();
-      this.traceBullet(start, end);
+      // bullet can fly further than where we're aiming
+      var maxEnd = end.subtract(start).normalize().scale(this.range).translate(start);
+      this.traceBullet(start, maxEnd);
       return true;
     }
     return false;

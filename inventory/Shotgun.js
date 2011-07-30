@@ -25,7 +25,7 @@ define(['game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem']
     for (var i = 0; i < 9; i++) {
       var spread = spreadDistance * (1 - 2 * Math.random());
       var pelletEnd = end.add(offsetVector.multiply(spread));
-      game.map.rayTrace(start, pelletEnd, this.range, function (result, sprite) {
+      game.map.rayTrace(start, pelletEnd, this.range + spreadDistance, function (result, sprite) {
         if (result) { // hit!
           sprite.bulletHit(result, damage);
         }
