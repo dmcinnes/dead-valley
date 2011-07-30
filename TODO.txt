@@ -43,6 +43,7 @@ X vertically center items in dude's hands
 X add names to building and car's inventory displays
 X update inventory to be usable at night
 X add zombie blood tire tracks
+X fix prone zombie bullet collision
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -68,7 +69,6 @@ make tip not obscure sprites
 gas pumps can take damage
 make zombies attracted to noise
 make zombies attracted to light
-fix prone zombie bullet collision
 fix bullets not travelling past mouse cursor
 
 *EDITOR*

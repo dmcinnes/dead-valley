@@ -632,7 +632,8 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
         // check sprites for collisions
         var sprite = node.nextSprite;
         while (sprite) {
-          if (sprite.collidable) {
+          if (sprite.collidable &&
+              !sprite.ignoreCollisionResolution) {
             var collision = sprite.checkRayCollision(start, end);
             if (spriteCollisionCallback) {
               spriteCollisionCallback(collision, sprite);
