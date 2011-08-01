@@ -270,8 +270,12 @@ define(["game",
   Dude.prototype.drawArms = function () {
     var weapon = this.hands.weapon();
     if (weapon) {
-      if (this.firing) {
+      if (this.firing && weapon.isMeleeWeapon) {
+        this.drawTile(weapon.handsSpriteOffset + 1, this.direction);
+      } else if (this.firing) {
         this.drawAimedArm(weapon.isHandgun ? 10 : 13);
+      } else if (weapon && weapon.isMeleeWeapon) {
+        this.drawTile(weapon.handsSpriteOffset, this.direction);
       } else if (this.aiming) {
         this.drawAimedArm(weapon.isHandgun ? 9 : 12);
       } else if (weapon && !weapon.isHandgun) {
@@ -353,7 +357,7 @@ define(["game",
       // TODO move this to a better place
       // Firearm base class?
       var firearm = self.hands.weapon();
-      if (firearm) {
+      if (firearm && firearm.ammoType) {
         do {
           var ammo = self.inventory.findItem(firearm.ammoType);
           firearm.accept(ammo);
@@ -383,8 +387,12 @@ define(["game",
         var firearm = self.hands.weapon();
         if (firearm) {
           var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
-          self.aimTowardMouse(coords);
-          if (firearm.fire(self.pos, coords)) {
+
+          if (!firearm.isMeleeWeapon) {
+            self.aimTowardMouse(coords);
+          }
+
+          if (firearm.fire(self.pos, coords, self.direction)) {
             self.firing = true;
           }
         }

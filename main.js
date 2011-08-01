@@ -17,6 +17,7 @@ require(
    "inventory/ShotgunShells",
    "inventory/Nine_mm",
    "inventory/Flashlight",
+   "inventory/BaseballBat",
    "World",
    "Mouse",
    "spritemarshal"],
@@ -39,6 +40,7 @@ require(
             ShotgunShells,
             Nine_mm,
             Flashlight,
+            BaseballBat,
             World,
             Mouse,
             spriteMarshal) {
@@ -96,6 +98,7 @@ require(
         dude.inventory.addItem(new ShotgunShells(12), 2, 0);
         dude.inventory.addItem(new ShotgunShells(12), 2, 1);
         dude.inventory.addItem(new Nine_mm(36), 3, 2);
+        dude.inventory.addItem(new BaseballBat(), 4, 0);
 
         var zombie = new Zombie();
         zombie.pos.x = startX + 200;
