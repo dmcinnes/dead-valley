@@ -5,6 +5,7 @@ define(['game', 'vector'], function (game, Vector) {
   };
 
   MeleeWeapon.prototype.isMeleeWeapon     = true;
+  MeleeWeapon.prototype.aimable           = false;
   MeleeWeapon.prototype.damage            = 1;
   MeleeWeapon.prototype.swingStart        = new Vector(0, 0);
   MeleeWeapon.prototype.swingEnd          = new Vector(10, -10);

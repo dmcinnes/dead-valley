@@ -156,7 +156,7 @@ define(["game",
 
     if (this.walking) {
       this.aiming = false;
-      this.aimTowardMouse(); // update so flashlight follows
+      this.aimTowardMouse(this.aimPoint, false); // update so flashlight follows
     }
 
     game.map.keepInView(this);
@@ -223,12 +223,14 @@ define(["game",
     this.visible = true;
   };
 
-  Dude.prototype.aimTowardMouse = function (coords) {
+  Dude.prototype.aimTowardMouse = function (coords, setDirection) {
     coords = coords || this.aimPoint;
     if (coords) {
       this.aiming = true;
       this.aimPoint = coords;
-      this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
+      if (setDirection) {
+        this.direction = (coords.x - this.pos.x < 0) ? LEFT : RIGHT;
+      }
       var dir = coords.subtract(this.pos);
       this.aimDirection = Math.atan2(dir.y, dir.x); // radians
     }
@@ -388,8 +390,8 @@ define(["game",
         if (firearm) {
           var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
 
-          if (!firearm.isMeleeWeapon) {
-            self.aimTowardMouse(coords);
+          if (firearm.aimable) {
+            self.aimTowardMouse(coords, true);
           }
 
           if (firearm.fire(self.pos, coords, self.direction)) {
@@ -398,15 +400,22 @@ define(["game",
         }
 
       }
+    }).subscribe('space', function () {
+      var firearm = self.hands.weapon();
+      if (firearm &&
+          firearm.isMeleeWeapon &&
+          firearm.fire(self.pos, self.pos, self.direction)) {
+        self.firing = true;
+      }
     });
   };
 
   Dude.prototype.setupMouseBindings = function () {
     var self = this;
     $('#click-overlay').mousemove(function (e) {
-      if (self.alive() && self.hands.hasAimableItem()) {
+      if (self.alive()) {
         var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
-        self.aimTowardMouse(coords);
+        self.aimTowardMouse(coords, true);
       }
     }).mouseleave(function () {
       self.aiming       = false;

@@ -45,6 +45,7 @@ X update inventory to be usable at night
 X add zombie blood tire tracks
 X fix prone zombie bullet collision
 X fix bullets not travelling past mouse cursor
+X support melee weapons
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -119,9 +120,9 @@ X flashlight
 X shotgun
 X shotgun shells
 X 9mm ammo
+X bat
 lantern
 rifle
-bat
 golf club
 rubber hose
 spare tire

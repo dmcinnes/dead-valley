@@ -1,15 +1,16 @@
 define(['game', 'mainloop', 'Keyboard', 'World'], function (game, mainloop, Keyboard, World) {
 
   var keys = {
-    i:   'toggle inventory',
-    esc: 'hide inventory',
-    f:   'toggle framerate',
-    p:   'toggle pause',
-    n:   'transition sky',
-    e:   'dude enter/exit',
-    h:   'dude toggle headlights',
-    r:   'reload',
-    x:   'eject ammo'
+    i:     'toggle inventory',
+    esc:   'hide inventory',
+    f:     'toggle framerate',
+    p:     'toggle pause',
+    n:     'transition sky',
+    e:     'dude enter/exit',
+    h:     'dude toggle headlights',
+    r:     'reload',
+    x:     'eject ammo',
+    space: 'space'
   };
 
   _.each(keys, function (value, key) {
