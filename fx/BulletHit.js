@@ -48,17 +48,17 @@ define(['game', 'Sprite'], function (game, Sprite) {
   };
 
   Sparks.prototype.draw = function (delta) {
-    context.fillStyle = this.color;
-    var size = this.size;
-    var life = this.life;
-    var percent = life / this.lifetime;
-    var pos;
-    _.each(this.sparks, function (spark) {
-      if (life < spark.life) {
-        pos = spark.multiply(percent);
-        context.fillRect(pos.x, pos.y, size, size);
-      }
-    });
+    // context.fillStyle = this.color;
+    // var size = this.size;
+    // var life = this.life;
+    // var percent = life / this.lifetime;
+    // var pos;
+    // _.each(this.sparks, function (spark) {
+    //   if (life < spark.life) {
+    //     pos = spark.multiply(percent);
+    //     context.fillRect(pos.x, pos.y, size, size);
+    //   }
+    // });
   };
 
   // don't need these methods

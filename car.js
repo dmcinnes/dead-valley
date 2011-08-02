@@ -21,7 +21,6 @@ define(["game",
                   Inventory) {
 
   var keyStatus = game.keyboard.keyStatus;
-  var context   = game.spriteContext;
 
   var massDensityOfAir = 1.2; // kg/m^3
 

@@ -4,7 +4,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
        function (game, Matrix, Vector, eventMachine, spriteMarshal, spriteInfo, BulletHit) {
 
   var Matrix  = new Matrix(2, 3);
-  var context = game.spriteContext;
+
+  var spriteParent = $('#canvas');
 
   var bulletHit;
 
@@ -51,9 +52,11 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     this.center      = $.extend({}, config.center);
 
     // load the image
-    game.assetManager.loadImage(config.img, $.proxy(function (img) {
-      this.image = img;
-    }, this));
+    // game.assetManager.loadImage(config.img, $.proxy(function (img) {
+    //   this.image = img;
+    // }, this));
+
+    this.image = config.img;
 
     this.pos = new Vector(0, 0);
     this.pos.rot = 0;
@@ -78,6 +81,20 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
     // sprites default to a z-index of 100
     this.z = config.z || 100;
+
+    this.createNode();
+  };
+
+  Sprite.prototype.createNode = function () {
+    this.node = $('<div/>');
+    this.node.css({
+      'background-image': "url(assets/"+this.image+".png)",
+      'z-index': this.z,
+      width: this.tileWidth,
+      height: this.tileHeight
+    });
+    this.node.addClass('sprite');
+    spriteParent.append(this.node);
   };
 
   Sprite.prototype.preMove  = function () {
@@ -124,11 +141,14 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   Sprite.prototype.render = function (delta) {
     if (!this.visible) return;
 
-    context.save();
-    this.configureTransform(context);
-    this.draw(delta);
+    var map = game.map;
 
-    context.restore();
+    this.node.css({
+      left: this.pos.x - map.originOffsetX,
+      top:  this.pos.y - map.originOffsetY
+    });
+
+    this.draw();
   };
 
   // default draw method, just draw the 0th tile
@@ -169,13 +189,23 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   Sprite.prototype.collision = function () {
   };
 
-  Sprite.prototype.die = function () {
+  Sprite.prototype.hide = function () {
     this.visible = false;
+    this.node.hide();
+  };
+
+  Sprite.prototype.show = function () {
+    this.visible = true;
+    this.node.show();
+  };
+
+  Sprite.prototype.die = function () {
     this.reap = true;
     if (this.currentNode) {
       this.currentNode.leave(this);
       this.currentNode = null;
     }
+    this.node.remove();
   };
 
   // TODO perhaps cache transpoints Vectors?
@@ -213,25 +243,14 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   };
 
   // TODO handle vertical offsets
-  Sprite.prototype.drawTile = function (index, flipped, cxt) {
-    if (!this.image) return;
-    cxt = cxt || context;
+  Sprite.prototype.drawTile = function (index, flipped) {
     if (flipped) {
-      cxt.save();
-      cxt.scale(-1, 1);
+      this.node.addClass('flip-horizontal');
+    } else {
+      this.node.removeClass('flip-horizontal');
     }
-    cxt.drawImage(this.image,
-                  this.imageOffset.x + index * this.tileWidth,
-                  this.imageOffset.y,
-                  this.tileWidth,
-                  this.tileHeight,
-                  -this.center.x,
-                  -this.center.y,
-                  this.tileWidth,
-                  this.tileHeight);
-    if (flipped) {
-      cxt.restore();
-    }
+    var left = -(index % this.tileWidth) * this.tileWidth;
+    this.node.css('background-position', left + 'px 0px');
   };
 
   Sprite.prototype.nearby = function () {

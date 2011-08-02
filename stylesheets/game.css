@@ -44,7 +44,7 @@ body {
 /* nothing below the click overlay is clickable */
 #click-overlay { position:absolute; z-index:100; width:900px; height:600px; }
 #sky-canvas { position:absolute; z-index:30; }
-#canvas { position:absolute; z-index:20; }
+#canvas { position:absolute; z-index:20; width:900px; height:600px; }
 #canvas-mask {
   position:relative;
   z-index:30;
@@ -54,6 +54,10 @@ body {
   -webkit-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+
+.sprite {
+  position: absolute;
 }
 
 #background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }

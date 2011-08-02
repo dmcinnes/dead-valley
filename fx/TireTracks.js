@@ -53,20 +53,20 @@ define(['game', 'Sprite'], function (game, Sprite) {
   };
 
   TireTracks.prototype.draw = function (delta) {
-    if (this.dots.length > 1) {
-      context.fillStyle = this.color;
-      context.shadowBlur  = 1;
-      context.globalAlpha = 1 - this.life / maxLife;
-      var count = this.dots.length;
-      for (var i = 0; i < count; i++) {
-        context.save();
-        var vector = this.dots[i];
-        context.translate(vector.x, vector.y);
-        context.rotate(vector.rot);
-        context.fillRect(-halfWidth, -halfWidth, width, width);
-        context.restore();
-      }
-    }
+    // if (this.dots.length > 1) {
+    //   context.fillStyle = this.color;
+    //   context.shadowBlur  = 1;
+    //   context.globalAlpha = 1 - this.life / maxLife;
+    //   var count = this.dots.length;
+    //   for (var i = 0; i < count; i++) {
+    //     context.save();
+    //     var vector = this.dots[i];
+    //     context.translate(vector.x, vector.y);
+    //     context.rotate(vector.rot);
+    //     context.fillRect(-halfWidth, -halfWidth, width, width);
+    //     context.restore();
+    //   }
+    // }
   };
 
   TireTracks.prototype.die = function () {

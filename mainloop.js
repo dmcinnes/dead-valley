@@ -4,8 +4,6 @@ define(["game"], function (game) {
 
   var lastFrame, thisFrame, elapsed, delta, paused;
 
-  var context = game.spriteContext;
-
   var gameField = $('#canvas-mask')[0];
 
   // shim layer with setTimeout fallback
@@ -23,8 +21,6 @@ define(["game"], function (game) {
   })();
 
   var mainLoop = function () {
-    context.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
-
     thisFrame = Date.now();
     elapsed = thisFrame - lastFrame;
     if (elapsed > 100) {

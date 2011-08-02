@@ -45,8 +45,6 @@ define(['assetmanager',
                        // of the tile image
     canvasWidth:   canvas.width(),
     canvasHeight:  canvas.height(),
-    spriteContext: canvas[0].getContext("2d"),
-    skyContext:    $('#sky-canvas')[0].getContext("2d"),
     map:           null,
     dude:          null,
     sprites:       sprites,

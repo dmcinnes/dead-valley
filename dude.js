@@ -20,8 +20,6 @@ define(["game",
                  Car,
                  BloodSplatter) {
 
-  var context = game.spriteContext;
-
   var keyStatus = game.keyboard.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
@@ -297,28 +295,28 @@ define(["game",
   };
 
   Dude.prototype.drawAimedArm = function (frame) {
-    if (!this.image || !this.aimDirection) {
-      return;
-    }
-    context.save();
-    if (this.direction) {
-      context.translate(-this.center.x + ARM_OFFSET_X + ARM_FLIP_OFFSET, -this.center.y + ARM_OFFSET_Y);
-      context.rotate(this.aimDirection - Math.PI);
-      context.scale(-1, 1);
-    } else {
-      context.translate(-this.center.x + ARM_OFFSET_X, -this.center.y + ARM_OFFSET_Y);
-      context.rotate(this.aimDirection);
-    }
-    context.drawImage(this.image,
-		      this.imageOffset.x + frame * this.tileWidth,
-		      this.imageOffset.y,
-		      this.tileWidth,
-		      this.tileHeight,
-		      -ARM_OFFSET_X,
-		      -ARM_OFFSET_Y,
-		      this.tileWidth,
-		      this.tileHeight);
-    context.restore();
+    // if (!this.image || !this.aimDirection) {
+    //   return;
+    // }
+    // context.save();
+    // if (this.direction) {
+    //   context.translate(-this.center.x + ARM_OFFSET_X + ARM_FLIP_OFFSET, -this.center.y + ARM_OFFSET_Y);
+    //   context.rotate(this.aimDirection - Math.PI);
+    //   context.scale(-1, 1);
+    // } else {
+    //   context.translate(-this.center.x + ARM_OFFSET_X, -this.center.y + ARM_OFFSET_Y);
+    //   context.rotate(this.aimDirection);
+    // }
+    // context.drawImage(this.image,
+    //                   this.imageOffset.x + frame * this.tileWidth,
+    //                   this.imageOffset.y,
+    //                   this.tileWidth,
+    //                   this.tileHeight,
+    //                   -ARM_OFFSET_X,
+    //                   -ARM_OFFSET_Y,
+    //                   this.tileWidth,
+    //                   this.tileHeight);
+    // context.restore();
   };
 
   Dude.prototype.alive = function () {
@@ -334,14 +332,14 @@ define(["game",
     } else if (this.visible) {
       // iterate through the touching list and enter the first one that we can enter
       for (var i = 0; i < this.touching.length; i++) {
-	var sprite = this.touching[i];
-	if (sprite.isCar) {
-	  this.enterCar(sprite);
-	} else if (sprite.isBuilding &&
-		   this.currentNode &&
-		   this.currentNode.entrance === sprite) {
-	  this.enterBuilding(sprite);
-	}
+        var sprite = this.touching[i];
+        if (sprite.isCar) {
+          this.enterCar(sprite);
+        } else if (sprite.isBuilding &&
+                   this.currentNode &&
+                   this.currentNode.entrance === sprite) {
+          this.enterBuilding(sprite);
+        }
       }
     }
   };

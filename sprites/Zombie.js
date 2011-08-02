@@ -1,8 +1,6 @@
 define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
        function (Sprite, collidable, game, BulletHit, BloodSplatter, TireTracks) {
 
-  var context = game.spriteContext;
-
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
@@ -74,22 +72,22 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
 
   // draw the 'dead' zombie
   Zombie.prototype.drawBody = function () {
-    if (this.direction) {
-      context.save();
-      context.scale(-1, 1);
-    }
-    context.drawImage(this.image,
-                      BODY_OFFSET,
-                      this.imageOffset.y,
-                      BODY_WIDTH,
-                      this.tileHeight,
-                      -this.center.x,
-                      -this.center.y,
-                      BODY_WIDTH,
-                      this.tileHeight);
-    if (this.direction) {
-      context.restore();
-    }
+    // if (this.direction) {
+    //   context.save();
+    //   context.scale(-1, 1);
+    // }
+    // context.drawImage(this.image,
+    //                   BODY_OFFSET,
+    //                   this.imageOffset.y,
+    //                   BODY_WIDTH,
+    //                   this.tileHeight,
+    //                   -this.center.x,
+    //                   -this.center.y,
+    //                   BODY_WIDTH,
+    //                   this.tileHeight);
+    // if (this.direction) {
+    //   context.restore();
+    // }
   };
 
   Zombie.prototype.draw = function (delta) {
