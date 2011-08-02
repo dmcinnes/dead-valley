@@ -67,7 +67,7 @@ define(["game",
 
   GridNode.prototype.render = function (delta, x, y) {
     // nothing to render, return
-    if (this.tileOffset == 0) return;
+    if (this.tileOffset === 0) return;
 
     if (x < -game.gridSize || y < -game.gridSize ||
         x > game.canvasWidth ||
@@ -76,7 +76,17 @@ define(["game",
       if (this.domNode) this.freeDomNode();
     } else {
       if (!this.domNode) this.obtainDomNode();
-      this.domNode.css({left:x, top:y});
+
+      // translateZ(0) makes a big difference for Safari
+      var transform = ['translate(', x, 'px,', y, 'px) translateZ(0)'];
+      if (this.tileFlip) {
+        transform.push(' scaleX(-1)');
+      }
+      if (this.tileRotate) {
+        transform.push(' rotate(', this.tileRotate * 90, 'deg)');
+      }
+      // TODO support FF
+      this.domNode[0].style['-webkit-transform'] = transform.join('');
     }
   };
 
@@ -95,17 +105,6 @@ define(["game",
     var left = -(this.tileOffset % game.tileRowSize) * game.gridSize;
     var top  = -Math.floor(this.tileOffset / game.tileRowSize) * game.gridSize;
     this.domNode.css({'background-position': [left, 'px ', top, 'px'].join('')}).show();
-
-    // flip if necessary
-    if (this.tileFlip) {
-      this.domNode.addClass('flip-horizontal');
-    }
-
-    // rotate if necessary
-    if (this.tileRotate) {
-      var rot = 'rotate-' + (this.tileRotate * 90);
-      this.domNode.addClass(rot);
-    }
   };
 
   GridNode.prototype.freeDomNode = function (delta) {
