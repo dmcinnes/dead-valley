@@ -242,8 +242,9 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   // TODO handle vertical offsets
   Sprite.prototype.drawTile = function (index, flipped) {
-    var left = -(index % this.tileWidth) * this.tileWidth;
-    this.node[0].style['background-position']  = left + 'px 0px';
+    var left = -(index % this.tileWidth) * this.tileWidth - this.imageOffset.x;
+    var top  = -this.imageOffset.y;
+    this.node[0].style['background-position']  = [left, 'px ', top, 'px'].join('');
   };
 
   Sprite.prototype.nearby = function () {
