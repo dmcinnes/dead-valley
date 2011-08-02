@@ -187,7 +187,7 @@ define(["game",
   };
 
   Dude.prototype.enterCar = function (car) {
-    this.visible = false;
+    this.hide();
     this.updateTouchingList(); // to clear what we're touching
     this.driving = car;
     if (this.currentNode) {
@@ -201,11 +201,11 @@ define(["game",
     this.pos.set(this.driving.driversSideLocation());
     this.driving.leave(this);
     this.driving = null;
-    this.visible = true;
+    this.show();
   };
 
   Dude.prototype.enterBuilding = function (building) {
-    this.visible = false;
+    this.hide();
     this.updateTouchingList(); // to clear what we're touching
     this.inside = building;
     if (this.currentNode) {
@@ -218,7 +218,7 @@ define(["game",
   Dude.prototype.leaveBuilding = function () {
     this.inside.leave(this);
     this.inside = null;
-    this.visible = true;
+    this.show();
   };
 
   Dude.prototype.aimTowardMouse = function (coords, setDirection) {

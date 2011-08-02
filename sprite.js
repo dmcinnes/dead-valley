@@ -143,10 +143,19 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
     var map = game.map;
 
-    this.node.css({
-      left: this.pos.x - map.originOffsetX,
-      top:  this.pos.y - map.originOffsetY
-    });
+    var x = this.pos.x - map.originOffsetX;
+    var y = this.pos.y - map.originOffsetY;
+
+    var transform = [];
+    transform.push(' translate(', -this.center.x, 'px,', -this.center.y, 'px)');
+    transform.push(' translate(', x, 'px,', y, 'px)');
+    transform.push(' rotate(', this.pos.rot, 'deg)');
+    if (this.direction) {
+      transform.push(' scaleX(-1)');
+    }
+
+    // TODO support FF
+    this.node[0].style['-webkit-transform'] = transform.join('');
 
     this.draw();
   };
@@ -173,17 +182,6 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       newNode.enter(this);
       this.currentNode = newNode;
     }
-  };
-
-  Sprite.prototype.configureTransform = function (ctx) {
-    if (!this.visible) return;
-
-    var rad = (this.pos.rot * Math.PI)/180;
-
-    ctx.translate(this.pos.x, this.pos.y);
-    ctx.translate(-game.map.originOffsetX, -game.map.originOffsetY);
-    ctx.rotate(rad);
-    ctx.scale(this.scale, this.scale);
   };
 
   Sprite.prototype.collision = function () {
@@ -244,13 +242,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   // TODO handle vertical offsets
   Sprite.prototype.drawTile = function (index, flipped) {
-    if (flipped) {
-      this.node.addClass('flip-horizontal');
-    } else {
-      this.node.removeClass('flip-horizontal');
-    }
     var left = -(index % this.tileWidth) * this.tileWidth;
-    this.node.css('background-position', left + 'px 0px');
+    this.node[0].style['background-position']  = left + 'px 0px';
   };
 
   Sprite.prototype.nearby = function () {
