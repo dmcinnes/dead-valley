@@ -70,8 +70,8 @@ define(["game",
     if (this.tileOffset === 0) return;
 
     if (x < -game.gridSize || y < -game.gridSize ||
-        x > game.canvasWidth ||
-        y > game.canvasHeight) {
+        x > game.gameWidth ||
+        y > game.gameHeight) {
       // outside of the view
       if (this.domNode) this.freeDomNode();
     } else {

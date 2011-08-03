@@ -19,8 +19,6 @@ define(['assetmanager',
                   eventMachine,
                   spriteMarshal) {
 
-  var canvas = $("#canvas");
-
   var i, sprite, spriteCount;
 
   var sprites = [];
@@ -43,8 +41,8 @@ define(['assetmanager',
     tileRowSize:   9,  // should be set by asset manager
                        // this is the number of tiles in row
                        // of the tile image
-    canvasWidth:   canvas.width(),
-    canvasHeight:  canvas.height(),
+    gameWidth:     $('#canvas-mask').width(),
+    gameHeight:    $('#canvas-mask').height(),
     map:           null,
     dude:          null,
     sprites:       sprites,

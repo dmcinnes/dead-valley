@@ -26,27 +26,27 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
       this.gridHeight = gridHeight;
       this.width  = gridWidth * game.gridSize;
       this.height = gridHeight * game.gridSize;
-      this.viewportGridWidth  = Math.ceil(game.canvasWidth / game.gridSize);
-      this.viewportGridHeight = Math.ceil(game.canvasHeight / game.gridSize);
+      this.viewportGridWidth  = Math.ceil(game.gameWidth / game.gridSize);
+      this.viewportGridHeight = Math.ceil(game.gameHeight / game.gridSize);
 
       // a map consists of 4 sections
       this.sectionWidth  = game.gridSize * gridWidth / 2;
       this.sectionHeight = game.gridSize * gridHeight / 2;
 
-      this.shiftWestBorder = game.canvasWidth;
-      this.shiftEastBorder = this.width - (2 * game.canvasWidth);
-      this.shiftNorthBorder = game.canvasHeight;
-      this.shiftSouthBorder = this.height - (2 * game.canvasHeight);
+      this.shiftWestBorder = game.gameWidth;
+      this.shiftEastBorder = this.width - (2 * game.gameWidth);
+      this.shiftNorthBorder = game.gameHeight;
+      this.shiftSouthBorder = this.height - (2 * game.gameHeight);
 
       // upper left section coordinates
       this.sectionOffsetX = Math.floor(startX / this.sectionWidth);
       this.sectionOffsetY = Math.floor(startY / this.sectionHeight);
       // this is the viewport offset within the current loaded view sections
-      this.submapOffsetX = startX - this.sectionOffsetX * this.sectionWidth - game.canvasWidth / 2;
-      this.submapOffsetY = startY - this.sectionOffsetY * this.sectionWidth - game.canvasHeight / 2;
+      this.submapOffsetX = startX - this.sectionOffsetX * this.sectionWidth - game.gameWidth / 2;
+      this.submapOffsetY = startY - this.sectionOffsetY * this.sectionWidth - game.gameHeight / 2;
       // viewport world coordinates
-      this.originOffsetX = startX - game.canvasWidth / 2;
-      this.originOffsetY = startY - game.canvasHeight / 2;
+      this.originOffsetX = startX - game.gameWidth / 2;
+      this.originOffsetY = startY - game.gameHeight / 2;
 
       this.velX = 0;
       this.velY = 0;
@@ -555,13 +555,13 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
 
       if (screenX < hBorder) {
         this.velX = screenX - hBorder;
-      } else if (screenX > game.canvasWidth - hBorder) {
-        this.velX = hBorder + screenX - game.canvasWidth;
+      } else if (screenX > game.gameWidth - hBorder) {
+        this.velX = hBorder + screenX - game.gameWidth;
       }
       if (screenY < vBorder) {
         this.velY = screenY - vBorder;
-      } else if (screenY > game.canvasHeight - vBorder) {
-        this.velY = vBorder + screenY - game.canvasHeight;
+      } else if (screenY > game.gameHeight - vBorder) {
+        this.velY = vBorder + screenY - game.gameHeight;
       }
     };
 

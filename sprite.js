@@ -5,7 +5,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   var Matrix  = new Matrix(2, 3);
 
-  var spriteParent = $('#canvas');
+  var spriteParent = $('#sprites');
 
   var bulletHit;
 
