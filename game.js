@@ -23,17 +23,6 @@ define(['assetmanager',
 
   var sprites = [];
 
-  var sortSprites = function () {
-    // sort by z value
-    sprites.sort(function (a, b) {
-      var diff = a.z - b.z;
-      if (diff === 0 && a.z !== Number.MAX_VALUE) {
-        diff = a.pos.y - b.pos.y;
-      }
-      return diff;
-    });
-  };
-
   return {
     assetManager:  new AssetManager('./assets/'),
     keyboard:      Keyboard,
@@ -89,7 +78,6 @@ define(['assetmanager',
 
     renderSprites: function (delta) {
       if (this.map) {
-        sortSprites();
         spriteCount = this.sprites.length;
         for (i = 0; i < spriteCount; i++) {
           this.sprites[i].render(delta);
