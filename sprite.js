@@ -160,12 +160,22 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       this.layers[i] = -1;
     }
 
-    this.draw(delta);
-
     var map = game.map;
 
     var x = this.pos.x - map.originOffsetX;
     var y = this.pos.y - map.originOffsetY;
+
+    if (x + this.tileWidth < 0 ||
+        y + this.tileHeight < 0 ||
+        x - this.tileWidth > game.gameWidth ||
+        y - this.tileHeight > game.gameHeight) {
+      // TODO find a better way to handle this
+      this.node[0].style.visibility = 'hidden';
+      return; // no need to draw or update
+    }
+    this.node[0].style.visibility = 'visible';
+
+    this.draw(delta);
 
     var transform = [];
     transform.push(' translate(', -this.center.x, 'px,', -this.center.y, 'px)');
