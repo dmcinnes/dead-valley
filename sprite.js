@@ -96,7 +96,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
     var image    = [];
     for (var i = 0; i < layers; i++) {
-      image.push("url(assets/"+this.image+".png)");
+      image.push("url(\"assets/"+this.image+".png\")");
     }
 
     this.node.css({
