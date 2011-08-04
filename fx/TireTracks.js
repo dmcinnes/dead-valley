@@ -78,11 +78,12 @@ define(['game', 'Sprite'], function (game, Sprite) {
   TireTracks.prototype.updateGrid       = function () {};
 
   var splat = function (car, wheel, color, length) {
-    // ignore if wheel is already tracking something
-    if (!wheel.tracks) {
-      // put it at the beginning of the sprite list so it renders first
-      game.sprites.unshift(new TireTracks(car, wheel, color, length));
-    }
+    // TODO reenable when we know a way to do this
+    // // ignore if wheel is already tracking something
+    // if (!wheel.tracks) {
+    //   // put it at the beginning of the sprite list so it renders first
+    //   game.sprites.unshift(new TireTracks(car, wheel, color, length));
+    // }
   };
 
   return {

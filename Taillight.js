@@ -15,7 +15,8 @@ define(['game'], function (game) {
     } else {
       context.globalAlpha = 0.5;
     }
-    sprite.drawTile(tile, false, context);
+    // TODO get the taillight images and render them in the sky canvas
+    // sprite.drawTile(tile, false, context);
     context.restore();
   };
 

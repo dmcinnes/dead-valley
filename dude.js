@@ -77,7 +77,7 @@ define(["game",
   Dude.prototype.draw = function (delta) {
     if (!this.visible) return;
 
-    // hack so the sprite is placed correctly when its flipped
+    // hack so the sprite is placed correctly when it's flipped
     this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
 
     if (this.alive()) {
@@ -87,9 +87,9 @@ define(["game",
           this.walkingFrameCounter = 0.0;
           this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
         }
-        this.drawTile(this.walkingFrame+1, this.direction);
+        this.drawTile(this.walkingFrame+1, 0);
       } else {
-        this.drawTile(0, this.direction); // standing
+        this.drawTile(0, 0); // standing
       }
 
       this.drawArms();
@@ -98,9 +98,9 @@ define(["game",
       // reusing the walkingFrameCounter 
       if (this.walkingFrameCounter < 0.6) {
         this.walkingFrameCounter += delta;
-        this.drawTile(14, this.direction);
+        this.drawTile(14, 0);
       } else {
-        this.drawTile(15, this.direction);
+        this.drawTile(15, 0);
       }
     }
   };
@@ -251,7 +251,8 @@ define(["game",
     if (this.alive()) {
       this.takingDamage = true;
 
-      BloodSplatter.splat(this.pos.clone(), '#900', damage);
+      // TODO reenable bloodsplatter when we find a way to do it
+      // BloodSplatter.splat(this.pos.clone(), '#900', damage);
 
       this.health -= damage;
 
@@ -271,24 +272,24 @@ define(["game",
     var weapon = this.hands.weapon();
     if (weapon) {
       if (this.firing && weapon.isMeleeWeapon) {
-        this.drawTile(weapon.handsSpriteOffset + 1, this.direction);
+        this.drawTile(weapon.handsSpriteOffset + 1, 1);
       } else if (this.firing) {
         this.drawAimedArm(weapon.isHandgun ? 10 : 13);
       } else if (weapon && weapon.isMeleeWeapon) {
-        this.drawTile(weapon.handsSpriteOffset, this.direction);
+        this.drawTile(weapon.handsSpriteOffset, 1);
       } else if (this.aiming) {
         this.drawAimedArm(weapon.isHandgun ? 9 : 12);
       } else if (weapon && !weapon.isHandgun) {
-        this.drawTile(11, this.direction); // draw arms with rifle
+        this.drawTile(11, 1); // draw arms with rifle
       } else {
         // 7. with gun
         // 8. out with gun
-        this.drawTile(7 + (this.takingDamage ? 1 : 0), this.direction);
+        this.drawTile(7 + (this.takingDamage ? 1 : 0), 1);
       }
     } else {
       // 5. normal
       // 6. out
-      this.drawTile(5 + (this.takingDamage ? 1 : 0), this.direction);
+      this.drawTile(5 + (this.takingDamage ? 1 : 0), 1);
     }
     // activate what's in the dude's hands
     this.hands.renderItems(this);

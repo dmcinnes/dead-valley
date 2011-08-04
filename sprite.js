@@ -27,7 +27,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   Sprite.prototype.init = function (name) {
     var config = spriteInfo[name];
 
-    this.name   = name;
+    this.name = name;
 
     var co;
     if (config.collidableOffset) {
@@ -82,17 +82,30 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     // sprites default to a z-index of 100
     this.z = config.z || 100;
 
-    this.createNode();
+    this.layers = [];
+    var layerCount = config.layers || 1;
+    for (var i = 0; i < layerCount; i++) {
+      this.layers.push(0);
+    }
+
+    this.createNode(layerCount);
   };
 
-  Sprite.prototype.createNode = function () {
+  Sprite.prototype.createNode = function (layers) {
     this.node = $('<div/>');
+
+    var image    = [];
+    for (var i = 0; i < layers; i++) {
+      image.push("url(assets/"+this.image+".png)");
+    }
+
     this.node.css({
-      'background-image': "url(assets/"+this.image+".png)",
+      'background-image': image.join(','),
       'z-index': this.z,
       width: this.tileWidth,
       height: this.tileHeight
     });
+
     this.node.addClass('sprite');
     spriteParent.append(this.node);
   };
@@ -141,6 +154,14 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   Sprite.prototype.render = function (delta) {
     if (!this.visible) return;
 
+    // clear layers
+    var count = this.layers.length;
+    for (var i = 0; i < count; i++) {
+      this.layers[i] = -1;
+    }
+
+    this.draw(delta);
+
     var map = game.map;
 
     var x = this.pos.x - map.originOffsetX;
@@ -157,12 +178,12 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     // TODO support FF
     this.node[0].style['-webkit-transform'] = transform.join('');
 
-    this.draw();
+    this.finalizeLayers();
   };
 
   // default draw method, just draw the 0th tile
   Sprite.prototype.draw = function (delta) {
-    this.drawTile(0);
+    this.drawTile(0, 0);
   };
 
   Sprite.prototype.updateGrid = function () {
@@ -240,11 +261,25 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
             cn.south.west.isEmpty(this.collidesWith));
   };
 
-  // TODO handle vertical offsets
-  Sprite.prototype.drawTile = function (index, flipped) {
-    var left = -(index % this.tileWidth) * this.tileWidth - this.imageOffset.x;
-    var top  = -this.imageOffset.y;
-    this.node[0].style['background-position']  = [left, 'px ', top, 'px'].join('');
+  Sprite.prototype.drawTile = function (index, layer) {
+    // if layer is not provided assume each tile has its own layer
+    var which = (layer === undefined) ? index : layer;
+    this.layers[which] = index;
+  };
+
+  // take the layer data and update the background position from it
+  Sprite.prototype.finalizeLayers = function () {
+    var length = this.layers.length;
+    var position = [];
+    for (var i = length-1; i >= 0; i--) {
+      var index = this.layers[i];
+      if (index >= 0) {
+        var left = -(index * this.tileWidth) - this.imageOffset.x;
+        var top  = -this.imageOffset.y;
+        position.push([left, 'px ', top, 'px'].join(''));
+      }
+    }
+    this.node[0].style['background-position'] = position.join(',');
   };
 
   Sprite.prototype.nearby = function () {

@@ -5,6 +5,7 @@ define(function () {
       img: 'dude',
       width: 20,
       height: 20,
+      layers: 2,
       imageOffset: {
         x: 0,
         y: 0
@@ -22,6 +23,7 @@ define(function () {
       img: 'zombie',
       width: 20,
       height: 22,
+      layers: 2,
       imageOffset: {
         x: 0,
         y: 0
@@ -39,6 +41,7 @@ define(function () {
       img: 'car1',
       width: 24,
       height: 40,
+      layers: 6,
       imageOffset: {
         x: 0,
         y: 0

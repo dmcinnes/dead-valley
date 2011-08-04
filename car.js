@@ -78,25 +78,24 @@ define(["game",
     if (!this.visible) return;
 
     this.drawTile(0);
-    // this.drawTile(1);
 
-    // if (this.driver) {
-    //   if (this.breaking) {
-    //     // break lights
-    //     this.drawTile(4);
-    //     this.drawTile(5);
-    //   }
-    // }
+    if (this.driver) {
+      if (this.breaking) {
+        // break lights
+        this.drawTile(4);
+        this.drawTile(5);
+      }
+    }
 
-    // if (this.headlightsOn) {
-    //   // headlights
-    //   this.drawTile(2);
-    //   this.drawTile(3);
-    //   Headlight.render(this, this.headlights[0]);
-    //   Headlight.render(this, this.headlights[1]);
-    //   Taillight.render(this, 4, this.breaking);
-    //   Taillight.render(this, 5, this.breaking);
-    // }
+    if (this.headlightsOn) {
+      // headlights
+      this.drawTile(2);
+      this.drawTile(3);
+      Headlight.render(this, this.headlights[0]);
+      Headlight.render(this, this.headlights[1]);
+      Taillight.render(this, 4, this.breaking);
+      Taillight.render(this, 5, this.breaking);
+    }
   };
 
   Car.prototype.setSteering = function (steering) {

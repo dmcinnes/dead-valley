@@ -71,7 +71,8 @@ define(['game', 'Sprite'], function (game, Sprite) {
   };
 
   BulletHit.prototype.fireSparks = function (result) {
-    game.sprites.push(new Sparks(result, this.config));
+    // TODO reenable when we know a way to do this
+    // game.sprites.push(new Sparks(result, this.config));
   };
 
   return BulletHit;

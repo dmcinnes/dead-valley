@@ -98,7 +98,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
       // reusing the walking frame and counter
       if (this.walkingFrameCounter < 0.5) {
         this.walkingFrameCounter += delta;
-        this.drawTile(10, this.direction);
+        this.drawTile(10, 0);
       } else {
         this.drawBody();
       }
@@ -111,9 +111,9 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         this.walkingFrameCounter = 0;
         this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
       }
-      this.drawTile(this.walkingFrame+1, this.direction); // starts at 1
+      this.drawTile(this.walkingFrame+1, 0); // starts at 1
     } else {
-      this.drawTile(0, this.direction); // standing
+      this.drawTile(0, 0); // standing
     }
     
     // arms
@@ -124,11 +124,11 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         this.attackingFrameCounter = 0;
         this.attackingFrame = (this.attackingFrame + 1) % 4; // four frames
       }
-      this.drawTile(this.attackingFrame+6, this.direction); // starts at 6
+      this.drawTile(this.attackingFrame+6, 1); // starts at 6
     } else if (this.walking) {
-      this.drawTile(6, this.direction); // walking arms
+      this.drawTile(6, 1); // walking arms
     } else {
-      this.drawTile(5, this.direction); // standing arms
+      this.drawTile(5, 1); // standing arms
     }
   };
 
@@ -292,7 +292,8 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     if (this.health > 0) {
       // splat zombie blood at his feet
       var splatPos = this.pos.clone().translate({x:0, y:4});
-      BloodSplatter.splat(splatPos, 'green', damage);
+      // TODO reenable bloodsplatter when we find a way to do it
+      // BloodSplatter.splat(splatPos, 'green', damage);
       this.health -= damage;
       if (this.health <= 0) {
         // DEEEEEED
@@ -313,17 +314,18 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   };
 
   Zombie.prototype.touch = function (other, point, normal) {
-    if (other === game.dude.driving &&
-        this.tireTrackLength > 0) {
-      _.each(other.wheels, function (wheel) {
-        if (!wheel.tracks &&
-            this.tireTrackLength > 0 &&
-            this.checkPointCollision(other.pos.add(wheel.position))) {
-          this.tireTrackLength -= Math.floor(Math.random() * 5);
-          TireTracks.splat(other, wheel, '#070', this.tireTrackLength);
-        }
-      }, this);
-    }
+    // TODO reimplement tire tracks when we find a way to do it
+    // if (other === game.dude.driving &&
+    //     this.tireTrackLength > 0) {
+    //   _.each(other.wheels, function (wheel) {
+    //     if (!wheel.tracks &&
+    //         this.tireTrackLength > 0 &&
+    //         this.checkPointCollision(other.pos.add(wheel.position))) {
+    //       this.tireTrackLength -= Math.floor(Math.random() * 5);
+    //       TireTracks.splat(other, wheel, '#070', this.tireTrackLength);
+    //     }
+    //   }, this);
+    // }
   };
 
   Zombie.prototype.saveMetadata = function () {

@@ -44,9 +44,9 @@ define(["sprite",
   Barrel.prototype.draw = function (delta) {
     if (this.isRolling) {
       this.barrelState = (this.barrelState + delta * this.vel.magnitude()/10) % 3;
-      this.drawTile(Math.floor(this.barrelState));
+      this.drawTile(Math.floor(this.barrelState), 0);
     } else {
-      this.drawTile(0);
+      this.drawTile(0, 0);
     }
   };
 
@@ -62,14 +62,10 @@ define(["sprite",
     // TODO stuff these into the sprite-info thingy
     this.width         = 22;
     this.tileWidth     = 22;
-    this.imageOffset = {
-      x: 76,
-      y: this.imageOffset.y
-    };
-    this.center = {
-      x: 11,
-      y: this.center.y
-    };
+    this.imageOffset.x = 76;
+    this.center.x      = 11;
+    // update the div
+    this.node.css('width', this.tileWidth);
   };
 
   Barrel.prototype.saveMetadata = function () {
