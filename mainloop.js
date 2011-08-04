@@ -20,8 +20,8 @@ define(["game"], function (game) {
             };
   })();
 
-  var mainLoop = function () {
-    thisFrame = Date.now();
+  var mainLoop = function (thisFrame) {
+    thisFrame = thisFrame || Date.now();
     elapsed = thisFrame - lastFrame;
     if (elapsed > 100) {
       elapsed = 100; // cap it at 10 FPS
