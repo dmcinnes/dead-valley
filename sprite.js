@@ -174,6 +174,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     if (this.direction) {
       transform.push(' scaleX(-1)');
     }
+    // translateZ(0) makes a big difference for Safari
+    transform.push(' translateZ(0)');
 
     // TODO support FF
     this.node[0].style['-webkit-transform'] = transform.join('');
