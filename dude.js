@@ -78,7 +78,7 @@ define(["game",
     if (!this.visible) return;
 
     // hack so the sprite is placed correctly when it's flipped
-    this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
+    this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX + 4;
 
     if (this.alive()) {
       if (this.walking) {

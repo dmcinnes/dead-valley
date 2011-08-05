@@ -92,7 +92,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
 
   Zombie.prototype.draw = function (delta) {
     // hack so the sprite is placed correctly when its flipped
-    this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX - 4;
+    this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX + 4;
 
     if (this.health <= 0) {
       // reusing the walking frame and counter
