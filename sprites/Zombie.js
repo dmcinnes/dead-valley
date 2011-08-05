@@ -71,23 +71,13 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   Zombie.prototype = new Sprite();
 
   // draw the 'dead' zombie
-  Zombie.prototype.drawBody = function () {
-    // if (this.direction) {
-    //   context.save();
-    //   context.scale(-1, 1);
-    // }
-    // context.drawImage(this.image,
-    //                   BODY_OFFSET,
-    //                   this.imageOffset.y,
-    //                   BODY_WIDTH,
-    //                   this.tileHeight,
-    //                   -this.center.x,
-    //                   -this.center.y,
-    //                   BODY_WIDTH,
-    //                   this.tileHeight);
-    // if (this.direction) {
-    //   context.restore();
-    // }
+  Zombie.prototype.modifyForPronePosition = function () {
+    // so we render correctly
+    this.node.width(30);
+    this.node.height(9);
+    this.imageOffset.x = 10;
+    this.imageOffset.y = 14;
+    this.center.y -= 14;
   };
 
   Zombie.prototype.draw = function (delta) {
@@ -99,8 +89,11 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
       if (this.walkingFrameCounter < 0.5) {
         this.walkingFrameCounter += delta;
         this.drawTile(10, 0);
+        if (this.walkingFrameCounter > 0.5) {
+          this.modifyForPronePosition();
+        }
       } else {
-        this.drawBody();
+        this.drawTile(11, 0);
       }
       return;
     }
