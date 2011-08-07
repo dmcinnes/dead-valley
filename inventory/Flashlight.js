@@ -14,10 +14,11 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
   };
 
   Flashlight.prototype.render = function (dude) {
+    var pos = dude.pos;
+    var map = game.map;
     context.save();
-    context.shadowBlur = 15.0;
     context.globalCompositeOperation = 'destination-out';
-    dude.configureTransform(context);
+    context.translate(pos.x - map.originOffsetX, pos.y - map.originOffsetY);
     if (dude.aimDirection) {
       var vector = dude.aimPoint.subtract(dude.pos);
       var length = Math.min(vector.magnitude(), maxLength);

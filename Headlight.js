@@ -7,12 +7,13 @@ define(['game'], function (game) {
   var halfWidth = 50;
   var lampHW    = 3;
 
-  var render = function (sprite, pos) {
+  var render = function (sprite, offset) {
+    var pos = sprite.pos;
+    var map = game.map;
     context.save();
-    // context.shadowBlur = 5.0;
-    context.translate(sprite.pos.x - game.map.originOffsetX, sprite.pos.y - game.map.originOffsetY);
-    context.rotate(sprite.pos.rot * Math.PI / 180);
-    context.translate(pos.x, pos.y);
+    context.translate(pos.x - map.originOffsetX, pos.y - map.originOffsetY);
+    context.rotate(pos.rot * Math.PI / 180);
+    context.translate(offset.x, offset.y);
     context.globalCompositeOperation = 'destination-out';
     context.beginPath();
     context.moveTo(-lampHW, 0);
