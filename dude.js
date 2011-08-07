@@ -413,7 +413,7 @@ define(["game",
     var self = this;
     $('#click-overlay').mousemove(function (e) {
       if (self.alive()) {
-        var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+        var coords = game.map.worldCoordinatesFromWindow(e.pageX, e.pageY);
         self.aimTowardMouse(coords, true);
       }
     }).mouseleave(function () {
