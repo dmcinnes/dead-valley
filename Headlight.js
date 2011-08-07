@@ -9,8 +9,9 @@ define(['game'], function (game) {
 
   var render = function (sprite, pos) {
     context.save();
-    context.shadowBlur = 5.0;
-    sprite.configureTransform(context);
+    // context.shadowBlur = 5.0;
+    context.translate(sprite.pos.x - game.map.originOffsetX, sprite.pos.y - game.map.originOffsetY);
+    context.rotate(sprite.pos.rot * Math.PI / 180);
     context.translate(pos.x, pos.y);
     context.globalCompositeOperation = 'destination-out';
     context.beginPath();

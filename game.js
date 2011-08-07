@@ -36,6 +36,7 @@ define(['assetmanager',
     dude:          null,
     sprites:       sprites,
     events:        eventMachine(),
+    skyContext:    $('#sky-canvas')[0].getContext('2d'),
 
     runMap: function (delta) {
       if (this.map) this.map.run(delta);

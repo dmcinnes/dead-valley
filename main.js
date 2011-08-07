@@ -49,7 +49,7 @@ require(
     require.ready(function () {
       var dude, startX, startY;
 
-      // game.addSprite(Sky);
+      game.addSprite(Sky);
 
       var dudeState = World.getDude();
 
