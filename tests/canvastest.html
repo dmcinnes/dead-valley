@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <script src="lib/jquery-1.6.1.min.js"></script>
+    <script>
+      $(function () {
+        var headlight = $('#headlight');
+
+        window.requestAnimFrame = (function () {
+          return  window.requestAnimationFrame       ||
+                  window.webkitRequestAnimationFrame ||
+                  window.mozRequestAnimationFrame    ||
+                  window.oRequestAnimationFrame      ||
+                  window.msRequestAnimationFrame     ||
+                  function (/* function */ callback, /* DOMElement */ element) {
+                    window.setTimeout(callback, 1000 / 60);
+                  };
+        })();
+
+        var sky = $('#sky-canvas')[0];
+        var context = sky.getContext('2d');
+        var angle = 0;
+        var thisFrame, elapsed;
+        var lastFrame = Date.now();
+        var framerate = $('#framerate');
+        var stop = false;
+        var acc = 0;
+        var length    = 450; // 150 ft
+        var halfWidth = 50;
+        var lampHW    = 3;
+
+        var loop = function (time) {
+          thisFrame = Date.now();
+          elapsed = thisFrame - lastFrame;
+          lastFrame = thisFrame;
+          acc += elapsed;
+          if (angle % 10 === 0) {
+            acc /= 10;
+            framerate.text(Math.round(1000 / acc));
+            acc = 0;
+          }
+          
+          angle++;
+          if (angle === 360) {
+            angle = 0;
+          }
+
+          context.clearRect(0, 0, 600, 600);
+          context.fillRect(0, 0, 600, 600);
+          context.save();
+          for (var i = 0; i < 2; i++) {
+            context.save();
+            // context.shadowBlur = 15.0;
+            context.translate(300, 500);
+            context.rotate(angle * Math.PI / 180);
+            context.translate((i * 2 - 1) * 10, 0);
+            context.globalCompositeOperation = 'destination-out';
+            context.beginPath();
+            context.moveTo(-lampHW, 0);
+            context.lineTo(-halfWidth, -length);
+            context.arc(0, -length, halfWidth, Math.PI, Math.PI*2);
+            context.lineTo(lampHW, 0);
+            context.arc(0, 0, lampHW, 0, Math.PI);
+            context.fill();
+            context.restore();
+          }
+          context.restore();
+
+          if (!stop) {
+            requestAnimFrame(loop, sky);
+          }
+        };
+
+        $('body').click(function () {
+          stop = !stop;
+          if (!stop) {
+            loop();
+          }
+        });
+
+        loop();
+
+      });
+    </script>
+    <style>
+      svg {
+        background-color: #A55
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="sky-canvas" width="600" height="600"></canvas>
+    <div id="framerate"></div>
+  </body>
+</html>

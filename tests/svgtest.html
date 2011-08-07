@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <script src="lib/jquery-1.6.1.min.js"></script>
+    <script>
+      $(function () {
+        var headlight = $('#headlight');
+
+        window.requestAnimFrame = (function () {
+          return  window.requestAnimationFrame       ||
+                  window.webkitRequestAnimationFrame ||
+                  window.mozRequestAnimationFrame    ||
+                  window.oRequestAnimationFrame      ||
+                  window.msRequestAnimationFrame     ||
+                  function (/* function */ callback, /* DOMElement */ element) {
+                    window.setTimeout(callback, 1000 / 60);
+                  };
+        })();
+
+        var svg = $('svg')[0];
+        var angle = 0;
+        var thisFrame, elapsed;
+        var lastFrame = Date.now();
+        var framerate = $('#framerate');
+        var stop = false;
+        var acc = 0;
+
+        var loop = function (time) {
+          thisFrame = Date.now();
+          elapsed = thisFrame - lastFrame;
+          lastFrame = thisFrame;
+          acc += elapsed;
+          if (angle % 10 === 0) {
+            acc /= 10;
+            framerate.text(Math.round(1000 / acc));
+            acc = 0;
+          }
+          
+          angle++;
+          if (angle === 360) {
+            angle = 0;
+          }
+          headlight.attr('transform', "translate(300,500) rotate("+angle+")")
+          if (!stop) {
+            requestAnimFrame(loop, svg);
+          }
+        };
+
+        $('body').click(function () {
+          stop = !stop;
+          if (!stop) {
+            loop();
+          }
+        });
+
+        loop();
+
+      });
+    </script>
+    <style>
+      svg {
+        background-color: #A55
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="600" height="600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="beam" d="M -3 0 L -50 -450 C -50 -500 50 -500 50 -450 L 3 0 z"/>
+        <mask id="headlight-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="600">
+          <rect width="600" height="600" x="0" y="0" fill="white"/>
+          <g id="headlight" transform="translate(300,500)">
+            <use xlink:href="#beam" transform="translate(-10,0)" fill="black"/>
+            <use xlink:href="#beam" transform="translate(10,0)" fill="black"/>
+          </g>
+        </mask>
+      </defs>
+      <rect id="background" width="600" height="600" x="0" y="0" fill="black" mask="url(#headlight-mask)"/>
+    </svg>
+    <div id="framerate"></div>
+  </body>
+</html>
