@@ -236,7 +236,9 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       this.currentNode.leave(this);
       this.currentNode = null;
     }
-    this.node.remove();
+    if (this.node) {
+      this.node.remove();
+    }
   };
 
   // TODO perhaps cache transpoints Vectors?

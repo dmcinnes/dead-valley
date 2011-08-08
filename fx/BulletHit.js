@@ -1,7 +1,7 @@
 
 define(['game', 'Sprite'], function (game, Sprite) {
 
-  var context = game.spriteContext;
+  var context = game.skyContext;
 
   var defaultConfig = {
     color:     'white',
@@ -47,18 +47,23 @@ define(['game', 'Sprite'], function (game, Sprite) {
     }
   };
 
-  Sparks.prototype.draw = function (delta) {
-    // context.fillStyle = this.color;
-    // var size = this.size;
-    // var life = this.life;
-    // var percent = life / this.lifetime;
-    // var pos;
-    // _.each(this.sparks, function (spark) {
-    //   if (life < spark.life) {
-    //     pos = spark.multiply(percent);
-    //     context.fillRect(pos.x, pos.y, size, size);
-    //   }
-    // });
+  // override render
+  Sparks.prototype.render = function (delta) {
+    var map = game.map;
+    context.save();
+    context.translate(this.pos.x - map.originOffsetX, this.pos.y - map.originOffsetY);
+    context.fillStyle = this.color;
+    var size = this.size;
+    var life = this.life;
+    var percent = life / this.lifetime;
+    var pos;
+    _.each(this.sparks, function (spark) {
+      if (life < spark.life) {
+        pos = spark.multiply(percent);
+        context.fillRect(pos.x, pos.y, size, size);
+      }
+    });
+    context.restore();
   };
 
   // don't need these methods
@@ -71,8 +76,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
   };
 
   BulletHit.prototype.fireSparks = function (result) {
-    // TODO reenable when we know a way to do this
-    // game.sprites.push(new Sparks(result, this.config));
+    game.sprites.push(new Sparks(result, this.config));
   };
 
   return BulletHit;

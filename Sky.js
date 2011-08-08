@@ -58,9 +58,11 @@ define(["game", "sprite"], function (game, Sprite) {
       currentState();
     },
     render: function (delta) {
+      context.save();
       context.clearRect(0, 0, game.gameWidth, game.gameHeight);
       context.globalAlpha = alpha;
       context.fillRect(0, 0, game.gameWidth, game.gameHeight);
+      context.restore();
     },
     currentAlpha: function () {
       return alpha;
