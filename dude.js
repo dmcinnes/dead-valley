@@ -361,10 +361,12 @@ define(["game",
       if (firearm && firearm.ammoType) {
         do {
           var ammo = self.inventory.findItem(firearm.ammoType);
-          firearm.accept(ammo);
-          if (!ammo.viable()) {
-            self.inventory.removeItem(ammo);
-          }
+	  if (ammo) {
+	    firearm.accept(ammo);
+	    if (!ammo.viable()) {
+	      self.inventory.removeItem(ammo);
+	    }
+	  }
         } while (!firearm.isFull() && ammo)
       }
     }).subscribe('map scroll', function (vec) {
