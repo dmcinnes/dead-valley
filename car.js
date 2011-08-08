@@ -93,8 +93,8 @@ define(["game",
       this.drawTile(3);
       Headlight.render(this, this.headlights[0]);
       Headlight.render(this, this.headlights[1]);
-      // Taillight.render(this, 4, this.breaking);
-      // Taillight.render(this, 5, this.breaking);
+      Taillight.render(this, 4, this.breaking);
+      Taillight.render(this, 5, this.breaking);
     }
   };
 

@@ -51,12 +51,12 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     this.imageOffset = $.extend({}, config.imageOffset);
     this.center      = $.extend({}, config.center);
 
-    // load the image
-    // game.assetManager.loadImage(config.img, $.proxy(function (img) {
-    //   this.image = img;
-    // }, this));
-
     this.image = config.img;
+
+    // load the image
+    game.assetManager.loadImage(config.img, $.proxy(function (img) {
+      this.imageData = img;
+    }, this));
 
     this.pos = new Vector(0, 0);
     this.pos.rot = 0;

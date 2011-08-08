@@ -6,8 +6,11 @@ define(['game'], function (game) {
   var lampHW    = 2;
 
   var render = function (sprite, tile, on) {
+    var pos = sprite.pos;
+    var map = game.map;
     context.save();
-    sprite.configureTransform(context);
+    context.translate(pos.x - map.originOffsetX, pos.y - map.originOffsetY);
+    context.rotate(pos.rot * Math.PI / 180);
     if (on) {
       context.globalAlpha = 1;
       context.shadowBlur = 10.0;
@@ -15,8 +18,15 @@ define(['game'], function (game) {
     } else {
       context.globalAlpha = 0.5;
     }
-    // TODO get the taillight images and render them in the sky canvas
-    // sprite.drawTile(tile, false, context);
+    context.drawImage(sprite.imageData,
+		      sprite.imageOffset.x + tile * sprite.tileWidth,
+		      sprite.imageOffset.y,
+		      sprite.tileWidth,
+		      sprite.tileHeight,
+		      -sprite.center.x,
+		      -sprite.center.y,
+		      sprite.tileWidth,
+		      sprite.tileHeight);
     context.restore();
   };
 
