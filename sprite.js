@@ -88,26 +88,28 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       this.layers.push(0);
     }
 
-    this.createNode(layerCount);
+    this.node = this.createNode(layerCount);
   };
 
   Sprite.prototype.createNode = function (layers) {
-    this.node = $('<div/>');
+    var node = $('<div/>');
 
     var image    = [];
     for (var i = 0; i < layers; i++) {
       image.push("url(\"assets/"+this.image+".png\")");
     }
 
-    this.node.css({
+    node.css({
       'background-image': image.join(','),
       'z-index': this.z,
       width: this.tileWidth,
       height: this.tileHeight
     });
 
-    this.node.addClass('sprite');
-    spriteParent.append(this.node);
+    node.addClass('sprite');
+    spriteParent.append(node);
+
+    return node;
   };
 
   Sprite.prototype.preMove  = function () {

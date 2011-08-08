@@ -31,7 +31,7 @@ define(["game",
 
   var ARM_OFFSET_X    = 5;
   var ARM_OFFSET_Y    = 8;
-  var ARM_FLIP_OFFSET = 2;
+  var ARM_FLIP_OFFSET = 10;
 
   var Dude = function () {
     this.init('Dude');
@@ -65,6 +65,10 @@ define(["game",
 
     this.inventory           = new Inventory({width:9, height:3});
     this.hands               = new DudeHands();
+
+    this.aimingArmNode       = this.createNode(1);
+    // set the transform origin so it rotates in the right place
+    this.aimingArmNode[0].style['-webkit-transform-origin'] = ARM_OFFSET_X + ' ' + ARM_OFFSET_Y;
 
     this.setupEventHandlers();
     this.setupMouseBindings();
@@ -269,6 +273,7 @@ define(["game",
   };
 
   Dude.prototype.drawArms = function () {
+    this.aimingArmNode[0].style.visibility = 'hidden';
     var weapon = this.hands.weapon();
     if (weapon) {
       if (this.firing && weapon.isMeleeWeapon) {
@@ -296,28 +301,35 @@ define(["game",
   };
 
   Dude.prototype.drawAimedArm = function (frame) {
-    // if (!this.image || !this.aimDirection) {
-    //   return;
-    // }
-    // context.save();
-    // if (this.direction) {
-    //   context.translate(-this.center.x + ARM_OFFSET_X + ARM_FLIP_OFFSET, -this.center.y + ARM_OFFSET_Y);
-    //   context.rotate(this.aimDirection - Math.PI);
-    //   context.scale(-1, 1);
-    // } else {
-    //   context.translate(-this.center.x + ARM_OFFSET_X, -this.center.y + ARM_OFFSET_Y);
-    //   context.rotate(this.aimDirection);
-    // }
-    // context.drawImage(this.image,
-    //                   this.imageOffset.x + frame * this.tileWidth,
-    //                   this.imageOffset.y,
-    //                   this.tileWidth,
-    //                   this.tileHeight,
-    //                   -ARM_OFFSET_X,
-    //                   -ARM_OFFSET_Y,
-    //                   this.tileWidth,
-    //                   this.tileHeight);
-    // context.restore();
+    var map = game.map;
+    var style = this.aimingArmNode[0].style;
+
+    var x = this.pos.x - map.originOffsetX - this.center.x;
+    var y = this.pos.y - map.originOffsetY - this.center.y;
+
+    var rot = this.aimDirection;
+    if (this.direction) {
+      x += ARM_FLIP_OFFSET;
+      rot -= Math.PI;
+    }
+
+    var transform = [];
+    transform.push(' translate(', x, 'px,', y, 'px)');
+    transform.push(' rotate(', rot, 'rad)');
+    if (this.direction) {
+      transform.push(' scaleX(-1)');
+    }
+    // translateZ(0) makes a big difference for Safari
+    transform.push(' translateZ(0)');
+
+    var left = -(frame * this.tileWidth) - this.imageOffset.x;
+    var top  = -this.imageOffset.y;
+    style['background-position'] = [left, 'px ', top, 'px'].join('');
+
+    // TODO support FF
+    style['-webkit-transform'] = transform.join('');
+
+    style.visibility = 'visible';
   };
 
   Dude.prototype.alive = function () {
