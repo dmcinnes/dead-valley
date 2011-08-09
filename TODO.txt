@@ -74,6 +74,7 @@ make zombies attracted to light
 firearm reload times
 firearm between shot timeout
 limit the number of bloodsplatters in play at a given time
+fix zombie hitbox
 
 *EDITOR*
 remove current collidible code
