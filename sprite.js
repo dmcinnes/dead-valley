@@ -5,8 +5,6 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   var Matrix  = new Matrix(2, 3);
 
-  var spriteParent = $('#sprites');
-
   var bulletHit;
 
   var Sprite = function () {
@@ -20,6 +18,9 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     this.currentNode = null;
     this.nextsprite  = null;
   };
+
+  // where the sprites live
+  Sprite.prototype.spriteParent = $('#sprites');
 
   // this sprite should be saved when the level chunk in reclaimed
   Sprite.prototype.shouldSave = true;
@@ -107,7 +108,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     });
 
     node.addClass('sprite');
-    spriteParent.append(node);
+    this.spriteParent.append(node);
 
     return node;
   };
@@ -158,9 +159,11 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     if (!this.visible) return;
 
     // clear layers
-    var count = this.layers.length;
-    for (var i = 0; i < count; i++) {
-      this.layers[i] = -1;
+    if (this.layers) {
+      var count = this.layers.length;
+      for (var i = 0; i < count; i++) {
+        this.layers[i] = -1;
+      }
     }
 
     var map   = game.map;
@@ -290,17 +293,19 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   // take the layer data and update the background position from it
   Sprite.prototype.finalizeLayers = function () {
-    var length = this.layers.length;
-    var position = [];
-    for (var i = length-1; i >= 0; i--) {
-      var index = this.layers[i];
-      if (index >= 0) {
-        var left = -(index * this.tileWidth) - this.imageOffset.x;
-        var top  = -this.imageOffset.y;
-        position.push([left, 'px ', top, 'px'].join(''));
+    if (this.layers) {
+      var length = this.layers.length;
+      var position = [];
+      for (var i = length-1; i >= 0; i--) {
+        var index = this.layers[i];
+        if (index >= 0) {
+          var left = -(index * this.tileWidth) - this.imageOffset.x;
+          var top  = -this.imageOffset.y;
+          position.push([left, 'px ', top, 'px'].join(''));
+        }
       }
+      this.node[0].style['background-position'] = position.join(',');
     }
-    this.node[0].style['background-position'] = position.join(',');
   };
 
   Sprite.prototype.nearby = function () {

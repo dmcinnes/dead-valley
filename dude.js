@@ -255,8 +255,7 @@ define(["game",
     if (this.alive()) {
       this.takingDamage = true;
 
-      // TODO reenable bloodsplatter when we find a way to do it
-      // BloodSplatter.splat(this.pos.clone(), '#900', damage);
+      BloodSplatter.splat(this.pos.clone(), '#900', damage);
 
       this.health -= damage;
 

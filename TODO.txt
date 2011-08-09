@@ -73,6 +73,7 @@ make zombies attracted to noise
 make zombies attracted to light
 firearm reload times
 firearm between shot timeout
+limit the number of bloodsplatters in play at a given time
 
 *EDITOR*
 remove current collidible code

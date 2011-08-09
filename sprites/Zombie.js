@@ -287,8 +287,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     if (this.health > 0) {
       // splat zombie blood at his feet
       var splatPos = this.pos.clone().translate({x:0, y:4});
-      // TODO reenable bloodsplatter when we find a way to do it
-      // BloodSplatter.splat(splatPos, 'green', damage);
+      BloodSplatter.splat(splatPos, 'green', damage);
       this.health -= damage;
       if (this.health <= 0) {
         // DEEEEEED
