@@ -125,6 +125,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     this.postMove(delta);
     this.transformNormals();
     this.updateGrid();
+    this.updateForVerticalZ();
   };
 
   Sprite.prototype.move = function (delta) {
@@ -162,7 +163,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       this.layers[i] = -1;
     }
 
-    var map = game.map;
+    var map   = game.map;
+    var style = this.node[0].style;
 
     var x = this.pos.x - map.originOffsetX;
     var y = this.pos.y - map.originOffsetY;
@@ -172,10 +174,10 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
         x - this.tileWidth > game.gameWidth ||
         y - this.tileHeight > game.gameHeight) {
       // TODO find a better way to handle this
-      this.node[0].style.visibility = 'hidden';
+      style.visibility = 'hidden';
       return; // no need to draw or update
     }
-    this.node[0].style.visibility = 'visible';
+    style.visibility = 'visible';
 
     this.draw(delta);
 
@@ -190,7 +192,10 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     transform.push(' translateZ(0)');
 
     // TODO support FF
-    this.node[0].style['-webkit-transform'] = transform.join('');
+    style['-webkit-transform'] = transform.join('');
+
+    // update z
+    style['z-index'] = this.z;
 
     this.finalizeLayers();
   };
@@ -330,6 +335,14 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       bulletHit = new BulletHit();
     }
     bulletHit.fireSparks(hit);
+  };
+
+  // set the z value based on the vertical position on the page
+  Sprite.prototype.updateForVerticalZ = function () {
+    var vert = (this.pos.y - game.map.originOffsetY) / game.gameHeight;
+    if (vert > 0 && vert < 1) {
+      this.z = Math.round(vert * 100);
+    }
   };
 
   spriteMarshal(Sprite);
