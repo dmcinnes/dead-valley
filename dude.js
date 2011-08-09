@@ -157,8 +157,8 @@ define(["game",
     }
 
     if (this.walking) {
-      this.aiming = false;
       this.aimTowardMouse(this.aimPoint, false); // update so flashlight follows
+      this.aiming = false;
     }
 
     game.map.keepInView(this);
