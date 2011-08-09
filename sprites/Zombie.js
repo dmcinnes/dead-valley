@@ -66,6 +66,8 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
 
     this.tireTrackLength       = 30;
 
+    this.prone                 = false;
+
     this.originalCenterX       = this.center.x;
   };
   Zombie.prototype = new Sprite();
@@ -74,10 +76,9 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   Zombie.prototype.modifyForPronePosition = function () {
     // so we render correctly
     this.node.width(30);
-    this.node.height(9);
-    this.imageOffset.x = 10;
-    this.imageOffset.y = 14;
-    this.center.y -= 14;
+    this.imageOffset.x  = 10;
+    this.center.y      -= 6;
+    this.pos.y         -= 6;
   };
 
   Zombie.prototype.draw = function (delta) {
@@ -89,10 +90,11 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
       if (this.walkingFrameCounter < 0.5) {
         this.walkingFrameCounter += delta;
         this.drawTile(10, 0);
-        if (this.walkingFrameCounter > 0.5) {
+      } else {
+        if (!this.prone) {
+          this.prone = true;
           this.modifyForPronePosition();
         }
-      } else {
         this.drawTile(11, 0);
       }
       return;
