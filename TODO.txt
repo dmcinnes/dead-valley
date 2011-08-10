@@ -46,6 +46,7 @@ X add zombie blood tire tracks
 X fix prone zombie bullet collision
 X fix bullets not travelling past mouse cursor
 X support melee weapons
+X limit the number of bloodsplatters in play at a given time
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -73,7 +74,6 @@ make zombies attracted to noise
 make zombies attracted to light
 firearm reload times
 firearm between shot timeout
-limit the number of bloodsplatters in play at a given time
 fix zombie hitbox
 
 *EDITOR*

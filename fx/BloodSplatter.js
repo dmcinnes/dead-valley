@@ -3,6 +3,9 @@
 define(['game', 'Sprite'], function (game, Sprite) {
   var maxLife = 60; // seconds
 
+  var currentSplats = [];
+  var maxSplats     = 25; // number of splats on the screen at a time
+
   var Splatter = function (pos, color, str) {
     this.pos     = pos;
     this.pos.rot = 0;
@@ -92,7 +95,14 @@ define(['game', 'Sprite'], function (game, Sprite) {
   Splatter.prototype.updateForVerticalZ = function () {};
 
   var splat = function (pos, color, strength) {
-    game.sprites.push(new Splatter(pos, color, strength));
+    var splatter = new Splatter(pos, color, strength);
+    game.sprites.push(splatter);
+    // keep track of existing splats
+    currentSplats.push(splatter);
+    if (currentSplats.length > maxSplats) {
+      var reclaimed = currentSplats.shift();
+      reclaimed.die();
+    }
   };
 
   return {
