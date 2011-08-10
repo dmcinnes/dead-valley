@@ -37,6 +37,7 @@ define(['assetmanager',
     sprites:       sprites,
     events:        eventMachine(),
     skyContext:    $('#sky-canvas')[0].getContext('2d'),
+    threeDee:      true, // 3D acceleration
 
     runMap: function (delta) {
       if (this.map) this.map.run(delta);

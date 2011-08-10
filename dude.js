@@ -319,7 +319,9 @@ define(["game",
       transform.push(' scaleX(-1)');
     }
     // translateZ(0) makes a big difference for Safari
-    transform.push(' translateZ(0)');
+    if (game.threeDee) {
+      transform.push(' translateZ(0)');
+    }
 
     var left = -(frame * this.tileWidth) - this.imageOffset.x;
     var top  = -this.imageOffset.y;

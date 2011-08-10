@@ -192,7 +192,9 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       transform.push(' scaleX(-1)');
     }
     // translateZ(0) makes a big difference for Safari
-    transform.push(' translateZ(0)');
+    if (game.threeDee) {
+      transform.push(' translateZ(0)');
+    }
 
     // TODO support FF
     style['-webkit-transform'] = transform.join('');

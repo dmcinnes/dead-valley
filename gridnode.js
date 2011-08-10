@@ -77,14 +77,19 @@ define(["game",
     } else {
       if (!this.domNode) this.obtainDomNode();
 
-      // translateZ(0) makes a big difference for Safari
-      var transform = ['translate(', x, 'px,', y, 'px) translateZ(0)'];
+      var transform = ['translate(', x, 'px,', y, 'px)'];
       if (this.tileFlip) {
         transform.push(' scaleX(-1)');
       }
       if (this.tileRotate) {
         transform.push(' rotate(', this.tileRotate * 90, 'deg)');
       }
+
+      // translateZ(0) makes a big difference for Safari
+      if (game.threeDee) {
+        transform.push(' translateZ(0)');
+      }
+
       // TODO support FF
       this.domNode[0].style['-webkit-transform'] = transform.join('');
     }

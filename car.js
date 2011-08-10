@@ -239,8 +239,8 @@ define(["game",
     game.events.fireEvent("leave car", this);
   };
 
-  Car.prototype.takeDamage = function (damage) {
-  };
+  // Car.prototype.takeDamage = function (damage) {
+  // };
 
   Car.prototype.percentFuelRemaining = function () {
     return this.currentFuel / this.fuelCapacity;
