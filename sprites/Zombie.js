@@ -293,7 +293,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         // DEEEEEED
         this.vel.scale(0);
         this.walkingFrameCounter = 0;
-        this.ignoreCollisionResolution = true;
+        this.collidable = false;
         this.shouldSave = false;
         this.z--; // always underfoot
         // set the points for the now prone zombie
