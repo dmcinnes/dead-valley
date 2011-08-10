@@ -20,7 +20,7 @@ require(
    "inventory/BaseballBat",
    "World",
    "Mouse",
-   "spritemarshal"],
+   "Cheat"],
 
   function (game,
             Controls,
@@ -43,7 +43,7 @@ require(
             BaseballBat,
             World,
             Mouse,
-            spriteMarshal) {
+            Cheat) {
 
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
