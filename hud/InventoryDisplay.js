@@ -131,7 +131,7 @@ define(['game', 'Inventory'], function (game, Inventory) {
 
             // only restart the drag if there's something to drag after the drop
             if (draggingItem.viable()) {
-              this.restartDrag(draggingItem, currentDraggableOffset);
+              this.restartDrag(draggingItem, currentDraggableOffset, e);
             }
           } else if (item) {
             // swap em
@@ -140,13 +140,13 @@ define(['game', 'Inventory'], function (game, Inventory) {
             var newItem = draggingItem;
 
             // start dragging the dropped on thing
-            this.restartDrag(item);
+            this.restartDrag(item, null, e);
 
             // add the dropped item to the inventory
             this.inventory.addItem(newItem, posX, posY);
           } else {
             // restart dragging the dropped thing
-            this.restartDrag(draggingItem, currentDraggableOffset);
+            this.restartDrag(draggingItem, currentDraggableOffset, e);
           }
         }
         // stop the drop event from bubbling to the body
