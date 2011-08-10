@@ -75,6 +75,8 @@ make zombies attracted to light
 firearm reload times
 firearm between shot timeout
 fix zombie hitbox
+add dude roll/damage when jumping out of car
+use rotateX 3d transition for driving over rough ground
 
 *EDITOR*
 remove current collidible code
