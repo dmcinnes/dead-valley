@@ -47,6 +47,7 @@ X fix prone zombie bullet collision
 X fix bullets not travelling past mouse cursor
 X support melee weapons
 X limit the number of bloodsplatters in play at a given time
+X add trees randomly to map
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -54,7 +55,6 @@ create another gas station section on straightaway
 add map handling functions for custom instances of sections through the map worker
 fix gas pump position
 tune Honda's performance
-add trees randomly to map
 render trees -- make transparent when colliding with sprite
 convert everything to radians
 make object capitalization consistent

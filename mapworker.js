@@ -57,21 +57,47 @@ _(section_list).each(function (name) {
   // save the section metadata on the map Array object
   section.name      = name;
   // these are from the imported script
-  section.roads     = roads;
-  section.sprites   = sprites;
-  section.buildings = buildings;
+  section.roads     = roads     || [];
+  section.sprites   = sprites   || [];
+  section.buildings = buildings || [];
 });
 
 // fills a map's blank tiles wth random dirt and scrub
-var fillBlankTiles = function (tiles) {
+var fillBlankTiles = function (tiles, width) {
   var total = tiles.length;
 
   for (var i = 0; i < total; i++) {
     var tile = tiles[i];
-    if (tile.tileOffset == 0 && Math.random() > 0.9) {
-      tile.tileOffset = Math.floor(Math.random()*2) + 1;
-      tile.tileFlip = Math.random() > 0.5;
-      tile.tileRotate = 0; // Math.floor(Math.random() * 4);
+    if (tile.tileOffset == 0) {
+      var test = Math.random()
+
+      if (test > 0.9) {
+
+        tile.tileOffset = Math.floor(Math.random()*2) + 1;
+        tile.tileFlip = Math.random() > 0.5;
+        tile.tileRotate = 0;
+
+      } else if (test < 0.01) {
+
+        var x = (i % width) * 60;
+        var y = (i / width) * 60;
+        var tree = {
+          clazz: 'Tree',
+          type: 'Tree' + (Math.floor(Math.random() * 3) + 1),
+          pos: {
+            x: x + 30,
+            y: y + 30,
+            rot: Math.floor(Math.random() * 360)
+          }
+        };
+
+        if (!tiles.sprites) {
+          tiles.sprites = [];
+        }
+
+        tiles.sprites.push(JSON.stringify(tree));
+
+      }
     }
   }
 
@@ -142,7 +168,7 @@ onmessage = function (e) {
                 loadSection(config) :
                 getRandomSection(config.roads);
 
-  fillBlankTiles(tiles);
+  fillBlankTiles(tiles, config.width);
 
   var message = {
     type:      'newtiles',

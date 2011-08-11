@@ -7,8 +7,7 @@ define(['sprite', 'collidable'], function (Sprite, collidable) {
   };
   Tree.prototype = new Sprite();
 
-  Tree.prototype.setType(type) {
-  };
+  Tree.prototype.collidesWith = ['Dude', 'Car', 'Zombie'];
 
   // Trees don't move
   Tree.prototype.move = function (delta) {};

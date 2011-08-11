@@ -28,6 +28,10 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   Sprite.prototype.init = function (name) {
     var config = spriteInfo[name];
 
+    if (!config) {
+      console.error("Sprite config for '"+name+"' does not exist!");
+    }
+
     this.name = name;
 
     var co;
@@ -332,7 +336,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   Sprite.prototype.saveMetadata = function () {
     return {
-      clazz: this.name,
+      clazz: this.name.replace(/\d+$/, ''), // numbers at the end denote types
+      type:  this.name,
       pos:   this.pos
     };
   };

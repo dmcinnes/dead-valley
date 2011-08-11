@@ -10,27 +10,30 @@ define(["vector"], function (Vector) {
     if (!this.visible || !this.currentNode) return [];
     var cn = this.currentNode;
     var canidates = [];
+    var north = cn.north;
+    var south = cn.south;
     return [cn,
-            cn.north,
-            cn.south,
+            north,
+            south,
             cn.east,
             cn.west,
-            cn.north.east,
-            cn.north.west,
-            cn.south.east,
-            cn.south.west];
+            north && north.east,
+            north && north.west,
+            south && south.east,
+            south && south.west];
   };
 
   var checkCollisionsAgainst = function (canidates) {
     var len = canidates.length;
-    var ref;
+    var ref, canidate;
     for (var i = 0; i < len; i++) {
-      ref = canidates[i].nextSprite;
+      canidate = canidates[i];
+      ref = canidate && canidate.nextSprite;
       while (ref) {
-        if (ref.collidable) {
-          this.checkCollision(ref);
-        }
-        ref = ref.nextSprite;
+	if (ref.collidable) {
+	  this.checkCollision(ref);
+	}
+	ref = ref.nextSprite;
       }
     }
   };
