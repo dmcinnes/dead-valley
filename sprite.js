@@ -346,9 +346,12 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   // set the z value based on the vertical position on the page
   Sprite.prototype.updateForVerticalZ = function () {
-    var vert = (this.pos.y - game.map.originOffsetY) / game.gameHeight;
-    if (vert > 0 && vert < 1) {
-      this.z = Math.round(vert * 100);
+    // anything greater than 100 don't update
+    if (this.z < 100) {
+      var vert = (this.pos.y - game.map.originOffsetY) / game.gameHeight;
+      if (vert > 0 && vert < 1) {
+        this.z = Math.round(vert * 100);
+      }
     }
   };
 

@@ -6,7 +6,6 @@ define(["game",
        "spritemarshal",
        "DudeHands",
        "Inventory",
-       "GasPump",
        "Car",
        "fx/BloodSplatter"],
 
@@ -16,7 +15,6 @@ define(["game",
                  spriteMarshal,
                  DudeHands,
                  Inventory,
-                 GasPump,
                  Car,
                  BloodSplatter) {
 

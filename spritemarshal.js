@@ -29,7 +29,7 @@ define(function () {
 
     // load the class specified in the sprite string
     require(['sprites/'+values.clazz], function (NewSprite) {
-      var sprite = new NewSprite();
+      var sprite = new NewSprite(values.type);
       setValues(sprite, values);
       callback(sprite);
     });

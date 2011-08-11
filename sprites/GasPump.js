@@ -9,7 +9,8 @@ define(["game",
   var FUELING_RATE     = 0.5; // gallons per second
   var FUELING_DISTANCE = 40;
 
-  var GasPump = function () {
+  var GasPump = function (type) {
+    this.init(type || 'GasPump1');
     this.mass    = Number.MAX_VALUE;
     this.inertia = Number.MAX_VALUE;
   };
