@@ -99,6 +99,74 @@ define(function () {
         y: 5
       },
       z: 90
+    },
+    Tree1: {
+      img: 'foilage',
+      width: 60,
+      height: 60,
+      imageOffset: {
+        x: 0,
+        y: 0
+      },
+      center: {
+        x: 30,
+        y: 30
+      },
+      collidableOffset: {
+        x: 10,
+        y: 10
+      },
+    },
+    Tree2: {
+      img: 'foilage',
+      width: 36,
+      height: 34,
+      imageOffset: {
+        x: 72,
+        y: 12
+      },
+      center: {
+        x: 18,
+        y: 17
+      },
+      collidableOffset: {
+        x: 3,
+        y: 3
+      },
+    },
+    Tree3: {
+      img: 'foilage',
+      width: 20,
+      height: 19,
+      imageOffset: {
+        x: 139,
+        y: 20
+      },
+      center: {
+        x: 10,
+        y: 10
+      },
+      collidableOffset: {
+        x: 1,
+        y: 1
+      },
+    },
+    Tree4: {
+      img: 'foilage',
+      width: 57,
+      height: 57,
+      imageOffset: {
+        x: 183,
+        y: 2
+      },
+      center: {
+        x: 28,
+        y: 28
+      },
+      collidableOffset: {
+        x: 9,
+        y: 9
+      },
     }
   };
 
