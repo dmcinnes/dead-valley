@@ -26,14 +26,20 @@ define(["game",
     this.currentFuel = Math.random() * MAX_FUEL;
     this.broken      = Math.random() < BROKEN_PERCENT;
 
-    var self = this;
-    game.events.subscribe('mouseup', function () {
-      self.stopFueling();
-    }).subscribe('stopped touching', function (sprite) {
-      if (self === sprite) {
-        self.stopFueling();
-      }
-    });
+    game.events.subscribe('mouseup', this.stopFueling, this);
+    game.events.subscribe('stopped touching', this.stoppedTouching, this);
+  };
+
+  GasPump.prototype.stoppedTouching = function (sprite) {
+    if (this === sprite) {
+      this.stopFueling();
+    }
+  };
+
+  GasPump.prototype.die = function () {
+    Sprite.prototype.die.call(this);
+    game.events.unsubscribe('mouseup', this.stopFueling);
+    game.events.unsubscribe('stopped touching', this.stoppedTouching);
   };
 
   GasPump.prototype.preMove = function (delta) {

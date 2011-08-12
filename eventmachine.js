@@ -1,14 +1,17 @@
 // simple pub/sub scheme for objects
 define(function () {
 
-  var subscribe = function (eventName, callback) {
+  var subscribe = function (eventName, callback, thisObject) {
     if (!this._eventHandlers) {
       this._eventHandlers = {};
     }
     if (!this._eventHandlers[eventName]) {
       this._eventHandlers[eventName] = [];
     }
-    this._eventHandlers[eventName].push(callback);
+    this._eventHandlers[eventName].push({
+      callback:   callback,
+      thisObject: thisObject
+    });
 
     return this; // for chaining
   };
@@ -17,7 +20,9 @@ define(function () {
     if (this._eventHandlers) {
       var handlers = this._eventHandlers[eventName];
       if (handlers) {
-        this._eventHandlers[eventName] = _.without(handlers, callback);
+        this._eventHandlers[eventName] = _.reject(handlers, function (handler) {
+          return handler.callback === callback;
+        });
       }
     }
 
@@ -30,7 +35,9 @@ define(function () {
       var handlers = this._eventHandlers[eventName];
       if (handlers) {
         var args = _.tail(arguments);
-        _.invoke(handlers, 'apply', this, args);
+        _.each(handlers, function (handler) {
+          handler.callback.apply(handler.thisObject || this, args);
+        });
       }
     }
 

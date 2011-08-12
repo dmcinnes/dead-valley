@@ -162,11 +162,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
     },
 
     setupEventHandlers: function () {
-      this.itemAddedEventHandler   = $.proxy(this.renderItem, this);
-      this.itemRemovedEventHandler = $.proxy(this.removeItem, this);
-
-      this.inventory.subscribe('itemAdded', this.itemAddedEventHandler);
-      this.inventory.subscribe('itemRemoved', this.itemRemovedEventHandler);
+      this.inventory.subscribe('itemAdded', this.renderItem, this);
+      this.inventory.subscribe('itemRemoved', this.removeItem, this);
 
       var self = this;
       _.each(this.tableEventHandlers, function (handler, key) {
@@ -182,8 +179,8 @@ define(['game', 'Inventory'], function (game, Inventory) {
     },
 
     clearEventHandlers: function () {
-      this.inventory.unsubscribe('itemAdded', this.itemAddedEventHandler);
-      this.inventory.unsubscribe('itemRemoved', this.itemRemovedEventHandler);
+      this.inventory.unsubscribe('itemAdded', this.renderItem);
+      this.inventory.unsubscribe('itemRemoved', this.removeItem);
 
       var self = this;
       _.each(this.tableEventHandlers, function (handler, key) {
