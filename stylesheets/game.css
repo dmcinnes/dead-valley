@@ -58,6 +58,7 @@ body {
 
 .sprite {
   position: absolute;
+  visibility: hidden;
 }
 
 #background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }
