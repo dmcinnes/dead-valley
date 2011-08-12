@@ -111,7 +111,13 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
 
     this.run = function (delta) {
       this.updatePosition(delta);
-      this.shiftLevel();
+
+      if (this.submapOffsetX < this.shiftWestBorder ||
+          this.submapOffsetX > this.shiftEastBorder ||
+          this.submapOffsetY < this.shiftNorthBorder ||
+          this.submapOffsetY > this.shiftSouthBorder) {
+        this.shiftLevel();
+      }
     };
 
     this.updatePosition = function (delta) {
