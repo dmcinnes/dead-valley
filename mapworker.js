@@ -124,9 +124,9 @@ var cloneSection = function (section) {
   for (var i = 0; i < section.length; i++) {
     tiles[i] = _.clone(section[i]);
   }
-  tiles.roads     = section.roads;
-  tiles.sprites   = section.sprites;
-  tiles.buildings = section.buildings;
+  tiles.roads     = _.clone(section.roads);
+  tiles.sprites   = _.clone(section.sprites);
+  tiles.buildings = _.clone(section.buildings);
   return tiles;
 };
 

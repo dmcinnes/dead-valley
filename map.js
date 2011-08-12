@@ -201,7 +201,7 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
         sprite = nodes[i].nextSprite;
         while (sprite) {
           if (sprite.shouldSave) {
-            sprite.reap = true;
+            sprite.die();
             // make them relative to the chunk
             sprite.pos.translate(offset);
             sprites.push(sprite.toString());
