@@ -113,60 +113,43 @@ define(function () {
         y: 30
       },
       collidableOffset: {
-        x: 10,
-        y: 10
-      },
+        x: 12,
+        y: 12
+      }
     },
     Tree2: {
       img: 'foilage',
       width: 36,
-      height: 34,
+      height: 37,
       imageOffset: {
-        x: 72,
-        y: 12
+        x: 132,
+        y: 10
       },
       center: {
         x: 18,
-        y: 17
+        y: 18
       },
       collidableOffset: {
-        x: 3,
-        y: 3
-      },
+        x: 6,
+        y: 6
+      }
     },
     Tree3: {
       img: 'foilage',
-      width: 20,
-      height: 19,
+      width: 25,
+      height: 26,
       imageOffset: {
-        x: 139,
-        y: 20
+        x: 255,
+        y: 17
       },
       center: {
         x: 10,
         y: 10
       },
       collidableOffset: {
-        x: 1,
-        y: 1
-      },
-    },
-    Tree4: {
-      img: 'foilage',
-      width: 57,
-      height: 57,
-      imageOffset: {
-        x: 183,
-        y: 2
-      },
-      center: {
-        x: 28,
-        y: 28
-      },
-      collidableOffset: {
-        x: 9,
-        y: 9
-      },
+        x: 3,
+        y: 3
+      }
     }
   };
 

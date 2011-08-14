@@ -93,6 +93,10 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       this.layers.push(0);
     }
 
+    // how much to push the image over for each tile
+    // -- defaults to sprite width
+    this.tileOffset = config.tileOffset || this.tileWidth;
+
     this.node = this.createNode(layerCount);
   };
 
@@ -300,12 +304,12 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   // take the layer data and update the background position from it
   Sprite.prototype.finalizeLayers = function () {
     if (this.layers) {
-      var length = this.layers.length;
+      var length   = this.layers.length;
       var position = [];
       for (var i = length-1; i >= 0; i--) {
         var index = this.layers[i];
         if (index >= 0) {
-          var left = -(index * this.tileWidth) - this.imageOffset.x;
+          var left = -(index * this.tileOffset) - this.imageOffset.x;
           var top  = -this.imageOffset.y;
           position.push([left, 'px ', top, 'px'].join(''));
         }
