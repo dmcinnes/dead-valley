@@ -55,7 +55,7 @@ create another gas station section on straightaway
 add map handling functions for custom instances of sections through the map worker
 fix gas pump position
 tune Honda's performance
-render trees -- make transparent when colliding with sprite
+make trees transparent when touching sprite
 convert everything to radians
 make object capitalization consistent
 make zombies follow building edges
