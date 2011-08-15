@@ -94,20 +94,19 @@ X fix parking lot corner tile
 X fix parking spaces
 X shack
 X fuel gauge tick markers
+X clean up extra pixel when rendering arms with rifle
+X police station
+X trees
+X house
 add spiderwebbed windows to car's sprite
 add destroyed car state to car's sprite
 update color on gas station
-house
-police station
-truck sprite
 crate sprite
-trees
 shrubs
 clean up zombie's standing legs (make back leg angle outward)
 add L&R hand graphics to DudeHands HUD
 add custom cursor hand graphics for inventory
 add custom cursor hand graphics for filling up the gas tank
-clean up extra pixel when rendering arms with rifle
 
 *CARS*
 Police Car
@@ -136,3 +135,4 @@ medkit
 gas can
 cake
 twinkie
+hot dog
