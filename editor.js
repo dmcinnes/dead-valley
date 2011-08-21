@@ -77,14 +77,6 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         tile.addClass('rotate-'+rotate);
       }
     },
-
-    collidable: function (tile, collidable) {
-      if (collidable) {
-        tile.addClass('collidable');
-      } else {
-        tile.removeClass('collidable');
-      }
-    }
   };
 
   var selectTileType = function (tile) {
@@ -275,11 +267,6 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     tileObject.tileFlip = !tileObject.tileFlip;
   };
 
-  var toggleTileCollide = function (tile) {
-    var tileObject = TileDisplay.getTileObject(tile);
-    tileObject.collidable = !tileObject.collidable;
-  };
-
   var cycleTileRotate = function (tile) {
     var tileObject = TileDisplay.getTileObject(tile);
     tileObject.tileRotate = (tileObject.tileRotate + 1) % 4;
@@ -299,7 +286,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
     tileObject: function () {
       Tile.prototype.tileOffset = 0;
-      _(['tileOffset', 'tileFlip', 'tileRotate', 'collidable']).each(function (attr) {
+      _(['tileOffset', 'tileFlip', 'tileRotate']).each(function (attr) {
         Tile.prototype.__defineSetter__(attr, function (val) {
           if (!this.values) {
             this.values = {};
@@ -423,11 +410,6 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         target = target.is('.tile') && target;
 
         switch (e.keyCode) {
-          case 67: // c is for COLLIDE
-            if (target) {
-              toggleTileCollide(target);
-            }
-            break;
           case 68: // d is for DROPPER
             if (target) {
               selectTileType(target.data('offset') || 0);
