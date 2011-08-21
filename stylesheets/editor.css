@@ -49,6 +49,8 @@ body {
 
 .sprite {
   display: block;
+  position: relative;
+  visibility: visible;
   background-repeat: no-repeat;
   z-index: 100;
 }
