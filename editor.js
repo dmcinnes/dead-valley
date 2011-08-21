@@ -22,6 +22,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var $mapMask    = $('#map-mask');
   var mapMaskPos  = null; // set this one after the tile list is loaded
 
+  // the total number of tiles in the tile list
+  var totalTileCount;
+
   // the current selected tile from the list
   var selectedTile = 0;
 
@@ -425,6 +428,20 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
               }
             }
             break;
+          case 81: // q is for up tile
+            var tileNumber = selectedTile - 1;
+            if (tileNumber < 0) {
+              tileNumber = totalTileCount - 1;
+            }
+            selectTileType(tileNumber);
+            break;
+          case 65: // a is for down tile
+            var tileNumber = selectedTile + 1;
+            if (tileNumber >= totalTileCount) {
+              tileNumber = 0;
+            }
+            selectTileType(tileNumber);
+            break;
           case 82: // r is for ROTATE
             if (e.altKey) {
             } else if (target) {
@@ -473,8 +490,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       assetManager.loadImage('tiles', function (tiles) {
         // set up the tile selection
         TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
-        var total = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
-        for (var i = 0; i < total; i++) {
+        totalTileCount = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
+        for (var i = 0; i < totalTileCount; i++) {
           var tile = $('<div>', {'class':'list-tile'});
           TileDisplay.tileOffset(tile, i);
           $tileList.append(tile);
