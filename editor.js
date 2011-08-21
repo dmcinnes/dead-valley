@@ -1,5 +1,5 @@
 require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-info'],
-	function (tileMarshal, spriteMarshal, AssetManager, progress, SPRITES) {
+        function (tileMarshal, spriteMarshal, AssetManager, progress, SPRITES) {
 
   var Tile   = function () {};
   var Sprite = function (spriteInfo) {
@@ -119,8 +119,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         progress.setTotal(window.map.length);
 
         var line = 0;
-	var nodes = $map.children();
-	for (var i = 0; i < MAP_SIZE; i++) {
+        var nodes = $map.children();
+        for (var i = 0; i < MAP_SIZE; i++) {
           (function (line) {
             var index, node, tileObject, j;
             window.setTimeout(function () {
@@ -133,24 +133,24 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
               progress.increment(MAP_SIZE);
             }, 0);
           })(i);
-	}
+        }
       }
 
       if (window.sprites) {
-	_(window.sprites).each(function (spriteString) {
-	  var vals = spriteString.split(',');
-	  var name = vals[0];
-	  var x    = parseInt(vals[1]);
-	  var y    = parseInt(vals[2]);
-	  var rot  = parseInt(vals[3]);
-          var info = SPRITES[name];
-	  var sprite = generateSpriteTile('div', name).css({
-	    left: x - info.center.x,
-	    top: y - info.center.y
-	  });
+        _(window.sprites).each(function (spriteString) {
+          var spriteData = JSON.parse(spriteString);
+          var x          = parseInt(spriteData.pos.x);
+          var y          = parseInt(spriteData.pos.y);
+          var rot        = parseInt(spriteData.pos.rot);
+          var type       = spriteData.type || spriteData.clazz;
+          var info       = SPRITES[type];
+          var sprite     = generateSpriteTile('div', type).css({
+            left: x - info.center.x,
+            top: y - info.center.y
+          });
           setSpriteRotation(sprite, rot);
-	  $map.append(sprite);
-	});
+          $map.append(sprite);
+        });
       }
     });
   };
