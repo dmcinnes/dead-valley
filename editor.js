@@ -410,16 +410,19 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         target = target.is('.tile') && target;
 
         switch (e.keyCode) {
-          case 68: // d is for DROPPER
-            if (target) {
-              selectTileType(target.data('offset') || 0);
-            }
-            break;
           case 70: // f is for FLIP
             if (e.altKey) {
               $('#flip-checkbox').click();
             } else if (target) {
               toggleTileFlip(target);
+            }
+            break;
+          case 73: // i is for I-DROPPER
+            if (target) {
+              var tileObject = TileDisplay.getTileObject(target);
+              if (tileObject) {
+                selectTileType(tileObject.values.tileOffset || 0);
+              }
             }
             break;
           case 82: // r is for ROTATE
