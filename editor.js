@@ -20,7 +20,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
   var $map        = $('#map');
   var $mapMask    = $('#map-mask');
-  var mapMaskPos  = null; // set this one after the tile list is loaded
+  // set this one after the tile list is loaded
+  // just use 0,0 for now
+  var mapMaskPos  = {
+    left: 0,
+    top:  0
+  };
 
   // the total number of tiles in the tile list
   var totalTileCount;
