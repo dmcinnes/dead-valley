@@ -141,7 +141,7 @@ body {
 }
 
 .entrance {
-  border: dotted red 2px;
+  border: dotted blue 2px;
   margin-top: -1px;
   margin-left: -1px;
   z-index: 7;

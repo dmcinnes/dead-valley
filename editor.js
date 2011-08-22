@@ -138,7 +138,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
         // render any entrances
         _.each(building.entrances, function (entrance) {
-          $map.children('.tiles:eq('+entrance+')').addClass('entrance');
+          $map.children('.tile:eq('+entrance+')').addClass('entrance');
         });
       });
       mapCanvasContext.restore();
@@ -219,6 +219,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         });
       }
 
+      // load buildings when done
       if (window.buildings) {
         buildings = window.buildings;
         delete window.buildings;
