@@ -113,17 +113,27 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     render: function () {
       mapCanvasContext.clearRect(0, 0, mapCanvasSize.width, mapCanvasSize.height);
       mapCanvasContext.save();
+      mapCanvasContext.fillStyle = 'blue';
       mapCanvasContext.strokeStyle = 'blue';
+      mapCanvasContext.font = '10pt sans-serif';
       mapCanvasContext.lineWidth = 3;
       _.each(buildings, function (building) {
         var points = building.points;
         mapCanvasContext.beginPath();
         mapCanvasContext.moveTo(points[0], points[1]);
+        var smallestX = points[0];
+        var smallestY = points[1];
         for (var i = 2; i < points.length; i += 2) {
-          mapCanvasContext.lineTo(points[i], points[i+1]);
+          var x = points[i];
+          var y = points[i+1];
+          mapCanvasContext.lineTo(x, y);
+          smallestX = Math.min(smallestX, x);
+          smallestY = Math.min(smallestY, y);
         }
         mapCanvasContext.closePath();
         mapCanvasContext.stroke();
+
+        mapCanvasContext.fillText(building.name, smallestX+4, smallestY+14);
       });
       mapCanvasContext.restore();
     }
