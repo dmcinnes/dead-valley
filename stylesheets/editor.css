@@ -11,6 +11,7 @@ body {
   float: left;
 }
 #right {
+  float: right;
   padding: 2px;
 }
 
@@ -95,8 +96,8 @@ body {
 }
 
 #map-mask {
+  position:relative;
   border: 1px solid black;
-  top: 20px;
   overflow: hidden;
   /* float: right; */
   overflow-x: scroll;
@@ -104,10 +105,22 @@ body {
   z-index: 10;
 }
 
-#map {
+#map-canvas {
+  position:absolute;
+  top: 0px;
+  left: 0px;
   width: 3840px;
   height:3840px;
-  position:relative;
+  z-index: 8;
+}
+
+#map {
+  position:absolute;
+  top: 0px;
+  left: 0px;
+  width: 3840px;
+  height:3840px;
+  z-index: 6;
 }
 
 #map.show-grid .tile {

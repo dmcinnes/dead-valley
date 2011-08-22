@@ -18,14 +18,34 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var $xCoord = $('#x-coord');
   var $yCoord = $('#y-coord');
 
-  var $map        = $('#map');
-  var $mapMask    = $('#map-mask');
+  var $map       = $('#map');
+  var $mapMask   = $('#map-mask');
+  var $mapCanvas = $('#map-canvas');
+
+  var mapCanvasContext = $mapCanvas[0].getContext('2d');
+  var mapCanvasSize    = {
+    height: $mapCanvas.height(),
+    width:  $mapCanvas.width()
+  };
+
   // set this one after the tile list is loaded
   // just use 0,0 for now
   var mapMaskPos  = {
     left: 0,
     top:  0
   };
+
+  // where the mouse is currently pointing on the map
+  var currentMapOffset = {
+    x: 0,
+    y: 0
+  };
+
+  // the last mouse move event
+  var lastMouseMoveEvent = null;
+
+  // array holding the current buildings
+  var buildings = [];
 
   // the total number of tiles in the tile list
   var totalTileCount;
@@ -40,9 +60,6 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var flipTiles    = false;
   var rotateTiles  = 0;
 
-  // the current tile targeted by the mouse
-  var currentTarget = null;
-
   var currentSprite = null;
 
   var TileDisplay = {
@@ -50,7 +67,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       var target = $(event.target);
       if (target.is('.tile')) {
         return target;
-      }
+      } else if (target.is(':not(.sprite)')) { // ignore sprites
+        var x = Math.floor(event.offsetX / TILE_SIZE);
+        var y = Math.floor(event.offsetY / TILE_SIZE);
+        var offset = y * MAP_SIZE + x;
+        return $map.children('.tile:eq('+offset+')');
+       }
     },
 
     getTileObject: function (tile) {
@@ -85,6 +107,26 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         tile.addClass('rotate-'+rotate);
       }
     },
+  };
+
+  var BuildingDisplay = {
+    render: function () {
+      mapCanvasContext.clearRect(0, 0, mapCanvasSize.width, mapCanvasSize.height);
+      mapCanvasContext.save();
+      mapCanvasContext.strokeStyle = 'blue';
+      mapCanvasContext.lineWidth = 3;
+      _.each(buildings, function (building) {
+        var points = building.points;
+        mapCanvasContext.beginPath();
+        mapCanvasContext.moveTo(points[0], points[1]);
+        for (var i = 2; i < points.length; i += 2) {
+          mapCanvasContext.lineTo(points[i], points[i+1]);
+        }
+        mapCanvasContext.closePath();
+        mapCanvasContext.stroke();
+      });
+      mapCanvasContext.restore();
+    }
   };
 
   var selectTileType = function (tile) {
@@ -127,7 +169,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         progress.setTotal(window.map.length);
 
         var line = 0;
-        var nodes = $map.children();
+        var nodes = $map.children('.tile');
         for (var i = 0; i < MAP_SIZE; i++) {
           (function (line) {
             var index, node, tileObject, j;
@@ -159,6 +201,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
           setSpriteRotation(sprite, rot);
           $map.append(sprite);
         });
+      }
+
+      if (window.buildings) {
+        buildings = window.buildings;
+        delete window.buildings;
+        BuildingDisplay.render();
       }
     });
   };
@@ -280,14 +328,30 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     tileObject.tileRotate = (tileObject.tileRotate + 1) % 4;
   };
 
-  var updateMousePosition = function (event) {
-    $coordDisplay.show();
-    $xCoord.text(event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left);
-    $yCoord.text(event.pageY + $mapMask[0].scrollTop - mapMaskPos.top);
+  var updateCurrentMapOffset = function (event) {
+    currentMapOffset.x = event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left;
+    currentMapOffset.y = event.pageY + $mapMask[0].scrollTop - mapMaskPos.top;
+    updateMousePositionDisplay();
   };
 
-  var clearMousePosition = function (event) {
+  var clearCurrentMapOffset = function () {
+    currentMapOffset.x = 0;
+    currentMapOffset.y = 0;
+    clearMousePosition();
+  };
+
+  var updateMousePositionDisplay = function () {
+    $coordDisplay.show();
+    $xCoord.text(currentMapOffset.x);
+    $yCoord.text(currentMapOffset.y);
+  };
+
+  var clearMousePosition = function () {
     $coordDisplay.hide();
+  };
+
+  var currentTarget = function () {
+
   };
 
   var setup = {
@@ -341,7 +405,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       });
 
       // map clicks/drags
-      $map.click(function (e) {
+      $mapMask.click(function (e) {
         if ($(e.target).is('.sprite')) {
           selectSprite(e);
         } else if (selectedTile > -1) {
@@ -355,18 +419,18 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
           currentSprite = spr;
         }
       }).mousemove(function (e) {
-        currentTarget = e.target;
+        lastMouseMoveEvent = e;
         if (currentSprite) {
           setSpritePosition(currentSprite, e.pageX, e.pageY);
         } else if (e.shiftKey) {
           updateTile(e);
         }
-        updateMousePosition(e);
+        updateCurrentMapOffset(e);
       }).mouseup(function (e) {
         currentSprite = null;
       }).mouseleave(function (e) {
-        currentTarget = null;
-        clearMousePosition(e);
+        lastMouseMoveEvent = null;
+        clearCurrentMapOffset();
       });
     },
 
@@ -413,9 +477,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
     hotKeys: function () {
       $(window).keydown(function (e) {
-        var target = $(currentTarget);
-        var left = 0, top = 0;
-        target = target.is('.tile') && target;
+        var target = null;
+        if (lastMouseMoveEvent) {
+          target = TileDisplay.findTile(lastMouseMoveEvent);
+        }
 
         switch (e.keyCode) {
           case 70: // f is for FLIP
@@ -429,7 +494,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
             if (target) {
               var tileObject = TileDisplay.getTileObject(target);
               if (tileObject) {
-                selectTileType(tileObject.values.tileOffset || 0);
+                selectTileType((tileObject.values && tileObject.values.tileOffset) || 0);
               }
             }
             break;
@@ -482,9 +547,11 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     },
 
     componentSizes: function () {
-      $tileList.height(window.innerHeight - 60);
-      $mapMask.height($tileList.height());
-      $mapMask.width(window.innerWidth - $tileList.width() - 60);
+      var height = window.innerHeight - 60;
+      var width = window.innerWidth - $tileList.width() - 60;
+      $tileList.height(height);
+      $mapMask.height(height);
+      $mapMask.width(width);
       // update the mask position
       mapMaskPos = $mapMask.position();
     },
@@ -529,7 +596,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         };
       }
 
-      var tiles = $map.children();
+      var tiles = $map.children('.tile');
 
       // mark which tiles are the road matchers
       _([  31,   32,   33,
