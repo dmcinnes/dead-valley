@@ -80,6 +80,8 @@ use rotateX 3d transition for driving over rough ground
 
 *EDITOR*
 X remove current collidible code
+X render building boundries
+make tiles not drag-selectable so drags don't spike CPU
 add building boundries creation
 add building entrance creation
 name buildings
