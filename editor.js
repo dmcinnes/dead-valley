@@ -133,7 +133,13 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         mapCanvasContext.closePath();
         mapCanvasContext.stroke();
 
+        // render the building's name
         mapCanvasContext.fillText(building.name, smallestX+4, smallestY+14);
+
+        // render any entrances
+        _.each(building.entrances, function (entrance) {
+          $map.children('.tiles:eq('+entrance+')').addClass('entrance');
+        });
       });
       mapCanvasContext.restore();
     }
