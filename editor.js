@@ -60,7 +60,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var flipTiles    = false;
   var rotateTiles  = 0;
 
+  // the current selected sprite
   var currentSprite = null;
+
+  // the current building we're constructing
+  var newBuilding = null;
+  var newBuildingAddPoints = false;
 
   var TileDisplay = {
     findTile: function (event) {
@@ -113,25 +118,13 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     render: function () {
       mapCanvasContext.clearRect(0, 0, mapCanvasSize.width, mapCanvasSize.height);
       mapCanvasContext.save();
-      mapCanvasContext.fillStyle = 'blue';
-      mapCanvasContext.strokeStyle = 'blue';
       mapCanvasContext.font = '10pt sans-serif';
-      mapCanvasContext.lineWidth = 3;
+
+      var self = this;
+
       _.each(buildings, function (building) {
-        var points = building.points;
-        mapCanvasContext.beginPath();
-        mapCanvasContext.moveTo(points[0], points[1]);
-        var smallestX = points[0];
-        var smallestY = points[1];
-        for (var i = 2; i < points.length; i += 2) {
-          var x = points[i];
-          var y = points[i+1];
-          mapCanvasContext.lineTo(x, y);
-          smallestX = Math.min(smallestX, x);
-          smallestY = Math.min(smallestY, y);
-        }
-        mapCanvasContext.closePath();
-        mapCanvasContext.stroke();
+
+        var upperLeftCorner = self.renderBuildingPoints(building, true);
 
         // render the building's name
         mapCanvasContext.fillText(building.name, smallestX+4, smallestY+14);
@@ -142,6 +135,54 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         });
       });
       mapCanvasContext.restore();
+    },
+
+    renderPointsInProgress: function (e) {
+      if (newBuilding.points.length) {
+        mapCanvasContext.save();
+
+        mapCanvasContext.clearRect(0, 0, mapCanvasSize.width, mapCanvasSize.height);
+
+        this.renderBuildingPoints(newBuilding, false);
+
+        var points = newBuilding.points;
+        var last   = points.length-1;
+        var point  = convertEventToCoords(e);
+        mapCanvasContext.moveTo(points[length-1], points[length]);
+        mapCanvasContext.lineTo(point.x, point.y);
+        mapCanvasContext.stroke();
+        
+        mapCanvasContext.restore();
+      }
+    },
+
+    renderBuildingPoints: function (building, closePath) {
+      var points = building.points;
+
+      mapCanvasContext.fillStyle = 'blue';
+      mapCanvasContext.strokeStyle = 'blue';
+      mapCanvasContext.lineWidth = 3;
+
+      mapCanvasContext.beginPath();
+      mapCanvasContext.moveTo(points[0], points[1]);
+      var smallestX = points[0];
+      var smallestY = points[1];
+      for (var i = 2; i < points.length; i += 2) {
+        var x = points[i];
+        var y = points[i+1];
+        mapCanvasContext.lineTo(x, y);
+        smallestX = Math.min(smallestX, x);
+        smallestY = Math.min(smallestY, y);
+      }
+      if (closePath) {
+        mapCanvasContext.closePath();
+      }
+      mapCanvasContext.stroke();
+
+      return {
+        x: smallestX,
+        y: smallestY
+      };
     }
   };
 
@@ -345,9 +386,15 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     tileObject.tileRotate = (tileObject.tileRotate + 1) % 4;
   };
 
+  var convertEventToCoords = function (event) {
+    return {
+      x: event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left,
+      y: event.pageY + $mapMask[0].scrollTop - mapMaskPos.top
+    }
+  };
+
   var updateCurrentMapOffset = function (event) {
-    currentMapOffset.x = event.pageX + $mapMask[0].scrollLeft - mapMaskPos.left;
-    currentMapOffset.y = event.pageY + $mapMask[0].scrollTop - mapMaskPos.top;
+    currentMapOffset = convertEventToCoords(event);
     updateMousePositionDisplay();
   };
 
@@ -367,8 +414,30 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     $coordDisplay.hide();
   };
 
-  var currentTarget = function () {
+  var outlineBuildingStart = function (buildingName) {
+    newBuilding = {
+      name:      buildingName,
+      points:    [],
+      tiles:     [],
+      entrances: [],
+      inventory: []
+    };
+    newBuildingAddPoints = true;
+    buildings.push(newBuilding);
+  };
 
+  var addBuildingPoint = function (event) {
+    var coords = convertEventToCoords(event);
+    var diffx = Math.abs(coords.x - newBuilding.points[0]);
+    var diffy = Math.abs(coords.y - newBuilding.points[1]);
+    if (diffx < 3 && diffy < 3) {
+      // close it off
+      newBuildingAddPoints = false;
+      BuildingDisplay.render();
+    } else {
+      newBuilding.points.push(coords.x, coords.y);
+      BuildingDisplay.renderPointsInProgress(event);
+    }
   };
 
   var setup = {
@@ -423,7 +492,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
       // map clicks/drags
       $mapMask.click(function (e) {
-        if ($(e.target).is('.sprite')) {
+        if (newBuilding && newBuildingAddPoints) {
+          addBuildingPoint(e);
+        } else if ($(e.target).is('.sprite')) {
           selectSprite(e);
         } else if (selectedTile > -1) {
           updateTile(e);
@@ -437,7 +508,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         }
       }).mousemove(function (e) {
         lastMouseMoveEvent = e;
-        if (currentSprite) {
+        if (newBuilding && newBuildingAddPoints) {
+          BuildingDisplay.renderPointsInProgress(e);
+        } else if (currentSprite) {
           setSpritePosition(currentSprite, e.pageX, e.pageY);
         } else if (e.shiftKey) {
           updateTile(e);
@@ -469,6 +542,18 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       // rotate select box
       $('#rotate-control').change(function (e) {
         rotateTiles = parseInt($(this).val());
+      });
+
+      // open the new building dialog
+      $('#new-building-button').click(function () {
+        $('#new-building').lightbox_me();
+        $('#new-building-name').focus();
+      });
+
+      // start creating a new building
+      $('#new-building-ok').click(function () {
+        $('.lb_overlay').click(); // cheesy way to close the overlay
+        outlineBuildingStart($('#new-building-name').val());
       });
 
       $('#load-button').click(function () {
@@ -555,6 +640,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
           case 40: // down is for DOWN
             moveSelectedSprite(0, 1);
             e.preventDefault();
+            break;
+          case 27: // ESC is for escape
+            newBuilding = null;
+            newBuildingAddPoints = false;
             break;
 
           default:
