@@ -35,6 +35,10 @@ define(function () {
 
     current: function () {
       return current;
+    },
+
+    done: function () {
+      return current >= total;
     }
   };
 });
