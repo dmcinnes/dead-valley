@@ -127,7 +127,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         var upperLeftCorner = self.renderBuildingPoints(building, true);
 
         // render the building's name
-        mapCanvasContext.fillText(building.name, smallestX+4, smallestY+14);
+        mapCanvasContext.fillText(building.name, upperLeftCorner.x+4, upperLeftCorner.y+14);
 
         // render any entrances
         _.each(building.entrances, function (entrance) {
@@ -145,9 +145,11 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
         this.renderBuildingPoints(newBuilding, false);
 
+        // render the 'ghost' line to the mouse
         var points = newBuilding.points;
         var last   = points.length-1;
         var point  = convertEventToCoords(e);
+        mapCanvasContext.strokeStyle = "rgba(0,0,255,0.2)";
         mapCanvasContext.moveTo(points[length-1], points[length]);
         mapCanvasContext.lineTo(point.x, point.y);
         mapCanvasContext.stroke();
