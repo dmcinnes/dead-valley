@@ -288,10 +288,12 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     var sprites = _.map($map.children('.sprite'), function (sprite) {
                     return spriteMarshal.unmarshal($(sprite).data('sprite'));
                   });
+
     return [
       "map=\"" + tiles.join('') + "\"",
       "roads=" + JSON.stringify(roads),
-      "sprites=" + JSON.stringify(sprites)
+      "sprites=" + JSON.stringify(sprites),
+      "buildings=" + JSON.stringify(buildings)
     ].join(';') + ';';
   };
 
