@@ -22,6 +22,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var $mapMask   = $('#map-mask');
   var $mapCanvas = $('#map-canvas');
 
+  // stop dragging causing safari to lock up
+  $mapMask[0].onselectstart = function () { return false };
+
   var mapCanvasContext = $mapCanvas[0].getContext('2d');
   var mapCanvasSize    = {
     height: $mapCanvas.height(),
