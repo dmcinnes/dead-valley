@@ -5,6 +5,14 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var Sprite = function (spriteInfo) {
     this.spriteInfo = spriteInfo;
   };
+  Sprite.prototype.saveMetadata = function () {
+    var pos = this.spriteTile.position();
+    return {
+      clazz: this.name.replace(/\d+$/, ''), // numbers at the end denote types
+      type:  this.name,
+      pos:   this.pos
+    };
+  };
 
   var TILE_SIZE = 60;
   var MAP_SIZE  = 64;
