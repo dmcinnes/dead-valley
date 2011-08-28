@@ -131,6 +131,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       mapCanvasContext.save();
       mapCanvasContext.font = '10pt sans-serif';
 
+      $map.children('.building').remove();
+
       var self = this;
 
       _.each(buildings, function (building) {
@@ -138,7 +140,13 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         var upperLeftCorner = self.renderBuildingPoints(building, true);
 
         // render the building's name
-        mapCanvasContext.fillText(building.name, upperLeftCorner.x+4, upperLeftCorner.y+14);
+        var label = $('<span/>').addClass('building').text(building.name);
+        label.data('building', building);
+        label.css({
+          left: upperLeftCorner.x,
+          top: upperLeftCorner.y
+        });
+        $map.append(label);
 
         // render any entrances
         _.each(building.entrances, function (entrance) {
