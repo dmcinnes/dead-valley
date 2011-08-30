@@ -481,37 +481,62 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       largestX  = Math.max(x, largestX);
       largestY  = Math.max(y, largestY);
       points.push({
-        x: Math.round(x / TILE_SIZE),
-        y: Math.round(y / TILE_SIZE)
+        x: x,
+        y: y
       });
     }
-    smallestX = Math.round(smallestX / TILE_SIZE);
-    smallestY = Math.round(smallestY / TILE_SIZE);
-    largestX  = Math.round(largestX / TILE_SIZE);
-    largestY  = Math.round(largestY / TILE_SIZE);
-    for (x = smallestX; x < largestX; x++) {
-      for (y = smallestY; y < largestY; y++) {
+    
+    smallestX = Math.floor(smallestX / TILE_SIZE);
+    smallestY = Math.floor(smallestY / TILE_SIZE);
+    largestX  = Math.floor(largestX / TILE_SIZE) + 1;
+    largestY  = Math.floor(largestY / TILE_SIZE) + 1;
 
-        // http://www.alienryderflex.com/polygon/
+    var testPoints = [
+      {x:0,         y:0},
+      {x:TILE_SIZE, y:0},
+      {x:0,         y:TILE_SIZE},
+      {x:TILE_SIZE, y:TILE_SIZE}
+    ];
 
-        var i, pointI, pointJ;
-        var j = points.length - 1;
-        var oddNodes = false;
+    // make sure the end points are tiles in case we have a cusp
+    tiles = _.map(points, function (point) {
+      var x = Math.floor(point.x / TILE_SIZE);
+      var y = Math.floor(point.y / TILE_SIZE);
+      return y * MAP_SIZE + x;
+    });
 
-        for (i = 0; i < points.length; i++) {
-          pointI = points[i];
-          pointJ = points[j];
-          if ((pointI.y < y && pointJ.y >= y ||
-               pointJ.y < y && pointI.y >= y)) {
-            if (pointI.x + (y - pointI.y) / (pointJ.y - pointI.y) * (pointJ.x - pointI.x) < x) {
-              oddNodes = !oddNodes;
+    for (var gx = smallestX; gx < largestX; gx++) {
+      for (var gy = smallestY; gy < largestY; gy++) {
+
+        // test the four points of the grid
+        for (var z = 0; z < 4; z++) {
+
+          // http://www.alienryderflex.com/polygon/
+
+          x = gx * TILE_SIZE + testPoints[z].x;
+          y = gy * TILE_SIZE + testPoints[z].y;
+
+          var i, pointI, pointJ;
+          var j = points.length - 1;
+          var oddNodes = false;
+
+          for (i = 0; i < points.length; i++) {
+            pointI = points[i];
+            pointJ = points[j];
+            if ((pointI.y < y && pointJ.y >= y ||
+                 pointJ.y < y && pointI.y >= y)) {
+              if (pointI.x + (y - pointI.y) / (pointJ.y - pointI.y) * (pointJ.x - pointI.x) < x) {
+                oddNodes = !oddNodes;
+              }
             }
+            j = i;
           }
-          j = i;
-        }
 
-        if (oddNodes) {
-          tiles.push(y * MAP_SIZE + x);
+          if (oddNodes) {
+            tiles.push(gy * MAP_SIZE + gx);
+            break; // don't need to test any more points
+          }
+
         }
 
       }
