@@ -453,7 +453,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     var coords = convertEventToCoords(event);
     var diffx = Math.abs(coords.x - newBuilding.points[0]);
     var diffy = Math.abs(coords.y - newBuilding.points[1]);
-    if (diffx < 3 && diffy < 3) {
+    if (diffx < 10 && diffy < 10) {
       // close it off
       newBuildingAddPoints = false;
       BuildingDisplay.render();
