@@ -157,6 +157,11 @@ body {
   color:white;
   padding: 2px;
   z-index: 8;
+  cursor: pointer;
+}
+
+.building-name.selected {
+  border: dotted white 1px;
 }
 
 .building-tile {

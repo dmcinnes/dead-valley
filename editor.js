@@ -132,7 +132,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       mapCanvasContext.font = '10pt sans-serif';
 
       $map.children('.building-name').remove();
-      $map.children('.building-tile').removeClass('.building-tile');
+      $map.children().removeClass('building-tile').removeClass('entrance');
 
       var self = this;
 
@@ -464,6 +464,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       newBuildingAddPoints = false;
       newBuilding.tiles = calculateBuildingCoverage(newBuilding);
       BuildingDisplay.render();
+      newBuilding = null;
     } else {
       newBuilding.points.push(coords.x, coords.y);
       BuildingDisplay.renderPointsInProgress(event);
@@ -633,6 +634,16 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         lastMouseMoveEvent = null;
         clearCurrentMapOffset();
       });
+
+      $('.building-name').live('click', function (e) {
+        var buildingName = $(this);
+        if (buildingName.is('.selected')) {
+          buildingName.removeClass('selected');
+        } else {
+          buildingName.addClass('selected');
+        }
+      });
+
     },
 
     controls: function () {
@@ -735,6 +746,13 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
             break;
           case 8: // delete is for DELETE
             $map.children('.sprite.selected').remove();
+            var buildingName = $map.children('.building-name.selected');
+            if (buildingName) {
+              // remove the building
+              var building = buildingName.data('building');
+              buildings = _.without(buildings, building);
+              BuildingDisplay.render();
+            }
             break;
           case 37: // left is for LEFT
             moveSelectedSprite(-1, 0);
