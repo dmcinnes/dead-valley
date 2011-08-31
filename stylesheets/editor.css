@@ -145,18 +145,23 @@ body {
 }
 
 .entrance {
-  border: dotted blue 2px;
+  border: dotted #4F0 2px;
   margin-top: -1px;
   margin-left: -1px;
   z-index: 7;
 }
 
-.building {
+.building-name {
   position: absolute;
   background-color:blue;
   color:white;
   padding: 2px;
   z-index: 8;
+}
+
+.building-tile {
+  border: dotted blue 1px;
+  z-index: 7;
 }
 
 #coord-display {

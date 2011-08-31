@@ -131,7 +131,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       mapCanvasContext.save();
       mapCanvasContext.font = '10pt sans-serif';
 
-      $map.children('.building').remove();
+      $map.children('.building-name').remove();
+      $map.children('.building-tile').removeClass('.building-tile');
 
       var self = this;
 
@@ -140,13 +141,18 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         var upperLeftCorner = self.renderBuildingPoints(building, true);
 
         // render the building's name
-        var label = $('<span/>').addClass('building').text(building.name);
+        var label = $('<span/>').addClass('building-name').text(building.name);
         label.data('building', building);
         label.css({
           left: upperLeftCorner.x,
           top: upperLeftCorner.y
         });
         $map.append(label);
+
+        // render the enclosing tiles
+        _.each(building.tiles, function (tile) {
+          $map.children('.tile:eq('+tile+')').addClass('building-tile');
+        });
 
         // render any entrances
         _.each(building.entrances, function (entrance) {
@@ -456,8 +462,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     if (diffx < 10 && diffy < 10) {
       // close it off
       newBuildingAddPoints = false;
+      newBuilding.tiles = calculateBuildingCoverage(newBuilding);
       BuildingDisplay.render();
-      calculateBuildingCoverage(newBuilding);
     } else {
       newBuilding.points.push(coords.x, coords.y);
       BuildingDisplay.renderPointsInProgress(event);
@@ -541,13 +547,6 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
       }
     }
-
-    // render what we got
-    console.log(tiles);
-
-    _.each(tiles, function (tile) {
-      $map.children('.tile:eq('+tile+')').addClass('entrance');
-    });
 
     return tiles;
   };
