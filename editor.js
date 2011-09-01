@@ -18,17 +18,18 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var MAP_SIZE  = 64;
   var TILE_SHEET_WIDTH;
 
-  var $tileList     = $('#tile-list');
+  var $tileList          = $('#tile-list');
 
-  var $spriteList   = $('#sprite-list');
+  var $spriteList        = $('#sprite-list');
 
-  var $coordDisplay = $('#coord-display');
-  var $xCoord       = $('#x-coord');
-  var $yCoord       = $('#y-coord');
+  var $coordDisplay      = $('#coord-display');
+  var $xCoord            = $('#x-coord');
+  var $yCoord            = $('#y-coord');
+  var $tileNumberDisplay = $('#tile-number-display');
 
-  var $map          = $('#map');
-  var $mapMask      = $('#map-mask');
-  var $mapCanvas    = $('#map-canvas');
+  var $map               = $('#map');
+  var $mapMask           = $('#map-mask');
+  var $mapCanvas         = $('#map-canvas');
 
   // stop dragging causing safari to lock up
   $mapMask[0].onselectstart = function () { return false };
@@ -435,12 +436,17 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
   var updateMousePositionDisplay = function () {
     $coordDisplay.show();
+    $tileNumberDisplay.show();
     $xCoord.text(currentMapOffset.x);
     $yCoord.text(currentMapOffset.y);
+    var x = Math.floor(currentMapOffset.x / TILE_SIZE);
+    var y = Math.floor(currentMapOffset.y / TILE_SIZE);
+    $tileNumberDisplay.text('(' + (y * MAP_SIZE + x) + ')');
   };
 
   var clearMousePosition = function () {
     $coordDisplay.hide();
+    $tileNumberDisplay.hide();
   };
 
   var outlineBuildingStart = function (buildingName) {
