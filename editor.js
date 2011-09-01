@@ -171,8 +171,16 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
         this.renderBuildingPoints(newBuilding, false);
 
-        // render the 'ghost' line to the mouse
         var points = newBuilding.points;
+
+        // render point coords
+        for (var i = 0; i < points.length; i += 2) {
+          var x = points[i];
+          var y = points[i+1];
+          mapCanvasContext.fillText("("+x+","+y+")", x, y);
+        }
+
+        // render the 'ghost' line to the mouse
         var last   = points.length-1;
         var point  = convertEventToCoords(e);
         mapCanvasContext.strokeStyle = "rgba(0,0,255,0.2)";
