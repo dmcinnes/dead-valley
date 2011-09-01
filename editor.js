@@ -458,7 +458,6 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       inventory: []
     };
     newBuildingAddPoints = true;
-    buildings.push(newBuilding);
   };
 
   var addBuildingPoint = function (event) {
@@ -467,14 +466,20 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     var diffy = Math.abs(coords.y - newBuilding.points[1]);
     if (diffx < 10 && diffy < 10) {
       // close it off
-      newBuildingAddPoints = false;
       newBuilding.tiles = calculateBuildingCoverage(newBuilding);
-      BuildingDisplay.render();
-      newBuilding = null;
+      buildings.push(newBuilding);
+      stopAddingBuildingPoints();
     } else {
       newBuilding.points.push(coords.x, coords.y);
       BuildingDisplay.renderPointsInProgress(event);
     }
+  };
+
+  var stopAddingBuildingPoints = function () {
+    newBuildingAddPoints = false;
+    newBuilding = null;
+    $('#new-building-button').removeClass('selected');
+    BuildingDisplay.render();
   };
 
   // return the tile numbers that the given building occupies
@@ -558,6 +563,16 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     return tiles;
   };
 
+  var addEntrance = function (event) {
+    var building = $map.children('.building-name.selected').data('building');
+    var x = Math.floor(event.offsetX / TILE_SIZE);
+    var y = Math.floor(event.offsetY / TILE_SIZE);
+    var offset = y * MAP_SIZE + x;
+    building.entrances.push(offset);
+    $('#add-entrance-button').removeClass('selected').attr('disabled', 'disabled');
+    BuildingDisplay.render();
+  };
+
   var setup = {
 
     tileObject: function () {
@@ -610,14 +625,19 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
       // map clicks/drags
       $mapMask.click(function (e) {
-        if (newBuilding && newBuildingAddPoints) {
+        var target = $(e.target);
+        if ($('#add-entrance-button').is('.selected')) {
+          addEntrance(e);
+        } else if (newBuilding && newBuildingAddPoints) {
           addBuildingPoint(e);
-        } else if ($(e.target).is('.sprite')) {
+        } else if (target.is('.sprite')) {
           selectSprite(e);
-        } else if (selectedTile > -1) {
-          updateTile(e);
-        } else {
-          addSprite(e);
+        } else if (target.is($mapCanvas)) {
+          if (selectedTile > -1) {
+            updateTile(e);
+          } else if (selectedSprite > -1) {
+            addSprite(e);
+          }
         }
       }).mousedown(function (e) {
         var spr = selectSprite(e);
@@ -648,6 +668,15 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         } else {
           buildingName.addClass('selected');
         }
+
+        // update the add entrance button
+        if ($('.building-name.selected').length) {
+          $('#add-entrance-button').removeAttr('disabled');
+        } else {
+          $('#add-entrance-button').removeClass('selected').attr('disabled', 'disabled');
+        }
+
+        return false;
       });
 
     },
@@ -678,8 +707,16 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         $('#new-building-name').focus();
       });
 
+      $('#add-entrance-button').click(function () {
+        var buildingName = $map.children('.building-name.selected');
+        if (buildingName.length) {
+          $(this).addClass('selected');
+        }
+      });
+
       // start creating a new building
       $('#new-building-ok').click(function () {
+        $('#new-building-button').addClass('selected');
         $('.lb_overlay').click(); // cheesy way to close the overlay
         outlineBuildingStart($('#new-building-name').val());
       });
@@ -777,8 +814,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
             e.preventDefault();
             break;
           case 27: // ESC is for escape
-            newBuilding = null;
-            newBuildingAddPoints = false;
+            stopAddingBuildingPoints();
+            $('#add-entrance-button').removeClass('selected');
             break;
 
           default:

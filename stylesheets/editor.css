@@ -87,6 +87,7 @@ body {
 .tile {
   background-position: 0px 0px;
   display: block;
+  z-index: 5;
 }
 
 .road-matcher {
@@ -111,7 +112,7 @@ body {
   left: 0px;
   width: 3840px;
   height:3840px;
-  z-index: 8;
+  z-index: 10;
 }
 
 #map {
@@ -145,10 +146,10 @@ body {
 }
 
 .entrance {
-  border: dotted #4F0 2px;
+  border: dotted #4F0 2px !important;
   margin-top: -1px;
   margin-left: -1px;
-  z-index: 7;
+  z-index: 9 !important;
 }
 
 .building-name {
@@ -156,7 +157,7 @@ body {
   background-color:blue;
   color:white;
   padding: 2px;
-  z-index: 8;
+  z-index: 20;
   cursor: pointer;
 }
 
@@ -171,4 +172,8 @@ body {
 
 #coord-display {
   display: none;
-};
+}
+
+input[type=button].selected {
+  color: blue;
+}
