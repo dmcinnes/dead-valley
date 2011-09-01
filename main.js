@@ -125,7 +125,7 @@ require(
       });
 
       if (!dudeState) {
-        game.map.loadStartMapTiles('gas-station-crossroads', 'intersection', 'intersection', 'intersection');
+        game.map.loadStartMapTiles('gas-station-crossroads', 'burbs1', 'intersection', 'intersection');
       } else {
         game.map.loadStartMapTiles();
       }
