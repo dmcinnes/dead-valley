@@ -568,7 +568,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       }
     }
 
-    return tiles;
+    return _.uniq(tiles);
   };
 
   var addEntrance = function (event) {
