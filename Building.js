@@ -40,7 +40,7 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
       p1 = this.points[i-1];
       p2 = this.points[i];
 
-      n = p2.subtract(p1).normal();
+      n = p1.subtract(p2).normal().normalize();
 
       this.currentNormals.push(n);
     }
@@ -48,7 +48,7 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
     p1 = this.points[this.points.length-1];
     p2 = this.points[0];
 
-    n = p2.subtract(p1).normal();
+    n = p1.subtract(p2).normal().normalize();
     this.currentNormals.push(n);
   };
 
@@ -75,7 +75,7 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
 
   // redefine collidable's pointVel
   Building.prototype.pointVel = function () {
-    return new Vector(0, 0);
+    return this.vel;
   };
 
   return Building;

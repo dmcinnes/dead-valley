@@ -25,7 +25,7 @@ define(function () {
     return this;
   };
 
-  Vector.prototype.normalize = function (other) {
+  Vector.prototype.normalize = function () {
     var mag = this.magnitude();
     if (mag) {
       this.x /= mag;
