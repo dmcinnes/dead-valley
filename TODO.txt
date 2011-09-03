@@ -77,6 +77,7 @@ firearm between shot timeout
 fix zombie hitbox
 add dude roll/damage when jumping out of car
 use rotateX 3d transition for driving over rough ground
+make zombies walk at different speeds
 
 *EDITOR*
 X remove current collidible code
@@ -86,7 +87,9 @@ X add building boundries creation
 X add building entrance creation
 X name buildings
 support adding full buildings
+support dragging building points
 update to use new sprite rendering code
+don't render all building outlines when adding entrances
 
 *ART*
 X add rifle/shotgun to dude's sprite
@@ -141,3 +144,4 @@ gas can
 cake
 twinkie
 hot dog
+can of beans
