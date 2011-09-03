@@ -7,6 +7,7 @@ define(['game',
        'hud/Framerate',
        'hud/FuelGauge',
        'hud/Tip',
+       'hud/CheckEngineLight',
        'Firearm'],
 
        function (game,
@@ -17,6 +18,7 @@ define(['game',
                  Framerate,
                  FuelGauge,
                  Tip,
+                 CheckEngineLight,
                  Firearm) {
 
   var dudeInventory, dudeHands;
@@ -62,6 +64,7 @@ define(['game',
     }
     if (game.dude.driving) {
       FuelGauge.show(game.dude.driving);
+      CheckEngineLight.show(game.dude.driving);
     }
     inventoryShown = true;
   };
@@ -71,6 +74,7 @@ define(['game',
     dudeHands.hide();
     removeOtherInventory();
     FuelGauge.hide();
+    CheckEngineLight.hide();
     inventoryShown = false;
   };
 
@@ -96,6 +100,7 @@ define(['game',
     // only show the fuel gauge inside the car
     if (inventoryShown) {
       FuelGauge.show(car);
+      CheckEngineLight.show(car);
       otherInventory = car.inventory;
       showInventory();
     }
@@ -103,6 +108,7 @@ define(['game',
     // remove the car inventory when we exit the car
     removeOtherInventory();
     FuelGauge.hide();
+    CheckEngineLight.hide();
   }).subscribe('started touching', function (sprite) {
     // show the car inventory when we touch it if inventory is up
     if (inventoryShown && sprite.isCar) {
@@ -143,4 +149,7 @@ define(['game',
 
   // framerate HUD
   game.addSprite(Framerate);
+
+  // so the light can blink
+  game.addSprite(CheckEngineLight);
 });

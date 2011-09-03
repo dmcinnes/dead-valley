@@ -227,6 +227,21 @@ body {
   transform-origin: 8px 50px;
 }
 
+#check-engine-light {
+  display: none;
+  position: absolute;
+  width: 45px;
+  height: 31px;
+  left: 10px;
+  top: 110px;
+  background-image:url(../assets/check-engine.png);
+  z-index: 110;
+}
+
+#check-engine-light.lit {
+  background-position:45 0px; 
+}
+
 .tip {
   position: absolute;
   z-index: 200;

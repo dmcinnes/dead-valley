@@ -65,6 +65,8 @@ define(["game",
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
 
+    this.health = 26; //100;
+
     this.inventory = new Inventory({
       name:   "Car",
       width:  config.cargoSpace.width, 
@@ -239,11 +241,20 @@ define(["game",
     game.events.fireEvent("leave car", this);
   };
 
-  Car.prototype.takeDamage = function (damage) {
-  };
-
   Car.prototype.percentFuelRemaining = function () {
     return this.currentFuel / this.fuelCapacity;
+  };
+
+  Car.prototype.takeDamage = function (damage) {
+    this.takingDamage = true;
+
+    this.health -= damage;
+
+    this.fireEvent('health changed', this.health);
+
+    if (this.health <= 0) {
+      // die
+    }
   };
 
   Car.prototype.saveMetadata = function () {
