@@ -154,13 +154,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         _.each(building.tiles, function (tile) {
           $map.children('.tile:eq('+tile+')').addClass('building-tile');
         });
-
-        // render any entrances
-        _.each(building.entrances, function (entrance) {
-          $map.children('.tile:eq('+entrance+')').addClass('entrance');
-        });
       });
       mapCanvasContext.restore();
+
+      this.renderEntrances();
     },
 
     renderPointsInProgress: function (e) {
@@ -219,6 +216,15 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         x: smallestX,
         y: smallestY
       };
+    },
+
+    renderEntrances: function () {
+      _.each(buildings, function (building) {
+        // render any entrances
+        _.each(building.entrances, function (entrance) {
+          $map.children('.tile:eq('+entrance+')').addClass('entrance');
+        });
+      });
     }
   };
 
@@ -577,8 +583,8 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     var y = Math.floor(event.offsetY / TILE_SIZE);
     var offset = y * MAP_SIZE + x;
     building.entrances.push(offset);
-    $('#add-entrance-button').removeClass('selected').attr('disabled', 'disabled');
-    BuildingDisplay.render();
+    $('#add-entrance-button').removeClass('selected');
+    BuildingDisplay.renderEntrances();
   };
 
   var setup = {

@@ -86,10 +86,10 @@ X make tiles not drag-selectable so drags don't spike CPU
 X add building boundries creation
 X add building entrance creation
 X name buildings
+X don't render all building outlines when adding entrances
 support adding full buildings
 support dragging building points
 update to use new sprite rendering code
-don't render all building outlines when adding entrances
 
 *ART*
 X add rifle/shotgun to dude's sprite
