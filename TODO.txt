@@ -78,6 +78,7 @@ fix zombie hitbox
 add dude roll/damage when jumping out of car
 use rotateX 3d transition for driving over rough ground
 make zombies walk at different speeds
+add inventory/hud toggle button
 
 *EDITOR*
 X remove current collidible code
