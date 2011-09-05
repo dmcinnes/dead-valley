@@ -66,6 +66,7 @@ create HUD for vehicle status
 broken headlights
 headlight repair
 fix barrel 'sliding'
+fix barrel rolling animation
 support shooting out of car
 transfering fuel between cars
 make tip not obscure sprites

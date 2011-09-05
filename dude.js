@@ -189,14 +189,15 @@ define(["game",
   };
 
   Dude.prototype.enterCar = function (car) {
-    this.hide();
-    this.updateTouchingList(); // to clear what we're touching
-    this.driving = car;
-    if (this.currentNode) {
-      this.currentNode.leave(this);
-      this.currentNode = null;
+    if (car.enter(this)) {
+      this.hide();
+      this.updateTouchingList(); // to clear what we're touching
+      this.driving = car;
+      if (this.currentNode) {
+        this.currentNode.leave(this);
+        this.currentNode = null;
+      }
     }
-    car.enter(this);
   };
 
   Dude.prototype.leaveCar = function () {

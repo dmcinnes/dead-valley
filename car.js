@@ -41,13 +41,13 @@ define(["game",
     this.driversSide    = config.driversSide;
     this.passengersSide = config.driversSide.multiply({x:-1, y:1}); // assuming we're symmetrical
 
-    this.collided      = false;
-    this.breaking      = false;
-    this.reversing     = false;
-    this.stopped       = false;
-    this.driver        = null;
-    this.steeringAngle = 0;
-    this.direction     = new Vector(0);
+    this.collided        = false;
+    this.breaking        = false;
+    this.reversing       = false;
+    this.stopped         = false;
+    this.driver          = null;
+    this.steeringAngle   = 0;
+    this.directionVector = new Vector(0);
 
     this.headlights = [
       this.points[0].add({x:4, y:0}),
@@ -65,7 +65,7 @@ define(["game",
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
 
-    this.health = 26; //100;
+    this.health = 1; //100;
 
     this.inventory = new Inventory({
       name:   "Car",
@@ -79,24 +79,34 @@ define(["game",
   Car.prototype.draw = function () {
     if (!this.visible) return;
 
-    this.drawTile(0);
+    // dead!
+    if (this.health <= 0) {
+      this.drawTile(2);
+      return;
+    }
+
+    if (this.health > 25) {
+      this.drawTile(0);
+    } else {
+      this.drawTile(1);
+    }
 
     if (this.driver) {
       if (this.breaking) {
         // break lights
-        this.drawTile(4);
         this.drawTile(5);
+        this.drawTile(6);
       }
     }
 
     if (this.headlightsOn) {
       // headlights
-      this.drawTile(2);
       this.drawTile(3);
+      this.drawTile(4);
       Headlight.render(this, this.headlights[0]);
       Headlight.render(this, this.headlights[1]);
-      Taillight.render(this, 4, this.breaking);
       Taillight.render(this, 5, this.breaking);
+      Taillight.render(this, 6, this.breaking);
     }
   };
 
@@ -113,7 +123,7 @@ define(["game",
 
   Car.prototype.setThrottle = function (throttle) {
     // gotta have fuel to drive
-    if (this.currentFuel > 0) {
+    if (this.health > 0 && this.currentFuel > 0) {
       // front wheel drive
       this.wheels[0].addTransmissionTorque(throttle * this.engineTorque);
       this.wheels[1].addTransmissionTorque(throttle * this.engineTorque);
@@ -165,8 +175,8 @@ define(["game",
         } else if (!this.stopped) { // if not already stopped
           this.breaking = true;
           // update direction vector
-          this.direction.set(this.pos.rot - 90);
-          if (this.direction.dotProduct(this.vel) < 0) { // reversing
+          this.directionVector.set(this.pos.rot - 90);
+          if (this.directionVector.dotProduct(this.vel) < 0) { // reversing
             this.stopped = true;
             this.vel.set(0, 0);
             this.acc.set(0, 0);
@@ -231,8 +241,13 @@ define(["game",
   };
 
   Car.prototype.enter = function (dude) {
-    this.driver = dude;
-    game.events.fireEvent("enter car", this);
+    // can't enter if it's destroyed
+    if (this.health > 0) {
+      this.driver = dude;
+      game.events.fireEvent("enter car", this);
+      return true;
+    }
+    return false;
   };
 
   Car.prototype.leave = function (dude) {
@@ -254,6 +269,13 @@ define(["game",
 
     if (this.health <= 0) {
       // die
+      this.vel.scale(0);
+      // inventory goes bye-bye
+      this.inventory = null;
+      // kick dude out
+      if (this.driver) {
+        this.driver.leaveCar();
+      };
     }
   };
 
