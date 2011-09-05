@@ -204,6 +204,10 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       transform.push(' translateZ(0)');
     }
 
+    if (this.scale !== 1) {
+      transform.push(' scale(', this.scale, ')');
+    }
+
     // TODO support FF
     style['-webkit-transform'] = transform.join('');
 

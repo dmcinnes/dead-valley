@@ -8,7 +8,8 @@ define(["game",
         "Sky",
         "Headlight",
         "Taillight",
-        "Inventory"],
+        "Inventory",
+        "fx/Smoke"],
 
         function (game,
                   RigidBody,
@@ -18,7 +19,8 @@ define(["game",
                   Sky,
                   Headlight,
                   Taillight,
-                  Inventory) {
+                  Inventory,
+                  Smoke) {
 
   var keyStatus = game.keyboard.keyStatus;
 
@@ -65,7 +67,9 @@ define(["game",
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
 
-    this.health = 1; //100;
+    this.health = 26; //100;
+
+    this.smokeCounter = 0;
 
     this.inventory = new Inventory({
       name:   "Car",
@@ -226,6 +230,16 @@ define(["game",
     if (this.driver) {
       game.map.keepInView(this);
     }
+    if (this.health < 25) {
+      this.smokeCounter += delta;
+      var threshold = this.health / 2;
+      threshold = (threshold < 2) ? 2 : threshold;
+      if (this.smokeCounter > threshold) {
+        this.smokeCounter = 0;
+        // make smoke come out of the engine
+        Smoke.createNew(this.pos.add(this.directionVector.multiply(this.tileHeight / 3)));
+      }
+    }
   };
 
   Car.prototype.toggleHeadlights = function () {
@@ -283,6 +297,7 @@ define(["game",
     var data = Sprite.prototype.saveMetadata.call(this);
     data.inventory   = this.inventory.saveMetadata();
     data.currentFuel = this.currentFuel;
+    data.health      = this.health;
     return data;
   };
 

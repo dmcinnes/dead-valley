@@ -150,6 +150,19 @@ define(function () {
         x: 3,
         y: 3
       }
+    },
+    Smoke: {
+      img: 'smoke',
+      width: 40,
+      height: 40,
+      imageOffset: {
+        x: 0,
+        y: 0
+      },
+      center: {
+        x: 20,
+        y: 20
+      }
     }
   };
 
