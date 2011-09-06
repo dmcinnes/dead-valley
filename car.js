@@ -67,7 +67,7 @@ define(["game",
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
 
-    this.health = 26; //100;
+    this.health = 1; //100;
 
     this.smokeCounter = 0;
 
@@ -232,8 +232,9 @@ define(["game",
     }
     if (this.health < 25) {
       this.smokeCounter += delta;
+      // the more damaged the more smoke it emits
       var threshold = this.health / 2;
-      threshold = (threshold < 2) ? 2 : threshold;
+      threshold = (threshold < 0.5) ? 0.5 : threshold;
       if (this.smokeCounter > threshold) {
         this.smokeCounter = 0;
         // make smoke come out of the engine

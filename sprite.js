@@ -87,6 +87,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     // sprites default to a z-index of 100
     this.z = config.z || 100;
 
+    this.opacity = 1;
+
     this.layers = [];
     var layerCount = config.layers || 1;
     for (var i = 0; i < layerCount; i++) {
@@ -111,6 +113,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     node.css({
       'background-image': image.join(','),
       'z-index': this.z,
+      'opacity': this.opacity,
       width: this.tileWidth,
       height: this.tileHeight
     });
@@ -213,6 +216,9 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
     // update z
     style['z-index'] = this.z;
+
+    // update opacity
+    style.opacity = this.opacity;
 
     this.finalizeLayers();
   };

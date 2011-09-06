@@ -21,8 +21,9 @@ define(['game', 'Sprite'], function (game, Sprite) {
   };
 
   Smoke.prototype.preMove = function (delta) {
-    this.pos.rot += 20 * delta;
-    this.scale += 0.35 * delta;
+    this.pos.rot += 20   * delta;
+    this.scale   += 0.35 * delta;
+    this.opacity -= 0.3  * delta;
   };
 
   Smoke.prototype.postMove = function (delta) {
