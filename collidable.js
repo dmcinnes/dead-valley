@@ -89,10 +89,11 @@ define(["vector"], function (Vector) {
     
     // we're edge on if the min depth is on our normal, so use "they"'s point
     var point;
-    if (normalIndex < this.currentNormals.length) {
-      point = minPoint[1];
-    } else {
+    var wePoint = normalIndex >= this.currentNormals.length;
+    if (wePoint) {
       point = minPoint[0];
+    } else {
+      point = minPoint[1];
     }
 
     // some of these normals (like building's) are not
@@ -113,7 +114,7 @@ define(["vector"], function (Vector) {
       this.touch(other, point, normal);
       other.touch(this, point, normal);
     } else {
-      var vab = resolveCollision(this, other, point, normal);
+      var vab = resolveCollision(this, other, point, normal, wePoint);
       this.collision(other, point, normal, vab);
       other.collision(this, point, normal.scale(-1), vab);
     }
@@ -150,16 +151,25 @@ define(["vector"], function (Vector) {
   // resolve the collision between two rigid body sprites
   // returns false if they're moving away from one another
   // TODO: find a better way to structure all this
-  var resolveCollision = function (we, they, point, vector) {
+  var resolveCollision = function (we, they, point, vector, wePoint) {
     we.collided   = true;
     they.collided = true;
 
     // rectify the positions
     var wePart   = they.mass / (we.mass + they.mass);
     var theyPart = wePart - 1;
+    wePart   = vector.multiply(wePart);
+    theyPart = vector.multiply(theyPart);
 
-    we.pos.translate(vector.multiply(wePart));
-    they.pos.translate(vector.multiply(theyPart));
+    we.pos.translate(wePart);
+    they.pos.translate(theyPart);
+    
+    // rectify the point
+    if (wePoint) {
+      point.translate(wePart);
+    } else {
+      point.translate(theyPart);
+    }
 
     var n = vector.clone().normalize();
 
