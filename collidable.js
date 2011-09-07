@@ -95,7 +95,9 @@ define(["vector"], function (Vector) {
       point = minPoint[0];
     }
 
-    var normal = normals[normalIndex];
+    // some of these normals (like building's) are not
+    // calculated every frame so we need to protect them
+    var normal = normals[normalIndex].clone();
     if (minDepth > 0) { // don't want a 0,0 normal
       // scale the normal to the penetration depth
       normal.scale(minDepth);
@@ -140,7 +142,7 @@ define(["vector"], function (Vector) {
 
   //velocity of a point on body
   var pointVel = function (worldOffset) {
-    return new Vector(-worldOffset.y, worldOffset.x)
+    return worldOffset.normal()
                   .scale(this.vel.rot * Math.PI / 180.0)
                   .translate(this.vel);
   };
@@ -159,7 +161,7 @@ define(["vector"], function (Vector) {
     we.pos.translate(vector.multiply(wePart));
     they.pos.translate(vector.multiply(theyPart));
 
-    var n = vector.normalize();
+    var n = vector.clone().normalize();
 
     var vab = we.pointVel(point.subtract(we.pos)).subtract(they.pointVel(point.subtract(they.pos)));
 

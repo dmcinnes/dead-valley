@@ -67,7 +67,7 @@ define(["game",
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
 
-    this.health = 1; //100;
+    this.health = 100;
 
     this.smokeCounter = 0;
 
