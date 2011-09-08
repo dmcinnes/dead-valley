@@ -2,7 +2,7 @@ define(['game'], function (game) {
 
   var killHandler = function (e, sprite) {
     if (sprite.takeDamage) {
-      sprite.takeDamage(99);
+      sprite.takeDamage(999);
     } else {
       sprite.die();
     }
