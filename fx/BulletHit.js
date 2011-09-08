@@ -3,6 +3,8 @@ define(['game', 'Sprite'], function (game, Sprite) {
 
   var context = game.skyContext;
 
+  // length and range are negitive because the default
+  // is to send sparks back toward the shooter
   var defaultConfig = {
     color:     'white',
     minLength: -5,

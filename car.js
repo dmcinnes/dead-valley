@@ -9,7 +9,8 @@ define(["game",
         "Headlight",
         "Taillight",
         "Inventory",
-        "fx/Smoke"],
+        "fx/Smoke",
+        "fx/Explosion"],
 
         function (game,
                   RigidBody,
@@ -20,7 +21,8 @@ define(["game",
                   Headlight,
                   Taillight,
                   Inventory,
-                  Smoke) {
+                  Smoke,
+                  Explosion) {
 
   var keyStatus = game.keyboard.keyStatus;
 
@@ -291,7 +293,15 @@ define(["game",
       if (this.driver) {
         this.driver.leaveCar();
       };
+
+      // EXPLOOOODE!
+      Explosion.createNew(this.pos);
     }
+  };
+
+  Car.prototype.bulletHit = function (hit, damage) {
+    Sprite.prototype.bulletHit.call(this, hit, damage);
+    this.takeDamage(damage);
   };
 
   Car.prototype.saveMetadata = function () {
