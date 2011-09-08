@@ -14,7 +14,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
   };
 
   var Sparks = function (result, config) {
-    this.pos     = result.point;
+    this.pos     = result.point.clone();
     this.pos.rot = 0;
     this.life    = 0;
 
