@@ -194,12 +194,14 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
       var nodes = this.convertToNodes(chunk.data);
       var sprites = [];
       var buildings = [];
-      var sprite;
+      var sprite, nextSprite;
       var totalNodes = nodes.length;
 
       for (var i = 0; i < totalNodes; i++) {
         sprite = nodes[i].nextSprite;
         while (sprite) {
+          // sprite.die clears nextSprite
+          nextSprite = sprite.nextSprite;
           if (sprite.shouldSave) {
             sprite.die();
             // make them relative to the chunk
@@ -208,7 +210,7 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
           } else if (sprite instanceof Building) {
             buildings.push(BuildingMarshal.unmarshal(sprite));
           }
-          sprite = sprite.nextSprite;
+          sprite = nextSprite;
         }
       }
 

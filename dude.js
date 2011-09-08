@@ -6,7 +6,7 @@ define(["game",
        "spritemarshal",
        "DudeHands",
        "Inventory",
-       "Car",
+       "car",
        "fx/BloodSplatter"],
 
        function (game,

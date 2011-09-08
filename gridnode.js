@@ -37,7 +37,7 @@ define(["game",
 
   GridNode.prototype.leave = function (sprite) {
     var ref = this;
-    while (ref && (ref.nextSprite != sprite)) {
+    while (ref && (ref.nextSprite !== sprite)) {
       ref = ref.nextSprite;
     }
     if (ref) {
