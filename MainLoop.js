@@ -20,7 +20,7 @@ define(["Game"], function (Game) {
             };
   })();
 
-  var mainLoop = function (thisFrame) {
+  var MainLoop = function (thisFrame) {
     thisFrame = thisFrame || Date.now();
     elapsed = thisFrame - lastFrame;
     if (elapsed > 100) {
@@ -36,7 +36,7 @@ define(["Game"], function (Game) {
     Game.renderMap(delta);
 
     if (!paused) {
-      requestAnimFrame(mainLoop, GameField);
+      requestAnimFrame(MainLoop, GameField);
     }
   };
 
@@ -48,7 +48,7 @@ define(["Game"], function (Game) {
   var play = function () {
     lastFrame = Date.now();
     paused = false;
-    mainLoop();
+    MainLoop();
     Game.events.fireEvent('play');
   };
 
