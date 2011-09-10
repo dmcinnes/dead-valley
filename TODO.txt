@@ -50,6 +50,8 @@ X limit the number of bloodsplatters in play at a given time
 X add trees randomly to map
 X fix gas pump position
 X fix barrel rolling animation
+X make object capitalization consistent
+X create HUD for vehicle status
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -58,12 +60,10 @@ add map handling functions for custom instances of sections through the map work
 tune Honda's performance
 make trees transparent when touching sprite
 convert everything to radians
-make object capitalization consistent
 make zombies follow building edges
 add zombies randomly to map based on building population of section
 generalize sprite animation handling
 HUD ammo count
-create HUD for vehicle status
 broken headlights
 headlight repair
 fix barrel 'sliding'
@@ -81,6 +81,7 @@ use rotateX 3d transition for driving over rough ground
 make zombies walk at different speeds
 add inventory/hud toggle button
 fix collision response
+explosions should cause dude/zombie damage
 
 *EDITOR*
 X remove current collidible code
