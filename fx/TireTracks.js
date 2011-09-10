@@ -1,12 +1,12 @@
 
-define(['game', 'Sprite'], function (game, Sprite) {
+define(['Game', 'Sprite'], function (Game, Sprite) {
   var width       = 4;
   var halfWidth   = width/2;
   var maxLife     = 60; // seconds
   var maxLength   = 40; // in dots
   var minVelocity = 10;
 
-  var context = game.spriteContext;
+  var context = Game.spriteContext;
 
   var TireTracks = function (car, wheel, color, length) {
     this.pos     = new Vector(0, 0);
@@ -82,7 +82,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
     // // ignore if wheel is already tracking something
     // if (!wheel.tracks) {
     //   // put it at the beginning of the sprite list so it renders first
-    //   game.sprites.unshift(new TireTracks(car, wheel, color, length));
+    //   Game.sprites.unshift(new TireTracks(car, wheel, color, length));
     // }
   };
 

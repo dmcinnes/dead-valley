@@ -1,5 +1,5 @@
 // Inventory Display
-define(['game', 'Inventory'], function (game, Inventory) {
+define(['Game', 'Inventory'], function (Game, Inventory) {
 
   var draggingItem, draggingItemOriginalPos, draggingItemOriginalInv,
       currentDraggable, currentDraggableOffset;

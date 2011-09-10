@@ -1,4 +1,4 @@
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var node = $('#framerate');
   var visible = $('#framerate').hasClass('active');
@@ -22,7 +22,7 @@ define(['game'], function (game) {
     node.removeClass('active');
   };
 
-  game.events.subscribe('toggle framerate', function () {
+  Game.events.subscribe('toggle framerate', function () {
     if (visible) {
       hide();
     } else {
@@ -43,7 +43,7 @@ define(['game'], function (game) {
       }
     },
 
-    // game renderSprites needs this
+    // Game renderSprites needs this
     render: function (delta) {
     },
 

@@ -1,5 +1,5 @@
 // check engine light
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var light      = $("#check-engine-light");
   var interval   = 0.4; // in seconds

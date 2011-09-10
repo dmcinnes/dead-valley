@@ -1,7 +1,7 @@
 
-define(['game', 'Sprite'], function (game, Sprite) {
+define(['Game', 'Sprite'], function (Game, Sprite) {
 
-  var context = game.skyContext;
+  var context = Game.skyContext;
 
   // length and range are negitive because the default
   // is to send sparks back toward the shooter
@@ -51,7 +51,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
 
   // override render
   Sparks.prototype.render = function (delta) {
-    var map = game.map;
+    var map = Game.map;
     context.save();
     context.translate(this.pos.x - map.originOffsetX, this.pos.y - map.originOffsetY);
     context.fillStyle = this.color;
@@ -78,7 +78,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
   };
 
   BulletHit.prototype.fireSparks = function (result) {
-    game.sprites.push(new Sparks(result, this.config));
+    Game.sprites.push(new Sparks(result, this.config));
   };
 
   return BulletHit;

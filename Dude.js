@@ -1,6 +1,6 @@
 // The DUDE
 
-define(["game",
+define(["Game",
        "sprite",
        "collidable",
        "spritemarshal",
@@ -9,7 +9,7 @@ define(["game",
        "car",
        "fx/BloodSplatter"],
 
-       function (game,
+       function (Game,
                  Sprite,
                  collidable,
                  spriteMarshal,
@@ -18,7 +18,7 @@ define(["game",
                  Car,
                  BloodSplatter) {
 
-  var keyStatus = game.keyboard.keyStatus;
+  var keyStatus = Game.keyboard.keyStatus;
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
@@ -159,7 +159,7 @@ define(["game",
       this.aiming = false;
     }
 
-    game.map.keepInView(this);
+    Game.map.keepInView(this);
   };
 
   Dude.prototype.postMove = function (delta) {
@@ -170,7 +170,7 @@ define(["game",
     // remove sprites that we are moving away from
     this.touching = _.reject(this.touching, function (sprite) {
       if (!this.visible || this.pos.subtract(sprite.pos).dotProduct(this.vel) > 0) {
-        game.events.fireEvent('stopped touching', sprite);
+        Game.events.fireEvent('stopped touching', sprite);
         return true;
       }
     }, this);
@@ -184,7 +184,7 @@ define(["game",
     // add other to the touching list
     if (!_.include(this.touching, other)) {
       this.touching.push(other);
-      game.events.fireEvent('started touching', other);
+      Game.events.fireEvent('started touching', other);
     }
   };
 
@@ -299,7 +299,7 @@ define(["game",
   };
 
   Dude.prototype.drawAimedArm = function (frame) {
-    var map = game.map;
+    var map = Game.map;
     var style = this.aimingArmNode[0].style;
 
     var x = this.pos.x - map.originOffsetX - this.center.x;
@@ -318,7 +318,7 @@ define(["game",
       transform.push(' scaleX(-1)');
     }
     // translateZ(0) makes a big difference for Safari
-    if (game.threeDee) {
+    if (Game.threeDee) {
       transform.push(' translateZ(0)');
     }
 
@@ -360,7 +360,7 @@ define(["game",
   Dude.prototype.setupEventHandlers = function () {
     var self = this;
 
-    game.events.subscribe('dude enter/exit', function () {
+    Game.events.subscribe('dude enter/exit', function () {
       self.enterOrExit();
     }).subscribe('dude toggle headlights', function () {
       if (self.driving) {
@@ -401,7 +401,7 @@ define(["game",
 
         var firearm = self.hands.weapon();
         if (firearm) {
-          var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+          var coords = Game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
 
           if (firearm.aimable) {
             self.aimTowardMouse(coords, true);
@@ -427,7 +427,7 @@ define(["game",
     var self = this;
     $('#click-overlay').mousemove(function (e) {
       if (self.alive()) {
-        var coords = game.map.worldCoordinatesFromWindow(e.pageX, e.pageY);
+        var coords = Game.map.worldCoordinatesFromWindow(e.pageX, e.pageY);
         self.aimTowardMouse(coords, true);
       }
     }).mouseleave(function () {

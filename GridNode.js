@@ -1,9 +1,9 @@
 // GridNode
 
-define(["game",
+define(["Game",
         "vector",
         "tilemarshal"],
-        function (game, Vector, tileMarshal) {
+        function (Game, Vector, tileMarshal) {
 
   var background = $('#background');
 
@@ -69,9 +69,9 @@ define(["game",
     // nothing to render, return
     if (this.tileOffset === 0) return;
 
-    if (x < -game.gridSize || y < -game.gridSize ||
-        x > game.gameWidth ||
-        y > game.gameHeight) {
+    if (x < -Game.gridSize || y < -Game.gridSize ||
+        x > Game.GameWidth ||
+        y > Game.GameHeight) {
       // outside of the view
       if (this.domNode) this.freeDomNode();
     } else {
@@ -86,7 +86,7 @@ define(["game",
       }
 
       // translateZ(0) makes a big difference for Safari
-      if (game.threeDee) {
+      if (Game.threeDee) {
         transform.push(' translateZ(0)');
       }
 
@@ -107,8 +107,8 @@ define(["game",
     this.domNode.attr('class', 'tile');
 
     // set background offset for which tile we have
-    var left = -(this.tileOffset % game.tileRowSize) * game.gridSize;
-    var top  = -Math.floor(this.tileOffset / game.tileRowSize) * game.gridSize;
+    var left = -(this.tileOffset % Game.tileRowSize) * Game.gridSize;
+    var top  = -Math.floor(this.tileOffset / Game.tileRowSize) * Game.gridSize;
     this.domNode.css({'background-position': [left, 'px ', top, 'px'].join('')}).show();
   };
 
@@ -142,7 +142,7 @@ define(["game",
     return this.tileOffset > 2;
   };
 
-  game.assetManager.loadImage('tiles', function (image) {
+  Game.assetManager.loadImage('tiles', function (image) {
     GridNode.prototype.tiles = image;
   });
 

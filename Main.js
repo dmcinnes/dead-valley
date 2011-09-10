@@ -1,5 +1,5 @@
 require(
-  ["game",
+  ["Game",
    "Controls",
    "gridnode",
    "map",
@@ -22,7 +22,7 @@ require(
    "Mouse",
    "Cheat"],
 
-  function (game,
+  function (Game,
             Controls,
             GridNode,
             Map,
@@ -49,7 +49,7 @@ require(
     require.ready(function () {
       var dude, startX, startY;
 
-      game.addSprite(Sky);
+      Game.addSprite(Sky);
 
       var dudeState = World.getDude();
 
@@ -61,9 +61,9 @@ require(
 
         // wait until the map has loaded
         // other sprites are loaded with the map
-        game.events.subscribe('before start', function () {
+        Game.events.subscribe('before start', function () {
           if (dude.driving) {
-            var car = _.detect(game.sprites, function (sprite) {
+            var car = _.detect(Game.sprites, function (sprite) {
               return sprite.isCar && sprite.pos.equals(dude.pos);
             });
             if (car) {
@@ -80,8 +80,8 @@ require(
 
       } else {
         // want to start in the center of the right vertical road
-        startX = 40 * game.gridSize;
-        startY = 26 * game.gridSize;
+        startX = 40 * Game.gridSize;
+        startY = 26 * Game.gridSize;
 
         // add our starting players
         dude = new Dude();
@@ -103,31 +103,31 @@ require(
         var zombie = new Zombie();
         zombie.pos.x = startX + 200;
         zombie.pos.y = startY;
-        game.addSprite(zombie);
+        Game.addSprite(zombie);
 
         zombie = new Zombie();
         zombie.pos.x = startX + 200;
         zombie.pos.y = 1000;
-        game.addSprite(zombie);
+        Game.addSprite(zombie);
 
         zombie = new Zombie();
         zombie.pos.x = startX + 300;
         zombie.pos.y = 1000;
-        game.addSprite(zombie);
+        Game.addSprite(zombie);
       }
 
       // Call me The DUDE
-      game.newDude(dude);
+      Game.newDude(dude);
 
       // set up the map
-      game.map = new Map(128, 128, startX, startY, function () {
-        game.events.fireEvent('map loaded');
+      Game.map = new Map(128, 128, startX, startY, function () {
+        Game.events.fireEvent('map loaded');
       });
 
       if (!dudeState) {
-        game.map.loadStartMapTiles('gas-station-crossroads', 'burbs1', 'intersection', 'intersection');
+        Game.map.loadStartMapTiles('gas-station-crossroads', 'burbs1', 'intersection', 'intersection');
       } else {
-        game.map.loadStartMapTiles();
+        Game.map.loadStartMapTiles();
       }
 
       // save the sprites before we leave
@@ -135,8 +135,8 @@ require(
         // don't save if the world has been cleared
         // -- cleared the world for a reason
         if (World.usedSpace()) {
-          World.saveDude(game.dude);
-          game.map.save();
+          World.saveDude(Game.dude);
+          Game.map.save();
         }
       });
     });

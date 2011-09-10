@@ -1,6 +1,6 @@
 // Inventory
 
-define(['game', 'eventmachine'], function (game, eventMachine) {
+define(['Game', 'eventmachine'], function (Game, eventMachine) {
   var setupSlots = function (inv) {
     var i, j;
     for (i = 0; i < inv.width; i++) {

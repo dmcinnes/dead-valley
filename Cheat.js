@@ -1,4 +1,4 @@
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var killHandler = function (e, sprite) {
     if (sprite.takeDamage) {
@@ -7,7 +7,7 @@ define(['game'], function (game) {
       sprite.die();
     }
     // unsubscribe when we're done
-    game.events.unsubscribe('click', killHandler);
+    Game.events.unsubscribe('click', killHandler);
   };
 
   window.Cheat = {
@@ -18,11 +18,11 @@ define(['game'], function (game) {
 
         // set up a click handler
         $('#click-overlay').one('click', function (e) {
-          var coords = game.map.worldCoordinatesFromWindow(e.pageX, e.pageY);
+          var coords = Game.map.worldCoordinatesFromWindow(e.pageX, e.pageY);
           for (var i = 0; i < count; i++) {
             var sprite = new Clazz();
             sprite.pos.set(coords);
-            game.addSprite(sprite);
+            Game.addSprite(sprite);
           }
           return false; // stop propagation
         });
@@ -31,7 +31,7 @@ define(['game'], function (game) {
     },
 
     kill: function () {
-      game.events.subscribe('click', killHandler);
+      Game.events.subscribe('click', killHandler);
     },
 
     give: function (Thing) {
@@ -40,7 +40,7 @@ define(['game'], function (game) {
         if (thing.maxCount) {
           thing.setCount(thing.maxCount);
         }
-        game.dude.inventory.stuffItemIn(thing);
+        Game.dude.inventory.stuffItemIn(thing);
       });
     }
   };

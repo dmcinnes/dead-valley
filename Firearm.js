@@ -1,6 +1,6 @@
 // Firearm
 
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var Firearm = function () {
   };
@@ -23,7 +23,7 @@ define(['game'], function (game) {
 
   Firearm.prototype.traceBullet = function (start, end) {
     var damage = this.damage;
-    game.map.rayTrace(start, end, this.range, function (result, sprite) {
+    Game.map.rayTrace(start, end, this.range, function (result, sprite) {
       if (result) { // hit!
         sprite.bulletHit(result, damage);
       }

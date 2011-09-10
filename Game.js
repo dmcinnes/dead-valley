@@ -30,8 +30,8 @@ define(['assetmanager',
     tileRowSize:   9,  // should be set by asset manager
                        // this is the number of tiles in row
                        // of the tile image
-    gameWidth:     $('#canvas-mask').width(),
-    gameHeight:    $('#canvas-mask').height(),
+    GameWidth:     $('#canvas-mask').width(),
+    GameHeight:    $('#canvas-mask').height(),
     map:           null,
     dude:          null,
     sprites:       sprites,

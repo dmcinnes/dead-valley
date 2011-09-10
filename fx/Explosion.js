@@ -1,4 +1,4 @@
-define(['game', 'Sprite', 'fx/BulletHit'], function (game, Sprite, BulletHit) {
+define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
 
   var MAX_LIFE = 0.2; // in seconds
 
@@ -54,7 +54,7 @@ define(['game', 'Sprite', 'fx/BulletHit'], function (game, Sprite, BulletHit) {
     }
     var explosion = new Explosion();
     explosion.pos.set(position);
-    game.sprites.push(explosion);
+    Game.sprites.push(explosion);
   };
 
   return Explosion;

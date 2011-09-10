@@ -1,5 +1,5 @@
-define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
-       function (Sprite, collidable, game, BulletHit, BloodSplatter, TireTracks) {
+define(["sprite", "collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
+       function (Sprite, collidable, Game, BulletHit, BloodSplatter, TireTracks) {
 
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
@@ -131,10 +131,10 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     this.seeTarget = false;
     // dude is the only target for now
     // TODO limit the distance the zombie can see
-    var target = game.dude.driving || game.dude;
+    var target = Game.dude.driving || Game.dude;
     if (target && target.visible) {
       var see = false;
-      game.map.rayTrace(this.pos, target.pos, MAX_RANGE, function (collision, sprite) {
+      Game.map.rayTrace(this.pos, target.pos, MAX_RANGE, function (collision, sprite) {
 	if (sprite === target) {
 	  see = true;
 	}
@@ -182,8 +182,8 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     this.pos.rot = 0;
     this.vel.rot = 0;
     
-    if (other === game.dude ||
-        other === game.dude.driving) {
+    if (other === Game.dude ||
+        other === Game.dude.driving) {
       this.currentState = this.states.attacking;
 
       // are we in the window of opportunity?
@@ -309,7 +309,7 @@ define(["sprite", "collidable", "game", "fx/BulletHit", "fx/BloodSplatter", "fx/
 
   Zombie.prototype.touch = function (other, point, normal) {
     // TODO reimplement tire tracks when we find a way to do it
-    // if (other === game.dude.driving &&
+    // if (other === Game.dude.driving &&
     //     this.tireTrackLength > 0) {
     //   _.each(other.wheels, function (wheel) {
     //     if (!wheel.tracks &&

@@ -1,6 +1,6 @@
 // LifeMeter
 
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var totalContainers = 3;
   var width, leftHalf, rightHalf;
@@ -61,7 +61,7 @@ define(['game'], function (game) {
     }
   };
 
-  game.events.subscribe('new dude', function (dude) {
+  Game.events.subscribe('new dude', function (dude) {
     // render current dude's health
     render(dude.health);
 

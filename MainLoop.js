@@ -1,10 +1,10 @@
-// the game loop
+// the Game loop
 
-define(["game"], function (game) {
+define(["Game"], function (Game) {
 
   var lastFrame, thisFrame, elapsed, delta, paused;
 
-  var gameField = $('#canvas-mask')[0];
+  var GameField = $('#canvas-mask')[0];
 
   // shim layer with setTimeout fallback
   // from here:
@@ -29,30 +29,30 @@ define(["game"], function (game) {
     lastFrame = thisFrame;
     delta = elapsed / 1000;
 
-    game.runSprites(delta);
-    game.runMap(delta);
+    Game.runSprites(delta);
+    Game.runMap(delta);
 
-    game.renderSprites(delta);
-    game.renderMap(delta);
+    Game.renderSprites(delta);
+    Game.renderMap(delta);
 
     if (!paused) {
-      requestAnimFrame(mainLoop, gameField);
+      requestAnimFrame(mainLoop, GameField);
     }
   };
 
   var pause = function () {
     paused = true;
-    game.events.fireEvent('pause');
+    Game.events.fireEvent('pause');
   };
 
   var play = function () {
     lastFrame = Date.now();
     paused = false;
     mainLoop();
-    game.events.fireEvent('play');
+    Game.events.fireEvent('play');
   };
 
-  game.events.subscribe('toggle pause', function () {
+  Game.events.subscribe('toggle pause', function () {
     if (paused) {
       play();
     } else {
@@ -60,8 +60,8 @@ define(["game"], function (game) {
     }
   });
 
-  game.events.subscribe('map loaded', function () {
-    game.events.fireEvent('before start');
+  Game.events.subscribe('map loaded', function () {
+    Game.events.fireEvent('before start');
     // only run the main loop after the map is loaded
     play();
   });

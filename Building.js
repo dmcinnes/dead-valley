@@ -1,5 +1,5 @@
-define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
-       function (game, collidable, Vector, BulletHit, Inventory) {
+define(["Game", "collidable", "vector", "fx/BulletHit", "Inventory"],
+       function (Game, collidable, Vector, BulletHit, Inventory) {
 
   var bulletHit = new BulletHit();
 
@@ -64,11 +64,11 @@ define(["game", "collidable", "vector", "fx/BulletHit", "Inventory"],
   };
 
   Building.prototype.enter = function (dude) {
-    game.events.fireEvent('enter building', this);
+    Game.events.fireEvent('enter building', this);
   };
 
   Building.prototype.leave = function (dude) {
-    game.events.fireEvent('leave building', this);
+    Game.events.fireEvent('leave building', this);
   };
 
   collidable(Building);

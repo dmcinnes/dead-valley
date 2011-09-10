@@ -1,6 +1,6 @@
 // Ammo
 
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var Ammo = function () {
     this.count = 0;

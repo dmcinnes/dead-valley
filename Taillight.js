@@ -1,13 +1,13 @@
 // taillight
 
-define(['game'], function (game) {
-  var context = game.skyContext;
+define(['Game'], function (Game) {
+  var context = Game.skyContext;
   
   var lampHW    = 2;
 
   var render = function (sprite, tile, on) {
     var pos = sprite.pos;
-    var map = game.map;
+    var map = Game.map;
     context.save();
     context.translate(pos.x - map.originOffsetX, pos.y - map.originOffsetY);
     context.rotate(pos.rot * Math.PI / 180);

@@ -1,17 +1,17 @@
 // Dude Hands Inventory Display
-define(['game',
+define(['Game',
        'Inventory',
        'hud/InventoryDisplay'],
-       function (game, Inventory, InventoryDisplay) {
+       function (Game, Inventory, InventoryDisplay) {
 
   // little hacky -- should make this nicer
 
   return function (div) {
     var dudeHands =
-      new InventoryDisplay(game.dude.hands,
+      new InventoryDisplay(Game.dude.hands,
                            div,
                            { id:'dude-hands',
-                             doubleClickTarget: game.dude.inventory });
+                             doubleClickTarget: Game.dude.inventory });
 
     // override the renderItem method
     dudeHands.renderItem = function (item) {

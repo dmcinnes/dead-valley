@@ -1,4 +1,4 @@
-define(['game', 'Sprite'], function (game, Sprite) {
+define(['Game', 'Sprite'], function (Game, Sprite) {
 
   var MAX_LIFE = 2; // in seconds
 
@@ -40,7 +40,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
   Smoke.createNew = function (position) {
     var smoke = new Smoke();
     smoke.pos.set(position);
-    game.sprites.push(smoke);
+    Game.sprites.push(smoke);
   };
 
   return Smoke;

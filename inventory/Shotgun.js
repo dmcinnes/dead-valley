@@ -1,7 +1,7 @@
 // The Ubiquitous Shotgun
 
-define(['game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem'],
-       function (game, Firearm, ShotgunShells, InventoryItem) {
+define(['Game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem'],
+       function (Game, Firearm, ShotgunShells, InventoryItem) {
   var numberOfPellets = 9;
   var spreadFactor = Math.tan(Math.PI / 18); // actually 1/2 of the spread
 
@@ -25,7 +25,7 @@ define(['game', 'Firearm', 'inventory/ShotgunShells', 'inventory/InventoryItem']
     for (var i = 0; i < 9; i++) {
       var spread = spreadDistance * (1 - 2 * Math.random());
       var pelletEnd = end.add(offsetVector.multiply(spread));
-      game.map.rayTrace(start, pelletEnd, this.range + spreadDistance, function (result, sprite) {
+      Game.map.rayTrace(start, pelletEnd, this.range + spreadDistance, function (result, sprite) {
         if (result) { // hit!
           sprite.bulletHit(result, damage);
         }

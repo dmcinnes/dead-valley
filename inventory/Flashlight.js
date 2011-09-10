@@ -1,9 +1,9 @@
 // Flashlight
 // Everybody's got a little light under the sun
 
-define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
+define(['inventory/InventoryItem', 'Game'], function (InventoryItem, Game) {
 
-  var context = game.skyContext;
+  var context = Game.skyContext;
   
   var maxLength = 120;
   var halfWidth = 30;
@@ -15,7 +15,7 @@ define(['inventory/InventoryItem', 'game'], function (InventoryItem, game) {
 
   Flashlight.prototype.render = function (dude) {
     var pos = dude.pos;
-    var map = game.map;
+    var map = Game.map;
     context.save();
     context.globalCompositeOperation = 'destination-out';
     context.translate(pos.x - map.originOffsetX, pos.y - map.originOffsetY);

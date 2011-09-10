@@ -1,5 +1,5 @@
 // Place where we handle all the HUD interaction details
-define(['game',
+define(['Game',
        'hud/InventoryDisplay',
        'hud/DudeHandsInventoryDisplay',
        'hud/LifeMeter',
@@ -10,7 +10,7 @@ define(['game',
        'hud/CheckEngineLight',
        'Firearm'],
 
-       function (game,
+       function (Game,
                  InventoryDisplay,
                  DudeHandsInventoryDisplay,
                  LifeMeter,
@@ -29,12 +29,12 @@ define(['game',
   var otherInventoryDisplay = null;
 
   var updateOtherInventory = function () {
-    if (game.dude.inside) {
-      otherInventory = game.dude.inside.inventory;
-    } else if (game.dude.driving) {
-      otherInventory = game.dude.driving.inventory;
+    if (Game.dude.inside) {
+      otherInventory = Game.dude.inside.inventory;
+    } else if (Game.dude.driving) {
+      otherInventory = Game.dude.driving.inventory;
     } else {
-      var touchList = game.dude.touching;
+      var touchList = Game.dude.touching;
       for (var i = 0; i < touchList.length; i++) {
 	var inv = touchList[i].inventory;
 	if (inv && inv.touch) {
@@ -59,12 +59,12 @@ define(['game',
     if (otherInventory) {
       otherInventoryDisplay = new InventoryDisplay(otherInventory,
                                                    $otherInventoryDiv,
-                                                   { doubleClickTarget:game.dude.inventory });
+                                                   { doubleClickTarget:Game.dude.inventory });
       otherInventoryDisplay.show();
     }
-    if (game.dude.driving) {
-      FuelGauge.show(game.dude.driving);
-      CheckEngineLight.show(game.dude.driving);
+    if (Game.dude.driving) {
+      FuelGauge.show(Game.dude.driving);
+      CheckEngineLight.show(Game.dude.driving);
     }
     inventoryShown = true;
   };
@@ -78,7 +78,7 @@ define(['game',
     inventoryShown = false;
   };
 
-  game.events.subscribe('toggle inventory', function () {
+  Game.events.subscribe('toggle inventory', function () {
     if (inventoryShown) {
       hideInventory();
     } else {
@@ -122,9 +122,9 @@ define(['game',
     }
   }).subscribe('new dude', function (dude) {
     $dudeInventoryDiv.empty();
-    dudeInventory = new InventoryDisplay(game.dude.inventory,
+    dudeInventory = new InventoryDisplay(Game.dude.inventory,
                                          $dudeInventoryDiv,
-                                         { doubleClickTarget: game.dude.hands });
+                                         { doubleClickTarget: Game.dude.hands });
     dudeHands = DudeHandsInventoryDisplay($dudeInventoryDiv);
   }).subscribe('start fueling', function (car) {
     FuelGauge.show(car);
@@ -148,8 +148,8 @@ define(['game',
   });
 
   // framerate HUD
-  game.addSprite(Framerate);
+  Game.addSprite(Framerate);
 
   // so the light can blink
-  game.addSprite(CheckEngineLight);
+  Game.addSprite(CheckEngineLight);
 });

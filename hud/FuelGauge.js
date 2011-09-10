@@ -1,4 +1,4 @@
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var div = $('#fuel-gauge');
   var needle = $('#fuel-gauge-needle');
@@ -31,7 +31,7 @@ define(['game'], function (game) {
     div.hide();
   };
 
-  game.events.subscribe('fuel level updated', function (car) {
+  Game.events.subscribe('fuel level updated', function (car) {
     updateAngle(car);
   });
 

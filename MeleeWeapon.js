@@ -1,5 +1,5 @@
 
-define(['game', 'vector'], function (game, Vector) {
+define(['Game', 'vector'], function (Game, Vector) {
 
   var MeleeWeapon = function () {
   };
@@ -23,7 +23,7 @@ define(['game', 'vector'], function (game, Vector) {
     end.translate(pos);
 
     var damage = this.damage;
-    game.map.rayTrace(start, end, this.reach, function (result, sprite) {
+    Game.map.rayTrace(start, end, this.reach, function (result, sprite) {
       if (result) { // hit!
         sprite.bulletHit(result, damage);
       }

@@ -1,4 +1,4 @@
-define(['game'], function (game) {
+define(['Game'], function (Game) {
   var tip = $("<div/>").addClass('tip');
 
   var parent = $('#click-overlay');
@@ -11,7 +11,7 @@ define(['game'], function (game) {
     if (tipText) {
       tip.html(tipText);
       var pos = sprite.pos;
-      pos = game.map.canvasCoordinatesFromWorld(pos.x, pos.y);
+      pos = Game.map.canvasCoordinatesFromWorld(pos.x, pos.y);
       parent.append(tip);
       var offset = tip.outerWidth() * 0.3 + 10; // magic numbers from CSS
       tip.css({left:pos.x - offset,
@@ -27,7 +27,7 @@ define(['game'], function (game) {
     currentSprite = null;
   };
 
-  game.events.subscribe('started touching', function (sprite) {
+  Game.events.subscribe('started touching', function (sprite) {
     if (setTipText(sprite)) {
       currentSprite = sprite;
       sprite.subscribe('tip data change', setTipText);

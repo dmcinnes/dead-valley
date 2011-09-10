@@ -1,8 +1,8 @@
-define(['game'], function (game) {
+define(['Game'], function (Game) {
 
   var determineMouseEventCollisions = function (event) {
-    var coords = game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
-    var node   = game.map.getNodeByWorldCoords(coords.x, coords.y);
+    var coords = Game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+    var node   = Game.map.getNodeByWorldCoords(coords.x, coords.y);
 
     var nodes = [node,
                  node.north,
@@ -35,15 +35,15 @@ define(['game'], function (game) {
   };
 
   $('#click-overlay').mousedown(function (event) {
-    game.events.fireEvent('mousedown', event, determineMouseEventCollisions(event));
+    Game.events.fireEvent('mousedown', event, determineMouseEventCollisions(event));
   }).mouseup(function (event) {
-    game.events.fireEvent('mouseup', event, determineMouseEventCollisions(event));
+    Game.events.fireEvent('mouseup', event, determineMouseEventCollisions(event));
   }).click(function (event) {
-    game.events.fireEvent('click', event, determineMouseEventCollisions(event));
+    Game.events.fireEvent('click', event, determineMouseEventCollisions(event));
   });
 
   $('#pause-overlay').mousedown(function (event) {
-    game.events.fireEvent('toggle pause');
+    Game.events.fireEvent('toggle pause');
   });
 
 });

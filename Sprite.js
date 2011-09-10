@@ -1,7 +1,7 @@
 // Sprite
 
-define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-info", "fx/BulletHit"],
-       function (game, Matrix, Vector, eventMachine, spriteMarshal, spriteInfo, BulletHit) {
+define(["Game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-info", "fx/BulletHit"],
+       function (Game, Matrix, Vector, eventMachine, spriteMarshal, spriteInfo, BulletHit) {
 
   var Matrix  = new Matrix(2, 3);
 
@@ -59,7 +59,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     this.image = config.img;
 
     // load the image
-    game.assetManager.loadImage(config.img, $.proxy(function (img) {
+    Game.assetManager.loadImage(config.img, $.proxy(function (img) {
       this.imageData = img;
     }, this));
 
@@ -177,7 +177,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       }
     }
 
-    var map   = game.map;
+    var map   = Game.map;
     var style = this.node[0].style;
 
     var x = this.pos.x - map.originOffsetX;
@@ -185,8 +185,8 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
     if (x + this.tileWidth < 0 ||
         y + this.tileHeight < 0 ||
-        x - this.tileWidth > game.gameWidth ||
-        y - this.tileHeight > game.gameHeight) {
+        x - this.tileWidth > Game.GameWidth ||
+        y - this.tileHeight > Game.GameHeight) {
       // TODO find a better way to handle this
       style.visibility = 'hidden';
       return; // no need to draw or update
@@ -203,7 +203,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
       transform.push(' scaleX(-1)');
     }
     // translateZ(0) makes a big difference for Safari
-    if (game.threeDee) {
+    if (Game.threeDee) {
       transform.push(' translateZ(0)');
     }
 
@@ -230,7 +230,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
 
   Sprite.prototype.updateGrid = function () {
     if (!this.visible) return;
-    var newNode = game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
+    var newNode = Game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
 
     // we're off the the part of the world loaded into memory
     if (!newNode) {
@@ -288,11 +288,11 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     pos = pos || this.pos;
     var cn = this.currentNode;
     if (cn == null) {
-      var gridx = Math.floor(pos.x / game.gridsize);
-      var gridy = Math.floor(pos.y / game.gridsize);
-      gridx = (gridx >= game.map.grid.length) ? 0 : gridx;
-      gridy = (gridy >= game.map.grid[0].length) ? 0 : gridy;
-      cn = game.map.grid[gridx][gridy];
+      var gridx = Math.floor(pos.x / Game.gridsize);
+      var gridy = Math.floor(pos.y / Game.gridsize);
+      gridx = (gridx >= Game.map.grid.length) ? 0 : gridx;
+      gridy = (gridy >= Game.map.grid[0].length) ? 0 : gridy;
+      cn = Game.map.grid[gridx][gridy];
     }
     return (cn.isEmpty(this.collidesWith) &&
             cn.north.isEmpty(this.collidesWith) &&
@@ -367,7 +367,7 @@ define(["game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
   Sprite.prototype.updateForVerticalZ = function () {
     // anything greater than 100 don't update
     if (this.z < 100) {
-      var vert = (this.pos.y - game.map.originOffsetY) / game.gameHeight;
+      var vert = (this.pos.y - Game.map.originOffsetY) / Game.GameHeight;
       if (vert > 0 && vert < 1) {
         this.z = Math.round(vert * 100);
       }

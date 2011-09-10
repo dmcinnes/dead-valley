@@ -1,6 +1,6 @@
 // Blood Splatters!
 
-define(['game', 'Sprite'], function (game, Sprite) {
+define(['Game', 'Sprite'], function (Game, Sprite) {
   var maxLife = 60; // seconds
 
   var currentSplats = [];
@@ -96,7 +96,7 @@ define(['game', 'Sprite'], function (game, Sprite) {
 
   var splat = function (pos, color, strength) {
     var splatter = new Splatter(pos, color, strength);
-    game.sprites.push(splatter);
+    Game.sprites.push(splatter);
     // keep track of existing splats
     currentSplats.push(splatter);
     if (currentSplats.length > maxSplats) {

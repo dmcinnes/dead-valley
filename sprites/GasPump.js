@@ -1,8 +1,8 @@
-define(["game",
+define(["Game",
         "sprite",
         "eventmachine",
         "collidable"],
-       function (game, Sprite, eventmachine, collidable) {
+       function (Game, Sprite, eventmachine, collidable) {
 
   var MAX_FUEL         = 100;
   var BROKEN_PERCENT   = 0.3;
@@ -26,8 +26,8 @@ define(["game",
     this.currentFuel = Math.random() * MAX_FUEL;
     this.broken      = Math.random() < BROKEN_PERCENT;
 
-    game.events.subscribe('mouseup', this.stopFueling, this);
-    game.events.subscribe('stopped touching', this.stoppedTouching, this);
+    Game.events.subscribe('mouseup', this.stopFueling, this);
+    Game.events.subscribe('stopped touching', this.stoppedTouching, this);
   };
 
   GasPump.prototype.stoppedTouching = function (sprite) {
@@ -38,8 +38,8 @@ define(["game",
 
   GasPump.prototype.die = function () {
     Sprite.prototype.die.call(this);
-    game.events.unsubscribe('mouseup', this.stopFueling);
-    game.events.unsubscribe('stopped touching', this.stoppedTouching);
+    Game.events.unsubscribe('mouseup', this.stopFueling);
+    Game.events.unsubscribe('stopped touching', this.stoppedTouching);
   };
 
   GasPump.prototype.preMove = function (delta) {
@@ -67,7 +67,7 @@ define(["game",
       }
 
       if (transferred) {
-        game.events.fireEvent('fuel level updated', this.fueling);
+        Game.events.fireEvent('fuel level updated', this.fueling);
       }
     }
   };
@@ -78,13 +78,13 @@ define(["game",
          this.distance(car) < FUELING_DISTANCE &&
          car.health > 0) {
       this.fueling = car;
-      game.events.fireEvent('start fueling', this.fueling);
+      Game.events.fireEvent('start fueling', this.fueling);
     }
   };
 
   GasPump.prototype.stopFueling = function () {
     this.fueling = null;
-    game.events.fireEvent('stop fueling', this.fueling);
+    Game.events.fireEvent('stop fueling', this.fueling);
   };
 
   GasPump.prototype.tip = function () {

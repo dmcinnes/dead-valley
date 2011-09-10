@@ -1,6 +1,6 @@
 // Car
 
-define(["game",
+define(["Game",
         "rigidbody",
         "sprite",
         "wheel",
@@ -12,7 +12,7 @@ define(["game",
         "fx/Smoke",
         "fx/Explosion"],
 
-        function (game,
+        function (Game,
                   RigidBody,
                   Sprite,
                   Wheel,
@@ -24,7 +24,7 @@ define(["game",
                   Smoke,
                   Explosion) {
 
-  var keyStatus = game.keyboard.keyStatus;
+  var keyStatus = Game.keyboard.keyStatus;
 
   var massDensityOfAir = 1.2; // kg/m^3
 
@@ -64,7 +64,7 @@ define(["game",
     // 60 mph / (60 min/hr * 60 sec/min) = mi/sec
     // mi/sec / mi/gal = gal/sec
     this.fuelConsumption = (1 / 60) / config.mpg; // gal/sec
-    this.fuelConsumption *= 10; // scale it up for the game
+    this.fuelConsumption *= 10; // scale it up for the Game
 
     // if it's not given make it random
     this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
@@ -151,7 +151,7 @@ define(["game",
       if (this.currentFuel < 0) {
         this.currentFuel = 0;
       }
-      game.events.fireEvent('fuel level updated', this);
+      Game.events.fireEvent('fuel level updated', this);
     }
   };
 
@@ -230,7 +230,7 @@ define(["game",
 
   Car.prototype.postMove = function (delta) {
     if (this.driver) {
-      game.map.keepInView(this);
+      Game.map.keepInView(this);
     }
     if (this.health < 25) {
       this.smokeCounter += delta;
@@ -261,7 +261,7 @@ define(["game",
     // can't enter if it's destroyed
     if (this.health > 0) {
       this.driver = dude;
-      game.events.fireEvent("enter car", this);
+      Game.events.fireEvent("enter car", this);
       return true;
     }
     return false;
@@ -270,7 +270,7 @@ define(["game",
   Car.prototype.leave = function (dude) {
     this.driver = null;
     this.stopped = false;
-    game.events.fireEvent("leave car", this);
+    Game.events.fireEvent("leave car", this);
   };
 
   Car.prototype.percentFuelRemaining = function () {

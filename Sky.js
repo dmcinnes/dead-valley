@@ -1,8 +1,8 @@
 // The Sky
 
-define(["game", "sprite"], function (game, Sprite) {
+define(["Game", "sprite"], function (Game, Sprite) {
 
-  var context = game.skyContext;
+  var context = Game.skyContext;
 
   // in seconds
   var dayTotal        = 10 * 60;
@@ -59,9 +59,9 @@ define(["game", "sprite"], function (game, Sprite) {
     },
     render: function (delta) {
       context.save();
-      context.clearRect(0, 0, game.gameWidth, game.gameHeight);
+      context.clearRect(0, 0, Game.GameWidth, Game.GameHeight);
       context.globalAlpha = alpha;
-      context.fillRect(0, 0, game.gameWidth, game.gameHeight);
+      context.fillRect(0, 0, Game.GameWidth, Game.GameHeight);
       context.restore();
     },
     currentAlpha: function () {
@@ -78,7 +78,7 @@ define(["game", "sprite"], function (game, Sprite) {
   };
 
   // for testing
-  game.events.subscribe('transition sky', function () {
+  Game.events.subscribe('transition sky', function () {
     Sky.gotoNextState();
   });
   

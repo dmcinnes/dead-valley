@@ -1,7 +1,7 @@
 // Map 
 
-define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
-       function (game, GridNode, World, progress, Building, BuildingMarshal) {
+define(["Game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
+       function (Game, GridNode, World, progress, Building, BuildingMarshal) {
 
   var Map = function (gridWidth, gridHeight, startX, startY, callback) {
     var i, j,
@@ -24,29 +24,29 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
 
       this.gridWidth  = gridWidth;
       this.gridHeight = gridHeight;
-      this.width  = gridWidth * game.gridSize;
-      this.height = gridHeight * game.gridSize;
-      this.viewportGridWidth  = Math.ceil(game.gameWidth / game.gridSize);
-      this.viewportGridHeight = Math.ceil(game.gameHeight / game.gridSize);
+      this.width  = gridWidth * Game.gridSize;
+      this.height = gridHeight * Game.gridSize;
+      this.viewportGridWidth  = Math.ceil(Game.GameWidth / Game.gridSize);
+      this.viewportGridHeight = Math.ceil(Game.GameHeight / Game.gridSize);
 
       // a map consists of 4 sections
-      this.sectionWidth  = game.gridSize * gridWidth / 2;
-      this.sectionHeight = game.gridSize * gridHeight / 2;
+      this.sectionWidth  = Game.gridSize * gridWidth / 2;
+      this.sectionHeight = Game.gridSize * gridHeight / 2;
 
-      this.shiftWestBorder = game.gameWidth;
-      this.shiftEastBorder = this.width - (2 * game.gameWidth);
-      this.shiftNorthBorder = game.gameHeight;
-      this.shiftSouthBorder = this.height - (2 * game.gameHeight);
+      this.shiftWestBorder = Game.GameWidth;
+      this.shiftEastBorder = this.width - (2 * Game.GameWidth);
+      this.shiftNorthBorder = Game.GameHeight;
+      this.shiftSouthBorder = this.height - (2 * Game.GameHeight);
 
       // upper left section coordinates
       this.sectionOffsetX = Math.floor(startX / this.sectionWidth);
       this.sectionOffsetY = Math.floor(startY / this.sectionHeight);
       // this is the viewport offset within the current loaded view sections
-      this.submapOffsetX = startX - this.sectionOffsetX * this.sectionWidth - game.gameWidth / 2;
-      this.submapOffsetY = startY - this.sectionOffsetY * this.sectionWidth - game.gameHeight / 2;
+      this.submapOffsetX = startX - this.sectionOffsetX * this.sectionWidth - Game.GameWidth / 2;
+      this.submapOffsetY = startY - this.sectionOffsetY * this.sectionWidth - Game.GameHeight / 2;
       // viewport world coordinates
-      this.originOffsetX = startX - game.gameWidth / 2;
-      this.originOffsetY = startY - game.gameHeight / 2;
+      this.originOffsetX = startX - Game.GameWidth / 2;
+      this.originOffsetY = startY - Game.GameHeight / 2;
 
       this.velX = 0;
       this.velY = 0;
@@ -87,8 +87,8 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
     };
 
     this.getNodeByWorldCoords = function (x, y) {
-      gridX = Math.floor((x - this.originOffsetX + this.submapOffsetX) / game.gridSize);
-      gridY = Math.floor((y - this.originOffsetY + this.submapOffsetY) / game.gridSize);
+      gridX = Math.floor((x - this.originOffsetX + this.submapOffsetX) / Game.gridSize);
+      gridY = Math.floor((y - this.originOffsetY + this.submapOffsetY) / Game.gridSize);
       return this.getNode(gridX, gridY);
     };
 
@@ -127,7 +127,7 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
       this.originOffsetY += this.velY;
 
       if (this.velX || this.velY) {
-        game.events.fireEvent('map scroll', new Vector(this.velX, this.velY));
+        Game.events.fireEvent('map scroll', new Vector(this.velX, this.velY));
       }
     };
 
@@ -294,7 +294,7 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
 
     this.setTilesFromStrings = function (nodes, strings, position) {
       var start  = position.multiply(this.sectionWidth);
-      var gridSize = game.gridSize;
+      var gridSize = Game.gridSize;
       var width  = this.gridWidth / 2;
       var height = this.gridHeight / 2;
       for (var x = 0; x < width; x++) {
@@ -347,7 +347,7 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
     };
 
     this.addSectionSprites = function (sprites, pos) {
-      game.addSpritesFromStrings(sprites, pos.multiply(this.sectionWidth));
+      Game.addSpritesFromStrings(sprites, pos.multiply(this.sectionWidth));
     };
 
     // buildings: list of building JSON objects
@@ -519,11 +519,11 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
         return;
       }
 
-      startX = Math.floor(this.submapOffsetX / game.gridSize) - 2;
+      startX = Math.floor(this.submapOffsetX / Game.gridSize) - 2;
       if (startX < 0) {
         startX = 0;
       }
-      startY = Math.floor(this.submapOffsetY / game.gridSize) - 2;
+      startY = Math.floor(this.submapOffsetY / Game.gridSize) - 2;
       if (startY < 0) {
         startY = 0;
       }
@@ -545,8 +545,8 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
         offset = i * 4;
         nodeOffset =  imageData[offset] +
                      (imageData[offset+1] << 8);
-        gridX = Math.floor(((i % imageWidth) + startX) * game.gridSize - this.submapOffsetX);
-        gridY = Math.floor((Math.floor(i / imageWidth) + startY) * game.gridSize - this.submapOffsetY);
+        gridX = Math.floor(((i % imageWidth) + startX) * Game.gridSize - this.submapOffsetX);
+        gridY = Math.floor((Math.floor(i / imageWidth) + startY) * Game.gridSize - this.submapOffsetY);
         this.nodes[nodeOffset].render(delta, gridX, gridY);
       }
     };
@@ -563,18 +563,18 @@ define(["game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
 
       if (screenX < hBorder) {
         this.velX = screenX - hBorder;
-      } else if (screenX > game.gameWidth - hBorder) {
-        this.velX = hBorder + screenX - game.gameWidth;
+      } else if (screenX > Game.GameWidth - hBorder) {
+        this.velX = hBorder + screenX - Game.GameWidth;
       }
       if (screenY < vBorder) {
         this.velY = screenY - vBorder;
-      } else if (screenY > game.gameHeight - vBorder) {
-        this.velY = vBorder + screenY - game.gameHeight;
+      } else if (screenY > Game.GameHeight - vBorder) {
+        this.velY = vBorder + screenY - Game.GameHeight;
       }
     };
 
     this.rayTrace = function (start, end, maxDistance, spriteCollisionCallback) {
-      var TILE_WIDTH = game.gridSize;
+      var TILE_WIDTH = Game.gridSize;
 
       // where are they
       var x0 = Math.floor(start.x / TILE_WIDTH);
