@@ -1,9 +1,9 @@
 // GridNode
 
 define(["Game",
-        "vector",
-        "tilemarshal"],
-        function (Game, Vector, tileMarshal) {
+        "Vector",
+        "TileMarshal"],
+        function (Game, Vector, TileMarshal) {
 
   var background = $('#background');
 
@@ -147,7 +147,7 @@ define(["Game",
   });
 
   // mixins
-  tileMarshal(GridNode);
+  TileMarshal(GridNode);
 
   return GridNode;
 });

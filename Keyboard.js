@@ -1,4 +1,4 @@
-define(function () {
+define([], function () {
   // predefine non-single character keycodes
   var KEY_CODES = {
     27: 'esc',

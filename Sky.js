@@ -1,6 +1,6 @@
 // The Sky
 
-define(["Game", "sprite"], function (Game, Sprite) {
+define(["Game", "Sprite"], function (Game, Sprite) {
 
   var context = Game.skyContext;
 

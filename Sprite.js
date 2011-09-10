@@ -1,7 +1,7 @@
 // Sprite
 
-define(["Game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-info", "fx/BulletHit"],
-       function (Game, Matrix, Vector, eventMachine, spriteMarshal, spriteInfo, BulletHit) {
+define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-info", "fx/BulletHit"],
+       function (Game, Matrix, Vector, EventMachine, SpriteMarshal, spriteInfo, BulletHit) {
 
   var Matrix  = new Matrix(2, 3);
 
@@ -374,8 +374,8 @@ define(["Game", "Matrix", "Vector", "eventmachine", "spritemarshal", "Sprite-inf
     }
   };
 
-  spriteMarshal(Sprite);
-  eventMachine(Sprite);
+  SpriteMarshal(Sprite);
+  EventMachine(Sprite);
 
   return Sprite;
 });

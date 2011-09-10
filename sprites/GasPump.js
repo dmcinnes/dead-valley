@@ -1,8 +1,8 @@
 define(["Game",
-        "sprite",
-        "eventmachine",
-        "collidable"],
-       function (Game, Sprite, eventmachine, collidable) {
+        "Sprite",
+        "EventMachine",
+        "Collidable"],
+       function (Game, Sprite, eventmachine, Collidable) {
 
   var MAX_FUEL         = 100;
   var BROKEN_PERCENT   = 0.3;
@@ -104,7 +104,7 @@ define(["Game",
     return data;
   };
 
-  collidable(GasPump);
+  Collidable(GasPump);
   eventmachine(GasPump);
 
   return GasPump;

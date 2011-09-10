@@ -1,5 +1,5 @@
 
-define(['Game', 'vector'], function (Game, Vector) {
+define(['Game', 'Vector'], function (Game, Vector) {
 
   var MeleeWeapon = function () {
   };

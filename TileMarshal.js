@@ -6,7 +6,7 @@
 // top four bits: collidable, flip, and two for rotate
 // bottom 12 bits for tile offset
 
-define(function () {
+define([], function () {
   var tileMarshal = function (thing) {
 
     thing.prototype.toString = function () {

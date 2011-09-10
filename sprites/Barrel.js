@@ -1,8 +1,8 @@
 // the ubiquitous barrel
 
-define(["sprite",
-        "collidable"],
-       function (Sprite, collidable) {
+define(["Sprite",
+        "Collidable"],
+       function (Sprite, Collidable) {
 
   var uprightFriction = -0.8;
   var rollingFriction = -0.2;
@@ -75,7 +75,7 @@ define(["sprite",
     return metadata;
   };
 
-  collidable(Barrel);
+  Collidable(Barrel);
 
   return Barrel;
 });

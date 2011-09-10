@@ -1,10 +1,10 @@
 // Car
 
 define(["Game",
-        "rigidbody",
-        "sprite",
-        "wheel",
-        "collidable",
+        "RigidBody",
+        "Sprite",
+        "Wheel",
+        "Collidable",
         "Sky",
         "Headlight",
         "Taillight",
@@ -16,7 +16,7 @@ define(["Game",
                   RigidBody,
                   Sprite,
                   Wheel,
-                  collidable,
+                  Collidable,
                   Sky,
                   Headlight,
                   Taillight,
@@ -314,7 +314,7 @@ define(["Game",
 
   Car.prototype.isCar = true;
 
-  collidable(Car);
+  Collidable(Car);
 
   return Car;
 });

@@ -1,6 +1,6 @@
 // Matrix
 
-define(['vector'], function (Vector) {
+define(['Vector'], function (Vector) {
 
   var Matrix = function (rows, columns) {
     var i, j, k, rad, sin, cos, vector, out;

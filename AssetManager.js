@@ -1,6 +1,6 @@
 // AssetManager
 
-define(function () {
+define([], function () {
   var AssetManager = function (base) {
     var images      = {};
 

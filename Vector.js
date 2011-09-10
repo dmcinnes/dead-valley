@@ -1,6 +1,6 @@
 // Vector
 
-define(function () {
+define([], function () {
   var Vector = function (x, y) {
     if (y === undefined) { // it's an angle
       this.set(x);

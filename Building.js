@@ -1,5 +1,5 @@
-define(["Game", "collidable", "vector", "fx/BulletHit", "Inventory"],
-       function (Game, collidable, Vector, BulletHit, Inventory) {
+define(["Game", "Collidable", "Vector", "fx/BulletHit", "Inventory"],
+       function (Game, Collidable, Vector, BulletHit, Inventory) {
 
   var bulletHit = new BulletHit();
 
@@ -71,7 +71,7 @@ define(["Game", "collidable", "vector", "fx/BulletHit", "Inventory"],
     Game.events.fireEvent('leave building', this);
   };
 
-  collidable(Building);
+  Collidable(Building);
 
   // redefine collidable's pointVel
   Building.prototype.pointVel = function () {

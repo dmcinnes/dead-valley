@@ -1,6 +1,6 @@
 // Inventory
 
-define(['Game', 'eventmachine'], function (Game, eventMachine) {
+define(['Game', 'EventMachine'], function (Game, EventMachine) {
   var setupSlots = function (inv) {
     var i, j;
     for (i = 0; i < inv.width; i++) {
@@ -165,7 +165,7 @@ define(['Game', 'eventmachine'], function (Game, eventMachine) {
     }
   };
 
-  eventMachine(Inventory);
+  EventMachine(Inventory);
 
   return Inventory;
 });

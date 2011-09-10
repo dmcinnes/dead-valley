@@ -1,9 +1,9 @@
 // The DUDE
 
 define(["Game",
-       "sprite",
-       "collidable",
-       "spritemarshal",
+       "Sprite",
+       "Collidable",
+       "SpriteMarshal",
        "DudeHands",
        "Inventory",
        "car",
@@ -11,8 +11,8 @@ define(["Game",
 
        function (Game,
                  Sprite,
-                 collidable,
-                 spriteMarshal,
+                 Collidable,
+                 SpriteMarshal,
                  DudeHands,
                  Inventory,
                  Car,
@@ -262,7 +262,7 @@ define(["Game",
 
       if (this.health <= 0) {
         // die
-        this.collidable = false;
+        this.Collidable = false;
 
         // reset the frame counter
         this.walkingFrameCounter = 0;
@@ -437,8 +437,8 @@ define(["Game",
     });
   };
 
-  collidable(Dude);
-  spriteMarshal(Dude);
+  Collidable(Dude);
+  SpriteMarshal(Dude);
 
   return Dude;
 

@@ -1,6 +1,6 @@
 // Progress Bar
 
-define(function () {
+define([], function () {
   
   var container = $('#progress');
   var slider    = $('#progress-slider');

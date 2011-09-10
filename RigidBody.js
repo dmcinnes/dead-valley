@@ -1,7 +1,7 @@
 // Rigid Body
 // for physics simulation
 
-define(["sprite", "vector"], function (Sprite, Vector) {
+define(["Sprite", "Vector"], function (Sprite, Vector) {
 
   var RigidBody = function () {
     this.forces = new Vector(0.0, 0.0);

@@ -9,7 +9,7 @@ var define = function (r) {
 
 importScripts('lib/json2.js',
               'lib/underscore.js',
-              'tilemarshal.js');
+              'TileMarshal.js');
 
 var Tile = function () {};
 Tile.prototype.tileOffset = 0;

@@ -1,5 +1,5 @@
 // simple pub/sub scheme for objects
-define(function () {
+define([], function () {
 
   var subscribe = function (eventName, callback, thisObject) {
     if (!this._eventHandlers) {
@@ -44,7 +44,7 @@ define(function () {
     return this; // for chaining
   };
 
-  var eventMachine = function (Thing) {
+  var EventMachine = function (Thing) {
     // create a blank object if we're not given one
     Thing = Thing || {};
 
@@ -58,5 +58,5 @@ define(function () {
     return Thing;
   };
 
-  return eventMachine;
+  return EventMachine;
 });

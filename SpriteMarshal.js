@@ -1,6 +1,6 @@
 // marshal and unmarshal sprites
 
-define(function () {
+define([], function () {
 
   var unmarshal = function (sprite) {
     return JSON.stringify(sprite.saveMetadata());

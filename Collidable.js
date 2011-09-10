@@ -2,7 +2,7 @@
 //
 // A mixin for collision handling
 
-define(["vector"], function (Vector) {
+define(["Vector"], function (Vector) {
 
   var currentCollisionList = [];
 

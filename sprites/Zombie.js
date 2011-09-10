@@ -1,5 +1,5 @@
-define(["sprite", "collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
-       function (Sprite, collidable, Game, BulletHit, BloodSplatter, TireTracks) {
+define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
+       function (Sprite, Collidable, Game, BulletHit, BloodSplatter, TireTracks) {
 
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
@@ -328,7 +328,7 @@ define(["sprite", "collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     return metadata;
   };
 
-  collidable(Zombie);
+  Collidable(Zombie);
 
   return Zombie;
 });

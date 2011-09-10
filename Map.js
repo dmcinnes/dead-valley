@@ -1,6 +1,6 @@
 // Map 
 
-define(["Game", "gridnode", "World", "progress", "Building", "BuildingMarshal"],
+define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
        function (Game, GridNode, World, progress, Building, BuildingMarshal) {
 
   var Map = function (gridWidth, gridHeight, startX, startY, callback) {

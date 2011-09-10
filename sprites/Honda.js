@@ -1,4 +1,4 @@
-define(['Game', 'car'], function (Game, Car) {
+define(['Game', 'Car'], function (Game, Car) {
   // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
   var config = {
     name:         'Honda',

@@ -1,4 +1,4 @@
-define(['sprite', 'collidable'], function (Sprite, collidable) {
+define(['Sprite', 'Collidable'], function (Sprite, Collidable) {
 
   var Tree = function (type) {
     this.init(type || 'Tree1');
@@ -20,7 +20,7 @@ define(['sprite', 'collidable'], function (Sprite, collidable) {
   Tree.prototype.move = function (delta) {};
   Tree.prototype.transformNormals = function () {};
 
-  collidable(Tree);
+  Collidable(Tree);
 
   return Tree;
 });

@@ -8,16 +8,16 @@
 // 60  miles / hour == 264 pixels / second
 // 100 miles / hour == 440 pixels / second
 
-define(['assetmanager',
+define(['AssetManager',
         'Keyboard',
-        'collidable',
-        'eventmachine',
-        'spritemarshal'],
+        'Collidable',
+        'EventMachine',
+        'SpriteMarshal'],
         function (AssetManager,
                   Keyboard,
-                  collidable,
-                  eventMachine,
-                  spriteMarshal) {
+                  Collidable,
+                  EventMachine,
+                  SpriteMarshal) {
 
   var i, sprite, spriteCount;
 
@@ -35,7 +35,7 @@ define(['assetmanager',
     map:           null,
     dude:          null,
     sprites:       sprites,
-    events:        eventMachine(),
+    events:        EventMachine(),
     skyContext:    $('#sky-canvas')[0].getContext('2d'),
     threeDee:      true, // 3D acceleration
 
@@ -66,7 +66,7 @@ define(['assetmanager',
         }
 
         // collide!
-        collidable.clearCurrentCollisionList();
+        Collidable.clearCurrentCollisionList();
         spriteCount = this.sprites.length;
         for (i = 0; i < spriteCount; i++) {
           sprite = this.sprites[i];
@@ -91,7 +91,7 @@ define(['assetmanager',
       var self = this;
 
       _(sprites).each(function (spriteString) {
-        spriteMarshal.marshal(spriteString, function (sprite) {
+        SpriteMarshal.marshal(spriteString, function (sprite) {
           sprite.pos.translate(offset);
           self.sprites.push(sprite);
         });

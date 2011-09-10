@@ -1,6 +1,6 @@
 // Wheel
 
-define(["matrix"], function (Matrix) {
+define(["Matrix"], function (Matrix) {
 
   var matrix    = new Matrix(2, 3);
 
