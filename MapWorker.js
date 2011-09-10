@@ -1,10 +1,10 @@
 // a Web Worker for filling out the map
 
-// so we can use tileMarshal even though it's defined
+// so we can use TileMarshal even though it's defined
 // with requirejs
-var tileMarshal;
-var define = function (r) {
-  tileMarshal = r();
+var TileMarshal;
+var define = function (inc, r) {
+  TileMarshal = r();
 };
 
 importScripts('lib/json2.js',
@@ -13,7 +13,7 @@ importScripts('lib/json2.js',
 
 var Tile = function () {};
 Tile.prototype.tileOffset = 0;
-tileMarshal(Tile);
+TileMarshal(Tile);
 
 // so we can get output from the worker
 var console = {
