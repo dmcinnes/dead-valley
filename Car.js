@@ -285,14 +285,22 @@ define(["Game",
     this.fireEvent('health changed', this.health);
 
     if (this.health <= 0) {
-      // die
+      // die!
+
+      // stop moving
       this.vel.scale(0);
+      this.stopped = false;
+
       // inventory goes bye-bye
       this.inventory = null;
+
       // kick dude out
       if (this.driver) {
         this.driver.leaveCar();
       };
+
+      // make it hard to move around
+      this.mass = 5000;
 
       // EXPLOOOODE!
       Explosion.createNew(this.pos);
