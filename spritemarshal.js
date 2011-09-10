@@ -15,6 +15,8 @@ define(function () {
         var target = object[val];
         if (typeof(target) === 'function') {
           target.call(object, value);
+        } else if (value === null) {
+          object[val] = null;
         } else if (typeof(value) === 'object') {
           setValues(target, value);
         } else {

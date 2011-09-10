@@ -306,7 +306,7 @@ define(["game",
 
   Car.prototype.saveMetadata = function () {
     var data = Sprite.prototype.saveMetadata.call(this);
-    data.inventory   = this.inventory.saveMetadata();
+    data.inventory   = this.inventory && this.inventory.saveMetadata();
     data.currentFuel = this.currentFuel;
     data.health      = this.health;
     return data;
