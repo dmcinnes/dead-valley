@@ -350,8 +350,8 @@ define(["Game",
           this.enterCar(sprite);
         } else if (sprite.isBuilding &&
                    this.currentNode &&
-                   this.currentNode.entrance === sprite) {
-          this.enterBuilding(sprite);
+                   this.currentNode.entrance) {
+          this.enterBuilding(this.currentNode.entrance);
         }
       }
     }
