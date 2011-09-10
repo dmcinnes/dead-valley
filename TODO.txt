@@ -49,6 +49,7 @@ X support melee weapons
 X limit the number of bloodsplatters in play at a given time
 X add trees randomly to map
 X fix gas pump position
+X fix barrel rolling animation
 make zombie collision response more natural
 add drag to car
 add car damage/destruction
@@ -66,7 +67,6 @@ create HUD for vehicle status
 broken headlights
 headlight repair
 fix barrel 'sliding'
-fix barrel rolling animation
 support shooting out of car
 transfering fuel between cars
 make tip not obscure sprites

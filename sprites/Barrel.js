@@ -64,6 +64,7 @@ define(["sprite",
     this.tileWidth     = 22;
     this.imageOffset.x = 76;
     this.center.x      = 11;
+    this.tileOffset    = 22;
     // update the div
     this.node.css('width', this.tileWidth);
   };
