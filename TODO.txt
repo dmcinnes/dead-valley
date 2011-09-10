@@ -109,8 +109,8 @@ X clean up extra pixel when rendering arms with rifle
 X police station
 X trees
 X house
-add spiderwebbed windows to car's sprite
-add destroyed car state to car's sprite
+X add spiderwebbed windows to car's sprite
+X add destroyed car state to car's sprite
 update color on gas station
 crate sprite
 shrubs
