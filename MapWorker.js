@@ -31,7 +31,7 @@ var sections = {
 };
 
 // loads the section list into section_list
-importScripts('section_list.js');
+importScripts('section-list.js');
 
 // sections set these variables with their data when loaded
 var map, roads, sprites, buildings;
