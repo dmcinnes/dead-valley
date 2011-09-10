@@ -74,7 +74,9 @@ define(["game",
 
   // Fill 'er Up
   GasPump.prototype.startFuelingCar = function (car) {
-    if (!this.broken && this.distance(car) < FUELING_DISTANCE) {
+    if (!this.broken &&
+         this.distance(car) < FUELING_DISTANCE &&
+         car.health > 0) {
       this.fueling = car;
       game.events.fireEvent('start fueling', this.fueling);
     }
