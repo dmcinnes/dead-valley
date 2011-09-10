@@ -1,7 +1,7 @@
 // Sprite
 
-define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-info", "fx/BulletHit"],
-       function (Game, Matrix, Vector, EventMachine, SpriteMarshal, spriteInfo, BulletHit) {
+define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-info"],
+       function (Game, Matrix, Vector, EventMachine, SpriteMarshal, spriteInfo) {
 
   var Matrix  = new Matrix(2, 3);
 
@@ -358,9 +358,13 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
 
   Sprite.prototype.bulletHit = function (hit, damage) {
     if (!bulletHit) {
-      bulletHit = new BulletHit();
+      require(["fx/BulletHit"], function (BulletHit) {
+        bulletHit = new BulletHit();
+        bulletHit.fireSparks(hit);
+      });
+    } else {
+      bulletHit.fireSparks(hit);
     }
-    bulletHit.fireSparks(hit);
   };
 
   // set the z value based on the vertical position on the page
