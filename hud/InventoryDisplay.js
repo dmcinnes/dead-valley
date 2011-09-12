@@ -218,6 +218,11 @@ define(['Game', 'Inventory'], function (Game, Inventory) {
 
       this.parent.append(table);
       this.table = table;
+
+      // disable context menu
+      table[0].oncontextmenu = function() {
+        return false;
+      };
     },
 
     // render an item at a place

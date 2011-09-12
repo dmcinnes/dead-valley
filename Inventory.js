@@ -80,6 +80,7 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
         });
         item.x = x;
         item.y = y;
+        item.inventory = this;
         this.items.push(item);
         this.fireEvent('itemAdded', item);
         return true;
@@ -106,6 +107,7 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
 
         item.x = null;
         item.y = null;
+        item.inventory = null;
       }
     },
 

@@ -2,8 +2,7 @@
 
 define(['Game'], function (Game) {
 
-  var totalContainers = 3;
-  var width, leftHalf, rightHalf;
+  var totalContainers, width, leftHalf, rightHalf;
 
   var $life  = $('#life')
   var $heart = $("<div>&hearts;</div>").addClass('heart');
@@ -38,7 +37,6 @@ define(['Game'], function (Game) {
   }
 
   $heart.remove();
-  $life.width(width * totalContainers);
 
   var render = function (life) {
     if (life < 0) {
@@ -62,6 +60,11 @@ define(['Game'], function (Game) {
   };
 
   Game.events.subscribe('new dude', function (dude) {
+
+    // update width of the life div
+    totalContainers = Math.round(dude.maxHealth / 2);
+    $life.width(width * totalContainers);
+
     // render current dude's health
     render(dude.health);
 

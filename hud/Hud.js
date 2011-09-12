@@ -132,11 +132,14 @@ define(['Game',
     FuelGauge.hide(car);
   });
 
-  // eject ammo on right click
+  // use items on right click
   $("#canvas-mask .inventory .inventory-item").live('mousedown', function (e) {
     if (e.button == 2) { // right click
       var item = $(this).data('item');
-      if (item instanceof Firearm && item.ammoType) {
+      if (item.use) {
+        item.use();
+      } else if (item instanceof Firearm && item.ammoType) {
+        // eject ammo from firearms on right click
         var count = item.eject();
         if (count) {
           var ammo = new item.ammoType(count);

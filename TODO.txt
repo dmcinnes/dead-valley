@@ -82,6 +82,7 @@ make zombies walk at different speeds
 add inventory/hud toggle button
 fix collision response
 explosions should cause dude/zombie damage
+support CMD-click on inventory as left-click
 
 *EDITOR*
 X remove current collidible code
@@ -136,6 +137,7 @@ X shotgun
 X shotgun shells
 X 9mm ammo
 X bat
+X cake
 lantern
 rifle
 golf club
@@ -145,7 +147,6 @@ rifle ammo
 food
 medkit
 gas can
-cake
 twinkie
 hot dog
 can of beans

@@ -1,13 +1,13 @@
 // The DUDE
 
 define(["Game",
-       "Sprite",
-       "Collidable",
-       "SpriteMarshal",
-       "DudeHands",
-       "Inventory",
-       "car",
-       "fx/BloodSplatter"],
+        "Sprite",
+        "Collidable",
+        "SpriteMarshal",
+        "DudeHands",
+        "Inventory",
+        "Car",
+        "fx/BloodSplatter"],
 
        function (Game,
                  Sprite,
@@ -22,6 +22,8 @@ define(["Game",
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
+  var MAX_HEALTH = 6;
+
   var SPEED = 44; // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE = 0.03; // in seconds
   var DAMAGE_ANIMATION_TIME = 0.3;  // in seconds
@@ -30,6 +32,7 @@ define(["Game",
   var ARM_OFFSET_X    = 5;
   var ARM_OFFSET_Y    = 8;
   var ARM_FLIP_OFFSET = 10;
+
 
   var Dude = function () {
     this.init('Dude');
@@ -47,7 +50,8 @@ define(["Game",
     this.mass                = 0.001;
     this.inertia             = 1;
 
-    this.health              = 6;
+    this.maxHealth           = MAX_HEALTH;
+    this.health              = MAX_HEALTH;
     this.takingDamage        = false;
 
     this.aiming              = false;
@@ -268,6 +272,14 @@ define(["Game",
         this.walkingFrameCounter = 0;
       }
     }
+  };
+
+  Dude.prototype.heal = function (amount) {
+    this.health += amount;
+    if (this.health > this.maxHealth) {
+      this.health = this.maxHealth;
+    }
+    this.fireEvent('health changed', this.health);
   };
 
   Dude.prototype.drawArms = function () {
