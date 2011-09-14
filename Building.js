@@ -1,5 +1,5 @@
-define(["Game", "Collidable", "Vector", "fx/BulletHit", "Inventory"],
-       function (Game, Collidable, Vector, BulletHit, Inventory) {
+define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory"],
+       function (Game, Sprite, Collidable, Vector, BulletHit, Inventory) {
 
   var bulletHit = new BulletHit();
 
@@ -19,7 +19,7 @@ define(["Game", "Collidable", "Vector", "fx/BulletHit", "Inventory"],
 
     this.inventory = new Inventory({width:12, height:8, name:this.name});
 
-    this.calculateNormals();
+    Sprite.prototype.calculateNormals.call(this);
   };
 
   // don't save when the level is saved like a sprite
@@ -30,27 +30,6 @@ define(["Game", "Collidable", "Vector", "fx/BulletHit", "Inventory"],
   Building.prototype.isBuilding     = true;
   Building.prototype.mass           = Number.MAX_VALUE;
   Building.prototype.inertia        = Number.MAX_VALUE;
-
-  Building.prototype.calculateNormals = function () {
-    var p1, p2, n, i;
-
-    this.currentNormals = [];
-
-    for (i = 1; i < this.points.length; i++) {
-      p1 = this.points[i-1];
-      p2 = this.points[i];
-
-      n = p1.subtract(p2).normal().normalize();
-
-      this.currentNormals.push(n);
-    }
-
-    p1 = this.points[this.points.length-1];
-    p2 = this.points[0];
-
-    n = p1.subtract(p2).normal().normalize();
-    this.currentNormals.push(n);
-  };
 
   Building.prototype.transformedPoints = function () {
     return this.points;

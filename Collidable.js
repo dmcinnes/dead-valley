@@ -90,18 +90,16 @@ define(["Vector"], function (Vector) {
     var normal = normals[normalIndex].clone();
     
     // we're edge on if the min depth is on our normal, so use "they"'s point
-    var pointIndex, normalIndex, contactPoints, points, point;
+    var pointIndex, contactPoints, points, point;
     var wePoint = normalIndex >= this.currentNormals.length;
     if (wePoint) {
       pointIndex  = minPoint[0];
-      normalIndex = minPoint[1];
       // if it's our point, it's the other's normal
-      contactPoints = calculateContactPoints(this, pointIndex, other, normalIndex);
+      contactPoints = calculateContactPoints(this, pointIndex, other, normalIndex - this.currentNormals.length);
 
       points = this.transformedPoints();
     } else {
       pointIndex  = minPoint[1];
-      normalIndex = minPoint[0];
       // if it's the other's point, it's our normal
       contactPoints = calculateContactPoints(other, pointIndex, this, normalIndex);
 
@@ -168,20 +166,19 @@ define(["Vector"], function (Vector) {
     var wePoints   = we.transformedPoints();
     var theyPoints = they.transformedPoints();
 
-    var normal = theyPoints[normalIndex].subtract(theyPoints[(normalIndex + 1) % theyPoints.length]).normal();
+    var normal = they.currentNormals[normalIndex];
 
-    // go through we's adjacent normals and see which one is most opposed
-    var leftIndex = pointIndex - 1;
-    if (leftIndex < 0) {
-      leftIndex = wePoints.length - 1;
+    // go through we's normals and see which one is most opposed
+    var minDot = 1;
+    var weFaceIndex;
+    var length = wePoints.length;
+    for (var i = 0; i < length; i++) {
+      var dot = we.currentNormals[i].dotProduct(normal);
+      if (dot < minDot) {
+        minDot = dot;
+        weFaceIndex = i;
+      }
     }
-    var rightIndex = (pointIndex + 1) % wePoints.length;
-
-    var leftNormal  = wePoints[leftIndex].subtract(wePoints[(leftIndex + 1) % wePoints.length]).normal();
-    var rightNormal = wePoints[rightIndex].subtract(wePoints[(rightIndex + 1) % wePoints.length]).normal();
-    var left = leftNormal.dotProduct(normal);
-    var right = rightNormal.dotProduct(normal);
-    var weFaceIndex = (left < right) ? leftIndex : rightIndex;
 
     var points = {
       wePoints: [],

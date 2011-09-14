@@ -72,17 +72,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     this.acc = new Vector(0, 0);
     this.acc.rot = 0;
 
-    // for now we're going to assume all sprites are boxes
-    // TODO calculate the normals for arbitrary shapes
-    this.normals = [
-      new Vector(1, 0),
-      new Vector(0, 1)
-    ];
-
-    this.currentNormals = [
-      new Vector(1, 0),
-      new Vector(0, 1)
-    ];
+    this.calculateNormals();
 
     // sprites default to a z-index of 100
     this.z = config.z || 100;
@@ -100,6 +90,17 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     this.tileOffset = config.tileOffset || this.tileWidth;
 
     this.node = this.createNode(layerCount);
+  };
+
+  Sprite.prototype.calculateNormals = function () {
+    this.normals = [];
+    this.currentNormals = [];
+    var last = this.points[this.points.length-1];
+    for (var i = 0; i < this.points.length; i++) {
+      this.normals[i]        = last.subtract(this.points[i]).normal().normalize();
+      this.currentNormals[i] = this.normals[i].clone();
+      last = this.points[i];
+    }
   };
 
   Sprite.prototype.createNode = function (layers) {
