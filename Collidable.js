@@ -86,19 +86,32 @@ define(["Vector"], function (Vector) {
         }
       }
     }
+
+    var normal = normals[normalIndex].clone();
     
     // we're edge on if the min depth is on our normal, so use "they"'s point
-    var point;
+    var pointIndex, normalIndex, contactPoints, points, point;
     var wePoint = normalIndex >= this.currentNormals.length;
     if (wePoint) {
-      point = minPoint[0];
+      pointIndex  = minPoint[0];
+      normalIndex = minPoint[1];
+      // if it's our point, it's the other's normal
+      contactPoints = calculateContactPoints(this, pointIndex, other, normalIndex);
+
+      points = this.transformedPoints();
     } else {
-      point = minPoint[1];
+      pointIndex  = minPoint[1];
+      normalIndex = minPoint[0];
+      // if it's the other's point, it's our normal
+      contactPoints = calculateContactPoints(other, pointIndex, this, normalIndex);
+
+      points = other.transformedPoints();
     }
+    point = points[pointIndex];
+
 
     // some of these normals (like building's) are not
     // calculated every frame so we need to protect them
-    var normal = normals[normalIndex].clone();
     if (minDepth > 0) { // don't want a 0,0 normal
       // scale the normal to the penetration depth
       normal.scale(minDepth);
@@ -121,7 +134,7 @@ define(["Vector"], function (Vector) {
   };
 
   var lineProjection = function (normal) {
-    var min, max, points, count, dot, pmin, pmax;
+    var min, max, points, count, dot, pmin_index, pmax_index;
 
     min = Number.MAX_VALUE;
     max = -Number.MAX_VALUE;
@@ -132,13 +145,13 @@ define(["Vector"], function (Vector) {
       min = Math.min(min, dot);
       max = Math.max(max, dot);
       if (dot === min) {
-        pmin = points[j];
+        pmin_index = j;
       } 
       if (dot === max) {
-        pmax = points[j];
+        pmax_index = j;
       }
     }
-    return [min, max, pmin, pmax];
+    return [min, max, pmin_index, pmax_index];
   };
 
   //velocity of a point on body
@@ -147,6 +160,68 @@ define(["Vector"], function (Vector) {
                   .scale(this.vel.rot * Math.PI / 180.0)
                   .translate(this.vel);
   };
+
+  // see http://www.wildbunny.co.uk/blog/2011/06/07/how-to-make-angry-birds-part-2/
+  // we is the owner of the point
+  // they is the owner of the normal
+  var calculateContactPoints = function (we, pointIndex, they, normalIndex) {
+    var wePoints   = we.transformedPoints();
+    var theyPoints = they.transformedPoints();
+
+    var normal = theyPoints[normalIndex].subtract(theyPoints[(normalIndex + 1) % theyPoints.length]).normal();
+
+    // go through we's adjacent normals and see which one is most opposed
+    var leftIndex = pointIndex - 1;
+    if (leftIndex < 0) {
+      leftIndex = wePoints.length - 1;
+    }
+    var rightIndex = (pointIndex + 1) % wePoints.length;
+
+    var leftNormal  = wePoints[leftIndex].subtract(wePoints[(leftIndex + 1) % wePoints.length]).normal();
+    var rightNormal = wePoints[rightIndex].subtract(wePoints[(rightIndex + 1) % wePoints.length]).normal();
+    var left = leftNormal.dotProduct(normal);
+    var right = rightNormal.dotProduct(normal);
+    var weFaceIndex = (left < right) ? leftIndex : rightIndex;
+
+    var points = {
+      wePoints: [],
+      theyPoints: []
+    };
+
+    var theyPoint0 = theyPoints[normalIndex];
+    var theyPoint1 = theyPoints[(normalIndex + 1) % theyPoints.length];
+    var wePoint0 = wePoints[weFaceIndex];
+    var wePoint1 = wePoints[(weFaceIndex + 1) % wePoints.length];
+
+    points.theyPoints.push(projectPointOntoEdge(wePoint0, theyPoint0, theyPoint1));
+    points.theyPoints.push(projectPointOntoEdge(wePoint1, theyPoint0, theyPoint1));
+    points.wePoints.push(projectPointOntoEdge(theyPoint0, wePoint0, wePoint1));
+    points.wePoints.push(projectPointOntoEdge(theyPoint1, wePoint0, wePoint1));
+
+    return points;
+  };
+
+  var projectPointOntoEdge = function(point, edge0, edge1) {
+    // vector from edge to point
+    var v = point.subtract(edge0);
+
+    // edge vector
+    var e = edge1.subtract(edge0);
+
+    // time along edge
+    var t = edge0.dotProduct(v) / e.magnitude();
+
+    // clamp to edge bounds
+    if (t < 0) {
+      t = 0;
+    } else if (t > 1) {
+      t = 1;
+    }
+
+    // form point and return
+    return edge0.add(e.scale(t));
+  }
+  
 
   // resolve the collision between two rigid body sprites
   // returns false if they're moving away from one another
