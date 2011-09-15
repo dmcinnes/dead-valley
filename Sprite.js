@@ -93,16 +93,29 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   Sprite.prototype.calculateNormals = function () {
-    this.normals = [];
-    this.currentNormals = [];
-    var last = this.points[this.points.length-1];
-    for (var i = 0; i < this.points.length; i++) {
-      this.normals[i]        = last.subtract(this.points[i]).normal().normalize();
-      this.currentNormals[i] = this.normals[i].clone();
-      last = this.points[i];
-    }
-  };
+    var p1, p2, n, i;
 
+    this.normals        = [];
+    this.currentNormals = [];
+
+    for (i = 1; i < this.points.length; i++) {
+      p1 = this.points[i-1];
+      p2 = this.points[i];
+
+      n = p1.subtract(p2).normal().normalize();
+
+      this.normals.push(n);
+      this.currentNormals.push(n.clone());
+    }
+
+    p1 = this.points[this.points.length-1];
+    p2 = this.points[0];
+
+    n = p1.subtract(p2).normal().normalize();
+    this.normals.push(n);
+    this.currentNormals.push(n.clone());
+  };
+  
   Sprite.prototype.createNode = function (layers) {
     var node = $('<div/>');
 

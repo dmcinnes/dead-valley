@@ -206,7 +206,7 @@ define(["Vector"], function (Vector) {
     var e = edge1.subtract(edge0);
 
     // time along edge
-    var t = edge0.dotProduct(v) / e.magnitude();
+    var t = e.dotProduct(v) / (e.x * e.x + e.y * e.y);
 
     // clamp to edge bounds
     if (t < 0) {
