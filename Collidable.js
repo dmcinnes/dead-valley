@@ -23,15 +23,37 @@ define(["Vector"], function (Vector) {
             south && south.west];
   };
 
-  var checkCollisionsAgainst = function (canidates) {
+  // what we do when we actually have a collision
+  var defaultCollisionCallback = function (result) {
+    var we      = result.we;
+    var they    = result.they;
+    var point   = result.point;
+    var normal  = result.normal;
+    var wePoint = result.wePoint;
+
+    if (we.ignoreCollisionResolution || they.ignoreCollisionResolution) {
+      we.touch(they, point, normal);
+      they.touch(we, point, normal);
+    } else {
+      var vab = resolveCollision(we, they, point, normal, wePoint);
+      we.collision(they, point, normal, vab);
+      they.collision(we, point, normal.scale(-1), vab);
+    }
+  };
+
+  var checkCollisionsAgainst = function (canidates, callback) {
     var len = canidates.length;
-    var ref, canidate;
+    var ref, canidate, result, other, point, normal, wePoint;
     for (var i = 0; i < len; i++) {
       canidate = canidates[i];
       ref = canidate && canidate.nextSprite;
       while (ref) {
 	if (ref.collidable) {
-	  this.checkCollision(ref);
+	  result = this.checkCollision(ref);
+
+          if (result) {
+            callback ? callback(result) : defaultCollisionCallback(result);
+          }
 	}
 	ref = ref.nextSprite;
       }
@@ -86,8 +108,6 @@ define(["Vector"], function (Vector) {
         }
       }
     }
-
-    var normal = normals[normalIndex].clone();
     
     // we're edge on if the min depth is on our normal, so use "they"'s point
     var pointIndex, contactPoints, points, point;
@@ -107,9 +127,10 @@ define(["Vector"], function (Vector) {
     }
     point = points[pointIndex];
 
-
     // some of these normals (like building's) are not
-    // calculated every frame so we need to protect them
+    // calculated every frame so we need to protect them by cloning it
+    var normal = normals[normalIndex].clone();
+
     if (minDepth > 0) { // don't want a 0,0 normal
       // scale the normal to the penetration depth
       normal.scale(minDepth);
@@ -120,15 +141,13 @@ define(["Vector"], function (Vector) {
       normal.scale(-1);
     }
 
-    // TODO gotta be a better way to structure all this
-    if (this.ignoreCollisionResolution || other.ignoreCollisionResolution) {
-      this.touch(other, point, normal);
-      other.touch(this, point, normal);
-    } else {
-      var vab = resolveCollision(this, other, point, normal, wePoint);
-      this.collision(other, point, normal, vab);
-      other.collision(this, point, normal.scale(-1), vab);
-    }
+    return {
+      we:      self,
+      they:    other,
+      point:   point,  // point the collision occured on
+      normal:  normal, // normal scaled to the penetration depth
+      wePoint: wePoint // does the point belong to us
+    };
   };
 
   var lineProjection = function (normal) {

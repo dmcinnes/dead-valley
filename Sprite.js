@@ -285,7 +285,6 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     }
   };
 
-  // TODO perhaps cache transpoints Vectors?
   Sprite.prototype.transformedPoints = function () {
     if (this.transPoints) return this.transPoints;
     var trans = [];
