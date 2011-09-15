@@ -154,6 +154,31 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     this.updateForVerticalZ();
   };
 
+  // perform a speculativeMove -- lets see where he's going next frame
+  Sprite.prototype.speculativeMove = function (delta, callback) {
+    // clear the cached calculated points and normals
+    this.transPoints = null;
+    this.transformNormals();
+
+    // save current position
+    var oldPos = this.pos.clone();
+    var oldRot = this.pos.rot;
+
+    // figure out where he's going to be at the current velocity
+    this.pos.x   += this.vel.x   * delta;
+    this.pos.y   += this.vel.y   * delta;
+    this.pos.rot += this.vel.rot * delta;
+
+    // update grid location with new pos
+    this.updateGrid();
+
+    callback();
+
+    // restore original position and rotation
+    this.pos = oldPos;
+    this.pos.rot = oldRot;
+  };
+
   Sprite.prototype.move = function (delta) {
     if (!this.visible) return;
 

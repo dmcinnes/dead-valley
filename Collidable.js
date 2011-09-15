@@ -41,6 +41,30 @@ define(["Vector"], function (Vector) {
     }
   };
 
+  var speculativeContactRectifierCallback = function (delta) {
+    return function (result) {
+      var we      = result.we;
+      var they    = result.they;
+      var normal  = result.normal.clone().normalize();
+
+      // get all of relative normal velocity
+      var relativeNormalVelocity = (we.vel.subtract(they.vel)).dotProduct(normal);
+
+      // we want to remove only the amount which leaves them touching next frame
+      var remove = relativeNormalVelocity + result.normal.magnitude() * delta;
+
+      if (remove < 0) {
+        // compute impulse
+        var wePart   = they.mass / (we.mass + they.mass);
+        var theyPart = wePart - 1;
+
+        // apply impulse
+        we.vel.translate(normal.multiply(-1 * wePart * remove));
+        they.vel.translate(normal.multiply(theyPart * remove));
+      }
+    };
+  };
+
   var checkCollisionsAgainst = function (canidates, callback) {
     var len = canidates.length;
     var ref, canidate, result, other, point, normal, wePoint;
@@ -236,7 +260,7 @@ define(["Vector"], function (Vector) {
 
     // form point and return
     return edge0.add(e.scale(t));
-  }
+  };
   
 
   // resolve the collision between two rigid body sprites
@@ -370,6 +394,8 @@ define(["Vector"], function (Vector) {
       currentCollisionList.splice(0); // empty the array
     }
   };
+
+  collidable.speculativeContactRectifierCallback = speculativeContactRectifierCallback;
 
   return collidable;
 });
