@@ -283,6 +283,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
       }
       newNode.enter(this);
       this.currentNode = newNode;
+      this.adjacentNodes = null; // clear current adjacent list
     }
   };
 

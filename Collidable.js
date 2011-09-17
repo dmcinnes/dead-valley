@@ -6,21 +6,26 @@ define(["Vector"], function (Vector) {
 
   var currentCollisionList = [];
 
-  var findCollisionCanidates = function () {
-    if (!this.visible || !this.currentNode) return [];
+  var findAdjacentNodes = function () {
+    if (!this.visible || !this.currentNode) {
+      return [];
+    }
+    if (this.adjacentNodes) {
+      return this.adjacentNodes;
+    }
     var cn = this.currentNode;
-    var canidates = [];
     var north = cn.north;
     var south = cn.south;
-    return [cn,
-            north,
-            south,
-            cn.east,
-            cn.west,
-            north && north.east,
-            north && north.west,
-            south && south.east,
-            south && south.west];
+    this.adjacentNodes = [cn,
+                          north,
+                          south,
+                          cn.east,
+                          cn.west,
+                          north && north.east,
+                          north && north.west,
+                          south && south.east,
+                          south && south.west];
+     return this.adjacentNodes;
   };
 
   // what we do when we actually have a collision
@@ -50,8 +55,10 @@ define(["Vector"], function (Vector) {
       // get all of relative normal velocity
       var relativeNormalVelocity = (we.vel.subtract(they.vel)).dotProduct(normal);
 
+      var dist = result.normal.magnitude() - relativeNormalVelocity * delta;
+
       // we want to remove only the amount which leaves them touching next frame
-      var remove = relativeNormalVelocity + result.normal.magnitude() * delta;
+      var remove = relativeNormalVelocity + dist;
 
       if (remove < 0) {
         // compute impulse
@@ -139,13 +146,13 @@ define(["Vector"], function (Vector) {
     if (wePoint) {
       pointIndex  = minPoint[0];
       // if it's our point, it's the other's normal
-      contactPoints = calculateContactPoints(this, pointIndex, other, normalIndex - this.currentNormals.length);
+      // contactPoints = calculateContactPoints(this, pointIndex, other, normalIndex - this.currentNormals.length);
 
       points = this.transformedPoints();
     } else {
       pointIndex  = minPoint[1];
       // if it's the other's point, it's our normal
-      contactPoints = calculateContactPoints(other, pointIndex, this, normalIndex);
+      // contactPoints = calculateContactPoints(other, pointIndex, this, normalIndex);
 
       points = other.transformedPoints();
     }
@@ -376,7 +383,7 @@ define(["Vector"], function (Vector) {
     thing.prototype.collidesWith = collidesWith;
     thing.prototype.collidable   = true;
 
-    thing.prototype.findCollisionCanidates = findCollisionCanidates;
+    thing.prototype.findAdjacentNodes      = findAdjacentNodes;
     thing.prototype.checkCollisionsAgainst = checkCollisionsAgainst;
     thing.prototype.checkCollision         = checkCollision;
     thing.prototype.lineProjection         = lineProjection;

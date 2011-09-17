@@ -71,7 +71,7 @@ define(['AssetManager',
         for (i = 0; i < spriteCount; i++) {
           sprite = this.sprites[i];
           if (sprite.collidable) {
-            sprite.checkCollisionsAgainst(sprite.findCollisionCanidates());
+            sprite.checkCollisionsAgainst(sprite.findAdjacentNodes());
           }
         }
 
@@ -83,7 +83,7 @@ define(['AssetManager',
           if (sprite.collidable) {
             // use the current delta
             sprite.speculativeMove(delta, function () {
-              sprite.checkCollisionsAgainst(sprite.findCollisionCanidates(), callback);
+              sprite.checkCollisionsAgainst(sprite.findAdjacentNodes(), callback);
             });
           }
         }
