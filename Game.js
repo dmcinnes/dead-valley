@@ -21,6 +21,8 @@ define(['AssetManager',
 
   var i, sprite, spriteCount;
 
+  var spriteID = 0;
+
   var sprites = [];
 
   return {
@@ -106,13 +108,18 @@ define(['AssetManager',
       _(sprites).each(function (spriteString) {
         SpriteMarshal.marshal(spriteString, function (sprite) {
           sprite.pos.translate(offset);
-          self.sprites.push(sprite);
+          self.addSprite(sprite);
         });
       });
     },
 
     addSprite: function (sprite) {
+      this.addSpriteID(sprite);
       this.sprites.push(sprite);
+    },
+
+    addSpriteID: function (sprite) {
+      sprite.id = spriteID++;
     },
 
     newDude: function (dude) {

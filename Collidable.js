@@ -4,7 +4,7 @@
 
 define(["Vector"], function (Vector) {
 
-  var currentCollisionList = [];
+  var currentCollisionList = {};
 
   var findAdjacentNodes = function () {
     if (!this.visible || !this.currentNode) {
@@ -96,7 +96,7 @@ define(["Vector"], function (Vector) {
   // checkCollision
   var checkCollision = function (other) {
     var normals, minDepth, nl, we, they, left, right, depth,
-        minPoint, normalIndex, self;
+        minPoint, normalIndex;
 
     if (!other.visible  ||
          this === other ||
@@ -106,15 +106,13 @@ define(["Vector"], function (Vector) {
     }
 
     // check to see if the pair has already been checked for collisions
-    self = this;
-    if (_(currentCollisionList).detect(function (pair) {
-         return ((pair[0] === other && pair[1] === self) ||
-                 (pair[0] === self && pair[1] === other));
-        })) {
+    var thisOtherID = this.id + ',' + other.id;
+    if (currentCollisionList[thisOtherID]) {
       return;
     }
     // put the pair in the list for further checks
-    currentCollisionList.push([this, other]);
+    currentCollisionList[thisOtherID] = true;
+    currentCollisionList[other.id + ',' + this.id] = true;
 
     normals = this.currentNormals.concat(other.currentNormals);
 
@@ -173,7 +171,7 @@ define(["Vector"], function (Vector) {
     }
 
     return {
-      we:      self,
+      we:      this,
       they:    other,
       point:   point,  // point the collision occured on
       normal:  normal, // normal scaled to the penetration depth
@@ -397,8 +395,8 @@ define(["Vector"], function (Vector) {
   };
 
   collidable.clearCurrentCollisionList = function () {
-    if (currentCollisionList.length > 0) {
-      currentCollisionList.splice(0); // empty the array
+    if (!_.isEmpty(currentCollisionList)) {
+      currentCollisionList = {};
     }
   };
 

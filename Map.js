@@ -362,6 +362,8 @@ define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
 
         var building = BuildingMarshal.marshal(buildingObj, offset);
 
+        Game.addSpriteID(building);
+
         var tile;
 
         // put the building in our tiles so we can collide with it
