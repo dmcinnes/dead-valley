@@ -52,9 +52,10 @@ X fix gas pump position
 X fix barrel rolling animation
 X make object capitalization consistent
 X create HUD for vehicle status
+X add car damage/destruction
+X fix collision response
 make zombie collision response more natural
 add drag to car
-add car damage/destruction
 create another gas station section on straightaway
 add map handling functions for custom instances of sections through the map worker
 tune Honda's performance
@@ -80,9 +81,9 @@ add dude roll/damage when jumping out of car
 use rotateX 3d transition for driving over rough ground
 make zombies walk at different speeds
 add inventory/hud toggle button
-fix collision response
 explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click
+some cars can take more damage than other
 
 *EDITOR*
 X remove current collidible code
