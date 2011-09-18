@@ -17,8 +17,9 @@ define(["Game",
   GasPump.prototype = new Sprite();
 
   // GasPumps don't move
-  GasPump.prototype.move = function (delta) {};
+  GasPump.prototype.move             = function () {};
   GasPump.prototype.transformNormals = function () {};
+  GasPump.prototype.speculativeMove  = function () {};
 
   GasPump.prototype.init = function (config) {
     Sprite.prototype.init.call(this, config);

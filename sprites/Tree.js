@@ -19,6 +19,7 @@ define(['Sprite', 'Collidable'], function (Sprite, Collidable) {
   // Trees don't move
   Tree.prototype.move = function (delta) {};
   Tree.prototype.transformNormals = function () {};
+  Tree.prototype.speculativeMove = function () {};
 
   Collidable(Tree);
 
