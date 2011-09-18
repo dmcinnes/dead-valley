@@ -139,6 +139,7 @@ X shotgun shells
 X 9mm ammo
 X bat
 X cake
+X medkit
 lantern
 rifle
 golf club
@@ -146,7 +147,6 @@ rubber hose
 spare tire
 rifle ammo
 food
-medkit
 gas can
 twinkie
 hot dog
