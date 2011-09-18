@@ -78,17 +78,17 @@ define(['AssetManager',
         }
 
         // run collision speculation for next frame
-        Collidable.clearCurrentCollisionList();
-        var callback = Collidable.speculativeContactRectifierCallback(delta);
-        for (i = 0; i < spriteCount; i++) {
-          sprite = this.sprites[i];
-          if (sprite.collidable) {
-            // use the current delta
-            sprite.speculativeMove(delta, function () {
-              sprite.checkCollisionsAgainst(sprite.findAdjacentNodes(), callback);
-            });
-          }
-        }
+        // Collidable.clearCurrentCollisionList();
+        // var callback = Collidable.speculativeContactRectifierCallback(delta);
+        // for (i = 0; i < spriteCount; i++) {
+        //   sprite = this.sprites[i];
+        //   if (sprite.collidable) {
+        //     // use the current delta
+        //     sprite.speculativeMove(delta, function () {
+        //       sprite.checkCollisionsAgainst(sprite.findAdjacentNodes(), callback);
+        //     });
+        //   }
+        // }
 
       }
     },
