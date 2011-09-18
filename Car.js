@@ -307,6 +307,25 @@ define(["Game",
     }
   };
 
+  Car.prototype.collision = function (other, point, normal, vab) {
+    if (this.health > 0) {
+
+      var n = normal.clone().normalize();
+
+      // damage the car
+      var magnitude = Math.abs(n.dotProduct(vab));
+      if (magnitude > 132) { // 30 MPH
+	this.takeDamage(Math.floor(magnitude / 44)); // every 10 MPH
+      }
+
+      // stop moving if we're in a head on collision
+      var v = vab.clone().normalize();
+      if (n.dotProduct(v) < -0.9) {
+	this.vel.set(0, 0);
+      }
+    }
+  };
+
   Car.prototype.bulletHit = function (hit, damage) {
     Sprite.prototype.bulletHit.call(this, hit, damage);
     this.takeDamage(damage);
