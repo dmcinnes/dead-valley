@@ -9,7 +9,7 @@ define(['Game'], function (Game) {
   var counter    = 0;
 
   var update = function (health) {
-    lit = (health < 25);
+    lit = (health < 15);
 
     if (!lit) {
       light.removeClass('lit');
