@@ -79,6 +79,8 @@ define(["Game",
       height: config.cargoSpace.height,
       touch:  true
     });
+
+    this.node.addClass('car');
   };
   Car.prototype = new RigidBody();
 

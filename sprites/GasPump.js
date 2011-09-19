@@ -9,6 +9,8 @@ define(["Game",
   var FUELING_RATE     = 0.5; // gallons per second
   var FUELING_DISTANCE = 40;
 
+  var $container = $('#container');
+
   var GasPump = function (type) {
     this.init(type || 'GasPump1');
     this.mass    = Number.MAX_VALUE;
@@ -28,11 +30,19 @@ define(["Game",
     this.broken      = Math.random() < BROKEN_PERCENT;
 
     Game.events.subscribe('mouseup', this.stopFueling, this);
+    Game.events.subscribe('started touching', this.startedTouching, this);
     Game.events.subscribe('stopped touching', this.stoppedTouching, this);
+  };
+
+  GasPump.prototype.startedTouching = function (sprite) {
+    if (this === sprite && this.currentFuel && !this.broken) {
+      $container.addClass('pump');
+    }
   };
 
   GasPump.prototype.stoppedTouching = function (sprite) {
     if (this === sprite) {
+      $container.removeClass('pump');
       this.stopFueling();
     }
   };
@@ -40,6 +50,7 @@ define(["Game",
   GasPump.prototype.die = function () {
     Sprite.prototype.die.call(this);
     Game.events.unsubscribe('mouseup', this.stopFueling);
+    Game.events.unsubscribe('started touching', this.startedTouching);
     Game.events.unsubscribe('stopped touching', this.stoppedTouching);
   };
 
@@ -65,6 +76,7 @@ define(["Game",
 
       if (!this.currentFuel) { // ran out of fuel
         this.fireEvent('tip data change');
+        $container.removeClass('pump');
       }
 
       if (transferred) {

@@ -266,3 +266,7 @@ body {
   left: 30%;
   top: 90%;
 }
+
+.pump #click-overlay, .pump .gascan {
+  cursor: url(../assets/pump-nozzle.png), auto !important;
+}

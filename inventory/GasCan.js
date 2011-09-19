@@ -16,6 +16,7 @@ define(['Game', 'inventory/InventoryItem'],
     displayNode: function () {
       if (!this.display) {
         this.display = $("<div/>")
+          .addClass('gascan')
           .append($("<span/>").addClass('readout'))
           .append($("<img/>").attr('src', this.image).attr('title', this.description));
         this.updateDisplay();
