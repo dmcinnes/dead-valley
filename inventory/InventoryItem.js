@@ -27,6 +27,7 @@ define(function () {
     object.prototype.image       = 'assets/inventory/' + config.image + '.png';
     object.prototype.acceptables = config.accepts || [];
     object.prototype.description = config.description || '';
+    object.prototype.movable     = true;
 
     // only override displayNode if it's not defined
     if (!object.prototype.displayNode) {
@@ -51,6 +52,7 @@ define(function () {
 
     object.x = null;
     object.y = null;
+
   };
 
   return InventoryItem;

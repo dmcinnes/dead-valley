@@ -37,6 +37,10 @@ define(["Game",
   GasPump.prototype.startedTouching = function (sprite) {
     if (this === sprite && this.currentFuel && !this.broken) {
       $container.addClass('pump');
+      // override gascan's handling
+      $('.inventory-item.gascan')
+        .bind('mousedown', $.proxy(this.gasCanMouseDownHandler, this))
+        .bind('mouseup', $.proxy(this.gasCanMouseUpHandler, this));
     }
   };
 
@@ -44,6 +48,7 @@ define(["Game",
     if (this === sprite) {
       $container.removeClass('pump');
       this.stopFueling();
+      $('.inventory-item.gascan').unbind('mousedown,mouseup');
     }
   };
 
@@ -59,29 +64,22 @@ define(["Game",
         !this.broken &&
         this.currentFuel) {
 
-      var transferred = FUELING_RATE * delta;
+      var amount = FUELING_RATE * delta;
 
       // do we have enough fuel to give?
-      if (transferred > this.currentFuel) {
-        transferred = this.currentFuel;
+      if (amount > this.currentFuel) {
+        amount = this.currentFuel;
       }
 
-      // can the car take it?
-      if (transferred + this.fueling.currentFuel > this.fueling.fuelCapacity) {
-        transferred = this.fueling.fuelCapacity - this.fueling.currentFuel;
-      }
+      var transferred = this.fueling.addGas(amount);
 
-      this.fueling.currentFuel += transferred;
-      this.currentFuel         -= transferred;
+      this.currentFuel -= transferred;
 
       if (!this.currentFuel) { // ran out of fuel
         this.fireEvent('tip data change');
         $container.removeClass('pump');
       }
 
-      if (transferred) {
-        Game.events.fireEvent('fuel level updated', this.fueling);
-      }
     }
   };
 
@@ -92,6 +90,24 @@ define(["Game",
          car.health > 0) {
       this.fueling = car;
       Game.events.fireEvent('start fueling', this.fueling);
+    }
+  };
+
+  GasPump.prototype.gasCanMouseDownHandler = function (e) {
+    e.stopImmediatePropagation();
+    var can = $(e.currentTarget).data('item');
+    if (!this.broken && can) {
+      this.fueling = can;
+      can.movable = false;
+    }
+  };
+
+  GasPump.prototype.gasCanMouseUpHandler = function (e) {
+    e.stopImmediatePropagation();
+    this.stopFueling();
+    var can = $(e.currentTarget).data('item');
+    if (can) {
+      can.movable = true;
     }
   };
 

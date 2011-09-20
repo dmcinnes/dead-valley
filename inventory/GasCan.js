@@ -3,7 +3,7 @@
 define(['Game', 'inventory/InventoryItem'],
        function (Game, InventoryItem) {
 
-  var capacity = 5; // gallons
+  var capacity = 255; // gallons
 
   var GasCan = function () {
     this.currentFuel = 0;
@@ -29,6 +29,17 @@ define(['Game', 'inventory/InventoryItem'],
         var value = Math.round(this.currentFuel * 10) / 10;
         this.display.find('.readout').text(value + " Gal.");
       }
+    },
+
+    addGas: function (amount) {
+      var transferred = amount;
+      this.currentFuel += amount;
+      if (this.currentFuel > capacity) {
+        transferred -= this.currentFuel - capacity;
+        this.currentFuel = capacity;
+      }
+      this.updateDisplay();
+      return transferred;
     },
 
     saveMetadata: function () {

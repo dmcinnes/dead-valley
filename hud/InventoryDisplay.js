@@ -77,7 +77,7 @@ define(['Game', 'Inventory'], function (Game, Inventory) {
       dragstart: function (event, ui) {
         var draggable = $(event.target);
         var item = draggable.data('item');
-        this.dragStart(item);
+        return this.dragStart(item);
       },
       click: function (event) {
         if (!currentDraggable) {
@@ -280,42 +280,48 @@ define(['Game', 'Inventory'], function (Game, Inventory) {
 
     // this is run when we start the drag
     dragStart: function (item) {
-      draggingItem = item;
-      // remember the original position in case we need to abort
-      draggingItemOriginalPos = {
-        x: draggingItem.x,
-        y: draggingItem.y
-      };
-      // also remember which inventory we came from
-      draggingItemOriginalInv = this.inventory;
-      // finally remove the draggable item from the inventory
-      this.inventory.removeItem(draggingItem);
+      if (item.movable) {
+        draggingItem = item;
+        // remember the original position in case we need to abort
+        draggingItemOriginalPos = {
+          x: draggingItem.x,
+          y: draggingItem.y
+        };
+        // also remember which inventory we came from
+        draggingItemOriginalInv = this.inventory;
+        // finally remove the draggable item from the inventory
+        this.inventory.removeItem(draggingItem);
+      }
+
+      return !!item.movable;
     },
 
     // this is run when we start the drag on a click
     clickDragStart: function (item, offset, event) {
-      // create a 'helper' object to follow the mouse around
-      currentDraggable = item.displayNode().clone();
-      currentDraggable.addClass('inventory-item click-dragging');
-      // disable context menu
-      currentDraggable[0].oncontextmenu = function() {
-        return false;
-      };
-      // keep track of the offset so we render the dragging correctly
-      currentDraggableOffset = offset;
+      if (item.movable) {
+        // create a 'helper' object to follow the mouse around
+        currentDraggable = item.displayNode().clone();
+        currentDraggable.addClass('inventory-item click-dragging');
+        // disable context menu
+        currentDraggable[0].oncontextmenu = function() {
+          return false;
+        };
+        // keep track of the offset so we render the dragging correctly
+        currentDraggableOffset = offset;
 
-      // if we have an event, set the offset
-      if (event) {
-        currentDraggable.css({
-          left: event.pageX - currentDraggableOffset.left,
-          top:  event.pageY - currentDraggableOffset.top
-        });
+        // if we have an event, set the offset
+        if (event) {
+          currentDraggable.css({
+            left: event.pageX - currentDraggableOffset.left,
+            top:  event.pageY - currentDraggableOffset.top
+          });
+        }
+
+        // finish the start of the drag as a draggable
+        this.dragStart(item);
+
+        $('body').append(currentDraggable);
       }
-
-      // finish the start of the drag as a draggable
-      this.dragStart(item);
-
-      $('body').append(currentDraggable);
     },
 
     restartDrag: function (item, offset, event) {
@@ -345,13 +351,15 @@ define(['Game', 'Inventory'], function (Game, Inventory) {
       if (targetInventory) {
         var target = $(event.target).parentsUntil('td').andSelf().filter('.inventory-item');
         var item = target.data('item');
-        // save off the current coords
-        var x = item.x;
-        var y = item.y;
-        this.inventory.removeItem(item);
-        if (!targetInventory.stuffItemIn(item)) {
-          // if it doesn't work out, add it back
-          this.inventory.addItem(item, x, y);
+        if (item.movable) {
+          // save off the current coords
+          var x = item.x;
+          var y = item.y;
+          this.inventory.removeItem(item);
+          if (!targetInventory.stuffItemIn(item)) {
+            // if it doesn't work out, add it back
+            this.inventory.addItem(item, x, y);
+          }
         }
       }
     },

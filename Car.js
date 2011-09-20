@@ -279,6 +279,19 @@ define(["Game",
     return this.currentFuel / this.fuelCapacity;
   };
 
+    Car.prototype.addGas = function (amount) {
+      var transferred = amount;
+      this.currentFuel += amount;
+      if (this.currentFuel > this.fuelCapacity) {
+        transferred -= this.currentFuel - this.fuelCapacity;
+        this.currentFuel = this.fuelCapacity;
+      }
+      if (transferred) {
+        Game.events.fireEvent('fuel level updated', this);
+      }
+      return transferred;
+    },
+
   Car.prototype.takeDamage = function (damage) {
     this.takingDamage = true;
 
