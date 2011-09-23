@@ -5,6 +5,7 @@
 define(["Vector"], function (Vector) {
 
   var currentCollisionList = {};
+  var speculativeContactCheckList = [];
 
   var findAdjacentNodes = function () {
     if (!this.visible || !this.currentNode) {
@@ -43,6 +44,7 @@ define(["Vector"], function (Vector) {
       var vab = resolveCollision(we, they, point, normal, wePoint);
       we.collision(they, point, normal, vab);
       they.collision(we, point, normal.scale(-1), vab);
+      speculativeContactCheckList.push(we);
     }
   };
 
@@ -63,7 +65,7 @@ define(["Vector"], function (Vector) {
       if (remove < 0) {
         // compute impulse
         var wePart   = they.mass / (we.mass + they.mass);
-        var theyPart = wePart - 1;
+        var theyPart = 1 - wePart;
 
         // apply impulse
         we.vel.translate(normal.multiply(-1 * wePart * remove));
@@ -400,7 +402,25 @@ define(["Vector"], function (Vector) {
     }
   };
 
-  collidable.speculativeContactRectifierCallback = speculativeContactRectifierCallback;
+  collidable.checkSpeculativeContacts = function (delta) {
+    var sprite;
+
+    this.clearCurrentCollisionList();
+
+    var callback = speculativeContactRectifierCallback(delta);
+    var spriteCount = speculativeContactCheckList.length;
+    for (i = 0; i < spriteCount; i++) {
+      sprite = speculativeContactCheckList[i];
+      if (sprite.collidable) {
+        // use the current delta
+        sprite.speculativeMove(delta, function () {
+          sprite.checkCollisionsAgainst(sprite.findAdjacentNodes(), callback);
+        });
+      }
+    }
+    // clear the check list
+    speculativeContactCheckList.splice(0);
+  };
 
   return collidable;
 });

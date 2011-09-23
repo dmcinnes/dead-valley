@@ -332,12 +332,6 @@ define(["Game",
       if (magnitude > 132) { // 30 MPH
 	this.takeDamage(Math.floor(magnitude / 44)); // every 10 MPH
       }
-
-      // stop moving if we're in a head on collision
-      var v = vab.clone().normalize();
-      if (n.dotProduct(v) < -0.9) {
-	this.vel.set(0, 0);
-      }
     }
   };
 
