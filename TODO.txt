@@ -84,6 +84,8 @@ add inventory/hud toggle button
 explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click
 some cars can take more damage than other
+make explosions light up night
+make gunfire light up night
 
 *EDITOR*
 X remove current collidible code
