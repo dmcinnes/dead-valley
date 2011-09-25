@@ -190,10 +190,18 @@ body {
 #dude-hands td:first-child {
   border: 0px;
   border-right: 1px solid #034;
+  background-image:url(../assets/left-hand.png);
 }
 #dude-hands td:last-child {
   border: 0px;
   border-left: 1px solid #034;
+  background-image:url(../assets/right-hand.png);
+}
+#dude-hands tr:nth-child(2) td {
+  background-position:0 92px; 
+}
+#dude-hands tr:last-child td {
+  background-position:0 46px; 
 }
 
 #fuel-gauge {

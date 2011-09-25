@@ -116,11 +116,11 @@ X house
 X add spiderwebbed windows to car's sprite
 X add destroyed car state to car's sprite
 X add custom cursor for filling up the gas tank
+X add L&R hand graphics to DudeHands HUD
 update color on gas station
 crate sprite
 shrubs
 clean up zombie's standing legs (make back leg angle outward)
-add L&R hand graphics to DudeHands HUD
 add custom cursor hand graphics for inventory
 add zombie hit car animation
 
