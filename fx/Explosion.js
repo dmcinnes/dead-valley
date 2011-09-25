@@ -1,6 +1,11 @@
 define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
 
+  var context = Game.skyContext;
   var MAX_LIFE = 0.2; // in seconds
+
+  var gradient = context.createRadialGradient(0, 0, 0, 0, 0, 100);
+  gradient.addColorStop(0, 'white');
+  gradient.addColorStop(1, 'black');
 
   var sparks = new BulletHit({
     color:     '#400',
@@ -23,6 +28,16 @@ define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
 
   Explosion.prototype.draw = function (delta) {
     this.drawTile(this.frame);
+    var pos = this.pos;
+    var map = Game.map;
+    context.save();
+    context.translate(pos.x - map.originOffsetX, pos.y - map.originOffsetY);
+    context.globalCompositeOperation = 'destination-out';
+    context.globalAlpha = 0.6;
+    context.beginPath();
+    context.arc(0, 0, this.tileWidth * this.scale, 0, Math.PI*2);
+    context.fill();
+    context.restore();
   };
 
   Explosion.prototype.preMove = function (delta) {

@@ -54,6 +54,7 @@ X make object capitalization consistent
 X create HUD for vehicle status
 X add car damage/destruction
 X fix collision response
+X make explosions light up night
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -84,7 +85,6 @@ add inventory/hud toggle button
 explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click
 some cars can take more damage than other
-make explosions light up night
 make gunfire light up night
 
 *EDITOR*
