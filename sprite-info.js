@@ -51,6 +51,20 @@ define([], function () {
         y: 20
       }
     },
+    PoliceCar: {
+      img: 'police-car',
+      width: 24,
+      height: 42,
+      layers: 6,
+      imageOffset: {
+        x: 0,
+        y: 0
+      },
+      center: {
+        x: 12,
+        y: 21
+      }
+    },
     Barrel: {
       img: 'objects',
       width: 16,

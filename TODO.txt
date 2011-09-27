@@ -122,7 +122,7 @@ add custom cursor hand graphics for inventory
 add zombie hit car animation
 
 *CARS*
-Police Car
+X Police Car
 Pickup Truck
 Honda Fit (Babycar)
 Prius

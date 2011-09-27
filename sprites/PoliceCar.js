@@ -1,7 +1,8 @@
 define(['Game', 'Car'], function (Game, Car) {
   // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
   var config = {
-    spriteConfig: 'Honda',
+    spriteConfig: 'PoliceCar',
+    name:         'Police Car',
     mass:         225,  // kg
     dragArea:     0.654,
     steeringLock: 43.0, // degrees
@@ -24,10 +25,10 @@ define(['Game', 'Car'], function (Game, Car) {
     mpg: 30
   };
 
-  var Honda = function () {
+  var PoliceCar = function () {
     var car = new Car(config);
     return car;
   };
 
-  return Honda;
+  return PoliceCar;
 });

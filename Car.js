@@ -30,7 +30,7 @@ define(["Game",
 
   // TODO maybe I should just save the config directly
   var Car = function (config) {
-    this.init(config.name);
+    this.init(config.spriteConfig);
 
     this.setMass(config.mass);
     this.dragArea      = config.dragArea;
@@ -74,7 +74,7 @@ define(["Game",
     this.smokeCounter = 0;
 
     this.inventory = new Inventory({
-      name:   "Car",
+      name:   config.name || "Car",
       width:  config.cargoSpace.width, 
       height: config.cargoSpace.height,
       touch:  true
