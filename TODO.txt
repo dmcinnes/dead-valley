@@ -140,6 +140,7 @@ X bat
 X cake
 X medkit
 X gas can
+X can of beans
 lantern
 rifle
 golf club
@@ -149,7 +150,6 @@ rifle ammo
 food
 twinkie
 hot dog
-can of beans
 
 *SPRITES*
 X trees
