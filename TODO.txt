@@ -153,8 +153,8 @@ can of beans
 
 *SPRITES*
 X trees
+X stop sign
 shrubs
 crate
-stop sign
 mailbox
 streetlight

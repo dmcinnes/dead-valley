@@ -104,6 +104,9 @@ define(['AssetManager',
     addSprite: function (sprite) {
       this.addSpriteID(sprite);
       this.sprites.push(sprite);
+      if (sprite.spawned) {
+	sprite.spawned();
+      }
     },
 
     addSpriteID: function (sprite) {

@@ -190,6 +190,19 @@ define([], function () {
         x: 20,
         y: 20
       }
+    },
+    StopSign: {
+      img: 'objects',
+      width: 16,
+      height: 17,
+      imageOffset: {
+        x: 142,
+        y: 0
+      },
+      center: {
+        x: 8,
+        y: 8
+      }
     }
   };
 

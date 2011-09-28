@@ -417,6 +417,10 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     }
   };
 
+  // called when after spawned
+  Sprite.prototype.spawned = function () {
+  };
+
   SpriteMarshal(Sprite);
   EventMachine(Sprite);
 
