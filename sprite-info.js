@@ -65,6 +65,20 @@ define([], function () {
         y: 21
       }
     },
+    Minivan: {
+      img: 'minivan',
+      width: 24,
+      height: 48,
+      layers: 6,
+      imageOffset: {
+        x: 0,
+        y: 0
+      },
+      center: {
+        x: 12,
+        y: 24
+      }
+    },
     Barrel: {
       img: 'objects',
       width: 16,

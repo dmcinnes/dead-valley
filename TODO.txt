@@ -123,6 +123,7 @@ add zombie hit car animation
 
 *CARS*
 X Police Car
+X Minivan
 Pickup Truck
 Honda Fit (Babycar)
 Prius
