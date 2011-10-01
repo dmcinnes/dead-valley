@@ -1,10 +1,11 @@
 define(["Game",
         "Sprite",
         "EventMachine",
-        "Collidable"],
-       function (Game, Sprite, eventmachine, Collidable) {
+        "Collidable",
+        "Fuel"],
+       function (Game, Sprite, eventmachine, Collidable, Fuel) {
 
-  var MAX_FUEL         = 100;
+  var MAX_FUEL         = 10;
   var BROKEN_PERCENT   = 0.3;
   var FUELING_RATE     = 0.5; // gallons per second
   var FUELING_DISTANCE = 40;
@@ -26,21 +27,20 @@ define(["Game",
   GasPump.prototype.init = function (config) {
     Sprite.prototype.init.call(this, config);
 
-    this.currentFuel = Math.random() * MAX_FUEL;
+    this.currentFuel = 2; //Math.random() * MAX_FUEL;
     this.broken      = Math.random() < BROKEN_PERCENT;
 
     Game.events.subscribe('mouseup', this.stopFueling, this);
     Game.events.subscribe('started touching', this.startedTouching, this);
     Game.events.subscribe('stopped touching', this.stoppedTouching, this);
+    this.subscribe('fuel exhausted', function () {
+      this.fireEvent('tip data change'); // update the tooltip
+    }, this);
   };
 
   GasPump.prototype.startedTouching = function (sprite) {
     if (this === sprite && this.currentFuel && !this.broken) {
       $container.addClass('pump');
-      // override gascan's handling
-      $('.inventory-item.gascan')
-        .bind('mousedown', $.proxy(this.gasCanMouseDownHandler, this))
-        .bind('mouseup', $.proxy(this.gasCanMouseUpHandler, this));
     }
   };
 
@@ -48,7 +48,6 @@ define(["Game",
     if (this === sprite) {
       $container.removeClass('pump');
       this.stopFueling();
-      $('.inventory-item.gascan').unbind('mousedown,mouseup');
     }
   };
 
@@ -60,26 +59,8 @@ define(["Game",
   };
 
   GasPump.prototype.preMove = function (delta) {
-    if (this.fueling &&
-        !this.broken &&
-        this.currentFuel) {
-
-      var amount = FUELING_RATE * delta;
-
-      // do we have enough fuel to give?
-      if (amount > this.currentFuel) {
-        amount = this.currentFuel;
-      }
-
-      var transferred = this.fueling.addGas(amount);
-
-      this.currentFuel -= transferred;
-
-      if (!this.currentFuel) { // ran out of fuel
-        this.fireEvent('tip data change');
-        $container.removeClass('pump');
-      }
-
+    if (!this.broken && this.fueling) {
+      this.giveFuel(delta);
     }
   };
 
@@ -88,32 +69,8 @@ define(["Game",
     if (!this.broken &&
          this.distance(car) < FUELING_DISTANCE &&
          car.health > 0) {
-      this.fueling = car;
-      Game.events.fireEvent('start fueling', this.fueling);
+      this.startFueling(car);
     }
-  };
-
-  GasPump.prototype.gasCanMouseDownHandler = function (e) {
-    e.stopImmediatePropagation();
-    var can = $(e.currentTarget).data('item');
-    if (!this.broken && can) {
-      this.fueling = can;
-      can.movable = false;
-    }
-  };
-
-  GasPump.prototype.gasCanMouseUpHandler = function (e) {
-    e.stopImmediatePropagation();
-    this.stopFueling();
-    var can = $(e.currentTarget).data('item');
-    if (can) {
-      can.movable = true;
-    }
-  };
-
-  GasPump.prototype.stopFueling = function () {
-    this.fueling = null;
-    Game.events.fireEvent('stop fueling', this.fueling);
   };
 
   GasPump.prototype.tip = function () {
@@ -135,6 +92,7 @@ define(["Game",
 
   Collidable(GasPump);
   eventmachine(GasPump);
+  Fuel.giver(GasPump, FUELING_RATE);
 
   return GasPump;
 });

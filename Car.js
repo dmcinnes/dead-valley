@@ -9,6 +9,7 @@ define(["Game",
         "Headlight",
         "Taillight",
         "Inventory",
+        "Fuel",
         "fx/Smoke",
         "fx/Explosion"],
 
@@ -21,6 +22,7 @@ define(["Game",
                   Headlight,
                   Taillight,
                   Inventory,
+                  Fuel,
                   Smoke,
                   Explosion) {
 
@@ -275,23 +277,6 @@ define(["Game",
     Game.events.fireEvent("leave car", this);
   };
 
-  Car.prototype.percentFuelRemaining = function () {
-    return this.currentFuel / this.fuelCapacity;
-  };
-
-    Car.prototype.addGas = function (amount) {
-      var transferred = amount;
-      this.currentFuel += amount;
-      if (this.currentFuel > this.fuelCapacity) {
-        transferred -= this.currentFuel - this.fuelCapacity;
-        this.currentFuel = this.fuelCapacity;
-      }
-      if (transferred) {
-        Game.events.fireEvent('fuel level updated', this);
-      }
-      return transferred;
-    },
-
   Car.prototype.takeDamage = function (damage) {
     this.takingDamage = true;
 
@@ -351,6 +336,7 @@ define(["Game",
   Car.prototype.isCar = true;
 
   Collidable(Car);
+  Fuel.receiver(Car);
 
   return Car;
 });
