@@ -6,6 +6,7 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
     startFueling: function (fuelee) {
       this.fueling = fuelee;
       this.fireEvent('start fueling', this.fueling);
+      Game.events.fireEvent('start fueling', this.fueling);
       fuelee.startReceivingFuel(this);
     },
 
@@ -37,6 +38,7 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
       var fuelee = this.fueling;
       this.fueling = null;
       this.fireEvent('stop fueling', fuelee);
+      Game.events.fireEvent('stop fueling', this.fueling);
     }
   };
 
@@ -64,6 +66,17 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
 
     percentFuelRemaining: function () {
       return this.currentFuel / this.fuelCapacity;
+    },
+
+    consumeFuel: function (delta) {
+      var consumption = this.fuelConsumption * delta;
+      if (consumption > this.currentFuel) {
+        consumption = this.currentFuel;
+      }
+      this.currentFuel -= consumption;
+      if (consumption > 0) {
+        this.fireEvent('fuel level updated', consumption);
+      }
     }
   };
 

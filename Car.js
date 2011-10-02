@@ -148,17 +148,6 @@ define(["Game",
     });
   };
 
-  Car.prototype.consumeFuel = function (delta) {
-    if (this.currentFuel > 0) {
-      var previous = this.currentFuel;
-      this.currentFuel -= this.fuelConsumption * delta;
-      if (this.currentFuel < 0) {
-        this.currentFuel = 0;
-      }
-      Game.events.fireEvent('fuel level updated', this);
-    }
-  };
-
   Car.prototype.preMove = function (delta) {
     if (!this.visible) return;
 

@@ -126,10 +126,12 @@ define(['Game',
                                          $dudeInventoryDiv,
                                          { doubleClickTarget: Game.dude.hands });
     dudeHands = DudeHandsInventoryDisplay($dudeInventoryDiv);
-  }).subscribe('start fueling', function (car) {
-    FuelGauge.show(car);
-  }).subscribe('stop fueling', function (car) {
-    FuelGauge.hide(car);
+  }).subscribe('start fueling', function (fuelee) {
+    if (fuelee.isCar) {
+      FuelGauge.show(fuelee);
+    }
+  }).subscribe('stop fueling', function (fuelee) {
+    FuelGauge.hide();
   });
 
   // use items on right click

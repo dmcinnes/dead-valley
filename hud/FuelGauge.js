@@ -12,8 +12,10 @@ define(['Game'], function (Game) {
   var displayedAngle = 0;
   var angle = 0;
 
-  var updateAngle = function (car) {
-    angle = angleWidth * car.percentFuelRemaining() - verticalOffset;
+  var currentCar = null;
+
+  var updateAngle = function () {
+    angle = angleWidth * currentCar.percentFuelRemaining() - verticalOffset;
     if (Math.abs(displayedAngle - angle) > 1) {
       displayedAngle = angle;
       needle.transform({rotate:displayedAngle+"deg"});
@@ -22,18 +24,20 @@ define(['Game'], function (Game) {
 
   var show = function (car) {
     if (car) {
-      updateAngle(car);
+      currentCar = car;
+      updateAngle();
+      car.subscribe('fuel level updated', updateAngle);
     }
     div.show();
   };
 
   var hide = function () {
     div.hide();
+    if (currentCar) {
+      currentCar.unsubscribe('fuel level updated', updateAngle);
+      currentCar = null;
+    }
   };
-
-  Game.events.subscribe('fuel level updated', function (car) {
-    updateAngle(car);
-  });
 
   return {
     update: updateAngle,
