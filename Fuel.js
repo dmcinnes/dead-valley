@@ -3,6 +3,14 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
   // giver
 
   var giverMethods = {
+    activate: function () {
+      Fuel.activePump = this;
+    }, 
+
+    deactivate: function () {
+      Fuel.activePump = null;
+    }, 
+
     startFueling: function (fuelee) {
       this.fueling = fuelee;
       this.fireEvent('start fueling', this.fueling);
@@ -90,8 +98,10 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
     receiver: function (clazz) {
       _.extend(clazz.prototype, receiverMethods);
       EventMachine(clazz);
-    }
+    },
+    activePump: null
   };
+
 
   return Fuel;
 });

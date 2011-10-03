@@ -27,7 +27,7 @@ define(["Game",
   GasPump.prototype.init = function (config) {
     Sprite.prototype.init.call(this, config);
 
-    this.currentFuel = 2; //Math.random() * MAX_FUEL;
+    this.currentFuel = Math.random() * MAX_FUEL;
     this.broken      = Math.random() < BROKEN_PERCENT;
 
     Game.events.subscribe('mouseup', this.stopFueling, this);
@@ -41,6 +41,8 @@ define(["Game",
   GasPump.prototype.startedTouching = function (sprite) {
     if (this === sprite && this.currentFuel && !this.broken) {
       $container.addClass('pump');
+      this.activate();
+      Game.events.fireEvent('fuel source active', this);
     }
   };
 
@@ -48,6 +50,8 @@ define(["Game",
     if (this === sprite) {
       $container.removeClass('pump');
       this.stopFueling();
+      this.deactivate();
+      Game.events.fireEvent('fuel source inactive', this);
     }
   };
 
@@ -64,13 +68,8 @@ define(["Game",
     }
   };
 
-  // Fill 'er Up
-  GasPump.prototype.startFuelingCar = function (car) {
-    if (!this.broken &&
-         this.distance(car) < FUELING_DISTANCE &&
-         car.health > 0) {
-      this.startFueling(car);
-    }
+  GasPump.prototype.isCarCloseEnough = function (car) {
+    return this.distance(car) < FUELING_DISTANCE;
   };
 
   GasPump.prototype.tip = function () {

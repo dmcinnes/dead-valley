@@ -7,6 +7,7 @@ define(["Game",
         "DudeHands",
         "Inventory",
         "Car",
+        "Fuel",
         "fx/BloodSplatter"],
 
        function (Game,
@@ -16,6 +17,7 @@ define(["Game",
                  DudeHands,
                  Inventory,
                  Car,
+                 Fuel,
                  BloodSplatter) {
 
   var keyStatus = Game.keyboard.keyStatus;
@@ -401,27 +403,32 @@ define(["Game",
       if (self.alive()) {
 
         // TODO maybe a better place for this
-        if (clickedSprite && clickedSprite.isCar) {
-          var pump = _.find(self.touching, function (sprite) {
-            return !!sprite.startFuelingCar;
-          });
-          if (pump) {
-            pump.startFuelingCar(clickedSprite);
-            return;
-          }
-        } 
+        var pump = Fuel.activePump;
+        if (pump) {
 
-        var firearm = self.hands.weapon();
-        if (firearm) {
-          var coords = Game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
-
-          if (firearm.aimable) {
-            self.aimTowardMouse(coords, true);
+          if (clickedSprite &&
+              clickedSprite.isCar &&
+              clickedSprite.health > 0 &&
+              pump.isCarCloseEnough &&
+              pump.isCarCloseEnough(clickedSprite)) {
+            pump.startFueling(clickedSprite);
           }
 
-          if (firearm.fire(self.pos, coords, self.direction)) {
-            self.firing = true;
+        } else {
+
+          var firearm = self.hands.weapon();
+          if (firearm) {
+            var coords = Game.map.worldCoordinatesFromWindow(event.pageX, event.pageY);
+
+            if (firearm.aimable) {
+              self.aimTowardMouse(coords, true);
+            }
+
+            if (firearm.fire(self.pos, coords, self.direction)) {
+              self.firing = true;
+            }
           }
+
         }
 
       }

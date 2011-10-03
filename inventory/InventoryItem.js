@@ -21,6 +21,11 @@ define(function () {
     return true;
   };
 
+  var getInventoryItemFromEvent = function (event) {
+    var target = $(event.target).parentsUntil('td').andSelf().filter('.inventory-item');
+    return (target.length) ? target.data('item') : null;
+  };
+
   var InventoryItem = function (object, config) {
     object.prototype.width       = config.width;
     object.prototype.height      = config.height;
@@ -54,6 +59,8 @@ define(function () {
     object.y = null;
 
   };
+
+  InventoryItem.getInventoryItemFromEvent = getInventoryItemFromEvent;
 
   return InventoryItem;
 });

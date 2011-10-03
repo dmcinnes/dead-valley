@@ -1,12 +1,13 @@
 // GasCan
 
-define(['Game', 'inventory/InventoryItem'],
-       function (Game, InventoryItem) {
+define(['Game', 'inventory/InventoryItem', 'Fuel'],
+       function (Game, InventoryItem, Fuel) {
 
   var capacity = 255; // gallons
 
   var GasCan = function () {
     this.currentFuel = 0;
+    this.subscribe('fuel level updated', this.updateDisplay, this);
   };
 
   GasCan.prototype = {
@@ -31,17 +32,6 @@ define(['Game', 'inventory/InventoryItem'],
       }
     },
 
-    addGas: function (amount) {
-      var transferred = amount;
-      this.currentFuel += amount;
-      if (this.currentFuel > capacity) {
-        transferred -= this.currentFuel - capacity;
-        this.currentFuel = capacity;
-      }
-      this.updateDisplay();
-      return transferred;
-    },
-
     saveMetadata: function () {
       return {
         currentFuel: this.currentFuel
@@ -55,6 +45,27 @@ define(['Game', 'inventory/InventoryItem'],
     image:  'gascan',
     clazz:  'GasCan',
     description: 'Gas Can'
+  });
+
+  Fuel.receiver(GasCan);
+
+  Game.events.subscribe('fuel source active', function () {
+    $('.gascan').draggable('disable');
+    GasCan.prototype.movable = false;
+  }).subscribe('fuel source inactive', function () {
+    $('.gascan').draggable('enable');
+    GasCan.prototype.movable = true;
+  });
+
+  $('.gascan img').live('mousedown', function (e) {
+    if (Fuel.activePump) {
+      var gascan = InventoryItem.getInventoryItemFromEvent(e);
+      Fuel.activePump.startFueling(gascan);
+    }
+  }).live('mouseup', function (e) {
+    if (Fuel.activePump) {
+      Fuel.activePump.stopFueling();
+    }
   });
 
   return GasCan;
