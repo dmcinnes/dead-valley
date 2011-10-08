@@ -278,3 +278,6 @@ body {
 .pump #click-overlay, .pump .gascan {
   cursor: url(../assets/pump-nozzle.png), auto !important;
 }
+.gascan #click-overlay, .gascan .gascan {
+  cursor: url(../assets/gascan-cursor.png), auto !important;
+}

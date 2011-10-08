@@ -16,6 +16,9 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
 
   GasCan.prototype = {
     use: function () {
+      $container.addClass('gascan');
+      this.activate();
+      Game.events.fireEvent('fuel source active', this);
     },
 
     displayNode: function () {
@@ -42,6 +45,11 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
       };
     },
 
+    isCarCloseEnough: function (car) {
+      // can only fuel cars if we're touching them
+      return _.include(Game.dude.touching, car);
+    },
+
     fuelCapacity: FUEL_CAPACITY
   };
 
@@ -62,6 +70,12 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
   }).subscribe('fuel source inactive', function () {
     $('.gascan').draggable('enable');
     GasCan.prototype.movable = true;
+  }).subscribe('mouseup', function (event, clickedSprite) {
+    $container.removeClass('gascan');
+    if (Fuel.activePump && Fuel.activePump.clazz === 'GasCan') {
+      Fuel.activePump.stopFueling();
+      Fuel.activePump.deactivate();
+    }
   });
 
   $('.gascan img').live('mousedown', function (e) {
@@ -74,6 +88,7 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
       Fuel.activePump.stopFueling();
     }
   });
+
 
   return GasCan;
 });
