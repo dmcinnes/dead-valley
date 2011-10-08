@@ -62,12 +62,6 @@ define(["Game",
     Game.events.unsubscribe('stopped touching', this.stoppedTouching);
   };
 
-  GasPump.prototype.preMove = function (delta) {
-    if (!this.broken && this.fueling) {
-      this.giveFuel(delta);
-    }
-  };
-
   GasPump.prototype.isCarCloseEnough = function (car) {
     return this.distance(car) < FUELING_DISTANCE;
   };

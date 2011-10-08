@@ -88,6 +88,13 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
     }
   };
 
+  var tick = function (delta) {
+    var pump = Fuel.activePump;
+    if (pump && pump.fueling) {
+      pump.giveFuel(delta);
+    }
+  };
+
 
   var Fuel = {
     giver: function (clazz, rate) {
@@ -99,9 +106,11 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
       _.extend(clazz.prototype, receiverMethods);
       EventMachine(clazz);
     },
+    tick: tick,
     activePump: null
   };
 
+  Game.registerObjectForDeltaUpdates(Fuel);
 
   return Fuel;
 });

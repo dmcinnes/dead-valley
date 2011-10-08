@@ -30,6 +30,7 @@ define(["Game"], function (Game) {
     delta = elapsed / 1000;
 
     Game.runSprites(delta);
+    Game.runObjects(delta);
     Game.runMap(delta);
 
     Game.renderSprites(delta);

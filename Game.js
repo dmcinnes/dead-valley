@@ -19,11 +19,9 @@ define(['AssetManager',
                   EventMachine,
                   SpriteMarshal) {
 
-  var i, sprite, spriteCount;
+  var i, sprite, spriteCount, object, objectCount;
 
   var spriteID = 0;
-
-  var sprites = [];
 
   return {
     assetManager:  new AssetManager('./assets/'),
@@ -36,7 +34,8 @@ define(['AssetManager',
     GameHeight:    $('#canvas-mask').height(),
     map:           null,
     dude:          null,
-    sprites:       sprites,
+    sprites:       [],
+    objects:       [],
     events:        EventMachine(),
     skyContext:    $('#sky-canvas')[0].getContext('2d'),
     threeDee:      true, // 3D acceleration
@@ -81,6 +80,13 @@ define(['AssetManager',
       }
     },
 
+    runObjects: function (delta) {
+      objectCount = this.objects.length;
+      for (i = 0; i < objectCount; i++) {
+        this.objects[i].tick(delta);
+      }
+    },
+
     renderSprites: function (delta) {
       if (this.map) {
         spriteCount = this.sprites.length;
@@ -122,6 +128,10 @@ define(['AssetManager',
       this.addSprite(dude);
 
       this.events.fireEvent('new dude', dude);
+    },
+
+    registerObjectForDeltaUpdates: function (object) {
+      this.objects.push(object);
     }
   };
 });

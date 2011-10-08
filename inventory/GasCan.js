@@ -3,11 +3,15 @@
 define(['Game', 'inventory/InventoryItem', 'Fuel'],
        function (Game, InventoryItem, Fuel) {
 
-  var capacity = 255; // gallons
+  var FUELING_RATE  = 0.3; // gallons per second
+  var FUEL_CAPACITY = 5;   // gallons
+
+  var $container = $('#container');
 
   var GasCan = function () {
     this.currentFuel = 0;
     this.subscribe('fuel level updated', this.updateDisplay, this);
+    this.subscribe('fuel transferred', this.updateDisplay, this);
   };
 
   GasCan.prototype = {
@@ -36,7 +40,9 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
       return {
         currentFuel: this.currentFuel
       };
-    }
+    },
+
+    fuelCapacity: FUEL_CAPACITY
   };
 
   InventoryItem(GasCan, {
@@ -48,6 +54,7 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
   });
 
   Fuel.receiver(GasCan);
+  Fuel.giver(GasCan, FUELING_RATE);
 
   Game.events.subscribe('fuel source active', function () {
     $('.gascan').draggable('disable');
