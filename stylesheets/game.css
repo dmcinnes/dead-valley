@@ -253,12 +253,13 @@ body {
 .tip {
   position: absolute;
   z-index: 200;
-  background: #ffcb66;
+  background: #256;
   padding: 5px 15px;
-  color: black;
+  color: #DDD;
   -webkit-border-radius: 10px;
   -moz-border-radius   : 10px;
   border-radius        : 10px;
+  border: 1px solid #034;
   white-space: nowrap;
   opacity: 0.8;
 }
@@ -268,11 +269,11 @@ body {
   position: absolute;
   width: 0;
   height: 0;
-  border-top: 10px solid #ffcb66;
+  border-top: 10px solid #034;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   left: 30%;
-  top: 90%;
+  top: 100%;
 }
 
 .pump #click-overlay, .pump .gascan {
