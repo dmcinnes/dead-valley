@@ -142,10 +142,10 @@ X cake
 X medkit
 X gas can
 X can of beans
+X rubber hose
 lantern
 rifle
 golf club
-rubber hose
 spare tire
 rifle ammo
 food

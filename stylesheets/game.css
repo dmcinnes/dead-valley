@@ -276,9 +276,12 @@ body {
   top: 100%;
 }
 
-.pump #click-overlay, .pump .gascan {
+.pump #click-overlay, .pump .inventory, .pump .inventory-item {
   cursor: url(../assets/pump-nozzle.png), auto !important;
 }
-.gascan #click-overlay, .gascan .gascan {
+.gascan #click-overlay, .gascan .inventory, .gascan .inventory-item {
   cursor: url(../assets/gascan-cursor.png), auto !important;
+}
+.rubber-tubing #click-overlay, .rubber-tubing .inventory-item, .rubber-tubing .inventory {
+  cursor: url(../assets/rubber-tubing-cursor.png), auto !important;
 }
