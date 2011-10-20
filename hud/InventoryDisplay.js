@@ -75,12 +75,14 @@ define(['Game', 'Inventory'], function (Game, Inventory) {
 
     itemEventHandlers: {
       dragstart: function (event, ui) {
-        var draggable = $(event.target);
-        if (draggable.parents().hasClass('ui-draggable-disabled')) {
-          return false;
+        if (!currentDraggable) { // if we're not already dragging something
+          var draggable = $(event.target);
+          if (draggable.parents().hasClass('ui-draggable-disabled')) {
+            return false;
+          }
+          var item = draggable.data('item');
+          return item && this.dragStart(item);
         }
-        var item = draggable.data('item');
-        return this.dragStart(item);
       },
       click: function (event) {
         if (!currentDraggable) {
