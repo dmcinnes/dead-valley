@@ -55,6 +55,7 @@ X create HUD for vehicle status
 X add car damage/destruction
 X fix collision response
 X make explosions light up night
+X make zombies walk at different speeds
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -80,7 +81,6 @@ firearm between shot timeout
 fix zombie hitbox
 add dude roll/damage when jumping out of car
 use rotateX 3d transition for driving over rough ground
-make zombies walk at different speeds
 add inventory/hud toggle button
 explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click

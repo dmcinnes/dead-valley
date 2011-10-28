@@ -4,15 +4,16 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;
 
-  var SPEED                          = 11; // 5 MPH
-  var WALKING_ANIMATION_FRAME_RATE   = 0.3; // in seconds
+  var MIN_SPEED                      = 11;   // 5 MPH
+  var MAX_SPEED                      = 22;   // 10 MPH
+  var WALKING_ANIMATION_FRAME_RATE   = 2;    // in pixels
   var ATTACKING_ANIMATION_FRAME_RATE = 0.25; // in seconds
   var DYING_ANIMATION_FRAME_RATE     = 0.25; // in seconds
   var DAMAGE_WINDOW                  = 0.05; // in seconds
-  var SCAN_TIMEOUT_RESET             = 1; // in seconds
-  var MAX_WAIT_TIME                  = 20; // in seconds
-  var MAX_RANGE                      = 400; // how far a Zombie can see - in pixels
-  var WANDER_DISTANCE                = 200; // how far a Zombie wanders in one direction - in pixels
+  var SCAN_TIMEOUT_RESET             = 1;    // in seconds
+  var MAX_WAIT_TIME                  = 20;   // in seconds
+  var MAX_RANGE                      = 400;  // how far a Zombie can see - in pixels
+  var WANDER_DISTANCE                = 200;  // how far a Zombie wanders in one direction - in pixels
   var HEALTH                         = 6;
 
   var BODY_OFFSET = 231;
@@ -69,6 +70,9 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     this.prone                 = false;
 
     this.originalCenterX       = this.center.x;
+
+    this.moseySpeed  = MIN_SPEED + Math.random();
+    this.attackSpeed = MIN_SPEED + Math.random() * (MAX_SPEED - MIN_SPEED);
   };
   Zombie.prototype = new Sprite();
 
@@ -101,7 +105,7 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     }
 
     if (this.walking) {
-      this.walkingFrameCounter += delta;
+      this.walkingFrameCounter += delta * this.vel.magnitude();
       if (this.walkingFrameCounter > WALKING_ANIMATION_FRAME_RATE) {
         this.walkingFrameCounter = 0;
         this.walkingFrame = (this.walkingFrame + 1) % 4; // four frames
@@ -199,7 +203,7 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   };
 
   Zombie.prototype.moveToward = function (pos) {
-    var mosey = pos.subtract(this.pos).normalize().scale(SPEED);
+    var mosey = pos.subtract(this.pos).normalize().scale(this.moseySpeed);
     this.vel.set(mosey);
   };
 
@@ -245,7 +249,7 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
       }
     },
     stalking: function () {
-      var mosey = this.target.subtract(this.pos).normalize().scale(SPEED);
+      var mosey = this.target.subtract(this.pos).normalize().scale(this.attackSpeed);
       this.vel.set(mosey);
       this.walking = true;
 
