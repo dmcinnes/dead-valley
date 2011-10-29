@@ -214,7 +214,7 @@ define(["Game",
       var airResistanceVec = this.vel.clone().normalize().scale(airResistance);
       this.addForce(airResistanceVec, new Vector(0, 0));
 
-      if (this.currentNode && !this.currentNode.isRoad() && vel_m_s > 1) {
+      if (this.currentNode && !this.currentNode.isRoad && vel_m_s > 1) {
         this.pos.rot += (Math.random() > 0.5) ? -1 : 1;
         this.addForce(airResistanceVec.scale(4), new Vector(0, 0)); // slow em down too
       }

@@ -7,6 +7,28 @@
 // bottom 12 bits for tile offset
 
 define([], function () {
+
+  // which tiles are considered roads
+  var roadTiles = [3,4,5,6,7,8,9,
+                   12,13,14,15,16,17,
+                   20,21,22,23,24,25,26,
+                   28,29,30,31,32,33,34,
+                   36,37,38,39,40,41,
+                   44,45,46,47,
+                   50,
+                   53,54,55,56,
+                   59,
+                   76,77,
+                   85,86,
+                   90,91,92,93,94,95];
+
+  var roadTilesMap = [];
+
+  _.each(roadTiles, function (tile) {
+    roadTilesMap[tile] = true;
+  });
+
+
   var tileMarshal = function (thing) {
 
     thing.prototype.toString = function () {
@@ -25,17 +47,9 @@ define([], function () {
       this.collidable = !(code & 0x8000);
       this.tileFlip   = !!(code & 0x4000);
       this.tileRotate = (code & 0x3000) >> 12;
+      this.isRoad     = !!roadTilesMap[this.tileOffset];
       this.nextSprite = null; // clean up any sprite remnants
       this.entrance   = null;
-    };
-
-    thing.prototype.oldSetFromString = function (str) {
-      this.tileOffset = parseInt(str);
-
-      var arr = str.split('');
-      this.collidable = arr.pop() === 'C';
-      this.tileRotate = parseInt(arr.pop());
-      this.tileFlip   = arr.pop() === 'F';
     };
 
   };

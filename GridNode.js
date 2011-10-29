@@ -138,10 +138,6 @@ define(["Game",
             }).flatten().value();
   };
 
-  GridNode.prototype.isRoad = function () {
-    return this.tileOffset > 2;
-  };
-
   Game.assetManager.loadImage('tiles', function (image) {
     GridNode.prototype.tiles = image;
   });
