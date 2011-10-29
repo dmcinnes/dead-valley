@@ -51,6 +51,7 @@ define(["Game",
     this.breaking        = false;
     this.reversing       = false;
     this.stopped         = false;
+    this.canSmoke        = true;
     this.driver          = null;
     this.steeringAngle   = 0;
     this.directionVector = new Vector(0);
@@ -225,7 +226,7 @@ define(["Game",
     if (this.driver) {
       Game.map.keepInView(this);
     }
-    if (this.health < 25) {
+    if (this.canSmoke && this.health < 25) {
       this.smokeCounter += delta;
       // the more damaged the more smoke it emits
       var threshold = this.health / 2;

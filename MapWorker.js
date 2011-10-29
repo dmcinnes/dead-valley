@@ -33,6 +33,19 @@ var sections = {
 // loads the section list into section_list
 importScripts('section-list.js');
 
+// loads the car list into car_list
+importScripts('car-list.js');
+
+var carMap = [];
+
+// create a distribution array of all the cars so that we can 
+// just pick a random element
+_.each(car_list, function (car, count) {
+  for (var i = 0; i < count; i++) {
+    carMap.push(car);
+  }
+});
+
 // sections set these variables with their data when loaded
 var map, roads, sprites, buildings;
 _(section_list).each(function (name) {
@@ -108,13 +121,14 @@ var fillBlankTiles = function (tiles, width) {
         var y = Math.floor(i / width) * 60 + Math.random() * 60;
         var husk = Math.random() > 0.7;
         var car = {
-          clazz: 'Honda',
+          clazz: carMap[Math.floor(Math.random() * carMap.length)],
           pos: {
             x: x,
             y: y,
             rot: Math.floor(Math.random() * 360)
           },
-          health: husk ? -1 : Math.round(Math.random() * 100)
+          health: husk ? -1 : Math.round(Math.random() * 100),
+          canSmoke: false
         };
 
         tiles.sprites.push(JSON.stringify(car));
