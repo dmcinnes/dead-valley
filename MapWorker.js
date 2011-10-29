@@ -66,6 +66,12 @@ _(section_list).each(function (name) {
 var fillBlankTiles = function (tiles, width) {
   var total = tiles.length;
 
+  var addCars = Math.random() < 0.5; // 50% chance of cars
+
+  if (!tiles.sprites) {
+    tiles.sprites = [];
+  }
+
   for (var i = 0; i < total; i++) {
     var tile = tiles[i];
     if (tile.tileOffset === 0) {
@@ -91,13 +97,29 @@ var fillBlankTiles = function (tiles, width) {
           }
         };
 
-        if (!tiles.sprites) {
-          tiles.sprites = [];
-        }
-
         tiles.sprites.push(JSON.stringify(tree));
 
       }
+
+    } else if (tile.isRoad && addCars) {
+
+      if (Math.random() < 0.05) {
+        var x = (i % width) * 60 + Math.random() * 60;
+        var y = Math.floor(i / width) * 60 + Math.random() * 60;
+        var husk = Math.random() > 0.7;
+        var car = {
+          clazz: 'Honda',
+          pos: {
+            x: x,
+            y: y,
+            rot: Math.floor(Math.random() * 360)
+          },
+          health: husk ? -1 : Math.round(Math.random() * 100)
+        };
+
+        tiles.sprites.push(JSON.stringify(car));
+      }
+
     }
   }
 
