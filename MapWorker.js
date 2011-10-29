@@ -77,6 +77,7 @@ _(section_list).each(function (name) {
 
 // fills a map's blank tiles wth random dirt and scrub
 var fillBlankTiles = function (tiles, width) {
+  var x, y;
   var total = tiles.length;
 
   var addCars = Math.random() < 0.5; // 50% chance of cars
@@ -98,8 +99,8 @@ var fillBlankTiles = function (tiles, width) {
 
       } else if (test < 0.01) {
 
-        var x = (i % width) * 60;
-        var y = Math.floor(i / width) * 60;
+        x = (i % width) * 60;
+        y = Math.floor(i / width) * 60;
         var tree = {
           clazz: 'Tree',
           type: 'Tree' + (Math.floor(Math.random() * 3) + 1),
@@ -117,42 +118,46 @@ var fillBlankTiles = function (tiles, width) {
     } else if (tile.isRoad && addCars) {
 
       if (Math.random() < 0.05) {
-        var x = (i % width) * 60 + Math.random() * 60;
-        var y = Math.floor(i / width) * 60 + Math.random() * 60;
-        var husk = Math.random() > 0.7;
-
-        var rot;
-        if (tile.tileOffset === 3) { // road side
-          // align with road
-          rot = tile.tileRotate * 90;
-          if (!tile.flip) {
-            rot -= 180;
-          }
-          // give a little
-          rot += 10 - Math.floor(Math.random() * 20);
-        } else {
-          // random direction
-          rot = Math.floor(Math.random() * 360);
-        }
-
-        var car = {
-          clazz: carMap[Math.floor(Math.random() * carMap.length)],
-          pos: {
-            x: x,
-            y: y,
-            rot: rot
-          },
-          health: husk ? -1 : Math.round(Math.random() * 100),
-          canSmoke: false
-        };
-
-        tiles.sprites.push(JSON.stringify(car));
+        x = (i % width) * 60;
+        y = Math.floor(i / width) * 60;
+        addCar(x, y, tile, tiles);
       }
 
     }
   }
 
   return tiles;
+};
+
+var addCar = function (x, y, tile, tiles) {
+  var husk = Math.random() > 0.7;
+
+  var rot;
+  if (tile.tileOffset === 3) { // road side
+    // align with road
+    rot = tile.tileRotate * 90;
+    if (!tile.flip) {
+      rot -= 180;
+    }
+    // give a little
+    rot += 10 - Math.floor(Math.random() * 20);
+  } else {
+    // random direction
+    rot = Math.floor(Math.random() * 360);
+  }
+
+  var car = {
+    clazz: carMap[Math.floor(Math.random() * carMap.length)],
+    pos: {
+      x: x + Math.random() * 60,
+      y: y + Math.random() * 60,
+      rot: rot
+    },
+    health: husk ? -1 : Math.round(Math.random() * 100),
+    canSmoke: !husk // don't smoke if it's already a husk
+  };
+
+  tiles.sprites.push(JSON.stringify(car));
 };
 
 var loadSection = function (config) {
