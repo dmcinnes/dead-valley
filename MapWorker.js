@@ -120,12 +120,27 @@ var fillBlankTiles = function (tiles, width) {
         var x = (i % width) * 60 + Math.random() * 60;
         var y = Math.floor(i / width) * 60 + Math.random() * 60;
         var husk = Math.random() > 0.7;
+
+        var rot;
+        if (tile.tileOffset === 3) { // road side
+          // align with road
+          rot = tile.tileRotate * 90;
+          if (!tile.flip) {
+            rot -= 180;
+          }
+          // give a little
+          rot += 10 - Math.floor(Math.random() * 20);
+        } else {
+          // random direction
+          rot = Math.floor(Math.random() * 360);
+        }
+
         var car = {
           clazz: carMap[Math.floor(Math.random() * carMap.length)],
           pos: {
             x: x,
             y: y,
-            rot: Math.floor(Math.random() * 360)
+            rot: rot
           },
           health: husk ? -1 : Math.round(Math.random() * 100),
           canSmoke: false
