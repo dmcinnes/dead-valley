@@ -68,7 +68,7 @@ var fillBlankTiles = function (tiles, width) {
 
   for (var i = 0; i < total; i++) {
     var tile = tiles[i];
-    if (tile.tileOffset == 0) {
+    if (tile.tileOffset === 0) {
       var test = Math.random()
 
       if (test > 0.9) {
@@ -80,7 +80,7 @@ var fillBlankTiles = function (tiles, width) {
       } else if (test < 0.01) {
 
         var x = (i % width) * 60;
-        var y = (i / width) * 60;
+        var y = Math.floor(i / width) * 60;
         var tree = {
           clazz: 'Tree',
           type: 'Tree' + (Math.floor(Math.random() * 3) + 1),
