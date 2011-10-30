@@ -57,9 +57,14 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     this.center      = $.extend({}, config.center);
 
     this.image = config.img;
+    this.color = config.color;
 
     // load the image
-    Game.assetManager.loadImage(config.img, $.proxy(function (img) {
+    var imageName = this.image;
+    if (this.color) {
+      imageName += '-' + this.color;
+    }
+    Game.assetManager.loadImage(imageName, $.proxy(function (img) {
       this.imageData = img;
     }, this));
 
@@ -89,7 +94,14 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     // -- defaults to sprite width
     this.tileOffset = config.tileOffset || this.tileWidth;
 
+    this.layerCount = layerCount;
+
     this.node = this.createNode(layerCount);
+  };
+
+  Sprite.prototype.setColor = function (color) {
+    this.color = color;
+    this.updateBackgroundImages();
   };
 
   Sprite.prototype.calculateNormals = function () {
@@ -119,23 +131,36 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   Sprite.prototype.createNode = function (layers) {
     var node = $('<div/>');
 
-    var image    = [];
-    for (var i = 0; i < layers; i++) {
-      image.push("url(\"assets/"+this.image+".png\")");
-    }
-
     node.css({
-      'background-image': image.join(','),
       'z-index': this.z,
       'opacity': this.opacity,
       width: this.tileWidth,
       height: this.tileHeight
     });
 
+    this.updateBackgroundImages(node, layers);
+
     node.addClass('sprite');
     this.spriteParent.append(node);
 
     return node;
+  };
+
+  Sprite.prototype.updateBackgroundImages = function (node, layers) {
+    layers = layers || this.layerCount;
+    node   = node   || this.node;
+
+    var imageName = this.image;
+    if (this.color) {
+      imageName += '-' + this.color;
+    }
+
+    var image = [];
+    for (var i = 0; i < layers; i++) {
+      image.push("url(\"assets/"+imageName+".png\")");
+    }
+
+    node.css('background-image', image.join(','));
   };
 
   Sprite.prototype.preMove  = function () {

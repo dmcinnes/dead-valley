@@ -37,12 +37,14 @@ importScripts('section-list.js');
 importScripts('car-list.js');
 
 var carMap = [];
+var carColorMap = {};
 
 // create a distribution array of all the cars so that we can 
 // just pick a random element
 _.each(car_list, function (car, count) {
   for (var i = 0; i < count; i++) {
-    carMap.push(car);
+    carMap.push(car.name);
+    carColorMap[car.name] = car.colors;
   }
 });
 
@@ -146,8 +148,13 @@ var addCar = function (x, y, tile, tiles) {
     rot = Math.floor(Math.random() * 360);
   }
 
+  var carType = carMap[Math.floor(Math.random() * carMap.length)];
+  var carColorSelection = carColorMap[carType];
+  var carColor = carColorSelection[Math.floor(Math.random() * carColorSelection.length)];
+
   var car = {
-    clazz: carMap[Math.floor(Math.random() * carMap.length)],
+    clazz: carType,
+    setColor: carColor,
     pos: {
       x: x + Math.random() * 60,
       y: y + Math.random() * 60,

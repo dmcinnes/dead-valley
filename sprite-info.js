@@ -38,7 +38,8 @@ define([], function () {
       }
     },
     Honda: {
-      img: 'honda-white',
+      img: 'honda',
+      color: 'white',
       width: 24,
       height: 40,
       layers: 6,
