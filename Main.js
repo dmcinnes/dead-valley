@@ -8,17 +8,7 @@ require(
    "Dude",
    "Sky",
    "hud/Hud",
-   "sprites/Honda",
    "sprites/Zombie",
-   "sprites/Barrel",
-   "inventory/Glock19",
-   "inventory/AK_47",
-   "inventory/Shotgun",
-   "inventory/ShotgunShells",
-   "inventory/Nine_mm",
-   "inventory/Flashlight",
-   "inventory/BaseballBat",
-   "inventory/Cake",
    "World",
    "Mouse",
    "Cheat"],
@@ -32,17 +22,7 @@ require(
             Dude,
             Sky,
             Hud,
-            Honda,
             Zombie,
-            Barrel,
-            Glock19,
-            AK_47,
-            Shotgun,
-            ShotgunShells,
-            Nine_mm,
-            Flashlight,
-            BaseballBat,
-            Cake,
             World,
             Mouse,
             Cheat) {
@@ -89,19 +69,6 @@ require(
         dude = new Dude();
         dude.pos.x = startX;
         dude.pos.y = startY;
-
-        // give the dude a pistol!
-        dude.inventory.addItem(new Glock19(), 1, 1);
-        // and why not, an AK and a flashlight
-        dude.inventory.addItem(new AK_47(), 5, 0);
-        dude.inventory.addItem(new Flashlight(), 0, 0);
-        // shotty
-        dude.inventory.addItem(new Shotgun(), 7, 0);
-        dude.inventory.addItem(new ShotgunShells(12), 2, 0);
-        dude.inventory.addItem(new ShotgunShells(12), 2, 1);
-        dude.inventory.addItem(new Nine_mm(36), 3, 2);
-        dude.inventory.addItem(new BaseballBat(), 4, 0);
-        dude.inventory.addItem(new Cake(), 1, 0);
 
         var zombie = new Zombie();
         zombie.pos.x = startX + 200;

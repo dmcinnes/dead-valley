@@ -183,7 +183,9 @@ var generateCount = function (countString) {
 };
 
 var seedBuildings = function (buildings) {
-  _.each(buildings, function (building) {
+  return _.map(buildings, function (building) {
+    building = _.clone(building);
+
     var list = building.inventory;
     var random, count, i, inventory = [];
 
@@ -203,6 +205,8 @@ var seedBuildings = function (buildings) {
     });
 
     building.inventory = inventory;
+
+    return building;
   });
 };
 
@@ -272,7 +276,7 @@ onmessage = function (e) {
 
   fillBlankTiles(tiles, config.width);
 
-  seedBuildings(tiles.buildings);
+  tiles.buildings = seedBuildings(tiles.buildings);
 
   var message = {
     type:      'newtiles',
