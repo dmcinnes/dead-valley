@@ -268,32 +268,36 @@ define(["Game",
   };
 
   Car.prototype.takeDamage = function (damage) {
-    this.takingDamage = true;
+    if (this.health > 0) {
+      this.takingDamage = true;
 
-    this.health -= damage;
+      this.canSmoke = true;
 
-    this.fireEvent('health changed', this.health);
+      this.health -= damage;
 
-    if (this.health <= 0) {
-      // die!
+      this.fireEvent('health changed', this.health);
 
-      // stop moving
-      this.vel.scale(0);
-      this.stopped = false;
+      if (this.health <= 0) {
+        // die!
 
-      // inventory goes bye-bye
-      this.inventory = null;
+        // stop moving
+        this.vel.scale(0);
+        this.stopped = false;
 
-      // kick dude out
-      if (this.driver) {
-        this.driver.leaveCar();
-      };
+        // inventory goes bye-bye
+        this.inventory = null;
 
-      // make it hard to move around
-      this.mass = 5000;
+        // kick dude out
+        if (this.driver) {
+          this.driver.leaveCar();
+        };
 
-      // EXPLOOOODE!
-      Explosion.createNew(this.pos);
+        // make it hard to move around
+        this.mass = 5000;
+
+        // EXPLOOOODE!
+        Explosion.createNew(this.pos);
+      }
     }
   };
 

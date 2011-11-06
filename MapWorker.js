@@ -161,7 +161,7 @@ var addCar = function (x, y, tile, tiles) {
       rot: rot
     },
     health: husk ? -1 : Math.round(Math.random() * 100),
-    canSmoke: !husk // don't smoke if it's already a husk
+    canSmoke: false // don't smoke until hit
   };
 
   tiles.sprites.push(JSON.stringify(car));
