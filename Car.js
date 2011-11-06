@@ -324,6 +324,7 @@ define(["Game",
     data.inventory   = this.inventory && this.inventory.saveMetadata();
     data.currentFuel = this.currentFuel;
     data.health      = this.health;
+    data.canSmoke    = false; // car stops smoking after it is saved off
     return data;
   };
 
