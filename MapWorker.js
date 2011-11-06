@@ -167,6 +167,45 @@ var addCar = function (x, y, tile, tiles) {
   tiles.sprites.push(JSON.stringify(car));
 };
 
+var generateCount = function (countString) {
+  var split = countString.split('d');
+  var i, count = 0;
+  if (split.length > 1) {
+    var dice = parseInt(split[0]);
+    var faces = parseInt(split[1]);
+    for (i = 0; i < dice; i++) {
+      count += Math.floor(Math.random() * faces) + 1;
+    }
+  } else {
+    count = parseInt(countString);
+  }
+  return count;
+};
+
+var seedBuildings = function (buildings) {
+  _.each(buildings, function (building) {
+    var list = building.inventory;
+    var random, count, i, inventory = [];
+
+    _.each(list, function (item) {
+      random = Math.random();
+      if (random < item.percent) {
+        count = generateCount(item.dice);
+        if (item.stacked) {
+          item.count = count;
+          inventory.push(item);
+        } else {
+          for (i = 0; i < count; i++) {
+            inventory.push(item);
+          }
+        }
+      }
+    });
+
+    building.inventory = inventory;
+  });
+};
+
 var loadSection = function (config) {
   // fills the map with the given section
   var section = sections[config.sectionName];
@@ -232,6 +271,8 @@ onmessage = function (e) {
                 getRandomSection(config.roads);
 
   fillBlankTiles(tiles, config.width);
+
+  seedBuildings(tiles.buildings);
 
   var message = {
     type:      'newtiles',

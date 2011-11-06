@@ -150,7 +150,11 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
           for (var val in itemData) {
             item[val] = itemData[val];
           }
-          self.addItem(item, itemData.x, itemData.y);
+          if (itemData.x && itemData.y) {
+            self.addItem(item, itemData.x, itemData.y);
+          } else {
+            self.stuffItemIn(item);
+          }
         });
       });
     },
