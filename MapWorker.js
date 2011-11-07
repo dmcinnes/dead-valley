@@ -81,6 +81,7 @@ _(section_list).each(function (name) {
 var fillBlankTiles = function (tiles, width) {
   var x, y;
   var total = tiles.length;
+  var carCount = 0;
 
   var addCars = Math.random() < 0.5; // 50% chance of cars
 
@@ -123,12 +124,13 @@ var fillBlankTiles = function (tiles, width) {
         x = (i % width) * 60;
         y = Math.floor(i / width) * 60;
         addCar(x, y, tile, tiles);
+        carCount++;
       }
 
     }
   }
 
-  return tiles;
+  return carCount;
 };
 
 var addCar = function (x, y, tile, tiles) {
@@ -161,6 +163,7 @@ var addCar = function (x, y, tile, tiles) {
       rot: rot
     },
     health: husk ? -1 : Math.round(Math.random() * 100),
+    isCar: true,
     canSmoke: false // don't smoke until hit
   };
 
@@ -208,6 +211,40 @@ var seedBuildings = function (buildings) {
 
     return building;
   });
+};
+
+var seedZombies = function (tiles, carCount, width, distance) {
+  var x, y, i, tileOffset, tile, zombie;
+  var buildingCount = tiles.buildings.length;
+  var maxZombies = buildingCount * 3 + carCount;
+  var scale = distance / 10;
+  var zombieCount = Math.round(Math.random() * maxZombies * scale);
+
+  for (i = 0; i < zombieCount; i++) {
+    do {
+      tileOffset = Math.floor(Math.random() * tiles.length);
+      tile = tiles[tileOffset];
+      if (tile.isRoad || Math.random() < 0.2) {
+
+        x = (tileOffset % width) * 60;
+        y = Math.floor(tileOffset / width) * 60;
+        
+        zombie = {
+          clazz: 'Zombie',
+          pos: {
+            x: x + Math.random() * 60,
+            y: y + Math.random() * 60,
+            rot: 0
+          }
+        };
+
+        tiles.sprites.push(JSON.stringify(zombie));
+
+      } else {
+        tile = null;
+      }
+    } while (!tile);
+  }
 };
 
 var loadSection = function (config) {
@@ -270,13 +307,20 @@ var getRandomSection = function (incomingRoads) {
 onmessage = function (e) {
   var config = JSON.parse(e.data);
 
+  var x = config.position.x;
+  var y = config.position.y;
+  var distance = Math.sqrt(x*x + y*y);
+  console.log(distance);
+
   var tiles = (config.sectionName) ?
                 loadSection(config) :
                 getRandomSection(config.roads);
 
-  fillBlankTiles(tiles, config.width);
+  var carCount = fillBlankTiles(tiles, config.width);
 
   tiles.buildings = seedBuildings(tiles.buildings);
+
+  seedZombies(tiles, carCount, config.width, distance);
 
   var message = {
     type:      'newtiles',

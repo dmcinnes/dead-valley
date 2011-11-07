@@ -8,7 +8,6 @@ require(
    "Dude",
    "Sky",
    "hud/Hud",
-   "sprites/Zombie",
    "World",
    "Mouse",
    "Cheat"],
@@ -22,7 +21,6 @@ require(
             Dude,
             Sky,
             Hud,
-            Zombie,
             World,
             Mouse,
             Cheat) {
@@ -69,21 +67,6 @@ require(
         dude = new Dude();
         dude.pos.x = startX;
         dude.pos.y = startY;
-
-        var zombie = new Zombie();
-        zombie.pos.x = startX + 200;
-        zombie.pos.y = startY;
-        Game.addSprite(zombie);
-
-        zombie = new Zombie();
-        zombie.pos.x = startX + 200;
-        zombie.pos.y = 1000;
-        Game.addSprite(zombie);
-
-        zombie = new Zombie();
-        zombie.pos.x = startX + 300;
-        zombie.pos.y = 1000;
-        Game.addSprite(zombie);
       }
 
       // Call me The DUDE
