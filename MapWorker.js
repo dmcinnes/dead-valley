@@ -79,7 +79,7 @@ _(section_list).each(function (name) {
 
 // fills a map's blank tiles wth random dirt and scrub
 var fillBlankTiles = function (tiles, width) {
-  var x, y;
+  var x, y, i, count;
   var total = tiles.length;
   var carCount = 0;
 
@@ -89,7 +89,7 @@ var fillBlankTiles = function (tiles, width) {
     tiles.sprites = [];
   }
 
-  for (var i = 0; i < total; i++) {
+  for (i = 0; i < total; i++) {
     var tile = tiles[i];
     if (tile.tileOffset === 0) {
       var test = Math.random()
@@ -214,31 +214,48 @@ var seedBuildings = function (buildings) {
 };
 
 var seedZombies = function (tiles, carCount, width, distance) {
-  var x, y, i, tileOffset, tile, zombie;
+  var x, y, i, j, tileOffset, tile, zombie, count, groupsLength;
   var buildingCount = tiles.buildings.length;
   var maxZombies = buildingCount * 3 + carCount;
   var scale = distance / 10;
   var zombieCount = Math.round(Math.random() * maxZombies * scale);
+  var zombieGroups = [];
 
-  for (i = 0; i < zombieCount; i++) {
+  // group the zombies up
+  while (zombieCount) {
+    count = Math.round(Math.random() * 10);
+    if (count > zombieCount) {
+      count = zombieCount;
+    }
+    zombieCount -= count;
+    zombieGroups.push(count);
+  }
+
+  groupsLength = zombieGroups.length;
+
+  for (i = 0; i < groupsLength; i++) {
     do {
       tileOffset = Math.floor(Math.random() * tiles.length);
       tile = tiles[tileOffset];
-      if (tile.isRoad || Math.random() < 0.2) {
+      if (tile.isRoad || Math.random() < 0.01) {
 
-        x = (tileOffset % width) * 60;
-        y = Math.floor(tileOffset / width) * 60;
-        
-        zombie = {
-          clazz: 'Zombie',
-          pos: {
-            x: x + Math.random() * 60,
-            y: y + Math.random() * 60,
-            rot: 0
-          }
-        };
+        // add the number of zombies that are in this group
+        count = zombieGroups[i];
+        for (j = 0; j < count; j++) {
+          x = (tileOffset % width) * 60;
+          y = Math.floor(tileOffset / width) * 60;
+          
+          zombie = {
+            clazz: 'Zombie',
+            pos: {
+              x: x + Math.random() * 60,
+              y: y + Math.random() * 60,
+              rot: 0
+            }
+          };
 
-        tiles.sprites.push(JSON.stringify(zombie));
+          tiles.sprites.push(JSON.stringify(zombie));
+        }
 
       } else {
         tile = null;
