@@ -1,5 +1,5 @@
-define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory"],
-       function (Game, Sprite, Collidable, Vector, BulletHit, Inventory) {
+define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "sprites/Zombie"],
+       function (Game, Sprite, Collidable, Vector, BulletHit, Inventory, Zombie) {
 
   var bulletHit = new BulletHit();
 
@@ -43,7 +43,37 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory"],
   };
 
   Building.prototype.enter = function (dude) {
-    Game.events.fireEvent('enter building', this);
+    if (this.zombies) {
+      // zombies pop out!
+      for (var i = 0; i < this.zombies; i++) {
+        var zombie = new Zombie();
+        zombie.pos.set(dude.pos);
+        var extra = new Vector(Math.random() * 360);
+        zombie.pos.translate(extra.scale(5));
+        Game.addSprite(zombie);
+      }
+
+      this.zombies = 0;
+
+      // push dude back a bit
+      var node = dude.currentNode;
+      var pushback = Game.gridSize / 2;
+      // cheesy but hey
+      if (node.north.nextSprite && node.north.nextSprite.isBuilding) {
+        dude.pos.y += pushback;
+      } else if (node.south.nextSprite && node.south.nextSprite.isBuilding) {
+        dude.pos.y -= pushback;
+      } else if (node.east.nextSprite && node.east.nextSprite.isBuilding) {
+        dude.pos.x -= pushback;
+      } else if (node.west.nextSprite && node.west.nextSprite.isBuilding) {
+        dude.pos.x += pushback;
+      }
+
+      return false; // can't enter
+    } else {
+      Game.events.fireEvent('enter building', this);
+      return true; // can enter
+    }
   };
 
   Building.prototype.leave = function (dude) {

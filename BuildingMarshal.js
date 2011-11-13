@@ -20,6 +20,8 @@ define(['Building'], function (Building) {
       building.inventory.setInventory(inventory);
       building.inventory.name = building.name;
 
+      building.zombies = buildingObj.zombies;
+
       // save this so we can use it later for unmarshalling
       building.buildingObject = buildingObj;
 

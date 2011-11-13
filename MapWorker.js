@@ -185,7 +185,8 @@ var generateCount = function (countString) {
   return count;
 };
 
-var seedBuildings = function (buildings) {
+var seedBuildings = function (buildings, scale) {
+  var zombieChance = scale / 10;
   return _.map(buildings, function (building) {
     building = _.clone(building);
 
@@ -209,15 +210,20 @@ var seedBuildings = function (buildings) {
 
     building.inventory = inventory;
 
+    // zombies pop out!
+    if (building.entrances.length &&
+        Math.random() < zombieChance) {
+      building.zombies = Math.round(scale) + 1;
+    }
+
     return building;
   });
 };
 
-var seedZombies = function (tiles, carCount, width, distance) {
+var seedZombies = function (tiles, carCount, width, scale) {
   var x, y, i, j, tileOffset, tile, zombie, count, groupsLength;
   var buildingCount = tiles.buildings.length;
   var maxZombies = buildingCount * 3 + carCount;
-  var scale = distance / 10;
   var zombieCount = Math.round(Math.random() * maxZombies * scale);
   var zombieGroups = [];
 
@@ -327,7 +333,8 @@ onmessage = function (e) {
   var x = config.position.x;
   var y = config.position.y;
   var distance = Math.sqrt(x*x + y*y);
-  console.log(distance);
+  // how much to scale the zombie infestation
+  var scale = distance / 10;
 
   var tiles = (config.sectionName) ?
                 loadSection(config) :
@@ -335,9 +342,9 @@ onmessage = function (e) {
 
   var carCount = fillBlankTiles(tiles, config.width);
 
-  tiles.buildings = seedBuildings(tiles.buildings);
+  tiles.buildings = seedBuildings(tiles.buildings, scale);
 
-  seedZombies(tiles, carCount, config.width, distance);
+  seedZombies(tiles, carCount, config.width, scale);
 
   var message = {
     type:      'newtiles',

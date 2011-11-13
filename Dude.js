@@ -214,14 +214,15 @@ define(["Game",
   };
 
   Dude.prototype.enterBuilding = function (building) {
-    this.hide();
-    this.updateTouchingList(); // to clear what we're touching
-    this.inside = building;
-    if (this.currentNode) {
-      this.currentNode.leave(this);
-      this.currentNode = null;
+    if (building.enter(this)) {
+      this.hide();
+      this.updateTouchingList(); // to clear what we're touching
+      this.inside = building;
+      if (this.currentNode) {
+        this.currentNode.leave(this);
+        this.currentNode = null;
+      }
     }
-    building.enter(this);
   };
 
   Dude.prototype.leaveBuilding = function () {
