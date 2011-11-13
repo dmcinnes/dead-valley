@@ -5,7 +5,7 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   var RIGHT = false;
 
   var MIN_SPEED                      = 11;   // 5 MPH
-  var MAX_SPEED                      = 22;   // 10 MPH
+  var MAX_SPEED                      = 44;   // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE   = 2;    // in pixels
   var ATTACKING_ANIMATION_FRAME_RATE = 0.25; // in seconds
   var DYING_ANIMATION_FRAME_RATE     = 0.25; // in seconds
