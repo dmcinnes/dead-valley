@@ -56,6 +56,9 @@ X add car damage/destruction
 X fix collision response
 X make explosions light up night
 X make zombies walk at different speeds
+X add zombies randomly to map based on building population of section
+X transfering fuel between cars
+X make tip not obscure sprites
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -64,15 +67,13 @@ tune Honda's performance
 make trees transparent when touching sprite
 convert everything to radians
 make zombies follow building edges
-add zombies randomly to map based on building population of section
 generalize sprite animation handling
 HUD ammo count
 broken headlights
 headlight repair
 fix barrel 'sliding'
+fix destroyed car 'sliding'
 support shooting out of car
-transfering fuel between cars
-make tip not obscure sprites
 gas pumps can take damage
 make zombies attracted to noise
 make zombies attracted to light
@@ -80,13 +81,17 @@ firearm reload times
 firearm between shot timeout
 fix zombie hitbox
 add dude roll/damage when jumping out of car
-use rotateX 3d transition for driving over rough ground
 add inventory/hud toggle button
 explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click
 some cars can take more damage than other
 make gunfire light up night
 make mapworker work when WebWorkers aren't supported
+fix zombie wiggle
+damage car when it drives over rough ground
+game over screen
+intro screen
+cheat sheet
 
 *EDITOR*
 X remove current collidible code
