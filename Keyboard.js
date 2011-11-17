@@ -17,14 +17,16 @@ define([], function () {
   // set up the structure for handling key presses
   // support specifying the destination key
   var setupKeyStatus = function (key, dest) {
-    var lower = dest || key.toLowerCase();
-    var code = lower.charCodeAt(0);
-    KEY_CODES[code] = lower;
-    keyStatus[lower] = false;
+    if (keyStatus[key] === undefined) {
+      var lower = dest || key.toLowerCase();
+      var code = lower.charCodeAt(0);
+      KEY_CODES[code] = lower;
+      keyStatus[lower] = false;
 
-    code = key.toUpperCase().charCodeAt(0);
-    KEY_CODES[code] = lower;
-    keyStatus[lower] = false;
+      code = key.toUpperCase().charCodeAt(0);
+      KEY_CODES[code] = lower;
+      keyStatus[lower] = false;
+    }
   };
 
   var downHandlers = {};
