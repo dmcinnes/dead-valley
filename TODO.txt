@@ -92,6 +92,12 @@ damage car when it drives over rough ground
 game over screen
 intro screen
 cheat sheet
+fix screen slide when dude enters house while moving
+fix dude aim arm sticks around when entering car
+double-clicking stackable items should stack them when moved
+zombies should do damage from above and below
+headlight cone should not render off if car is off the screen
+keep track of statistics
 
 *EDITOR*
 X remove current collidible code
