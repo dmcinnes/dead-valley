@@ -3,6 +3,8 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
 
   var bulletHit = new BulletHit();
 
+  var MAX_HEALTH = 10;
+
   var Building = function (points) {
     this.points = points;
 
@@ -16,6 +18,9 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
 
     this.vel = new Vector(0, 0);
     this.vel.rot = 0;
+
+    // how much damage it can take before dude pops out
+    this.health = MAX_HEALTH;
 
     this.inventory = new Inventory({width:12, height:8, name:this.name});
 
@@ -42,6 +47,21 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
     bulletHit.fireSparks(hit);
   };
 
+  var pushBackDude = function (dude) {
+    var node = dude.currentNode;
+    var pushback = Game.gridSize / 2;
+    // cheesy but hey
+    if (node.north.nextSprite && node.north.nextSprite.isBuilding) {
+      dude.pos.y += pushback;
+    } else if (node.south.nextSprite && node.south.nextSprite.isBuilding) {
+      dude.pos.y -= pushback;
+    } else if (node.east.nextSprite && node.east.nextSprite.isBuilding) {
+      dude.pos.x -= pushback;
+    } else if (node.west.nextSprite && node.west.nextSprite.isBuilding) {
+      dude.pos.x += pushback;
+    }
+  };
+
   Building.prototype.enter = function (dude) {
     if (this.zombies) {
       // zombies pop out!
@@ -56,21 +76,11 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
       this.zombies = 0;
 
       // push dude back a bit
-      var node = dude.currentNode;
-      var pushback = Game.gridSize / 2;
-      // cheesy but hey
-      if (node.north.nextSprite && node.north.nextSprite.isBuilding) {
-        dude.pos.y += pushback;
-      } else if (node.south.nextSprite && node.south.nextSprite.isBuilding) {
-        dude.pos.y -= pushback;
-      } else if (node.east.nextSprite && node.east.nextSprite.isBuilding) {
-        dude.pos.x -= pushback;
-      } else if (node.west.nextSprite && node.west.nextSprite.isBuilding) {
-        dude.pos.x += pushback;
-      }
+      pushBackDude(dude);
 
       return false; // can't enter
     } else {
+      this.health = MAX_HEALTH;
       Game.events.fireEvent('enter building', this);
       return true; // can enter
     }
@@ -78,6 +88,16 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
 
   Building.prototype.leave = function (dude) {
     Game.events.fireEvent('leave building', this);
+  };
+
+  Building.prototype.takeDamage = function (amount) {
+    if (Game.dude.inside === this) {
+      this.health -= amount;
+      if (this.health <= 0) {
+        // kick him out!
+        Game.dude.leaveBuilding();
+      }
+    }
   };
 
   Collidable(Building);

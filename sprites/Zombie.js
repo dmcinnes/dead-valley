@@ -7,9 +7,9 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   var MIN_SPEED                      = 11;   // 5 MPH
   var MAX_SPEED                      = 44;   // 20 MPH
   var WALKING_ANIMATION_FRAME_RATE   = 2;    // in pixels
-  var ATTACKING_ANIMATION_FRAME_RATE = 0.25; // in seconds
+  var ATTACKING_ANIMATION_FRAME_RATE = 0.10; // in seconds
   var DYING_ANIMATION_FRAME_RATE     = 0.25; // in seconds
-  var DAMAGE_WINDOW                  = 0.05; // in seconds
+  var DAMAGE_WINDOW                  = 0.02; // in seconds
   var SCAN_TIMEOUT_RESET             = 1;    // in seconds
   var MAX_WAIT_TIME                  = 20;   // in seconds
   var MAX_RANGE                      = 400;  // how far a Zombie can see - in pixels
@@ -75,6 +75,8 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     this.attackSpeed = MIN_SPEED + Math.random() * (MAX_SPEED - MIN_SPEED);
   };
   Zombie.prototype = new Sprite();
+
+  Zombie.prototype.isZombie = true;
 
   // draw the 'dead' zombie
   Zombie.prototype.modifyForPronePosition = function () {
@@ -142,6 +144,11 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
 	if (sprite === target) {
 	  see = true;
 	}
+       
+        // look past other zombies
+        // keep going if there isn't a collision
+        // stop if you see the dude
+        return sprite.isZombie || !collision;
       });
       if (see) {
 	this.target       = target.pos.clone();
@@ -181,20 +188,27 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     }
   };
 
+  Zombie.prototype.hit = function (other) {
+    // are we in the window of opportunity?
+    if (this.attackingFrame === 3 && // arm stretched
+        other.takeDamage &&          // can take damage
+        this.attackingFrameCounter > ATTACKING_ANIMATION_FRAME_RATE - DAMAGE_WINDOW) {
+      other.takeDamage(1);
+    }
+  };
+
   Zombie.prototype.collision = function (other, point, vector, vab) {
     // zombies don't rotate
     this.pos.rot = 0;
     this.vel.rot = 0;
     
     if (other === Game.dude ||
-        other === Game.dude.driving) {
+        other === Game.dude.driving ||
+        (other === Game.dude.inside &&
+         this.currentState === this.states.pounding)) {
       this.currentState = this.states.attacking;
 
-      // are we in the window of opportunity?
-      if (this.attackingFrame === 3 && // arm stretched
-          this.attackingFrameCounter > ATTACKING_ANIMATION_FRAME_RATE - DAMAGE_WINDOW) {
-        other.takeDamage(1);
-      }
+      this.hit(other);
     }
     var magnitude = vab.magnitude();
     if (magnitude > 132) { // 30 MPH
@@ -202,8 +216,8 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     }
   };
 
-  Zombie.prototype.moveToward = function (pos) {
-    var mosey = pos.subtract(this.pos).normalize().scale(this.moseySpeed);
+  Zombie.prototype.moveToward = function (pos, speed) {
+    var mosey = pos.subtract(this.pos).normalize().scale(speed || this.moseySpeed);
     this.vel.set(mosey);
   };
 
@@ -253,11 +267,23 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
       this.vel.set(mosey);
       this.walking = true;
 
-      if (!this.seeTarget) {
+      if (this.targetSprite.inside) {
+        this.currentState = this.states.pounding;
+      } else if (!this.seeTarget) {
         this.currentState = this.states.searching;
       }
     },
+    pounding: function () {
+      if (this.targetSprite.inside) {
+        this.moveToward(this.targetSprite.inside.pos);
+      } else {
+        this.currentState = this.states.stalking;
+      }
+    },
     attacking: function () {
+      if (Game.dude.inside) {
+        this.hit(Game.dude.inside);
+      }
       this.vel.scale(0);
       this.walking = false;
     },
