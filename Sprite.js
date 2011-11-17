@@ -322,6 +322,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
 
   Sprite.prototype.show = function () {
     this.visible = true;
+    this.render(0); // so position is updated
     this.node.show();
   };
 
