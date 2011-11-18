@@ -197,7 +197,32 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     }
   };
 
-  Zombie.prototype.collision = function (other, point, vector, vab) {
+  Zombie.prototype.findEndOfObstacle = function (obstacle, point, normal) {
+    var parallel = normal.normal();
+    var dot = parallel.dotProduct(this.vel);
+    var newDir = parallel.scale(dot).normalize();
+    // which of the obstacle's points is closest in line which the direction
+    // we want to go?
+    var points = obstacle.transformedPoints();
+    var length = points.length;
+    var i, dot, max = 0;
+    var point, testPoint;
+    for (i = 0; i < length; i++) {
+      testPoint = points[i].subtract(obstacle.pos);
+      dot = testPoint.dotProduct(newDir);
+      max = Math.max(max, dot);
+      if (dot === max) {
+        point = testPoint;
+      }
+    }
+    var extra = point.clone().normalize().scale(20);
+    newDir.scale(20);
+
+    // new target
+    this.target = point.add(extra).translate(newDir).translate(obstacle.pos);
+  };
+
+  Zombie.prototype.collision = function (other, point, normal, vab) {
     // zombies don't rotate
     this.pos.rot = 0;
     this.vel.rot = 0;
@@ -209,7 +234,12 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
       this.currentState = this.states.attacking;
 
       this.hit(other);
+    } else if (this.currentState !== this.states.attacking &&
+               !other.isZombie) {
+      this.currentState = this.states.searching;
+      this.findEndOfObstacle(other, point, normal);
     }
+
     var magnitude = vab.magnitude();
     if (magnitude > 132) { // 30 MPH
       this.takeDamage(Math.floor(magnitude / 88)); // every 20 MPH
