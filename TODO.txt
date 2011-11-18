@@ -59,6 +59,7 @@ X make zombies walk at different speeds
 X add zombies randomly to map based on building population of section
 X transfering fuel between cars
 X make tip not obscure sprites
+X headlight cone should not stop rendering if car is off screen
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -96,7 +97,6 @@ fix screen slide when dude enters house while moving
 fix dude aim arm sticks around when entering car
 double-clicking stackable items should stack them when moved
 zombies should do damage from above and below
-headlight cone should not render off if car is off the screen
 keep track of statistics
 
 *EDITOR*

@@ -26,6 +26,7 @@ define(['Game'], function (Game) {
   };
 
   return {
-    render: render
+    render: render,
+    length: length + halfWidth
   };
 });

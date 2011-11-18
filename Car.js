@@ -121,6 +121,13 @@ define(["Game",
     }
   };
 
+  Car.prototype.isInRenderRange = function (x, y) {
+    return !(x + this.tileWidth  + Headlight.length < 0 ||
+             y + this.tileHeight + Headlight.length < 0 ||
+             x - this.tileWidth  - Headlight.length > Game.GameWidth ||
+             y - this.tileHeight - Headlight.length > Game.GameHeight);
+  };
+
   Car.prototype.setSteering = function (steering) {
     if (steering == 0) this.steeringAngle = 0; // reset
     this.steeringAngle += steering;

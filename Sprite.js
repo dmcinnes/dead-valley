@@ -230,6 +230,13 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     }
   };
 
+  Sprite.prototype.isInRenderRange = function (x, y) {
+    return !(x + this.tileWidth < 0 ||
+             y + this.tileHeight < 0 ||
+             x - this.tileWidth > Game.GameWidth ||
+             y - this.tileHeight > Game.GameHeight);
+  };
+
   Sprite.prototype.render = function (delta) {
     if (!this.visible) return;
 
@@ -247,10 +254,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     var x = this.pos.x - map.originOffsetX;
     var y = this.pos.y - map.originOffsetY;
 
-    if (x + this.tileWidth < 0 ||
-        y + this.tileHeight < 0 ||
-        x - this.tileWidth > Game.GameWidth ||
-        y - this.tileHeight > Game.GameHeight) {
+    if (!this.isInRenderRange(x, y)) {
       // TODO find a better way to handle this
       style.visibility = 'hidden';
       return; // no need to draw or update
