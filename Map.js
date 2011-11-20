@@ -51,6 +51,8 @@ define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
       this.velX = 0;
       this.velY = 0;
 
+      this.needsRender = true;
+
       this.nodes = new Array(gridWidth * gridHeight);
       this.freeNodes = [];
 
@@ -127,7 +129,13 @@ define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
       this.originOffsetY += this.velY;
 
       if (this.velX || this.velY) {
+        this.needsRender = true;
+
         Game.events.fireEvent('map scroll', new Vector(this.velX, this.velY));
+
+        // clear the velocity
+        this.velX = 0;
+        this.velY = 0;
       }
     };
 
@@ -516,40 +524,40 @@ define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
     };
 
     this.render = function (delta) {
-      // check for 0 delta so we can do first render
-      if (delta && !this.velX && !this.velY) {
-        return;
-      }
+      if (this.needsRender) {
+        startX = Math.floor(this.submapOffsetX / Game.gridSize) - 2;
+        if (startX < 0) {
+          startX = 0;
+        }
+        startY = Math.floor(this.submapOffsetY / Game.gridSize) - 2;
+        if (startY < 0) {
+          startY = 0;
+        }
+        imageWidth  = this.viewportGridWidth  + 4;
+        imageHeight = this.viewportGridHeight + 4;
 
-      startX = Math.floor(this.submapOffsetX / Game.gridSize) - 2;
-      if (startX < 0) {
-        startX = 0;
-      }
-      startY = Math.floor(this.submapOffsetY / Game.gridSize) - 2;
-      if (startY < 0) {
-        startY = 0;
-      }
-      imageWidth  = this.viewportGridWidth  + 4;
-      imageHeight = this.viewportGridHeight + 4;
+        imageData =
+          this.levelMapContext.getImageData(startX,
+                                            startY,
+                                            imageWidth,
+                                            imageHeight);
+        imageWidth  = imageData.width;
+        imageHeight = imageData.height;
+        imageData   = imageData.data;
 
-      imageData =
-        this.levelMapContext.getImageData(startX,
-                                          startY,
-                                          imageWidth,
-                                          imageHeight);
-      imageWidth  = imageData.width;
-      imageHeight = imageData.height;
-      imageData   = imageData.data;
+        i = imageData.length / 4;
+        while (i) {
+          i--;
+          offset = i * 4;
+          nodeOffset =  imageData[offset] +
+                       (imageData[offset+1] << 8);
+          gridX = Math.floor(((i % imageWidth) + startX) * Game.gridSize - this.submapOffsetX);
+          gridY = Math.floor((Math.floor(i / imageWidth) + startY) * Game.gridSize - this.submapOffsetY);
+          this.nodes[nodeOffset].render(delta, gridX, gridY);
+        }
 
-      i = imageData.length / 4;
-      while (i) {
-        i--;
-        offset = i * 4;
-        nodeOffset =  imageData[offset] +
-                     (imageData[offset+1] << 8);
-        gridX = Math.floor(((i % imageWidth) + startX) * Game.gridSize - this.submapOffsetX);
-        gridY = Math.floor((Math.floor(i / imageWidth) + startY) * Game.gridSize - this.submapOffsetY);
-        this.nodes[nodeOffset].render(delta, gridX, gridY);
+        // completed render, doesn't need it now
+        this.needsRender = false;
       }
     };
 
@@ -559,9 +567,6 @@ define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
     this.keepInView = function (sprite) {
       screenX = sprite.pos.x + sprite.vel.x*0.8 - this.originOffsetX;
       screenY = sprite.pos.y + sprite.vel.y*0.8 - this.originOffsetY;
-
-      this.velX = 0;
-      this.velY = 0;
 
       if (screenX < hBorder) {
         this.velX = screenX - hBorder;
