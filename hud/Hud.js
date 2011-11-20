@@ -49,13 +49,13 @@ define(['Game',
     if (change) {
 
       if (!otherInventory && otherInventoryDisplay) {
-        removeOtherInventory();
+        removeOtherInventoryDisplay();
       }
 
       if (otherInventory &&
          (!otherInventoryDisplay ||
           otherInventory !== otherInventoryDisplay.inventory)) {
-        updateOtherInventory();
+        updateOtherInventoryDisplay();
       }
 
       _.each(hudStatus, function (status, hud) {
@@ -72,18 +72,17 @@ define(['Game',
   };
 
   // remove the current other inventory
-  var removeOtherInventory = function () {
+  var removeOtherInventoryDisplay = function () {
     if (otherInventoryDisplay) {
       otherInventoryDisplay.clearEventHandlers();
       otherInventoryDisplay = null;
-      otherInventory = null;
       $otherInventoryDiv.empty();
     }
   };
 
   // update the other inventory to whatever is focused
-  var updateOtherInventory = function () {
-    removeOtherInventory();
+  var updateOtherInventoryDisplay = function () {
+    removeOtherInventoryDisplay();
     otherInventoryDisplay = new InventoryDisplay(otherInventory,
                                                  $otherInventoryDiv,
                                                  { doubleClickTarget:Game.dude.inventory });
@@ -130,8 +129,7 @@ define(['Game',
     'stop fueling': function (fuelee) {
       hudStatus.fuelGauge = false;
     },
-    'new dude': dudeSetup,
-    'end frame': updateHud
+    'new dude': dudeSetup
   };
 
   var dudeHandlers = {
@@ -201,4 +199,7 @@ define(['Game',
   
   // attach all the handlers to game events we care about
   attachHandlers(Game.events, gameHandlers);
+
+  // check for HUD updates after every frame
+  Game.events.subscribe('end frame', updateHud);
 });
