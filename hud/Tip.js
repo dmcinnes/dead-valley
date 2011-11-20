@@ -27,19 +27,25 @@ define(['Game'], function (Game) {
     currentSprite = null;
   };
 
-  Game.events.subscribe('started touching', function (sprite) {
-    if (setTipText(sprite)) {
-      currentSprite = sprite;
-      sprite.subscribe('tip data change', setTipText);
-    }
-  }).subscribe('stopped touching', function (sprite) {
-    if (currentSprite === sprite) {
-      removeTip();
-    }
-  }).subscribe('mousedown', function (vec) {
+
+  Game.events.subscribe('mousedown', function (vec) {
     tip.detach();
   }).subscribe('map scroll', function (vec) {
     var pos = tip.position();
     tip.css({left:pos.left - vec.x, top:pos.top - vec.y});
+  }).subscribe('new dude', function (dude) {
+
+    dude.subscribe('started touching', function (sprite) {
+      if (setTipText(sprite)) {
+        currentSprite = sprite;
+        sprite.subscribe('tip data change', setTipText);
+      }
+    }).subscribe('stopped touching', function (sprite) {
+      if (currentSprite === sprite) {
+        removeTip();
+      }
+    });
+
   });
+
 });

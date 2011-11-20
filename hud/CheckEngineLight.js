@@ -23,12 +23,11 @@ define(['Game'], function (Game) {
       }
       currentCar = car;
       currentCar.subscribe('health changed', update);
+      update(car.health);
     }
   };
 
   var show = function (car) {
-    registerCar(car);
-    update(car.health);
     light.show();
     visible = true;
   };
@@ -38,6 +37,7 @@ define(['Game'], function (Game) {
     visible = false;
   };
 
+  Game.events.subscribe('enter car', registerCar);
 
   return {
     render: function (delta) {

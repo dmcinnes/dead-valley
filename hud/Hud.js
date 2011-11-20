@@ -1,14 +1,14 @@
 // Place where we handle all the HUD interaction details
 define(['Game',
-       'hud/InventoryDisplay',
-       'hud/DudeHandsInventoryDisplay',
-       'hud/LifeMeter',
-       'hud/Pause',
-       'hud/Framerate',
-       'hud/FuelGauge',
-       'hud/Tip',
-       'hud/CheckEngineLight',
-       'Firearm'],
+        'hud/InventoryDisplay',
+        'hud/DudeHandsInventoryDisplay',
+        'hud/LifeMeter',
+        'hud/Pause',
+        'hud/Framerate',
+        'hud/FuelGauge',
+        'hud/Tip',
+        'hud/CheckEngineLight',
+        'Firearm'],
 
        function (Game,
                  InventoryDisplay,
@@ -23,29 +23,57 @@ define(['Game',
 
   var dudeInventory, dudeHands;
   var inventoryShown = false;
-  var $dudeInventoryDiv = $('#dude-inventory');
-  var $otherInventoryDiv = $('#other-inventory');
+  var $dudeInventoryDiv = $('#dude-inventory').hide();
+  var $otherInventoryDiv = $('#other-inventory').hide();
   var otherInventory = null;
   var otherInventoryDisplay = null;
+  var change = false
 
-  var updateOtherInventory = function () {
-    if (Game.dude.inside) {
-      otherInventory = Game.dude.inside.inventory;
-    } else if (Game.dude.driving) {
-      otherInventory = Game.dude.driving.inventory;
-    } else {
-      var touchList = Game.dude.touching;
-      for (var i = 0; i < touchList.length; i++) {
-	var inv = touchList[i].inventory;
-	if (inv && inv.touch) {
-	  otherInventory = inv;
-	}
-      }
-    }
+  var hudStatus = {
+    fuelGauge:      false,
+    checkEngine:    false,
+    dudeInventory:  false,
+    otherInventory: false
   };
 
+  var hudElements = {
+    fuelGauge:      FuelGauge,
+    checkEngine:    CheckEngineLight,
+    dudeInventory:  $dudeInventoryDiv,
+    otherInventory: $otherInventoryDiv
+  };
+
+  // run once per frame
+  var updateHud = function () {
+
+    if (change) {
+
+      if (!otherInventory && otherInventoryDisplay) {
+        removeOtherInventory();
+      }
+
+      if (otherInventory &&
+         (!otherInventoryDisplay ||
+          otherInventory !== otherInventoryDisplay.inventory)) {
+        updateOtherInventory();
+      }
+
+      _.each(hudStatus, function (status, hud) {
+        var element = hudElements[hud];
+        status = inventoryShown && status;
+        if (element) {
+          status ? element.show() : element.hide();
+        }
+      });
+
+      change = false;
+    }
+
+  };
+
+  // remove the current other inventory
   var removeOtherInventory = function () {
-    if (otherInventory) {
+    if (otherInventoryDisplay) {
       otherInventoryDisplay.clearEventHandlers();
       otherInventoryDisplay = null;
       otherInventory = null;
@@ -53,86 +81,99 @@ define(['Game',
     }
   };
 
-  var showInventory = function () {
-    dudeInventory.show();
-    dudeHands.show();
-    if (otherInventory) {
-      otherInventoryDisplay = new InventoryDisplay(otherInventory,
-                                                   $otherInventoryDiv,
-                                                   { doubleClickTarget:Game.dude.inventory });
-      otherInventoryDisplay.show();
-    }
-    if (Game.dude.driving) {
-      FuelGauge.show(Game.dude.driving);
-      CheckEngineLight.show(Game.dude.driving);
-    }
-    inventoryShown = true;
-  };
-  
-  var hideInventory = function () {
-    dudeInventory.hide();
-    dudeHands.hide();
+  // update the other inventory to whatever is focused
+  var updateOtherInventory = function () {
     removeOtherInventory();
-    FuelGauge.hide();
-    CheckEngineLight.hide();
-    inventoryShown = false;
+    otherInventoryDisplay = new InventoryDisplay(otherInventory,
+                                                 $otherInventoryDiv,
+                                                 { doubleClickTarget:Game.dude.inventory });
+    otherInventoryDisplay.show();
   };
 
-  Game.events.subscribe('toggle inventory', function () {
-    if (inventoryShown) {
-      hideInventory();
-    } else {
-      updateOtherInventory();
-      showInventory();
-    }
-  }).subscribe('hide inventory', function () {
-    hideInventory();
-  }).subscribe('enter building', function (building) {
-    // show the building inventory when we enter if inventory is up
-    if (inventoryShown) {
-      otherInventory = building.inventory;
-      showInventory();
-    }
-  }).subscribe('leave building', function (building) {
-    // remove the building inventory when we exit
-    removeOtherInventory();
-  }).subscribe('enter car', function (car) {
-    // only show the fuel gauge inside the car
-    if (inventoryShown) {
-      FuelGauge.show(car);
-      CheckEngineLight.show(car);
-      otherInventory = car.inventory;
-      showInventory();
-    }
-  }).subscribe('leave car', function (car) {
-    // remove the car inventory when we exit the car
-    removeOtherInventory();
-    FuelGauge.hide();
-    CheckEngineLight.hide();
-  }).subscribe('started touching', function (sprite) {
-    // show the car inventory when we touch it if inventory is up
-    if (inventoryShown && sprite.isCar) {
-      otherInventory = sprite.inventory;
-      showInventory();
-    }
-  }).subscribe('stopped touching', function (sprite) {
-    // remove the car inventory when we stop touching it
-    if (otherInventory === sprite.inventory) {
-      removeOtherInventory();
-    }
-  }).subscribe('new dude', function (dude) {
+  // set up the dude's inventories and other handlers
+  var dudeSetup = function (dude) {
     $dudeInventoryDiv.empty();
     dudeInventory = new InventoryDisplay(Game.dude.inventory,
                                          $dudeInventoryDiv,
                                          { doubleClickTarget: Game.dude.hands });
     dudeHands = DudeHandsInventoryDisplay($dudeInventoryDiv);
-  }).subscribe('start fueling', function (fuelee) {
-    if (fuelee.isCar) {
-      FuelGauge.show(fuelee);
+    dudeInventory.show();
+    dudeHands.show();
+
+    // now that we have a dude, attach his handlers
+    attachHandlers(dude, dudeHandlers);
+  };
+
+  var attachHandlers = function (eventMachine, handlers) {
+    _.each(handlers, function (handler, key) {
+      eventMachine.subscribe(key, function () {
+        handler.apply(this, arguments);
+        change = true;
+      });
+    });
+  };
+
+  var gameHandlers = {
+    'toggle inventory': function () {
+      inventoryShown = !inventoryShown;
+      hudStatus.dudeInventory = inventoryShown;
+    },
+    'hide inventory': function () {
+      inventoryShown = false;
+      hudStatus.dudeInventory = false;
+    },
+    'start fueling': function (fuelee) {
+      if (fuelee.isCar) {
+        hudStatus.fuelGauge = true;
+      }
+    },
+    'stop fueling': function (fuelee) {
+      hudStatus.fuelGauge = false;
+    },
+    'new dude': dudeSetup,
+    'end frame': updateHud
+  };
+
+  var dudeHandlers = {
+    'entered car': function (car) {
+      otherInventory = car.inventory;
+      hudStatus.otherInventory = true;
+      hudStatus.fuelGauge      = true;
+      hudStatus.checkEngine    = true;
+    },
+
+    'left car': function (car) {
+      otherInventory = null;
+      hudStatus.otherInventory = false;
+      hudStatus.fuelGauge      = false;
+      hudStatus.checkEngine    = false;
+    },
+
+    'entered building': function (building) {
+      otherInventory = building.inventory;
+      hudStatus.otherInventory = true;
+    },
+
+    'left building': function (building) {
+      otherInventory = null;
+      hudStatus.otherInventory = false;
+    },
+
+    'started touching': function (sprite) {
+      // show the car's inventory when we touch it
+      if (sprite.isCar && sprite.inventory) {
+        otherInventory = sprite.inventory;
+        hudStatus.otherInventory = true;
+      }
+    },
+
+    'stopped touching': function (sprite) {
+      if (sprite.isCar) {
+        otherInventory = null;
+        hudStatus.otherInventory = false;
+      }
     }
-  }).subscribe('stop fueling', function (fuelee) {
-    FuelGauge.hide();
-  });
+  };
 
   // use items on right click
   $("#canvas-mask .inventory .inventory-item").live('mousedown', function (e) {
@@ -157,4 +198,7 @@ define(['Game',
 
   // so the light can blink
   Game.addSprite(CheckEngineLight);
+  
+  // attach all the handlers to game events we care about
+  attachHandlers(Game.events, gameHandlers);
 });

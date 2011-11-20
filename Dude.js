@@ -176,7 +176,7 @@ define(["Game",
     // remove sprites that we are moving away from
     this.touching = _.reject(this.touching, function (sprite) {
       if (!this.visible || this.pos.subtract(sprite.pos).dotProduct(this.vel) > 0) {
-        Game.events.fireEvent('stopped touching', sprite);
+        this.fireEvent('stopped touching', sprite);
         return true;
       }
     }, this);
@@ -190,41 +190,43 @@ define(["Game",
     // add other to the touching list
     if (!_.include(this.touching, other)) {
       this.touching.push(other);
-      Game.events.fireEvent('started touching', other);
+      this.fireEvent('started touching', other);
     }
   };
 
   Dude.prototype.enterCar = function (car) {
     if (car.enter(this)) {
       this.hide();
-      this.updateTouchingList(); // to clear what we're touching
       this.driving = car;
-      if (this.currentNode) {
-        this.currentNode.leave(this);
-        this.currentNode = null;
-      }
+      this.updateTouchingList(); // to clear what we're touching
+      this.fireEvent("entered car", car);
     }
   };
 
   Dude.prototype.leaveCar = function () {
     this.pos.set(this.driving.driversSideLocation());
     this.driving.leave(this);
+    var car = this.driving;
     this.driving = null;
     this.show();
+    this.fireEvent("left car", car);
   };
 
   Dude.prototype.enterBuilding = function (building) {
     if (building.enter(this)) {
       this.hide();
-      this.updateTouchingList(); // to clear what we're touching
       this.inside = building;
+      this.updateTouchingList(); // to clear what we're touching
+      this.fireEvent("entered building", building);
     }
   };
 
   Dude.prototype.leaveBuilding = function () {
     this.inside.leave(this);
+    var building = this.inside;
     this.inside = null;
     this.show();
+    this.fireEvent("left building", building);
   };
 
   Dude.prototype.aimTowardMouse = function (coords, setDirection) {

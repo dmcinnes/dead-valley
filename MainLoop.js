@@ -36,6 +36,8 @@ define(["Game"], function (Game) {
     Game.renderSprites(delta);
     Game.renderMap(delta);
 
+    Game.events.fireEvent('end frame');
+
     if (!paused) {
       requestAnimFrame(MainLoop, GameField);
     }

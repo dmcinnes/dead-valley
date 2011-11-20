@@ -31,8 +31,8 @@ define(["Game",
     this.broken      = Math.random() < BROKEN_PERCENT;
 
     Game.events.subscribe('mouseup', this.stopFueling, this);
-    Game.events.subscribe('started touching', this.startedTouching, this);
-    Game.events.subscribe('stopped touching', this.stoppedTouching, this);
+    Game.dude.subscribe('started touching', this.startedTouching, this);
+    Game.dude.subscribe('stopped touching', this.stoppedTouching, this);
     this.subscribe('fuel exhausted', function () {
       this.fireEvent('tip data change'); // update the tooltip
     }, this);
