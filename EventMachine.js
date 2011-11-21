@@ -5,13 +5,17 @@ define([], function () {
     if (!this._eventHandlers) {
       this._eventHandlers = {};
     }
-    if (!this._eventHandlers[eventName]) {
-      this._eventHandlers[eventName] = [];
-    }
-    this._eventHandlers[eventName].push({
-      callback:   callback,
-      thisObject: thisObject
-    });
+
+    // handle multiple event names separated by a comma
+    _.each(eventName.split(','), function (name) {
+      if (!this._eventHandlers[name]) {
+        this._eventHandlers[name] = [];
+      }
+      this._eventHandlers[name].push({
+        callback:   callback,
+        thisObject: thisObject
+      });
+    }, this);
 
     return this; // for chaining
   };

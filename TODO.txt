@@ -60,6 +60,7 @@ X add zombies randomly to map based on building population of section
 X transfering fuel between cars
 X make tip not obscure sprites
 X headlight cone should not stop rendering if car is off screen
+X make zombies attracted to noise
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -76,7 +77,6 @@ fix barrel 'sliding'
 fix destroyed car 'sliding'
 support shooting out of car
 gas pumps can take damage
-make zombies attracted to noise
 make zombies attracted to light
 firearm reload times
 firearm between shot timeout

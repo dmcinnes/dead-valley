@@ -151,12 +151,16 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         return sprite.isZombie || !collision;
       });
       if (see) {
-	this.target       = target.pos.clone();
-	this.targetVel    = target.vel.clone();
-	this.seeTarget    = true;
-	this.targetSprite = target;
+        this.setTarget(target);
       }
     }
+  };
+
+  Zombie.prototype.setTarget = function (target) {
+    this.target       = target.pos.clone();
+    this.targetVel    = target.vel.clone();
+    this.seeTarget    = true;
+    this.targetSprite = target;
   };
 
   Zombie.prototype.clearTarget = function () {
@@ -389,6 +393,15 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   };
 
   Collidable(Zombie);
+
+  Game.events.subscribe('firearm discharged,explosion', function () {
+    // wake up all the zombies
+    _.each(Game.sprites, function (sprite) {
+      if (sprite.isZombie) {
+        sprite.setTarget(Game.dude);
+      }
+    });
+  });
 
   return Zombie;
 });

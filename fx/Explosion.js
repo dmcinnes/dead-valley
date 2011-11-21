@@ -23,6 +23,8 @@ define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
     this.scale = 0.1;
 
     this.pos.rot = 360 * Math.random();
+
+    Game.events.fireEvent('explosion', this);
   };
   Explosion.prototype = new Sprite();
 

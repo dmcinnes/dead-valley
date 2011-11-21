@@ -16,6 +16,7 @@ define(['Game'], function (Game) {
       // bullet can fly further than where we're aiming
       var maxEnd = end.subtract(start).normalize().scale(this.range).translate(start);
       this.traceBullet(start, maxEnd);
+      Game.events.fireEvent('firearm discharged', this);
       return true;
     }
     return false;
