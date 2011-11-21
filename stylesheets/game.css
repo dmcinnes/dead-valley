@@ -151,7 +151,6 @@ body {
   -webkit-border-radius: 5px;
   border-spacing: 0px;
   cursor: pointer;
-  visibility: hidden;
 }
 .inventory td {
   border: 1px solid #034;

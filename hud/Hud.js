@@ -23,8 +23,8 @@ define(['Game',
 
   var dudeInventory, dudeHands;
   var inventoryShown = false;
-  var $dudeInventoryDiv = $('#dude-inventory').hide();
-  var $otherInventoryDiv = $('#other-inventory').hide();
+  var $dudeInventoryDiv = $('#dude-inventory');
+  var $otherInventoryDiv = $('#other-inventory');
   var otherInventory = null;
   var otherInventoryDisplay = null;
   var change = false
@@ -65,7 +65,11 @@ define(['Game',
         // its status set to true.
         status = (element.active && element.active()) || inventoryShown && status;
         if (element) {
-          status ? element.show() : element.hide();
+          if (element.css) {
+            status ? element.css('visibility', 'visible') : element.css('visibility', 'hidden');
+          } else {
+            status ? element.show() : element.hide();
+          }
         }
       });
 
@@ -89,7 +93,6 @@ define(['Game',
     otherInventoryDisplay = new InventoryDisplay(otherInventory,
                                                  $otherInventoryDiv,
                                                  { doubleClickTarget:Game.dude.inventory });
-    otherInventoryDisplay.show();
   };
 
   // set up the dude's inventories and other handlers
@@ -99,8 +102,6 @@ define(['Game',
                                          $dudeInventoryDiv,
                                          { doubleClickTarget: Game.dude.hands });
     dudeHands = DudeHandsInventoryDisplay($dudeInventoryDiv);
-    dudeInventory.show();
-    dudeHands.show();
 
     // now that we have a dude, attach his handlers
     attachHandlers(dude, dudeHandlers);

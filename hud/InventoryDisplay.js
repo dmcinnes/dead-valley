@@ -369,25 +369,6 @@ define(['Game', 'Inventory'], function (Game, Inventory) {
       }
     },
 
-    toggle: function () {
-      if (this.table.css('visibility') === 'hidden') {
-        this.show();
-      } else {
-        this.hide();
-      }
-    },
-
-    show: function () {
-      this.table.css('visibility', 'visible');
-    },
-
-    hide: function () {
-      this.table.css('visibility', 'hidden');
-    },
-
-    visible: function () {
-      return this.table.css('visibility') === 'visible';
-    }
   };
 
   return InventoryDisplay;
