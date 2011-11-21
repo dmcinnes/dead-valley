@@ -12,6 +12,8 @@ define(['Game'], function (Game) {
   var displayedAngle = 0;
   var angle = 0;
 
+  var active = false;
+
   var currentCar = null;
 
   var updateAngle = function () {
@@ -22,22 +24,16 @@ define(['Game'], function (Game) {
     }
   };
 
-  var show = function (car) {
-    if (car) {
-      currentCar = car;
-    }
+  var show = function () {
     div.show();
   };
 
   var hide = function () {
     div.hide();
-    if (currentCar) {
-      currentCar = null;
-    }
   };
 
   var registerCar = function (car) {
-    if (car !== currentCar) {
+    if (car.isCar && car !== currentCar) {
       if (currentCar) {
         currentCar.unsubscribe('fuel level updated', updateAngle);
       }
@@ -47,11 +43,21 @@ define(['Game'], function (Game) {
     }
   };
 
-  Game.events.subscribe('enter car', registerCar);
+  Game.events.subscribe('start fueling', function (thing) {
+    if (thing.isCar) {
+      registerCar(thing);
+      active = true;
+    }
+  }).subscribe('stop fueling', function (thing) {
+    active = false;
+  }).subscribe('enter car', registerCar);
 
   return {
     update: updateAngle,
     show: show,
-    hide: hide
+    hide: hide,
+    active: function () {
+      return active;
+    }
   };
 });

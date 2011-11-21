@@ -60,7 +60,10 @@ define(['Game',
 
       _.each(hudStatus, function (status, hud) {
         var element = hudElements[hud];
-        status = inventoryShown && status;
+        // if element has an active method use that
+        // otherwise, inventory must be toggled on and the hud must have
+        // its status set to true.
+        status = (element.active && element.active()) || inventoryShown && status;
         if (element) {
           status ? element.show() : element.hide();
         }
