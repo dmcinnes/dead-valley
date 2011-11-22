@@ -86,7 +86,7 @@ define(["Game",
     if (!this.visible) return;
 
     // hack so the sprite is placed correctly when it's flipped
-    this.center.x = (this.direction == RIGHT) ? this.originalCenterX : this.originalCenterX + 4;
+    this.center.x = (this.direction === RIGHT) ? this.originalCenterX : this.originalCenterX + 4;
 
     if (this.alive()) {
       if (this.walking) {
@@ -110,6 +110,37 @@ define(["Game",
       } else {
         this.drawTile(15, 0);
       }
+    }
+  };
+
+  Dude.prototype.finalizeLayers = function () {
+    Sprite.prototype.finalizeLayers.call(this);
+
+    // render night silhouette
+    if (this.imageData) {
+      var context = Game.skyContext;
+      var map = Game.map;
+      context.save();
+      context.translate(this.pos.x - map.originOffsetX - this.center.x,
+                        this.pos.y - map.originOffsetY - this.center.y);
+      if (this.direction === LEFT) {
+        context.translate(20, 0);
+        context.scale(-1, 1);
+      }
+      context.globalCompositeOperation = 'destination-out';
+
+      var length = this.layers.length;
+      for (var i = length-1; i >= 0; i--) {
+        var index = this.layers[i];
+        if (index >= 0) {
+          var left = (index * this.tileOffset) + this.imageOffset.x;
+          var top  = this.imageOffset.y;
+          context.drawImage(this.imageData,
+                            left, top, this.tileWidth, this.tileHeight,
+                            0, 0, this.tileWidth, this.tileHeight);
+        }
+      }
+      context.restore();
     }
   };
 
