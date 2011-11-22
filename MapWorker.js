@@ -167,6 +167,10 @@ var addCar = function (x, y, tile, tiles) {
     canSmoke: false // don't smoke until hit
   };
 
+  if (husk) {
+    car.inventory = null;
+  }
+
   tiles.sprites.push(JSON.stringify(car));
 };
 
