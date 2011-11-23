@@ -13,5 +13,6 @@ section_list = [
   'SEW_T',
   'gas-station-crossroads',
   'start-intersection',
-  'burbs1'
+  'burbs1',
+  'loop-crossroads'
 ];
