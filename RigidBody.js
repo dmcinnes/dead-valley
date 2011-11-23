@@ -7,23 +7,23 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
     this.forces = new Vector(0.0, 0.0);
     this.mass = 1.0;
     this.torque = 0.0;
-    this.inertia = 1.0;
+    this.inertia = 80;
 
-    this.setMass = function (mass) {
-      this.mass = mass;
-      // points[0] and points[1] are the x and y of
-      // the first point of the sprite
-      // TODO still assuming this is a box
-      // var point = this.points[0];
-      // this.inertia = (point.x * point.x *
-      //                 point.y * point.y *
-      //                 mass) /
-      //                 12.0;
+    // this.setMass = function (mass) {
+    //   this.mass = mass;
+    //   // points[0] and points[1] are the x and y of
+    //   // the first point of the sprite
+    //   // TODO still assuming this is a box
+    //   // var point = this.points[0];
+    //   // this.inertia = (point.x * point.x *
+    //   //                 point.y * point.y *
+    //   //                 mass) /
+    //   //                 12.0;
 
-      this.inertia = 80;
+    //   this.inertia = 80;
 
-      // this.inertia = this.points[0].magnitude() * mass;
-    };
+    //   // this.inertia = this.points[0].magnitude() * mass;
+    // };
 
     // override Sprite's move function
     this.move = function (delta) {

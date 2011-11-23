@@ -169,6 +169,8 @@ var addCar = function (x, y, tile, tiles) {
 
   if (husk) {
     car.inventory = null;
+    car.mass    = Number.MAX_VALUE;
+    car.inertia = 100000;
   }
 
   tiles.sprites.push(JSON.stringify(car));

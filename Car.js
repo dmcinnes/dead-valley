@@ -34,7 +34,8 @@ define(["Game",
   var Car = function (config) {
     this.init(config.spriteConfig);
 
-    this.setMass(config.mass);
+    // this.setMass(config.mass);
+    this.mass          = config.mass;
     this.dragArea      = config.dragArea;
     this.steeringLock  = config.steeringLock;
     this.engineTorque  = config.engineTorque;
@@ -50,7 +51,7 @@ define(["Game",
     this.collided        = false;
     this.breaking        = false;
     this.reversing       = false;
-    this.stopped         = false;
+    this.stopped         = true;
     this.canSmoke        = true;
     this.driver          = null;
     this.steeringAngle   = 0;
@@ -299,8 +300,9 @@ define(["Game",
           this.driver.leaveCar();
         };
 
-        // make it hard to move around
-        this.mass = 5000;
+        // make it stationary
+        this.mass    = Number.MAX_VALUE;
+        this.inertia = 100000;
 
         // EXPLOOOODE!
         Explosion.createNew(this.pos);
@@ -318,6 +320,8 @@ define(["Game",
       if (magnitude > 132) { // 30 MPH
 	this.takeDamage(Math.floor(magnitude / 44)); // every 10 MPH
       }
+
+      this.stopped = false;
     }
   };
 
