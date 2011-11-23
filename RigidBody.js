@@ -72,6 +72,8 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
   };
   RigidBody.prototype = new Sprite();
 
+  RigidBody.prototype.isRigidBody = true;
+
   return RigidBody;
 });
 

@@ -293,36 +293,41 @@ define(["Vector"], function (Vector) {
       point.translate(theyPart);
     }
 
-    var n = vector.clone().normalize();
-
     var vab = we.pointVel(point.subtract(we.pos)).subtract(they.pointVel(point.subtract(they.pos)));
 
-    // coefficient of restitution (how bouncy the collision is)
-    // TODO make configurable by individual
-    var e = 0.2;
+    // onlybdo this stuff if one of the collidiees are rigid bodies
+    if (we.isRigidBody || they.isRigidBody) {
 
-    var ap  = point.subtract(we.pos).normal();
-    var bp  = point.subtract(they.pos).normal();
-    var apd = Math.pow(ap.dotProduct(n), 2);
-    var bpd = Math.pow(bp.dotProduct(n), 2);
+      var n = vector.clone().normalize();
 
-    var dot = vab.dotProduct(n);
-    if (dot > 0) {
-      return vab; // moving away from each other, no need to resolve
+      // coefficient of restitution (how bouncy the collision is)
+      // TODO make configurable by individual
+      var e = 0.2;
+
+      var ap  = point.subtract(we.pos).normal();
+      var bp  = point.subtract(they.pos).normal();
+      var apd = Math.pow(ap.dotProduct(n), 2);
+      var bpd = Math.pow(bp.dotProduct(n), 2);
+
+      var dot = vab.dotProduct(n);
+      if (dot > 0) {
+        return vab; // moving away from each other, no need to resolve
+      }
+
+      var j = -(1 + e) * dot;
+
+      j /= n.multiply(1/we.mass + 1/they.mass).dotProduct(n) +
+           apd / we.inertia + bpd / they.inertia;
+
+      we.vel.translate(n.multiply(j  / we.mass));
+      they.vel.translate(n.multiply(-j  / they.mass));
+
+      // TODO make all rot into radians
+      // this used to be 180 * but I / 5 to make the collisions less jumpy
+      we.vel.rot += 34 * (ap.dotProduct(n.multiply(j)) / we.inertia) / Math.PI;
+      they.vel.rot += 34 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
+
     }
-
-    var j = -(1 + e) * dot;
-
-    j /= n.multiply(1/we.mass + 1/they.mass).dotProduct(n) +
-         apd / we.inertia + bpd / they.inertia;
-
-    we.vel.translate(n.multiply(j  / we.mass));
-    they.vel.translate(n.multiply(-j  / they.mass));
-
-    // TODO make all rot into radians
-    // this used to be 180 * but I / 5 to make the collisions less jumpy
-    we.vel.rot += 34 * (ap.dotProduct(n.multiply(j)) / we.inertia) / Math.PI;
-    they.vel.rot += 34 * (bp.dotProduct(n.multiply(-j)) / they.inertia) / Math.PI;
 
     return vab;
   };
