@@ -98,6 +98,7 @@ cheat sheet
 double-clicking stackable items should stack them when moved
 zombies should do damage from above and below
 keep track of statistics
+fix house/garage collision weirdness
 
 *EDITOR*
 X remove current collidible code
