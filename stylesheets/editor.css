@@ -1,6 +1,7 @@
 body {
   font-size: 14px;
   font-family: arial, sans-serif;
+  cursor: crosshair;
 }
 
 #top {

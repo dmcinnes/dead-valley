@@ -151,9 +151,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         $map.append(label);
 
         // render the enclosing tiles
-        _.each(building.tiles, function (tile) {
-          $map.children('.tile:eq('+tile+')').addClass('building-tile');
-        });
+        // _.each(building.tiles, function (tile) {
+        //   $map.children('.tile:eq('+tile+')').addClass('building-tile');
+        // });
       });
       mapCanvasContext.restore();
 
