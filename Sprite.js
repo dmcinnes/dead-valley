@@ -172,11 +172,18 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   Sprite.prototype.run = function (delta) {
     this.transPoints = null; // clear cached points
     this.preMove(delta);
-    this.move(delta);
+
+    if (!this.stationary) {
+      this.integrate(delta);
+    }
+
     this.postMove(delta);
-    this.transformNormals();
-    this.updateGrid();
-    this.updateForVerticalZ();
+
+    if (!this.stationary) {
+      this.transformNormals();
+      this.updateGrid();
+      this.updateForVerticalZ();
+    }
   };
 
   // perform a speculativeMove -- lets see where he's going next frame
@@ -204,7 +211,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     this.pos.rot = oldRot;
   };
 
-  Sprite.prototype.move = function (delta) {
+  Sprite.prototype.integrate = function (delta) {
     if (!this.visible) return;
 
     this.vel.x   += this.acc.x   * delta;

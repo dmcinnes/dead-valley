@@ -66,6 +66,8 @@ define(['AssetManager',
           }
         }
 
+        Collidable.checkSpeculativeContacts(delta);
+
         // collide!
         Collidable.clearCurrentCollisionList();
         spriteCount = this.sprites.length;
@@ -76,7 +78,6 @@ define(['AssetManager',
           }
         }
 
-        Collidable.checkSpeculativeContacts(delta);
       }
     },
 

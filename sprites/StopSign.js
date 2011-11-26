@@ -6,13 +6,9 @@ define(['Sprite', 'Collidable'], function (Sprite, Collidable) {
     this.inertia    = Number.MAX_VALUE;
   };
   StopSign.prototype = new Sprite();
+  StopSign.prototype.stationary = true;
 
   StopSign.prototype.collidesWith = ['Dude', 'Car', 'Zombie'];
-
-  // Trees don't move
-  StopSign.prototype.move             = function () {};
-  StopSign.prototype.transformNormals = function () {};
-  StopSign.prototype.speculativeMove  = function () {};
 
   StopSign.prototype.spawned = function () {
     this.oldRot = this.pos.rot;

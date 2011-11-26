@@ -25,13 +25,9 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
     //   // this.inertia = this.points[0].magnitude() * mass;
     // };
 
-    // override Sprite's move function
-    this.move = function (delta) {
+    // override Sprite's integrate function
+    this.integrate = function (delta) {
       if (!this.visible) return;
-
-      if (this.preMove) {
-        this.preMove(delta);
-      }
 
       // linear
       // acc, vel and pos are in pixels
@@ -58,10 +54,6 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
         this.pos.rot += 360;
       }
       this.pos.rot = Math.round(this.pos.rot);
-
-      if (this.postMove) {
-        this.postMove(delta);
-      }
     };
 
     this.addForce = function (vector, offset) {

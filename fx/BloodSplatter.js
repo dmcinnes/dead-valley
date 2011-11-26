@@ -21,6 +21,7 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
     this.drawSplatter();
   };
   Splatter.prototype = new Sprite();
+  Splatter.prototype.stationary = true;
 
   Splatter.prototype.createSplats = function (strength) {
     var upperLeft  = new Vector(Number.MAX_VALUE, Number.MAX_VALUE);
@@ -87,12 +88,6 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
       context.fillRect(vector.x, vector.y, vector.size, vector.size);
     }
   };
-
-  // don't need these methods
-  Splatter.prototype.move               = function () {};
-  Splatter.prototype.transformNormals   = function () {};
-  Splatter.prototype.updateGrid         = function () {};
-  Splatter.prototype.updateForVerticalZ = function () {};
 
   var splat = function (pos, color, strength) {
     var splatter = new Splatter(pos, color, strength);

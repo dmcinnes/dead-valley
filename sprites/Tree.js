@@ -8,18 +8,9 @@ define(['Sprite', 'Collidable'], function (Sprite, Collidable) {
     this.tileOffset = 60;
   };
   Tree.prototype = new Sprite();
+  Tree.prototype.stationary = true;
 
   Tree.prototype.collidesWith = ['Dude', 'Car', 'Zombie'];
-
-  // Tree.prototype.draw = function (delta) {
-  //   this.drawTile(1, 0); // draw trunk
-  //   this.drawTile(0, 1); // draw leaves
-  // };
-
-  // Trees don't move
-  Tree.prototype.move = function (delta) {};
-  Tree.prototype.transformNormals = function () {};
-  Tree.prototype.speculativeMove = function () {};
 
   Collidable(Tree);
 

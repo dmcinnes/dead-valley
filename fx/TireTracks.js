@@ -21,10 +21,11 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
     this.wheel.tracks = this;
   };
   TireTracks.prototype = new Sprite();
+  TireTracks.prototype.stationary = true;
 
   TireTracks.prototype.z = 1;
 
-  TireTracks.prototype.move = function () {
+  TireTracks.prototype.preMove = function () {
     if (this.dots.length < this.length &&
         Math.abs(this.wheel.speed) > 4) {
       var pos = this.car.pos.add(this.wheel.position);
@@ -72,10 +73,6 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
   TireTracks.prototype.die = function () {
     Sprite.prototype.die.call(this);
   };
-
-  // don't need these methods
-  TireTracks.prototype.transformNormals = function () {};
-  TireTracks.prototype.updateGrid       = function () {};
 
   var splat = function (car, wheel, color, length) {
     // TODO reenable when we know a way to do this

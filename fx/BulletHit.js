@@ -33,6 +33,7 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
     });
   };
   Sparks.prototype = new Sprite();
+  Sparks.prototype.stationary = true;
 
   Sparks.prototype.createSparks = function (norm, dir, reflect, config) {
     return [
@@ -67,11 +68,6 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
     });
     context.restore();
   };
-
-  // don't need these methods
-  Sparks.prototype.move             = function () {};
-  Sparks.prototype.transformNormals = function () {};
-  Sparks.prototype.updateGrid       = function () {};
 
   var BulletHit = function (config) {
     this.config = $.extend({}, defaultConfig, config);

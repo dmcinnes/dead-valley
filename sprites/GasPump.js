@@ -18,11 +18,7 @@ define(["Game",
     this.inertia = Number.MAX_VALUE;
   };
   GasPump.prototype = new Sprite();
-
-  // GasPumps don't move
-  GasPump.prototype.move             = function () {};
-  GasPump.prototype.transformNormals = function () {};
-  GasPump.prototype.speculativeMove  = function () {};
+  GasPump.prototype.stationary = true;
 
   GasPump.prototype.init = function (config) {
     Sprite.prototype.init.call(this, config);
