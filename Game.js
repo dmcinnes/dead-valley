@@ -51,29 +51,68 @@ define(['AssetManager',
     runSprites: function (delta) {
       if (this.map) {
 
-        // pre move
-        // speculative contacts
-        // collision resolution
-        // integrate
-        // post move
-
         spriteCount = this.sprites.length;
+
+        // pre move
         for (i = 0; i < spriteCount; i++) {
           sprite = this.sprites[i];
 
-          if (!sprite.visible) {
-            continue;
-          }
-
-          if (sprite.preMove) {
+          if (sprite.visible && sprite.preMove) {
             sprite.preMove(delta);
           }
+        }
 
-          if (sprite.integrate && !sprite.stationary) {
-            sprite.integrate(delta);
+        // speculative move
+        for (i = 0; i < spriteCount; i++) {
+          sprite = this.sprites[i];
+          if (sprite.visible && sprite.collidable) {
+            // use the current delta
+            sprite.speculativeMove(delta);
           }
+        }
 
-          if (sprite.postMove) {
+        Collidable.clearCurrentCollisionList();
+
+        // generate contact list
+        var contactList = [];
+        for (i = 0; i < spriteCount; i++) {
+          sprite = this.sprites[i];
+          if (sprite.visible && sprite.collidable) {
+            sprite.checkForCollisionsWithNearbyObjects(contactList);
+          }
+        }
+
+        // contacts resolution
+        var contact;
+        var contactListLength = contactList.length;
+        for (i = 0; i < contactListLength; i++) {
+          contact = contactList[i];
+          if (contact.we.isRigidBody || contact.they.isRigidBody) {
+            Collidable.rigidBodyContactRectifier(contact);
+          } else {
+            Collidable.speculativeContactRectifier(contact, delta);
+          }
+        }
+      
+        // integrate
+        for (i = 0; i < spriteCount; i++) {
+          sprite = this.sprites[i];
+
+          if (sprite.visible) {
+            if (sprite.collidable) {
+              sprite.restorePreSpeculativePosition();
+            }
+
+            if (sprite.integrate && !sprite.stationary) {
+              sprite.integrate(delta);
+            }
+          }
+        }
+
+        // post move
+        for (i = 0; i < spriteCount; i++) {
+          sprite = this.sprites[i];
+          if (sprite.visible && sprite.postMove) {
             sprite.postMove(delta);
           }
 
@@ -85,18 +124,15 @@ define(['AssetManager',
           }
         }
 
-        Collidable.checkSpeculativeContacts(delta);
-
-
         // collide!
-        Collidable.clearCurrentCollisionList();
-        spriteCount = this.sprites.length;
-        for (i = 0; i < spriteCount; i++) {
-          sprite = this.sprites[i];
-          if (sprite.visible && sprite.collidable) {
-            sprite.checkCollisionsAgainst(sprite.findAdjacentNodes());
-          }
-        }
+        // Collidable.clearCurrentCollisionList();
+        // spriteCount = this.sprites.length;
+        // for (i = 0; i < spriteCount; i++) {
+        //   sprite = this.sprites[i];
+        //   if (sprite.visible && sprite.collidable) {
+        //     sprite.checkCollisionsAgainst(sprite.findAdjacentNodes());
+        //   }
+        // }
 
       }
     },

@@ -5,7 +5,6 @@
 define(["Vector"], function (Vector) {
 
   var currentCollisionList = {};
-  var speculativeContactCheckList = [];
 
   var findAdjacentNodes = function () {
     if (!this.visible || !this.currentNode) {
@@ -30,7 +29,7 @@ define(["Vector"], function (Vector) {
   };
 
   // what we do when we actually have a collision
-  var defaultCollisionCallback = function (result) {
+  var rigidBodyContactRectifier = function (result) {
     var we      = result.we;
     var they    = result.they;
     var point   = result.point;
@@ -41,40 +40,51 @@ define(["Vector"], function (Vector) {
       we.touch(they, point, normal);
       they.touch(we, point, normal);
     } else {
+      we.collided   = true;
+      they.collided = true;
       var vab = resolveCollision(we, they, point, normal, wePoint);
       we.collision(they, point, normal, vab);
       they.collision(we, point, normal.scale(-1), vab);
-      speculativeContactCheckList.push(we);
     }
   };
 
-  var speculativeContactRectifierCallback = function (delta) {
-    return function (result) {
-      var we      = result.we;
-      var they    = result.they;
-      var normal  = result.normal.clone().normalize();
+  var speculativeContactRectifier = function (result, delta) {
+    var we      = result.we;
+    var they    = result.they;
+    var normal  = result.normal.clone().normalize();
 
-      // get all of relative normal velocity
-      var relativeNormalVelocity = (we.vel.subtract(they.vel)).dotProduct(normal);
+    // get all of relative normal velocity
+    var relativeNormalVelocity = (we.vel.subtract(they.vel)).dotProduct(normal);
 
-      var dist = result.normal.magnitude() - relativeNormalVelocity * delta;
+    var dist = result.depth - relativeNormalVelocity * delta;
 
-      // we want to remove only the amount which leaves them touching next frame
-      var remove = relativeNormalVelocity + dist;
+    // we want to remove only the amount which leaves them touching
+    var remove = relativeNormalVelocity + dist * delta;
 
-      if (remove < 0) {
-        // compute impulse
-        var wePart   = they.mass / (we.mass + they.mass);
-        var theyPart = 1 - wePart;
+    if (remove < 0) {
+      we.collided   = true;
+      they.collided = true;
 
-        // apply impulse
-        we.vel.translate(normal.multiply(-1 * wePart * remove));
-        they.vel.translate(normal.multiply(theyPart * remove));
-      }
-    };
+      // compute impulse
+      var wePart   = they.mass / (we.mass + they.mass);
+      var theyPart = 1 - wePart;
+
+      var weImpulse = normal.multiply(-1 * wePart * remove);
+      var theyImpulse = normal.multiply(theyPart * remove);
+
+      var vab = we.pointVel(result.point.subtract(we.pos)).subtract(they.pointVel(result.point.subtract(they.pos)));
+
+      // apply impulse
+      we.vel.translate(weImpulse);
+      they.vel.translate(theyImpulse);
+
+      we.collision(they, result.point, result.normal, vab);
+      they.collision(we, result.point, result.normal.scale(-1), vab);
+    }
   };
 
-  var checkCollisionsAgainst = function (canidates, callback) {
+  var checkForCollisionsWithNearbyObjects = function (contactList) {
+    var canidates = this.findAdjacentNodes();
     var len = canidates.length;
     var ref, canidate, result, other, point, normal, wePoint;
     for (var i = 0; i < len; i++) {
@@ -85,7 +95,7 @@ define(["Vector"], function (Vector) {
 	  result = this.checkCollision(ref);
 
           if (result) {
-            callback ? callback(result) : defaultCollisionCallback(result);
+            contactList.push(result);
           }
 	}
 	ref = ref.nextSprite;
@@ -178,9 +188,10 @@ define(["Vector"], function (Vector) {
     return {
       we:      this,
       they:    other,
-      point:   point,  // point the collision occured on
-      normal:  normal, // normal scaled to the penetration depth
-      wePoint: wePoint // does the point belong to us
+      point:   point,    // point the collision occured on
+      normal:  normal,   // normal scaled to the penetration depth
+      depth:   minDepth, // penetration depth
+      wePoint: wePoint   // does the point belong to us
     };
   };
 
@@ -279,28 +290,26 @@ define(["Vector"], function (Vector) {
   // returns false if they're moving away from one another
   // TODO: find a better way to structure all this
   var resolveCollision = function (we, they, point, vector, wePoint) {
-    we.collided   = true;
-    they.collided = true;
 
     // rectify the positions
-    var wePart   = they.mass / (we.mass + they.mass);
-    var theyPart = wePart - 1;
-    wePart   = vector.multiply(wePart);
-    theyPart = vector.multiply(theyPart);
+    // var wePart   = they.mass / (we.mass + they.mass);
+    // var theyPart = wePart - 1;
+    // wePart   = vector.multiply(wePart);
+    // theyPart = vector.multiply(theyPart);
 
-    we.pos.translate(wePart);
-    they.pos.translate(theyPart);
-    
-    // rectify the point
-    if (wePoint) {
-      point.translate(wePart);
-    } else {
-      point.translate(theyPart);
-    }
+    // we.pos.translate(wePart);
+    // they.pos.translate(theyPart);
+    // 
+    // // rectify the point
+    // if (wePoint) {
+    //   point.translate(wePart);
+    // } else {
+    //   point.translate(theyPart);
+    // }
 
     var vab = we.pointVel(point.subtract(we.pos)).subtract(they.pointVel(point.subtract(they.pos)));
 
-    // onlybdo this stuff if one of the collidiees are rigid bodies
+    // only do this stuff if one of the collidiees are rigid bodies
     if (we.isRigidBody || they.isRigidBody) {
 
       var n = vector.clone().normalize();
@@ -393,13 +402,13 @@ define(["Vector"], function (Vector) {
     thing.prototype.collidesWith = collidesWith;
     thing.prototype.collidable   = true;
 
-    thing.prototype.findAdjacentNodes      = findAdjacentNodes;
-    thing.prototype.checkCollisionsAgainst = checkCollisionsAgainst;
-    thing.prototype.checkCollision         = checkCollision;
-    thing.prototype.lineProjection         = lineProjection;
-    thing.prototype.pointVel               = pointVel;
-    thing.prototype.checkRayCollision      = checkRayCollision;
-    thing.prototype.checkPointCollision    = checkPointCollision;
+    thing.prototype.findAdjacentNodes                   = findAdjacentNodes;
+    thing.prototype.checkForCollisionsWithNearbyObjects = checkForCollisionsWithNearbyObjects;
+    thing.prototype.checkCollision                      = checkCollision;
+    thing.prototype.lineProjection                      = lineProjection;
+    thing.prototype.pointVel                            = pointVel;
+    thing.prototype.checkRayCollision                   = checkRayCollision;
+    thing.prototype.checkPointCollision                 = checkPointCollision;
     
     if (!thing.prototype.touch) {
       thing.prototype.touch = function () {};
@@ -412,25 +421,8 @@ define(["Vector"], function (Vector) {
     }
   };
 
-  collidable.checkSpeculativeContacts = function (delta) {
-    var sprite;
-
-    this.clearCurrentCollisionList();
-
-    var callback = speculativeContactRectifierCallback(delta);
-    var spriteCount = speculativeContactCheckList.length;
-    for (i = 0; i < spriteCount; i++) {
-      sprite = speculativeContactCheckList[i];
-      if (sprite.collidable) {
-        // use the current delta
-        sprite.speculativeMove(delta, function () {
-          sprite.checkCollisionsAgainst(sprite.findAdjacentNodes(), callback);
-        });
-      }
-    }
-    // clear the check list
-    speculativeContactCheckList.splice(0);
-  };
+  collidable.rigidBodyContactRectifier   = rigidBodyContactRectifier;
+  collidable.speculativeContactRectifier = speculativeContactRectifier;
 
   return collidable;
 });

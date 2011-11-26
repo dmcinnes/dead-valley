@@ -177,13 +177,13 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   // perform a speculativeMove -- lets see where he's going next frame
-  Sprite.prototype.speculativeMove = function (delta, callback) {
+  Sprite.prototype.speculativeMove = function (delta) {
     // clear the cached calculated points and normals
     this.clearCurrentPointsAndNormals();
 
     // save current position
-    var oldPos = this.pos.clone();
-    var oldRot = this.pos.rot;
+    this.oldPos     = this.pos.clone();
+    this.oldPos.rot = this.pos.rot;
 
     // figure out where he's going to be at the current velocity
     this.pos.x   += this.vel.x   * delta;
@@ -192,12 +192,11 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
 
     // update grid location with new pos
     this.updateGrid();
+  };
 
-    callback();
-
+  Sprite.prototype.restorePreSpeculativePosition = function () {
     // restore original position and rotation
-    this.pos = oldPos;
-    this.pos.rot = oldRot;
+    this.pos = this.oldPos;
   };
 
   Sprite.prototype.integrate = function (delta) {
