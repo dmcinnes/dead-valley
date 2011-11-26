@@ -46,11 +46,6 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
 
       this.torque = 0.0; // clear torque
 
-      if (this.pos.rot > 360) {
-        this.pos.rot -= 360;
-      } else if (this.pos.rot < 0) {
-        this.pos.rot += 360;
-      }
       this.pos.rot = Math.round(this.pos.rot);
 
       this.clearCurrentPointsAndNormals();

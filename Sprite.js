@@ -207,12 +207,6 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     this.pos.y   += this.vel.y   * delta;
     this.pos.rot += this.vel.rot * delta;
 
-    if (this.pos.rot > 360) {
-      this.pos.rot -= 360;
-    } else if (this.pos.rot < 0) {
-      this.pos.rot += 360;
-    }
-
     // cleanup
     this.clearCurrentPointsAndNormals();
     this.updateGrid();
