@@ -87,9 +87,7 @@ define(['AssetManager',
         var contactListLength = contactList.length;
         for (i = 0; i < contactListLength; i++) {
           contact = contactList[i];
-          if (contact.we.isRigidBody || contact.they.isRigidBody) {
-            Collidable.rigidBodyContactRectifier(contact);
-          } else {
+          if ( !(contact.we.isRigidBody || contact.they.isRigidBody) ) {
             Collidable.speculativeContactRectifier(contact, delta);
           }
         }
@@ -106,6 +104,14 @@ define(['AssetManager',
             if (sprite.integrate && !sprite.stationary) {
               sprite.integrate(delta);
             }
+          }
+        }
+
+        // rigid body collisions
+        for (i = 0; i < contactListLength; i++) {
+          contact = contactList[i];
+          if (contact.we.isRigidBody || contact.they.isRigidBody) {
+            Collidable.rigidBodyContactRectifier(contact);
           }
         }
 

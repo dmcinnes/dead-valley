@@ -292,20 +292,20 @@ define(["Vector"], function (Vector) {
   var resolveCollision = function (we, they, point, vector, wePoint) {
 
     // rectify the positions
-    // var wePart   = they.mass / (we.mass + they.mass);
-    // var theyPart = wePart - 1;
-    // wePart   = vector.multiply(wePart);
-    // theyPart = vector.multiply(theyPart);
+    var wePart   = they.mass / (we.mass + they.mass);
+    var theyPart = wePart - 1;
+    wePart   = vector.multiply(wePart);
+    theyPart = vector.multiply(theyPart);
 
-    // we.pos.translate(wePart);
-    // they.pos.translate(theyPart);
-    // 
-    // // rectify the point
-    // if (wePoint) {
-    //   point.translate(wePart);
-    // } else {
-    //   point.translate(theyPart);
-    // }
+    we.pos.translate(wePart);
+    they.pos.translate(theyPart);
+
+    // rectify the point
+    if (wePoint) {
+      point.translate(wePart);
+    } else {
+      point.translate(theyPart);
+    }
 
     var vab = we.pointVel(point.subtract(we.pos)).subtract(they.pointVel(point.subtract(they.pos)));
 
