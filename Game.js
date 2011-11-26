@@ -51,12 +51,31 @@ define(['AssetManager',
     runSprites: function (delta) {
       if (this.map) {
 
-        // move
+        // pre move
+        // speculative contacts
+        // collision resolution
+        // integrate
+        // post move
+
         spriteCount = this.sprites.length;
         for (i = 0; i < spriteCount; i++) {
-
           sprite = this.sprites[i];
-          sprite.run(delta);
+
+          if (!sprite.visible) {
+            continue;
+          }
+
+          if (sprite.preMove) {
+            sprite.preMove(delta);
+          }
+
+          if (sprite.integrate && !sprite.stationary) {
+            sprite.integrate(delta);
+          }
+
+          if (sprite.postMove) {
+            sprite.postMove(delta);
+          }
 
           if (sprite.reap) {
             sprite.reap = false;
@@ -68,12 +87,13 @@ define(['AssetManager',
 
         Collidable.checkSpeculativeContacts(delta);
 
+
         // collide!
         Collidable.clearCurrentCollisionList();
         spriteCount = this.sprites.length;
         for (i = 0; i < spriteCount; i++) {
           sprite = this.sprites[i];
-          if (sprite.collidable) {
+          if (sprite.visible && sprite.collidable) {
             sprite.checkCollisionsAgainst(sprite.findAdjacentNodes());
           }
         }
@@ -92,7 +112,10 @@ define(['AssetManager',
       if (this.map) {
         spriteCount = this.sprites.length;
         for (i = 0; i < spriteCount; i++) {
-          this.sprites[i].render(delta);
+          sprite = this.sprites[i];
+          if (sprite.render && sprite.visible) {
+            sprite.render(delta);
+          }
         }
       }
     },

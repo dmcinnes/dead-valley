@@ -31,7 +31,7 @@ define(['Game'], function (Game) {
   });
 
   return {
-    run: function (delta) {
+    postMove: function (delta) {
       if (visible) {
         frameCount++;
         elapsedCounter += delta;
@@ -43,9 +43,7 @@ define(['Game'], function (Game) {
       }
     },
 
-    // Game renderSprites needs this
-    render: function (delta) {
-    },
+    visible: true,
 
     z: Number.MAX_VALUE
   };

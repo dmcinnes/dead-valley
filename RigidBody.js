@@ -27,8 +27,6 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
 
     // override Sprite's integrate function
     this.integrate = function (delta) {
-      if (!this.visible) return;
-
       // linear
       // acc, vel and pos are in pixels
       // there are 10 pixels to a meter
@@ -54,6 +52,10 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
         this.pos.rot += 360;
       }
       this.pos.rot = Math.round(this.pos.rot);
+
+      this.clearCurrentPointsAndNormals();
+      this.updateGrid();
+      this.updateForVerticalZ();
     };
 
     this.addForce = function (vector, offset) {

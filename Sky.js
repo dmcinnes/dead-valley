@@ -53,7 +53,7 @@ define(["Game", "Sprite"], function (Game, Sprite) {
   var currentState = states.day;
 
   var Sky = {
-    run: function (delta) {
+    preMove: function (delta) {
       counter -= delta;
       currentState();
     },
@@ -74,6 +74,7 @@ define(["Game", "Sprite"], function (Game, Sprite) {
     isDark: function () {
       return alpha > 0.4;
     },
+    visible: true,
     z: -Number.MAX_VALUE
   };
 

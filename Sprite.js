@@ -48,6 +48,11 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
       new Vector(-co.x,  co.y)
     ];
 
+    // current points and normals that have been transformed by
+    // the current position and rotation state
+    this.transPoints  = [];
+    this.transNormals = [];
+
     // assuming horizontal tiles
     this.tileWidth  = config.width;
     this.tileHeight = config.height;
@@ -107,8 +112,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   Sprite.prototype.calculateNormals = function () {
     var p1, p2, n, i;
 
-    this.normals        = [];
-    this.currentNormals = [];
+    this.normals      = [];
 
     for (i = 1; i < this.points.length; i++) {
       p1 = this.points[i-1];
@@ -117,7 +121,6 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
       n = p1.subtract(p2).normal().normalize();
 
       this.normals.push(n);
-      this.currentNormals.push(n.clone());
     }
 
     p1 = this.points[this.points.length-1];
@@ -125,7 +128,6 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
 
     n = p1.subtract(p2).normal().normalize();
     this.normals.push(n);
-    this.currentNormals.push(n.clone());
   };
   
   Sprite.prototype.createNode = function (layers) {
@@ -169,28 +171,15 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   Sprite.prototype.postMove = function () {
   };
 
-  Sprite.prototype.run = function (delta) {
-    this.transPoints = null; // clear cached points
-    this.preMove(delta);
-
-    if (!this.stationary) {
-      this.integrate(delta);
-    }
-
-    this.postMove(delta);
-
-    if (!this.stationary) {
-      this.transformNormals();
-      this.updateGrid();
-      this.updateForVerticalZ();
-    }
+  Sprite.prototype.clearCurrentPointsAndNormals = function () {
+    this.transPoints.splice(0);
+    this.transNormals.splice(0);
   };
 
   // perform a speculativeMove -- lets see where he's going next frame
   Sprite.prototype.speculativeMove = function (delta, callback) {
     // clear the cached calculated points and normals
-    this.transPoints = null;
-    this.transformNormals();
+    this.clearCurrentPointsAndNormals();
 
     // save current position
     var oldPos = this.pos.clone();
@@ -212,8 +201,6 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   Sprite.prototype.integrate = function (delta) {
-    if (!this.visible) return;
-
     this.vel.x   += this.acc.x   * delta;
     this.vel.y   += this.acc.y   * delta;
     this.vel.rot += this.acc.rot * delta;
@@ -226,15 +213,28 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     } else if (this.pos.rot < 0) {
       this.pos.rot += 360;
     }
+
+    // cleanup
+    this.clearCurrentPointsAndNormals();
+    this.updateGrid();
+    this.updateForVerticalZ();
   };
 
   // TODO: cache these
-  Sprite.prototype.transformNormals = function () {
+  Sprite.prototype.transformedNormals = function () {
+    if (this.transNormals.length) {
+      return this.transNormals;
+    }
+    var norms = this.transNormals;
+
     // only rotate
     Matrix.configure(this.pos.rot, 1.0, 0, 0);
-    for (var i = 0; i < this.normals.length; i++) {
-      this.currentNormals[i] = Matrix.vectorMultiply(this.normals[i]);
+
+    var length = this.normals.length;
+    for (var i = 0; i < length; i++) {
+      norms[i] = Matrix.vectorMultiply(this.normals[i]);
     }
+    return norms;
   };
 
   Sprite.prototype.isInRenderRange = function (x, y) {
@@ -245,8 +245,6 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   Sprite.prototype.render = function (delta) {
-    if (!this.visible) return;
-
     // clear layers
     if (this.layers) {
       var count = this.layers.length;
@@ -304,7 +302,6 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   Sprite.prototype.updateGrid = function () {
-    if (!this.visible) return;
     var newNode = Game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
 
     // we're off the the part of the world loaded into memory
@@ -349,14 +346,15 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   Sprite.prototype.transformedPoints = function () {
-    if (this.transPoints) return this.transPoints;
-    var trans = [];
+    if (this.transPoints.length) {
+      return this.transPoints;
+    }
+    var trans = this.transPoints;
     Matrix.configure(this.pos.rot, this.scale, this.pos.x, this.pos.y);
     var count = this.points.length;
     for (var i = 0; i < count; i++) {
       trans[i] = Matrix.vectorMultiply(this.points[i]);
     }
-    this.transPoints = trans; // cache translated points
     return trans;
   };
 

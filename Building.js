@@ -25,7 +25,13 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
     this.inventory = new Inventory({width:12, height:8, name:this.name});
 
     Sprite.prototype.calculateNormals.call(this);
+
+    // building doesn't move so points and normals don't move
+    // either
+    this.transPoints  = this.points;
+    this.transNormals = this.normals;
   };
+  Building.prototype = new Sprite();
 
   // don't save when the level is saved like a sprite
   // -- we're going to save this our own way
@@ -35,10 +41,7 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
   Building.prototype.isBuilding     = true;
   Building.prototype.mass           = Number.MAX_VALUE;
   Building.prototype.inertia        = Number.MAX_VALUE;
-
-  Building.prototype.transformedPoints = function () {
-    return this.points;
-  };
+  Building.prototype.stationary     = true;
 
   Building.prototype.collision = function () {
   };

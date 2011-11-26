@@ -116,7 +116,10 @@ define(["Vector"], function (Vector) {
     currentCollisionList[thisOtherID] = true;
     currentCollisionList[other.id + ',' + this.id] = true;
 
-    normals = this.currentNormals.concat(other.currentNormals);
+    var weNormals   = this.transformedNormals();
+    var theyNormals = other.transformedNormals();
+
+    normals = weNormals.concat(theyNormals);
 
     minDepth = Number.MAX_VALUE;
 
@@ -142,11 +145,11 @@ define(["Vector"], function (Vector) {
     
     // we're edge on if the min depth is on our normal, so use "they"'s point
     var pointIndex, contactPoints, points, point;
-    var wePoint = normalIndex >= this.currentNormals.length;
+    var wePoint = normalIndex >= weNormals.length;
     if (wePoint) {
       pointIndex  = minPoint[0];
       // if it's our point, it's the other's normal
-      // contactPoints = calculateContactPoints(this, pointIndex, other, normalIndex - this.currentNormals.length);
+      // contactPoints = calculateContactPoints(this, pointIndex, other, normalIndex - weNormals.length);
 
       points = this.transformedPoints();
     } else {
@@ -213,17 +216,19 @@ define(["Vector"], function (Vector) {
   // we is the owner of the point
   // they is the owner of the normal
   var calculateContactPoints = function (we, pointIndex, they, normalIndex) {
-    var wePoints   = we.transformedPoints();
-    var theyPoints = they.transformedPoints();
+    var wePoints    = we.transformedPoints();
+    var theyPoints  = they.transformedPoints();
+    var weNormals   = we.transformedNormals();
+    var theyNormals = they.transformedNormals();
 
-    var normal = they.currentNormals[normalIndex];
+    var normal = theyNormals[normalIndex];
 
     // go through we's normals and see which one is most opposed
     var minDot = 1;
     var weFaceIndex;
     var length = wePoints.length;
     for (var i = 0; i < length; i++) {
-      var dot = we.currentNormals[i].dotProduct(normal);
+      var dot = weNormals[i].dotProduct(normal);
       if (dot < minDot) {
         minDot = dot;
         weFaceIndex = i;
@@ -367,7 +372,7 @@ define(["Vector"], function (Vector) {
 
   var checkPointCollision = function (point) {
     var minDepth = Number.MAX_VALUE;
-    var normals = this.currentNormals;
+    var normals = this.transformedNormals();
 
     for (var i = 0; i < normals.length; i++) {
       var normal = normals[i];

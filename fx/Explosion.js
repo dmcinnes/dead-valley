@@ -27,6 +27,7 @@ define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
     Game.events.fireEvent('explosion', this);
   };
   Explosion.prototype = new Sprite();
+  Explosion.prototype.stationary = true;
 
   Explosion.prototype.draw = function (delta) {
     this.drawTile(this.frame);
@@ -53,10 +54,6 @@ define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
       this.die();
     }
   };
-
-  // don't need these methods
-  Explosion.prototype.transformNormals = function () {};
-  Explosion.prototype.updateGrid       = function () {};
 
   Explosion.prototype.z = 150;
 
