@@ -152,7 +152,7 @@ define(["Vector"], function (Vector) {
         }
       }
     }
-    
+
     // we're edge on if the min depth is on our normal, so use "they"'s point
     var pointIndex, contactPoints, points, point;
     var wePoint = normalIndex >= weNormals.length;

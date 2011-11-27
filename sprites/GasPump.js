@@ -79,6 +79,8 @@ define(["Game",
     return data;
   };
 
+  GasPump.prototype.collidesWith = ['Dude', 'Car', 'Zombie'];
+
   Collidable(GasPump);
   eventmachine(GasPump);
   Fuel.giver(GasPump, FUELING_RATE);

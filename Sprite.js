@@ -89,6 +89,8 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
 
     this.opacity = 1;
 
+    this.inertia = 80;
+
     this.layers = [];
     var layerCount = config.layers || 1;
     for (var i = 0; i < layerCount; i++) {
@@ -211,6 +213,11 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     this.pos.x   += this.vel.x   * delta;
     this.pos.y   += this.vel.y   * delta;
     this.pos.rot += this.vel.rot * delta;
+
+    // zero is zero
+    if (Math.abs(this.pos.rot) < 1.0e-5) {
+      this.pos.rot = 0;
+    }
 
     // cleanup
     this.clearCurrentPointsAndNormals();

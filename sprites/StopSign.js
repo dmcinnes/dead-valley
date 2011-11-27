@@ -2,8 +2,8 @@ define(['Sprite', 'Collidable'], function (Sprite, Collidable) {
 
   var StopSign = function (type) {
     this.init(type || 'StopSign');
-    this.mass       = Number.MAX_VALUE;
-    this.inertia    = Number.MAX_VALUE;
+    this.mass    = Number.MAX_VALUE;
+    this.inertia = Number.MAX_VALUE;
   };
   StopSign.prototype = new Sprite();
   StopSign.prototype.stationary = true;

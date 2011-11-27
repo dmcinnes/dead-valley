@@ -13,7 +13,6 @@ define(["Sprite", "Vector"], function (Sprite, Vector) {
     this.forces = new Vector(0, 0);
     this.mass = 1.0;
     this.torque = 0.0;
-    this.inertia = 80;
   };
 
   // override Sprite's integrate function

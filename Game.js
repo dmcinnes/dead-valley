@@ -65,7 +65,7 @@ define(['AssetManager',
         // speculative move
         for (i = 0; i < spriteCount; i++) {
           sprite = this.sprites[i];
-          if (sprite.visible && sprite.collidable && !sprite.stationary) {
+          if (sprite.visible && sprite.collidable) {
             // use the current delta
             sprite.speculativeMove(delta);
           }
