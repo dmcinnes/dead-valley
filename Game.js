@@ -101,7 +101,7 @@ define(['AssetManager',
               sprite.restorePreSpeculativePosition();
             }
 
-            if (sprite.integrate && !sprite.stationary) {
+            if (sprite.integrate) {
               sprite.integrate(delta);
             }
           }
