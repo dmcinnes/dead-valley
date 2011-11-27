@@ -290,7 +290,8 @@ define(["Game",
 
         // stop moving
         this.vel.scale(0);
-        this.stopped = false;
+        this.vel.rot = 0;
+        this.stopped = true;
 
         // inventory goes bye-bye
         this.inventory = null;
