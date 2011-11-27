@@ -63,6 +63,8 @@ X headlight cone should not stop rendering if car is off screen
 X make zombies attracted to noise
 X fix screen slide when dude enters house while moving
 X fix dude aim arm sticks around when entering car
+X make zombies follow building edges
+fix house/garage collision weirdness
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -70,7 +72,6 @@ add map handling functions for custom instances of sections through the map work
 tune Honda's performance
 make trees transparent when touching sprite
 convert everything to radians
-make zombies follow building edges
 generalize sprite animation handling
 HUD ammo count
 broken headlights
@@ -98,7 +99,6 @@ cheat sheet
 double-clicking stackable items should stack them when moved
 zombies should do damage from above and below
 keep track of statistics
-fix house/garage collision weirdness
 
 *EDITOR*
 X remove current collidible code
