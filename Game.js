@@ -107,15 +107,23 @@ define(['AssetManager',
           }
         }
 
+        Collidable.clearCurrentCollisionList();
+
         // rigid body collisions
         for (i = 0; i < contactListLength; i++) {
           contact = contactList[i];
           if (contact.we.isRigidBody || contact.they.isRigidBody) {
             Collidable.rigidBodyContactRectifier(contact);
 
+            // retry and rectify this collision so we're not bouncy
             contact.we.speculativeMove(delta);
             contact.they.speculativeMove(delta);
-            Collidable.speculativeContactRectifier(contact, delta);
+
+            var newContact = contact.we.checkCollision(contact.they);
+            if (newContact) {
+              Collidable.speculativeContactRectifier(newContact, delta);
+            }
+
             contact.we.restorePreSpeculativePosition();
             contact.they.restorePreSpeculativePosition();
           }
@@ -135,16 +143,6 @@ define(['AssetManager',
             spriteCount--;
           }
         }
-
-        // collide!
-        // Collidable.clearCurrentCollisionList();
-        // spriteCount = this.sprites.length;
-        // for (i = 0; i < spriteCount; i++) {
-        //   sprite = this.sprites[i];
-        //   if (sprite.visible && sprite.collidable) {
-        //     sprite.checkCollisionsAgainst(sprite.findAdjacentNodes());
-        //   }
-        // }
 
       }
     },
