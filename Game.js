@@ -65,7 +65,7 @@ define(['AssetManager',
         // speculative move
         for (i = 0; i < spriteCount; i++) {
           sprite = this.sprites[i];
-          if (sprite.visible && sprite.collidable) {
+          if (sprite.visible && sprite.collidable && !sprite.stationary) {
             // use the current delta
             sprite.speculativeMove(delta);
           }
@@ -112,6 +112,12 @@ define(['AssetManager',
           contact = contactList[i];
           if (contact.we.isRigidBody || contact.they.isRigidBody) {
             Collidable.rigidBodyContactRectifier(contact);
+
+            contact.we.speculativeMove(delta);
+            contact.they.speculativeMove(delta);
+            Collidable.speculativeContactRectifier(contact, delta);
+            contact.we.restorePreSpeculativePosition();
+            contact.they.restorePreSpeculativePosition();
           }
         }
 

@@ -178,25 +178,30 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
 
   // perform a speculativeMove -- lets see where he's going next frame
   Sprite.prototype.speculativeMove = function (delta) {
-    // clear the cached calculated points and normals
-    this.clearCurrentPointsAndNormals();
+    if (!this.stationary) {
+      // clear the cached calculated points and normals
+      this.clearCurrentPointsAndNormals();
 
-    // save current position
-    this.oldPos     = this.pos.clone();
-    this.oldPos.rot = this.pos.rot;
+      // save current position
+      this.oldPos     = this.pos.clone();
+      this.oldPos.rot = this.pos.rot;
 
-    // figure out where he's going to be at the current velocity
-    this.pos.x   += this.vel.x   * delta;
-    this.pos.y   += this.vel.y   * delta;
-    this.pos.rot += this.vel.rot * delta;
+      // figure out where he's going to be at the current velocity
+      this.pos.x   += this.vel.x   * delta;
+      this.pos.y   += this.vel.y   * delta;
+      this.pos.rot += this.vel.rot * delta;
 
-    // update grid location with new pos
-    this.updateGrid();
+      // update grid location with new pos
+      this.updateGrid();
+    }
   };
 
   Sprite.prototype.restorePreSpeculativePosition = function () {
     // restore original position and rotation
-    this.pos = this.oldPos;
+    if (this.oldPos) {
+      this.pos = this.oldPos;
+      this.oldPos = null;
+    }
   };
 
   Sprite.prototype.integrate = function (delta) {
