@@ -145,8 +145,6 @@ define(["Game",
   };
 
   Dude.prototype.preMove = function (delta) {
-    if (!this.visible) return;
-
     // TODO generalize this animation handling
     // takingDamage is only set for DAMAGE_ANIMATION_TIME
     if (this.takingDamage) {
@@ -206,7 +204,9 @@ define(["Game",
   Dude.prototype.updateTouchingList = function () {
     // remove sprites that we are moving away from
     this.touching = _.reject(this.touching, function (sprite) {
-      if (!this.visible || this.pos.subtract(sprite.pos).dotProduct(this.vel) > 0) {
+      if (!this.visible ||
+	  (this.pos.subtract(sprite.pos).dotProduct(this.vel) > 0 &&
+	   this.vel.magnitude() >= SPEED)) {
         this.fireEvent('stopped touching', sprite);
         return true;
       }
