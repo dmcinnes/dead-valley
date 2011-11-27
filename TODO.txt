@@ -64,6 +64,7 @@ X make zombies attracted to noise
 X fix screen slide when dude enters house while moving
 X fix dude aim arm sticks around when entering car
 X make zombies follow building edges
+X double-clicking stackable items should stack them when moved
 fix house/garage collision weirdness
 make zombie collision response more natural
 add drag to car
@@ -96,7 +97,6 @@ damage car when it drives over rough ground
 game over screen
 intro screen
 cheat sheet
-double-clicking stackable items should stack them when moved
 zombies should do damage from above and below
 keep track of statistics
 

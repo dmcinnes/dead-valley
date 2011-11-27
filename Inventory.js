@@ -120,6 +120,19 @@ define(['Game', 'EventMachine'], function (Game, EventMachine) {
     stuffItemIn: function (item) {
       var self = this;
       var added = false;
+
+      if (item.stackable) {
+        var accepts = _.filter(this.items, function (testItem) {
+                        return testItem.stackable && testItem.acceptsDrop(item);
+                      });
+        for (var i = 0; i < accepts.length; i++) {
+          accepts[i].accept(item);
+          if (!item.viable()) {
+            return true;
+          }
+        }
+      }
+
       slotIterator(0,
                    0,
                    this.width - item.width + 1,

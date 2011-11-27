@@ -6,6 +6,7 @@ define(['Game'], function (Game) {
     this.count = 0;
   };
   Ammo.prototype.maxCount = 99;
+  Ammo.prototype.stackable = true;
 
   Ammo.prototype.displayNode = function () {
     if (!this.display) {
