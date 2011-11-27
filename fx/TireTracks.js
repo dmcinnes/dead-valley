@@ -22,6 +22,7 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
   };
   TireTracks.prototype = new Sprite();
   TireTracks.prototype.stationary = true;
+  TireTracks.prototype.fx         = true;
 
   TireTracks.prototype.z = 1;
 

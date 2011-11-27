@@ -307,6 +307,10 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   Sprite.prototype.updateGrid = function () {
+    if (this.fx) {
+      return;
+    }
+
     var newNode = Game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
 
     // we're off the the part of the world loaded into memory

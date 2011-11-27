@@ -28,6 +28,7 @@ define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
   };
   Explosion.prototype = new Sprite();
   Explosion.prototype.stationary = true;
+  Explosion.prototype.fx         = true;
 
   Explosion.prototype.draw = function (delta) {
     this.drawTile(this.frame);

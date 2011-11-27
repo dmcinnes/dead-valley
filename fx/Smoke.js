@@ -15,6 +15,7 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
     this.vel.scale(Math.random() * 5);
   };
   Smoke.prototype = new Sprite();
+  Smoke.prototype.fx = true;
 
   Smoke.prototype.draw = function (delta) {
     this.drawTile(this.frame);
@@ -32,10 +33,6 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
       this.die();
     }
   };
-
-  // don't need these methods
-  Smoke.prototype.transformNormals = function () {};
-  Smoke.prototype.updateGrid       = function () {};
 
   Smoke.createNew = function (position) {
     var smoke = new Smoke();

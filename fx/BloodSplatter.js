@@ -22,6 +22,7 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
   };
   Splatter.prototype = new Sprite();
   Splatter.prototype.stationary = true;
+  Splatter.prototype.fx         = true;
 
   Splatter.prototype.createSplats = function (strength) {
     var upperLeft  = new Vector(Number.MAX_VALUE, Number.MAX_VALUE);

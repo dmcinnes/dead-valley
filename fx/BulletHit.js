@@ -34,6 +34,7 @@ define(['Game', 'Sprite'], function (Game, Sprite) {
   };
   Sparks.prototype = new Sprite();
   Sparks.prototype.stationary = true;
+  Sparks.prototype.fx         = true;
 
   Sparks.prototype.createSparks = function (norm, dir, reflect, config) {
     return [
