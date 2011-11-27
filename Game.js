@@ -26,6 +26,7 @@ define(['AssetManager',
   return {
     assetManager:  new AssetManager('./assets/'),
     keyboard:      Keyboard,
+    targetMiles:   100,
     gridSize:      60,
     tileRowSize:   9,  // should be set by asset manager
                        // this is the number of tiles in row

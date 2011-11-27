@@ -5,6 +5,7 @@ define(['Game',
         'hud/LifeMeter',
         'hud/Pause',
         'hud/Framerate',
+        'hud/Distance',
         'hud/FuelGauge',
         'hud/Tip',
         'hud/CheckEngineLight',
@@ -16,6 +17,7 @@ define(['Game',
                  LifeMeter,
                  Pause,
                  Framerate,
+                 Distance,
                  FuelGauge,
                  Tip,
                  CheckEngineLight,
@@ -197,6 +199,9 @@ define(['Game',
 
   // framerate HUD
   Game.addSprite(Framerate);
+
+  // distance HUD
+  Game.addSprite(Distance);
 
   // so the light can blink
   Game.addSprite(CheckEngineLight);
