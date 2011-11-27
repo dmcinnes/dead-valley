@@ -65,6 +65,7 @@ X fix screen slide when dude enters house while moving
 X fix dude aim arm sticks around when entering car
 X make zombies follow building edges
 X double-clicking stackable items should stack them when moved
+X fix destroyed car 'sliding'
 fix house/garage collision weirdness
 make zombie collision response more natural
 add drag to car
@@ -78,7 +79,6 @@ HUD ammo count
 broken headlights
 headlight repair
 fix barrel 'sliding'
-fix destroyed car 'sliding'
 support shooting out of car
 gas pumps can take damage
 make zombies attracted to light
