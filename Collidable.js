@@ -204,12 +204,12 @@ define(["Vector"], function (Vector) {
     count = points.length;
     for (var j = 0; j < count; j++) {
       dot = normal.dotProduct(points[j]);
-      min = Math.min(min, dot);
-      max = Math.max(max, dot);
-      if (dot === min) {
+      if (dot < min) {
+        min = dot;
         pmin_index = j;
       } 
-      if (dot === max) {
+      if (dot > max) {
+        max = dot;
         pmax_index = j;
       }
     }
