@@ -204,8 +204,9 @@ var seedBuildings = function (buildings, scale) {
       if (random < item.percent) {
         count = generateCount(item.dice);
         if (item.stacked) {
-          item.count = count;
-          inventory.push(item);
+	  var stacked = _.clone(item);
+          stacked.count = count;
+          inventory.push(stacked);
         } else {
           for (i = 0; i < count; i++) {
             inventory.push(item);
