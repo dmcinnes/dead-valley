@@ -86,11 +86,13 @@ define(['AssetManager',
         // contacts resolution
         var contact;
         var contactListLength = contactList.length;
-        for (i = 0; i < contactListLength; i++) {
-          contact = contactList[i];
-          if ( !(contact.we.isRigidBody || contact.they.isRigidBody) ) {
-            Collidable.speculativeContactRectifier(contact, delta);
-          }
+        for (var j = 0; j < 3; j++) {
+	  for (i = 0; i < contactListLength; i++) {
+	    contact = contactList[i];
+	    if ( !(contact.we.isRigidBody || contact.they.isRigidBody) ) {
+	      Collidable.speculativeContactRectifier(contact, delta);
+	    }
+	  }
         }
       
         // integrate
@@ -130,6 +132,9 @@ define(['AssetManager',
             contact.we.restorePreSpeculativePosition();
             contact.they.restorePreSpeculativePosition();
           }
+
+	  // report all collisions
+	  Collidable.reportCollision(contact);
         }
 
         // post move

@@ -28,59 +28,44 @@ define(["Vector"], function (Vector) {
      return this.adjacentNodes;
   };
 
-  // what we do when we actually have a collision
-  var rigidBodyContactRectifier = function (result) {
-    var we      = result.we;
-    var they    = result.they;
-    var point   = result.point;
-    var normal  = result.normal;
-    var wePoint = result.wePoint;
-
-    if (we.ignoreCollisionResolution || they.ignoreCollisionResolution) {
-      we.touch(they, point, normal);
-      they.touch(we, point, normal);
-    } else {
-      we.collided   = true;
-      they.collided = true;
-      var vab = resolveCollision(we, they, point, normal, wePoint);
-      we.collision(they, point, normal, vab);
-      they.collision(we, point, normal.scale(-1), vab);
-    }
-  };
-
   var speculativeContactRectifier = function (result, delta) {
     var we      = result.we;
     var they    = result.they;
     var normal  = result.normal.clone().normalize();
 
-    // get all of relative normal velocity
-    var relativeNormalVelocity = (we.vel.subtract(they.vel)).dotProduct(normal);
+    // we want to remove only the amount which leaves them touching
+    // var remove = -result.depth / delta;
 
+    var relativeNormalVelocity = (we.vel.subtract(they.vel)).dotProduct(normal)
     var dist = result.depth - relativeNormalVelocity * delta;
 
-    // we want to remove only the amount which leaves them touching
+    // // we want to remove only the amount which leaves them touching
     var remove = relativeNormalVelocity + dist * delta;
 
-    if (remove < 0) {
-      we.collided   = true;
-      they.collided = true;
+    // compute impulse
+    var newImpulse = Math.min(remove + result.impulse, 0);
+    var change = newImpulse - result.impulse;
 
-      // compute impulse
-      var wePart   = they.mass / (we.mass + they.mass);
-      var theyPart = 1 - wePart;
+    var wePart   = they.mass / (we.mass + they.mass);
+    var theyPart = 1 - wePart;
 
-      var weImpulse = normal.multiply(-1 * wePart * remove);
-      var theyImpulse = normal.multiply(theyPart * remove);
+    var weImpulse = normal.multiply(-1 * wePart * change);
+    var theyImpulse = normal.multiply(theyPart * change);
 
-      var vab = we.pointVel(result.point.subtract(we.pos)).subtract(they.pointVel(result.point.subtract(they.pos)));
+    // apply impulse
+    we.vel.translate(weImpulse);
+    they.vel.translate(theyImpulse);
 
-      // apply impulse
-      we.vel.translate(weImpulse);
-      they.vel.translate(theyImpulse);
+    result.impulse = newImpulse;
+  };
 
-      we.collision(they, result.point, result.normal, vab);
-      they.collision(we, result.point, result.normal.scale(-1), vab);
-    }
+  var reportCollision = function (result) {
+    var we   = result.we;
+    var they = result.they;
+    we.collided   = true;
+    they.collided = true;
+    we.collision(they, result.point, result.normal, result.vab);
+    they.collision(we, result.point, result.normal.scale(-1), result.vab);
   };
 
   var checkForCollisionsWithNearbyObjects = function (contactList) {
@@ -185,13 +170,17 @@ define(["Vector"], function (Vector) {
       normal.scale(-1);
     }
 
+    var vab = this.pointVel(point.subtract(this.pos)).subtract(other.pointVel(point.subtract(other.pos)));
+
     return {
       we:      this,
       they:    other,
       point:   point,    // point the collision occured on
       normal:  normal,   // normal scaled to the penetration depth
       depth:   minDepth, // penetration depth
-      wePoint: wePoint   // does the point belong to us
+      wePoint: wePoint,  // does the point belong to us
+      vab:     vab,
+      impulse: 0
     };
   };
 
@@ -287,9 +276,12 @@ define(["Vector"], function (Vector) {
   
 
   // resolve the collision between two rigid body sprites
-  // returns false if they're moving away from one another
-  // TODO: find a better way to structure all this
-  var resolveCollision = function (we, they, point, vector, wePoint) {
+  var rigidBodyContactRectifier = function (result) {
+    var we      = result.we;
+    var they    = result.they;
+    var point   = result.point;
+    var vector  = result.normal;
+    var wePoint = result.wePoint;
 
     // rectify the positions
     var wePart   = they.mass / (we.mass + they.mass);
@@ -423,6 +415,8 @@ define(["Vector"], function (Vector) {
 
   collidable.rigidBodyContactRectifier   = rigidBodyContactRectifier;
   collidable.speculativeContactRectifier = speculativeContactRectifier;
+
+  collidable.reportCollision = reportCollision;
 
   return collidable;
 });
