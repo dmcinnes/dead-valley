@@ -100,6 +100,8 @@ zombies should do damage from above and below
 keep track of statistics
 fix sprite placement by MapWorker so it avoids buildings
 only render check engine light when lit -- inventory doesn't need to be up
+render gas guage when fuel is low even if inventory isn't up
+fix zombie counts -- too many added too quickly
 
 *EDITOR*
 X remove current collidible code
