@@ -67,7 +67,7 @@ define(["Game",
 
     this.originalCenterX     = this.center.x;
 
-    this.inventory           = new Inventory({width:9, height:3});
+    this.inventory           = new Inventory({width:7, height:3});
     this.hands               = new DudeHands();
 
     this.aimingArmNode       = this.createNode(1);
