@@ -73,9 +73,7 @@ require(
       Game.newDude(dude);
 
       // set up the map
-      Game.map = new Map(128, 128, startX, startY, function () {
-        Game.events.fireEvent('map loaded');
-      });
+      Game.map = new Map(128, 128, startX, startY);
 
       if (!dudeState) {
         Game.map.loadStartMapTiles('gas-station-crossroads', 'burbs1', 'intersection', 'intersection');

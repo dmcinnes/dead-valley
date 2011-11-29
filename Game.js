@@ -23,6 +23,8 @@ define(['AssetManager',
 
   var spriteID = 0;
 
+  var waitingSprites = 0;
+
   return {
     assetManager:  new AssetManager('./assets/'),
     keyboard:      Keyboard,
@@ -178,9 +180,16 @@ define(['AssetManager',
       var self = this;
 
       _(sprites).each(function (spriteString) {
+
+	waitingSprites++;
+
         SpriteMarshal.marshal(spriteString, function (sprite) {
           sprite.pos.translate(offset);
           self.addSprite(sprite);
+	  waitingSprites--;
+	  if (waitingSprites === 0) {
+	    self.events.fireEvent('waiting sprites loaded');
+	  }
         });
       });
     },
@@ -195,6 +204,11 @@ define(['AssetManager',
 
     addSpriteID: function (sprite) {
       sprite.id = spriteID++;
+    },
+
+    // number of sprites we're waiting to load
+    waitingSpriteCount: function () {
+      return waitingSprites;
     },
 
     newDude: function (dude) {

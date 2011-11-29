@@ -3,7 +3,7 @@
 define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
        function (Game, GridNode, World, progress, Building, BuildingMarshal) {
 
-  var Map = function (gridWidth, gridHeight, startX, startY, callback) {
+  var Map = function (gridWidth, gridHeight, startX, startY) {
     var i, j,
         imageData,
         startX,     startY,
@@ -706,18 +706,25 @@ define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
     };
 
     this.loaded = function () {
-      console.log('loaded');
-
       // first run
       this.run(0);
 
       // first render
       this.render(0);
 
-      // fire the callback
-      if (callback) {
-        callback();
+      var fireLoaded = function () {
+	Game.events.fireEvent('map loaded');
+	// only fire this once
+	Game.events.unsubscribe('waiting sprites loaded', fireLoaded);
+      };
+
+      if (Game.waitingSpriteCount() > 0) {
+	// wait until all of the sprites have loaded
+	Game.events.subscribe('waiting sprites loaded', fireLoaded);
+      } else {
+	Game.events.fireEvent('map loaded');
       }
+
     };
 
     this.init();
