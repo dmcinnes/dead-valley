@@ -307,7 +307,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
   };
 
   Sprite.prototype.updateGrid = function () {
-    if (this.fx) {
+    if (this.fx || this.reap) {
       return;
     }
 
