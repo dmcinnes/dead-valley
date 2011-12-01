@@ -5,15 +5,47 @@ define([], function () {
   // save the bits in localStorage
   var worldMap = localStorage;
 
+  var saveList = worldMap['saveList'];
+  saveList = saveList ? JSON.parse(saveList) : [];
+
+  var makeSomeRoom = function () {
+    var key = saveList.shift();
+    console.log('deleting ' + key);
+    delete worldMap[key];
+  };
+
+  var updateSaveList = function (key) {
+    if (key !== 'dude') {
+      saveList.push(key);
+      save('saveList', saveList);
+    }
+  };
+
+  var save = function (key, data, noStringify) {
+    var stringData = noStringify ? data : JSON.stringify(data);
+    var tryAgain = false;
+    do {
+      try {
+        worldMap[key] = stringData;
+        if (key !== 'saveList') { // no super recursion
+          updateSaveList(key);
+        }
+      } catch (e) {
+        makeSomeRoom();
+        tryAgain = true;
+      }
+    } while (tryAgain);
+  };
+
   var World = {
     setSectionData: function (position, data) {
       var pos = position.toString();
-      worldMap[pos]       = data.tiles;
+      save(pos, data.tiles, true);
       if (data.roads) {
-        worldMap[pos + 'r'] = JSON.stringify(data.roads);
+        save(pos + 'r', data.roads);
       }
       if (data.buildings) {
-        worldMap[pos + 'b'] = JSON.stringify(data.buildings);
+        save(pos + 'b', data.buildings);
       }
       if (data.sprites) {
         this.saveSprites(position, data.sprites);
@@ -21,15 +53,15 @@ define([], function () {
     },
 
     saveSprites: function (position, sprites) {
-      worldMap[position.toString() + 's'] = JSON.stringify(sprites);
+      save(position.toString() + 's', sprites);
     },
 
     saveDude: function (dude) {
-      worldMap['dude'] = dude.toString();
+      save('dude', dude.toString(), true);
     },
 
     saveBuildings: function (position, buildings) {
-      worldMap[position.toString() + 'b'] = JSON.stringify(buildings);
+      save(position.toString() + 'b', buildings);
     },
 
     getTiles: function (position) {
