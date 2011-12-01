@@ -594,20 +594,16 @@ define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
 
       var dx = end.x - start.x;
       var dy = end.y - start.y;
-      var len = Math.sqrt(dx*dx + dy*dy);
+      var length = Math.sqrt(dx*dx + dy*dy);
 
-      if (maxDistance && len > maxDistance) {
-        return false; // out of range
+      if (maxDistance && length > maxDistance) {
+	// scale back the end point
+	end = start.add(end.subtract(start).normalize().scale(maxDistance));
       }
 
       var startNode = this.getNodeByWorldCoords(start.x, start.y);
       var endNode   = this.getNodeByWorldCoords(end.x, end.y);
       var node = startNode;
-
-      if (len != 0) {
-        dx /= len;
-        dy /= len;
-      }
 
       var stepX, tMaxX, tDeltaX,
           stepY, tMaxY, tDeltaY;

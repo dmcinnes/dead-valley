@@ -12,7 +12,7 @@ define(['Firearm', 'inventory/InventoryItem', 'inventory/Nine_mm'],
   Glock19.prototype.damage       = 1;
   Glock19.prototype.ammoCapacity = 15;
   Glock19.prototype.isHandgun    = true;
-  Glock19.prototype.range        = 900;
+  Glock19.prototype.range        = 800;
   Glock19.prototype.ammoType     = Nine_mm;
 
   InventoryItem(Glock19, {
