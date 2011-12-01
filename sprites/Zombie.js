@@ -127,7 +127,9 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     // dude is the only target for now
     // TODO limit the distance the zombie can see
     var target = Game.dude.driving || Game.dude;
-    if (target && target.visible) {
+    if (target &&
+	target.visible &&
+	this.pos.subtract(target.pos).magnitude() < MAX_RANGE) {
       var see = false;
       Game.map.rayTrace(this.pos, target.pos, MAX_RANGE, function (collision, sprite) {
 	if (sprite === target) {
@@ -137,7 +139,7 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         // look past other zombies
         // keep going if there isn't a collision
         // stop if you see the dude
-        return sprite.isZombie || !collision;
+        return sprite.isZombie || !collision || see;
       });
       if (see) {
         this.setTarget(target);
