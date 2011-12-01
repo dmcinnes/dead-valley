@@ -68,6 +68,7 @@ X double-clicking stackable items should stack them when moved
 X fix destroyed car 'sliding'
 X fix house/garage collision weirdness
 X fix zombie counts -- too many added too quickly
+X fix zombie hitbox
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -84,7 +85,6 @@ gas pumps can take damage
 make zombies attracted to light
 firearm reload times
 firearm between shot timeout
-fix zombie hitbox
 add dude roll/damage when jumping out of car
 add inventory/hud toggle button
 explosions should cause dude/zombie damage

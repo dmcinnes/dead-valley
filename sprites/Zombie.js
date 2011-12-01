@@ -16,17 +16,6 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   var WANDER_DISTANCE                = 200;  // how far a Zombie wanders in one direction - in pixels
   var HEALTH                         = 6;
 
-  var BODY_OFFSET = 231;
-  var BODY_WIDTH  = 29;
-
-  // from center
-  var HEAD_OFFSET = {
-    x: -3,
-    y: -5
-  };
-
-  var HEADSHOT_RADIUS = 2;
-
   var bulletHit = new BulletHit({
     color:     'green',
     minLength: 10,
@@ -327,24 +316,20 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
   };
 
   Zombie.prototype.bulletHit = function (hit, damage) {
-    // find distance to gunshot vector from center of head
-    var head = this.pos.add(HEAD_OFFSET);
-    var vec = hit.point.subtract(head);
-    var headNormal = hit.normal.normal();
-    var dot = headNormal.dotProduct(vec);
-    var distance = Math.abs(dot) / Math.abs(headNormal.magnitude());
+    var vec = hit.point.subtract(this.pos);
 
-    if (distance < HEADSHOT_RADIUS) {
+    if (vec.y < -7 &&            // in the area of the head
+        Math.abs(vec.x) === 10) { // only from the sides
+
       // HEADSHOT!
-      // 3 times more damaging
-      this.takeDamage(damage * 3);
-      hit.point = head;
+      // 5-10 times more damaging
+      var scale = Math.round(5 + Math.random() * 5);
+      this.takeDamage(damage * scale);
       headshotBulletHit.fireSparks(hit);
     } else {
       this.takeDamage(damage);
       bulletHit.fireSparks(hit);
     }
-
   };
 
   Zombie.prototype.takeDamage = function (damage) {
@@ -369,21 +354,6 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
         ];
       }
     }
-  };
-
-  Zombie.prototype.touch = function (other, point, normal) {
-    // TODO reimplement tire tracks when we find a way to do it
-    // if (other === Game.dude.driving &&
-    //     this.tireTrackLength > 0) {
-    //   _.each(other.wheels, function (wheel) {
-    //     if (!wheel.tracks &&
-    //         this.tireTrackLength > 0 &&
-    //         this.checkPointCollision(other.pos.add(wheel.position))) {
-    //       this.tireTrackLength -= Math.floor(Math.random() * 5);
-    //       TireTracks.splat(other, wheel, '#070', this.tireTrackLength);
-    //     }
-    //   }, this);
-    // }
   };
 
   Zombie.prototype.saveMetadata = function () {
