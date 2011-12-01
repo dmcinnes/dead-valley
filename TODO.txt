@@ -67,6 +67,7 @@ X make zombies follow building edges
 X double-clicking stackable items should stack them when moved
 X fix destroyed car 'sliding'
 X fix house/garage collision weirdness
+X fix zombie counts -- too many added too quickly
 make zombie collision response more natural
 add drag to car
 create another gas station section on straightaway
@@ -101,7 +102,8 @@ keep track of statistics
 fix sprite placement by MapWorker so it avoids buildings
 only render check engine light when lit -- inventory doesn't need to be up
 render gas guage when fuel is low even if inventory isn't up
-fix zombie counts -- too many added too quickly
+when dude leaves building/car make sure he's not inside another sprite
+add dead ends
 
 *EDITOR*
 X remove current collidible code
