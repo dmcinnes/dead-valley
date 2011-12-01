@@ -154,6 +154,9 @@ var addCar = function (x, y, tile, tiles) {
   var carColorSelection = carColorMap[carType];
   var carColor = carColorSelection[Math.floor(Math.random() * carColorSelection.length)];
 
+  // 25% chance it has some fuel
+  var fuel = Math.random() < 0.25 ? Math.random() : 0;
+
   var car = {
     clazz: carType,
     setColor: carColor,
@@ -164,6 +167,7 @@ var addCar = function (x, y, tile, tiles) {
     },
     health: husk ? -1 : Math.round(Math.random() * 100),
     isCar: true,
+    currentFuel: fuel,
     canSmoke: false // don't smoke until hit
   };
 

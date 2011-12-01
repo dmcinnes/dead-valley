@@ -68,10 +68,11 @@ define(["Game",
     // 60 mph / (60 min/hr * 60 sec/min) = mi/sec
     // mi/sec / mi/gal = gal/sec
     this.fuelConsumption = (1 / 60) / config.mpg; // gal/sec
-    this.fuelConsumption *= 10; // scale it up for the Game
+    this.fuelConsumption *= 20; // scale it up for the Game
 
-    // if it's not given make it random
-    this.currentFuel  = config.currentFuel || config.fuelCapacity * Math.random();
+    // if it's not given make it empty
+    this.currentFuel  = config.currentFuel ?
+			  config.currentFuel * config.fuelCapacity : 0;
 
     this.health = 100;
 
