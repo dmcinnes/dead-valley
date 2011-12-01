@@ -250,7 +250,7 @@ var seedZombies = function (tiles, carCount, width, scale) {
     do {
       tileOffset = Math.floor(Math.random() * tiles.length);
       tile = tiles[tileOffset];
-      if (tile.isRoad || Math.random() < 0.01) {
+      if (tile.isRoad) {
 
         // add the number of zombies that are in this group
         count = zombieGroups[i];
@@ -341,7 +341,7 @@ onmessage = function (e) {
   var y = config.position.y;
   var distance = Math.sqrt(x*x + y*y);
   // how much to scale the zombie infestation
-  var scale = distance / 10;
+  var scale = distance / 100;
 
   var tiles = (config.sectionName) ?
                 loadSection(config) :
