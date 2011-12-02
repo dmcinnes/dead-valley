@@ -30,7 +30,7 @@ define(["Game",
 
   var massDensityOfAir = 1.2; // kg/m^3
 
-  var closenessForLightDamage = 2;
+  var closenessForLightDamage = 4;
 
   // TODO maybe I should just save the config directly
   var Car = function (config) {
@@ -346,10 +346,10 @@ define(["Game",
       var damage = 0;
       if (magnitude > 132) { // 30 MPH
         damage = Math.floor(magnitude / 44); // every 10 MPH
-        this.takeDamage(damage);
-      }
-      if (damage > 3) {
-        this.damageLight(point);
+        if (damage) {
+          this.takeDamage(damage);
+          this.damageLight(point);
+        }
       }
 
       this.stopped = false;
