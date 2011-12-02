@@ -30,6 +30,8 @@ define(["Game",
 
   var massDensityOfAir = 1.2; // kg/m^3
 
+  var closenessForLightDamage = 2;
+
   // TODO maybe I should just save the config directly
   var Car = function (config) {
     this.init(config.spriteConfig);
@@ -57,10 +59,18 @@ define(["Game",
     this.steeringAngle   = 0;
     this.directionVector = new Vector(0);
 
-    this.headlights = [
-      this.points[0].add({x:4, y:0}),
-      this.points[1].add({x:-4, y:0})
-    ];
+    this.headlightsPos = {
+      left:  this.points[0].add({x:4, y:0}),
+      right: this.points[1].add({x:-4, y:0})
+    };
+    this.headlights = {
+      left:  true,
+      right: true
+    };
+    this.taillights = {
+      left:  true,
+      right: true
+    };
     this.headlightsOn = false;
 
     this.fuelCapacity    = config.fuelCapacity;
@@ -107,19 +117,31 @@ define(["Game",
     if (this.driver) {
       if (this.breaking) {
         // break lights
-        this.drawTile(5);
-        this.drawTile(6);
+        if (this.taillights.left) {
+          this.drawTile(5);
+        }
+        if (this.taillights.right) {
+          this.drawTile(6);
+        }
       }
     }
 
+    // headlights
     if (this.headlightsOn) {
-      // headlights
-      this.drawTile(3);
-      this.drawTile(4);
-      Headlight.render(this, this.headlights[0]);
-      Headlight.render(this, this.headlights[1]);
-      Taillight.render(this, 5, this.breaking);
-      Taillight.render(this, 6, this.breaking);
+      if (this.headlights.left) {
+        this.drawTile(3);
+        Headlight.render(this, this.headlightsPos.left);
+      }
+      if (this.headlights.right) {
+        this.drawTile(4);
+        Headlight.render(this, this.headlightsPos.right);
+      }
+      if (this.taillights.left) {
+        Taillight.render(this, 5, this.breaking);
+      }
+      if (this.taillights.right) {
+        Taillight.render(this, 6, this.breaking);
+      }
     }
   };
 
@@ -319,17 +341,36 @@ define(["Game",
 
       // damage the car
       var magnitude = Math.abs(n.dotProduct(vab));
+      var damage = 0;
       if (magnitude > 132) { // 30 MPH
-	this.takeDamage(Math.floor(magnitude / 44)); // every 10 MPH
+        damage = Math.floor(magnitude / 44); // every 10 MPH
+        this.takeDamage(damage);
+      }
+      if (damage > 3) {
+        this.damageLight(point);
       }
 
       this.stopped = false;
     }
   };
 
+  Car.prototype.damageLight = function (point) {
+    var points = this.transformedPoints();
+    if (point.subtract(points[0]).magnitude() < closenessForLightDamage) {
+      this.headlights.left = false;
+    } else if (point.subtract(points[1]).magnitude() < closenessForLightDamage) {
+      this.headlights.right = false;
+    } else if (point.subtract(points[2]).magnitude() < closenessForLightDamage) {
+      this.taillights.right = false;
+    } else if (point.subtract(points[3]).magnitude() < closenessForLightDamage) {
+      this.taillights.left = false;
+    }
+  };
+
   Car.prototype.bulletHit = function (hit, damage) {
     Sprite.prototype.bulletHit.call(this, hit, damage);
     this.takeDamage(damage);
+    this.damageLight(hit.point);
   };
 
   Car.prototype.saveMetadata = function () {
@@ -338,6 +379,8 @@ define(["Game",
     data.currentFuel = this.currentFuel;
     data.health      = this.health;
     data.canSmoke    = false; // car stops smoking after it is saved off
+    data.headlights  = this.headlights;
+    data.taillights  = this.taillights;
     return data;
   };
 
