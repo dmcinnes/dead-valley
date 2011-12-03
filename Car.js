@@ -30,7 +30,7 @@ define(["Game",
 
   var massDensityOfAir = 1.2; // kg/m^3
 
-  var closenessForLightDamage = 4;
+  var closenessForLightDamage = 8;
 
   // TODO maybe I should just save the config directly
   var Car = function (config) {
@@ -300,13 +300,17 @@ define(["Game",
     Game.events.fireEvent("leave car", this);
   };
 
-  Car.prototype.takeDamage = function (damage) {
-    if (this.health > 0) {
+  Car.prototype.takeDamage = function (damage, point) {
+    if (damage && this.health > 0) {
       this.takingDamage = true;
 
       this.canSmoke = true;
 
       this.health -= damage;
+
+      if (point) {
+        this.damageLight(point);
+      }
 
       this.fireEvent('health changed', this.health);
 
@@ -346,10 +350,7 @@ define(["Game",
       var damage = 0;
       if (magnitude > 132) { // 30 MPH
         damage = Math.floor(magnitude / 44); // every 10 MPH
-        if (damage) {
-          this.takeDamage(damage);
-          this.damageLight(point);
-        }
+        this.takeDamage(damage, point);
       }
 
       this.stopped = false;
@@ -371,8 +372,7 @@ define(["Game",
 
   Car.prototype.bulletHit = function (hit, damage) {
     Sprite.prototype.bulletHit.call(this, hit, damage);
-    this.takeDamage(damage);
-    this.damageLight(hit.point);
+    this.takeDamage(damage, hit.point);
   };
 
   Car.prototype.saveMetadata = function () {

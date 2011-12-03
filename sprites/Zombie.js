@@ -188,7 +188,10 @@ define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/
     if (this.attackingFrame === 3 && // arm stretched
         other.takeDamage &&          // can take damage
         this.attackingFrameCounter > ATTACKING_ANIMATION_FRAME_RATE - DAMAGE_WINDOW) {
-      other.takeDamage(1);
+
+      var which = (this.direction === RIGHT) ? 1 : -1;
+      var add = new Vector(which * this.tileWidth, 0);
+      other.takeDamage(1, this.pos.add(add));
     }
   };
 
