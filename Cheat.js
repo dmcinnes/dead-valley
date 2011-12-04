@@ -10,6 +10,16 @@ define(['Game'], function (Game) {
     Game.events.unsubscribe('click', killHandler);
   };
 
+  var fillit = function (e, sprite) {
+    if (sprite.receiveFuel) {
+      sprite.startReceivingFuel();
+      sprite.receiveFuel(100);
+      sprite.stopReceivingFuel();
+    }
+    // unsubscribe when we're done
+    Game.events.unsubscribe('click', killHandler);
+  }
+
   window.Cheat = {
     spawn: function (Thing, count) {
       count = count || 1;
@@ -42,6 +52,10 @@ define(['Game'], function (Game) {
         }
         Game.dude.inventory.stuffItemIn(thing);
       });
+    },
+
+    fillErUp: function () {
+      Game.events.subscribe('click', fillit);
     }
   };
 
