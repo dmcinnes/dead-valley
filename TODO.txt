@@ -70,9 +70,9 @@ X fix house/garage collision weirdness
 X fix zombie counts -- too many added too quickly
 X fix zombie hitbox
 X broken headlights
+X create another gas station section on straightaway
 make zombie collision response more natural
 add drag to car
-create another gas station section on straightaway
 add map handling functions for custom instances of sections through the map worker
 tune Honda's performance
 convert everything to radians
