@@ -2,16 +2,18 @@
 define(['Game'], function (Game) {
 
   var light      = $("#check-engine-light");
-  var interval   = 0.4; // in seconds
+  var interval   = 0.5; // in seconds
   var currentCar = null;
   var lit        = false;
   var visible    = false;
   var counter    = 0;
 
   var update = function (health) {
-    lit = (health < 15);
+    lit = (health < 15 && health > 0);
 
-    if (!lit) {
+    if (lit) {
+      show();
+    } else {
       light.removeClass('lit');
     }
   };
@@ -27,6 +29,15 @@ define(['Game'], function (Game) {
     }
   };
 
+  var unregisterCar = function () {
+    if (currentCar) {
+      currentCar.unsubscribe('health changed', update);
+      currentCar = null;
+    }
+    lit = false;
+    hide();
+  };
+
   var show = function (car) {
     light.show();
     visible = true;
@@ -37,12 +48,13 @@ define(['Game'], function (Game) {
     visible = false;
   };
 
-  Game.events.subscribe('enter car', registerCar);
+  Game.events.subscribe('new dude', function (dude) {
+    dude.subscribe('entered car', registerCar);
+    dude.subscribe('left car', unregisterCar);
+  });
 
   return {
-    render: function (delta) {
-    },
-    run: function (delta) {
+    preMove: function (delta) {
       if (visible && lit) {
         counter += delta;
         if (counter > interval) {
@@ -52,7 +64,7 @@ define(['Game'], function (Game) {
       }
     },
     z: Number.MAX_VALUE,
-    update: update,
+    visible: true,
     show: show,
     hide: hide
   };

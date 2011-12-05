@@ -73,6 +73,7 @@ X broken headlights
 X create another gas station section on straightaway
 X fix barrel 'sliding'
 X game over screen
+X only render check engine light when lit -- inventory doesn't need to be up
 make zombie collision response more natural
 add drag to car
 add map handling functions for custom instances of sections through the map worker
@@ -100,7 +101,6 @@ cheat sheet
 zombies should do damage from above and below
 keep track of statistics
 fix sprite placement by MapWorker so it avoids buildings
-only render check engine light when lit -- inventory doesn't need to be up
 render gas guage when fuel is low even if inventory isn't up
 when dude leaves building/car make sure he's not inside another sprite
 add dead ends

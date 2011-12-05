@@ -35,14 +35,12 @@ define(['Game',
 
   var hudStatus = {
     fuelGauge:      false,
-    checkEngine:    false,
     dudeInventory:  false,
     otherInventory: false
   };
 
   var hudElements = {
     fuelGauge:      FuelGauge,
-    checkEngine:    CheckEngineLight,
     dudeInventory:  $dudeInventoryDiv,
     otherInventory: $otherInventoryDiv
   };
@@ -145,14 +143,12 @@ define(['Game',
       otherInventory = car.inventory;
       hudStatus.otherInventory = true;
       hudStatus.fuelGauge      = true;
-      hudStatus.checkEngine    = true;
     },
 
     'left car': function (car) {
       otherInventory = null;
       hudStatus.otherInventory = false;
       hudStatus.fuelGauge      = false;
-      hudStatus.checkEngine    = false;
     },
 
     'entered building': function (building) {
