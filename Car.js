@@ -88,6 +88,8 @@ define(["Game",
 
     this.smokeCounter = 0;
 
+    this.roughRoadCounter = 0;
+
     this.inventory = new Inventory({
       name:   config.name || "Car",
       width:  config.cargoSpace.width, 
@@ -251,6 +253,12 @@ define(["Game",
       if (this.currentNode && !this.currentNode.isRoad && vel_m_s > 1) {
         this.pos.rot += (Math.random() > 0.5) ? -1 : 1;
         this.addForce(airResistanceVec.scale(4), new Vector(0, 0)); // slow em down too
+
+        if (Math.floor(this.roughRoadCounter + delta) > Math.floor(this.roughRoadCounter)) {
+          // damage car on rough road
+          this.takeDamage(1);
+        }
+        this.roughRoadCounter += delta;
       }
     }
   };
