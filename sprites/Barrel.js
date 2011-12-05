@@ -4,7 +4,7 @@ define(["Sprite",
         "Collidable"],
        function (Sprite, Collidable) {
 
-  var uprightFriction = -0.8;
+  var uprightFriction = -4;
   var rollingFriction = -0.2;
 
   var Barrel = function () {
