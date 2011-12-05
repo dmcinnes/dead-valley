@@ -104,6 +104,7 @@ fix sprite placement by MapWorker so it avoids buildings
 render gas guage when fuel is low even if inventory isn't up
 when dude leaves building/car make sure he's not inside another sprite
 add dead ends
+show low fuel light like the check engine light
 
 *EDITOR*
 X remove current collidible code
