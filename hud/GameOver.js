@@ -1,5 +1,5 @@
 define(['Game'], function (Game) {
-  var overlay = $('#pause-overlay');
+  var overlay = $('#game-over-overlay');
 
   var mouseEvents = "click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave";
 
@@ -8,11 +8,9 @@ define(['Game'], function (Game) {
     return false;
   });
 
-  Game.events.subscribe('pause', function () {
-    if (!Game.isOver) {
-      overlay.show();
+  Game.events.subscribe('game over', function () {
+    if (Game.dude.health <= 0) {
+      overlay.fadeIn(5000);
     }
-  }).subscribe('play', function () {
-    overlay.hide();
   });
 });

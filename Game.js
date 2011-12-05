@@ -25,10 +25,36 @@ define(['AssetManager',
 
   var waitingSprites = 0;
 
-  return {
+  var gameStates = {
+    start: function () {
+      Game.events.fireEvent('game start');
+      Game.isOver = false;
+      currentGameState = gameStates.running;
+    },
+    running: function () {
+      var distance = Math.round(Game.dude.pos.magnitude() / 15840);
+      if (distance > Game.targetMiles) {
+        currentGameState = gameStates.won;
+        Game.isOver = true;
+        Game.events.fireEvent('game over');
+      } else if (Game.dude.health <= 0) {
+        currentGameState = gameStates.died;
+        Game.isOver = true;
+        Game.events.fireEvent('game over');
+      }
+    },
+    won: function () {
+    },
+    died: function () {
+    }
+  };
+
+  var currentGameState = gameStates.running;
+
+  var Game = {
     assetManager:  new AssetManager('./assets/'),
     keyboard:      Keyboard,
-    targetMiles:   100,
+    targetMiles:   50,
     gridSize:      60,
     tileRowSize:   9,  // should be set by asset manager
                        // this is the number of tiles in row
@@ -224,6 +250,12 @@ define(['AssetManager',
 
     registerObjectForDeltaUpdates: function (object) {
       this.objects.push(object);
+    },
+    
+    runGameState: function (delta) {
+      currentGameState.call(this);
     }
   };
+
+  return Game;
 });

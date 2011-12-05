@@ -29,6 +29,8 @@ define(["Game"], function (Game) {
     lastFrame = thisFrame;
     delta = elapsed / 1000;
 
+    Game.runGameState(delta);
+
     Game.runSprites(delta);
     Game.runObjects(delta);
     Game.runMap(delta);
