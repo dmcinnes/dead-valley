@@ -334,6 +334,9 @@ define(["Game",
         // inventory goes bye-bye
         this.inventory = null;
 
+        // fuel burns up
+        this.currentFuel = 0;
+
         // kick dude out
         if (this.driver) {
           this.driver.leaveCar();
@@ -386,14 +389,18 @@ define(["Game",
 
   Car.prototype.saveMetadata = function () {
     var data = Sprite.prototype.saveMetadata.call(this);
-    data.inventory    = this.inventory && this.inventory.saveMetadata();
-    data.currentFuel  = this.currentFuel;
-    data.health       = this.health;
-    data.canSmoke     = false; // car stops smoking after it is saved off
-    data.headlights   = this.headlights;
-    data.taillights   = this.taillights;
-    data.headlightsOn = this.headlightsOn;
-    return data;
+    var carData = {
+      inventory:    this.inventory && this.inventory.saveMetadata(),
+      currentFuel:  this.currentFuel,
+      health:       this.health,
+      canSmoke:     false, // car stops smoking after it is saved off
+      headlights:   this.headlights,
+      taillights:   this.taillights,
+      headlightsOn: this.headlightsOn,
+      mass:         this.mass,
+      inertia:      this.inertia
+    }
+    return _.extend(data, carData);
   };
 
   Car.prototype.isCar = true;
