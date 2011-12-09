@@ -240,7 +240,25 @@ define(["Game",
   };
 
   Dude.prototype.leaveCar = function () {
-    this.pos.set(this.driving.driversSideLocation());
+    var canidates = [
+      this.driving.driversSideLocation(),
+      this.driving.passengersSideLocation()
+    ];
+
+    do {
+      var pos = canidates.shift();
+      var node = Game.map.getNodeByWorldCoords(pos.x, pos.y);
+      var nearby = node.nearby();
+      var occupied = _.any(nearby, function (sprite) {
+        return sprite.visible && sprite.checkPointCollision(pos);
+      });
+    } while (occupied && canidates.length);
+
+    if (occupied) {
+      var pos = canidates[0]; // just use the driver's side
+    }
+
+    this.pos.set(pos);
     this.driving.leave(this);
     var car = this.driving;
     this.driving = null;

@@ -75,6 +75,7 @@ X fix barrel 'sliding'
 X game over screen
 X only render check engine light when lit -- inventory doesn't need to be up
 X damage car when it drives over rough ground
+X when dude leaves building/car make sure he's not inside another sprite
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -92,7 +93,6 @@ intro screen
 cheat sheet
 keep track of statistics
 fix sprite placement by MapWorker so it avoids buildings
-when dude leaves building/car make sure he's not inside another sprite
 add dead ends
 show low fuel light like the check engine light
 fix sideways gas pumps collision bounds

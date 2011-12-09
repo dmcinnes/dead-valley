@@ -47,8 +47,9 @@ define(["Game",
       return new Wheel(pos.x, pos.y, config.wheelRadius, this.mass / 4);
     });
 
-    this.driversSide    = config.driversSide;
-    this.passengersSide = config.driversSide.multiply({x:-1, y:1}); // assuming we're symmetrical
+    this.driversSide      = config.driversSide;
+    this.passengersSide   = config.driversSide.clone();
+    this.passengersSide.x = -this.passengersSide.x; // assuming we're symmetrical
 
     this.collided        = false;
     this.breaking        = false;
