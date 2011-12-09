@@ -1,4 +1,4 @@
-define(['Game', 'Sprite', 'fx/BulletHit'], function (Game, Sprite, BulletHit) {
+define(['Game', 'Sprite', 'fx/BulletHit', 'Vector'], function (Game, Sprite, BulletHit, Vector) {
 
   var context = Game.skyContext;
   var MAX_LIFE = 0.2; // in seconds

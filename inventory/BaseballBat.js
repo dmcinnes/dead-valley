@@ -1,6 +1,6 @@
 // Peanut Butter Jelly, Peanut Butter Jelly, Peanut Butter Jelly with a Baseball Bat!
 
-define(['MeleeWeapon', 'inventory/InventoryItem', 'vector'],
+define(['MeleeWeapon', 'inventory/InventoryItem', 'Vector'],
        function (MeleeWeapon, InventoryItem, Vector) {
 
   var BaseballBat = function () {

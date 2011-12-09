@@ -76,7 +76,8 @@ require(
       Game.map = new Map(128, 128, startX, startY);
 
       if (!dudeState) {
-        Game.map.loadStartMapTiles('gas-station-crossroads', 'burbs1', 'intersection', 'intersection');
+
+        Game.map.loadStartMapTiles('gas-station-crossroads', 'burbs1', 'EW_gas-station', 'EW_gas-station');
       } else {
         Game.map.loadStartMapTiles();
       }

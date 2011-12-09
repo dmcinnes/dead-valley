@@ -1,4 +1,4 @@
-define(['Game', 'Car'], function (Game, Car) {
+define(['Vector', 'Game', 'Car'], function (Vector, Game, Car) {
   // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
   var config = {
     spriteConfig: 'PoliceCar',

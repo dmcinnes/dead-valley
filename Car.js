@@ -1,6 +1,7 @@
 // Car
 
 define(["Game",
+        "Vector",
         "RigidBody",
         "Sprite",
         "Wheel",
@@ -14,6 +15,7 @@ define(["Game",
         "fx/Explosion"],
 
         function (Game,
+                  Vector,
                   RigidBody,
                   Sprite,
                   Wheel,

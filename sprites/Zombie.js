@@ -1,5 +1,5 @@
-define(["Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
-       function (Sprite, Collidable, Game, BulletHit, BloodSplatter, TireTracks) {
+define(["Vector", "Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplatter", "fx/TireTracks"],
+       function (Vector, Sprite, Collidable, Game, BulletHit, BloodSplatter, TireTracks) {
 
   var LEFT  = true;  // true, meaning do flip the sprite
   var RIGHT = false;

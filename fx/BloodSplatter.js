@@ -1,6 +1,6 @@
 // Blood Splatters!
 
-define(['Game', 'Sprite'], function (Game, Sprite) {
+define(['Game', 'Sprite', 'Vector'], function (Game, Sprite, Vector) {
   var maxLife = 60; // seconds
 
   var currentSplats = [];

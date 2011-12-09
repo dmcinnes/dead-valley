@@ -1,7 +1,7 @@
 // Map 
 
-define(["Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
-       function (Game, GridNode, World, progress, Building, BuildingMarshal) {
+define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "BuildingMarshal"],
+       function (Vector, Game, GridNode, World, progress, Building, BuildingMarshal) {
 
   var Map = function (gridWidth, gridHeight, startX, startY) {
     var i, j,
