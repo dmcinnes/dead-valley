@@ -625,6 +625,55 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   };
 
   var addArchetype = function (event) {
+    var nodeOffset           = $newArchetypeDisplay.position();
+
+    var archetypeStartRow    = Math.floor(newArchetype.startTile / MAP_SIZE);
+    var archetypeStartColumn = newArchetype.startTile % MAP_SIZE;
+
+    var mapStartRow          = Math.floor(nodeOffset.top / TILE_SIZE);
+    var mapStartColumn       = Math.floor(nodeOffset.left / TILE_SIZE);
+
+    var nodes = $map.children('.tile');
+
+    for (var i = 0; i < newArchetype.height; i++) {
+      for (var j = 0; j < newArchetype.width; j++) {
+        var offset = ((archetypeStartRow + i) * MAP_SIZE) + archetypeStartColumn + j;
+
+        var mapIndex = ((mapStartRow + i) * MAP_SIZE) + mapStartColumn + j;
+        var mapNode = nodes.eq(mapIndex);
+        var tileObject = TileDisplay.getTileObject(mapNode);
+        tileObject.setFromString(ARCHETYPES_MAP[offset]);
+      }
+    }
+
+    var pointOffsetX = (mapStartColumn - archetypeStartColumn) * TILE_SIZE;
+    var pointOffsetY = (mapStartRow    - archetypeStartRow)    * TILE_SIZE;
+
+    var tileOffset = (mapStartRow * MAP_SIZE) + mapStartColumn -
+                     (archetypeStartRow * MAP_SIZE) - archetypeStartColumn;
+
+    _.each(newArchetype.buildingObjects, function (buildingArchetype) {
+      var building = $.extend(true, {}, buildingArchetype); // deep clone
+      // update the building points
+      for (var i = 0; i < building.points.length; i += 2) {
+        building.points[i]   += pointOffsetX;
+        building.points[i+1] += pointOffsetY;
+      }
+
+      for (i = 0; i < building.entrances.length; i++) {
+        building.entrances[i] += tileOffset;
+      }
+
+      for (i = 0; i < building.tiles.length; i++) {
+        building.tiles[i] += tileOffset;
+      }
+
+      buildings.push(building);
+    });
+
+    BuildingDisplay.render();
+
+    // clean up
     $newArchetypeDisplay.remove();
     $newArchetypeDisplay = null;
     newArchetype = null;
