@@ -15,5 +15,6 @@ section_list = [
   'start-intersection',
   'burbs1',
   'loop-crossroads',
-  'EW_gas-station'
+  'EW_gas-station',
+  'EW_burbs'
 ];
