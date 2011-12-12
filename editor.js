@@ -673,12 +673,18 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
     BuildingDisplay.render();
 
+    cleanupAddArchetype();
+  };
+
+  var cleanupAddArchetype = function () {
     // clean up
     $newArchetypeDisplay.remove();
     $newArchetypeDisplay = null;
     newArchetype = null;
     $archetypeList.val([]); // unselect archetype list
   };
+
+
 
   var setup = {
 
@@ -930,6 +936,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
             e.preventDefault();
             break;
           case 27: // ESC is for escape
+            cleanupAddArchetype();
             stopAddingBuildingPoints();
             $('#add-entrance-button').removeClass('selected');
             break;
