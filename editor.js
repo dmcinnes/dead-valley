@@ -18,9 +18,14 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   var MAP_SIZE  = 64;
   var TILE_SHEET_WIDTH;
 
+  var ARCHETYPES     = null;
+  var ARCHETYPES_MAP = null;
+
   var $tileList          = $('#tile-list');
 
   var $spriteList        = $('#sprite-list');
+
+  var $archetypeList     = $('#archetype-list');
 
   var $coordDisplay      = $('#coord-display');
   var $xCoord            = $('#x-coord');
@@ -78,6 +83,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   // the current building we're constructing
   var newBuilding = null;
   var newBuildingAddPoints = false;
+
+  // the archetype we're going to place
+  var newArchetype         = null;
+  var $newArchetypeDisplay = null;
 
   var TileDisplay = {
     findTile: function (event) {
@@ -587,6 +596,41 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     BuildingDisplay.renderEntrances();
   };
 
+  var createArchetypeHoverElement = function () {
+    $newArchetypeDisplay = $("<div/>", {"class": "show-grid archetype-floater"});
+    $newArchetypeDisplay.css({
+      "width": newArchetype.width * TILE_SIZE,
+      "height": newArchetype.height * TILE_SIZE
+    });
+
+    var startRow    = Math.floor(newArchetype.startTile / MAP_SIZE);
+    var startColumn = newArchetype.startTile % MAP_SIZE;
+    var tileObject = new Tile();
+
+    for (var i = 0; i < newArchetype.height; i++) {
+      for (var j = 0; j < newArchetype.width; j++) {
+        var top  = i * TILE_SIZE;
+        var left = j * TILE_SIZE;
+        var tile = $('<div>', {'class':'tile'});
+        tile.css({left:left + "px", top:top + "px"});
+        $newArchetypeDisplay.append(tile);
+
+        var offset = ((startRow + i) * MAP_SIZE) + startColumn + j;
+        tileObject.tileDisplay = tile;
+        tileObject.setFromString(ARCHETYPES_MAP[offset]);
+      }
+    }
+
+    $map.append($newArchetypeDisplay);
+  };
+
+  var addArchetype = function (event) {
+    $newArchetypeDisplay.remove();
+    $newArchetypeDisplay = null;
+    newArchetype = null;
+    $archetypeList.val([]); // unselect archetype list
+  };
+
   var setup = {
 
     tileObject: function () {
@@ -640,7 +684,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
       // map clicks/drags
       $mapMask.click(function (e) {
         var target = $(e.target);
-        if ($('#add-entrance-button').is('.selected')) {
+        if (newArchetype) {
+          addArchetype(e);
+        } else if ($('#add-entrance-button').is('.selected')) {
           addEntrance(e);
         } else if (newBuilding && newBuildingAddPoints) {
           addBuildingPoint(e);
@@ -660,7 +706,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
         }
       }).mousemove(function (e) {
         lastMouseMoveEvent = e;
-        if (newBuilding && newBuildingAddPoints) {
+        if ($newArchetypeDisplay) {
+          setSpritePosition($newArchetypeDisplay, e.pageX, e.pageY);
+        } else if (newBuilding && newBuildingAddPoints) {
           BuildingDisplay.renderPointsInProgress(e);
         } else if (currentSprite) {
           setSpritePosition(currentSprite, e.pageX, e.pageY);
@@ -754,6 +802,11 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
           }
         });
       });
+
+      $archetypeList.change(function (e) {
+        newArchetype = ARCHETYPES[$(this).val()];
+        createArchetypeHoverElement();
+      });
     },
 
     hotKeys: function () {
@@ -841,7 +894,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     componentSizes: function () {
       var height = window.innerHeight - 60;
       var width = window.innerWidth - $tileList.width() - 60;
-      $tileList.height(height);
+      $tileList.height(height - $archetypeList.height());
       $mapMask.height(height);
       $mapMask.width(width);
       // update the mask position
@@ -897,6 +950,19 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
          4063, 4064, 4065]).each(function (offset) {
         tiles.eq(offset).addClass('road-matcher');
       });
+    },
+
+    archetypeList: function () {
+      $.getScript("BuildingArchetypes.json", function () {
+        ARCHETYPES     = window.buildings;
+        ARCHETYPES_MAP = window.map;
+        var names = _.keys(ARCHETYPES).sort();
+        _.each(names, function (name) {
+          $archetypeList.append($("<option>").text(name));
+        });
+        window.buildings = null;
+        window.map       = null;
+      });
     }
 
   };
@@ -906,6 +972,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     setup.spriteObject();
     setup.tileList();
     setup.spriteList();
+    setup.archetypeList();
     setup.mapTiles();
     setup.mouseHandling();
     setup.controls();
