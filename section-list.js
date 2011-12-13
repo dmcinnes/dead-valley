@@ -16,5 +16,6 @@ section_list = [
   'burbs1',
   'loop-crossroads',
   'EW_gas-station',
-  'EW_burbs'
+  'EW_burbs',
+  'EW_S-curve'
 ];
