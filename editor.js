@@ -309,12 +309,23 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
           setSpriteRotation(sprite, rot);
           $map.append(sprite);
         });
+        delete window.sprites;
       }
 
       // load buildings when done
       if (window.buildings) {
         buildings = window.buildings;
         delete window.buildings;
+        BuildingDisplay.render();
+      }
+
+      if (window.archetypes) {
+        _.each(window.archetypes, function (value, key) {
+          _.each(value.buildingObjects, function (building) {
+            buildings.push(building);
+          });
+        });
+        delete window.archetypes;
         BuildingDisplay.render();
       }
     });
@@ -1009,15 +1020,15 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     },
 
     archetypeList: function () {
-      $.getScript("BuildingArchetypes.json", function () {
-        ARCHETYPES     = window.buildings;
+      $.getScript("maps/BuildingArchetypes.json", function () {
+        ARCHETYPES     = window.archetypes;
         ARCHETYPES_MAP = window.map;
         var names = _.keys(ARCHETYPES).sort();
         _.each(names, function (name) {
           $archetypeList.append($("<option>").text(name));
         });
-        window.buildings = null;
-        window.map       = null;
+        delete window.archetypes;
+        delete window.map;
       });
     }
 
