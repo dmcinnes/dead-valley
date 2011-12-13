@@ -115,7 +115,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     tileOffset: function (tile, offset) {
       var left = (offset % TILE_SHEET_WIDTH) * TILE_SIZE;
       var top  = Math.floor(offset / TILE_SHEET_WIDTH) * TILE_SIZE;
-      tile.css({'background-position': -left + 'px ' + -top + 'px'}).show();
+      tile.css({'background-position': -left + 'px ' + -top + 'px'});
     },
 
     tileFlip: function (tile, flip) {
