@@ -322,8 +322,10 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
       if (window.archetypes) {
         _.each(window.archetypes, function (value, key) {
-          _.each(value.buildingObjects, function (building) {
-            buildings.push(building);
+          _.each(value, function (archetype) {
+            _.each(archetype.buildingObjects, function (building) {
+              buildings.push(building);
+            });
           });
         });
         delete window.archetypes;
