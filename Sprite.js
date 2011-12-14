@@ -259,7 +259,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     }
 
     var map   = Game.map;
-    var style = this.node[0].style;
+    var style = {};
 
     var x = this.pos.x - map.originOffsetX;
     var y = this.pos.y - map.originOffsetY;
@@ -297,6 +297,8 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
 
     // update opacity
     style.opacity = this.opacity;
+
+    this.node.css(style);
 
     this.finalizeLayers();
   };
