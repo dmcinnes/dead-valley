@@ -109,11 +109,14 @@ define(["Game",
     // set background offset for which tile we have
     var left = -(this.tileOffset % Game.tileRowSize) * Game.gridSize;
     var top  = -Math.floor(this.tileOffset / Game.tileRowSize) * Game.gridSize;
-    this.domNode.css({'background-position': [left, 'px ', top, 'px'].join('')}).show();
+    this.domNode.css({
+      'background-position': [left, 'px ', top, 'px'].join(''),
+      'visibility': 'visible'
+    });
   };
 
   GridNode.prototype.freeDomNode = function (delta) {
-    this.domNode.hide();
+    this.domNode.css('visibility', 'hidden');
     this.map.freeNodes.push(this.domNode);
     this.domNode = null;
   };
