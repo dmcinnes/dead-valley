@@ -86,6 +86,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
   // the archetype we're going to place
   var newArchetype         = null;
+  var newArchetypeIndex    = 0;
   var $newArchetypeDisplay = null;
 
   var TileDisplay = {
@@ -608,18 +609,30 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   };
 
   var createArchetypeHoverElement = function () {
+    var archetype = newArchetype[newArchetypeIndex];
+    var pos = null;
+
+    if ($newArchetypeDisplay) {
+      pos = $newArchetypeDisplay.position();
+      $newArchetypeDisplay.remove();
+    }
+
     $newArchetypeDisplay = $("<div/>", {"class": "show-grid archetype-floater"});
     $newArchetypeDisplay.css({
-      "width": newArchetype.width * TILE_SIZE,
-      "height": newArchetype.height * TILE_SIZE
+      "width": archetype.width * TILE_SIZE,
+      "height": archetype.height * TILE_SIZE
     });
 
-    var startRow    = Math.floor(newArchetype.startTile / MAP_SIZE);
-    var startColumn = newArchetype.startTile % MAP_SIZE;
+    if (pos) {
+      $newArchetypeDisplay.css({"left": pos.left, "top": pos.top});
+    }
+
+    var startRow    = Math.floor(archetype.startTile / MAP_SIZE);
+    var startColumn = archetype.startTile % MAP_SIZE;
     var tileObject = new Tile();
 
-    for (var i = 0; i < newArchetype.height; i++) {
-      for (var j = 0; j < newArchetype.width; j++) {
+    for (var i = 0; i < archetype.height; i++) {
+      for (var j = 0; j < archetype.width; j++) {
         var top  = i * TILE_SIZE;
         var left = j * TILE_SIZE;
         var tile = $('<div>', {'class':'tile'});
@@ -636,18 +649,20 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
   };
 
   var addArchetype = function (event) {
+    var archetype            = newArchetype[newArchetypeIndex];
+
     var nodeOffset           = $newArchetypeDisplay.position();
 
-    var archetypeStartRow    = Math.floor(newArchetype.startTile / MAP_SIZE);
-    var archetypeStartColumn = newArchetype.startTile % MAP_SIZE;
+    var archetypeStartRow    = Math.floor(archetype.startTile / MAP_SIZE);
+    var archetypeStartColumn = archetype.startTile % MAP_SIZE;
 
     var mapStartRow          = Math.floor(nodeOffset.top / TILE_SIZE);
     var mapStartColumn       = Math.floor(nodeOffset.left / TILE_SIZE);
 
     var nodes = $map.children('.tile');
 
-    for (var i = 0; i < newArchetype.height; i++) {
-      for (var j = 0; j < newArchetype.width; j++) {
+    for (var i = 0; i < archetype.height; i++) {
+      for (var j = 0; j < archetype.width; j++) {
         var offset = ((archetypeStartRow + i) * MAP_SIZE) + archetypeStartColumn + j;
 
         var mapIndex = ((mapStartRow + i) * MAP_SIZE) + mapStartColumn + j;
@@ -663,7 +678,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     var tileOffset = (mapStartRow * MAP_SIZE) + mapStartColumn -
                      (archetypeStartRow * MAP_SIZE) - archetypeStartColumn;
 
-    _.each(newArchetype.buildingObjects, function (buildingArchetype) {
+    _.each(archetype.buildingObjects, function (buildingArchetype) {
       var building = $.extend(true, {}, buildingArchetype); // deep clone
       // update the building points
       for (var i = 0; i < building.points.length; i += 2) {
@@ -692,6 +707,7 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
     $newArchetypeDisplay.remove();
     $newArchetypeDisplay = null;
     newArchetype = null;
+    newArchetypeIndex = 0;
     $archetypeList.val([]); // unselect archetype list
   };
 
@@ -914,6 +930,9 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
             break;
           case 82: // r is for ROTATE
             if (e.altKey) {
+            } else if (newArchetype) {
+              newArchetypeIndex = (newArchetypeIndex + 1) % newArchetype.length;
+              createArchetypeHoverElement();
             } else if (target) {
               cycleTileRotate(target);
             } else {
