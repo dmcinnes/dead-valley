@@ -77,7 +77,7 @@ require(
 
       if (!dudeState) {
 
-        Game.map.loadStartMapTiles('gas-station-crossroads', 'burbs1', 'EW_burbs', 'EW_gas-station');
+        Game.map.loadStartMapTiles('gas-station-crossroads', 'burbs2', 'EW_burbs', 'EW_gas-station');
       } else {
         Game.map.loadStartMapTiles();
       }
