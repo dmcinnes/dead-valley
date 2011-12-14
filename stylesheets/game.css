@@ -89,7 +89,7 @@ body {
 
 #background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }
 .tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); z-index:5; background-position:60 0px; }
-#framerate { position:absolute; color:#000; z-index:150; right:5px; top:5px; display:none; background-color:#FFF; padding:4px; }
+#framerate { position:absolute; color:#000; z-index:150; right:130px; bottom:5px; display:none; background-color:#FFF; padding:4px; }
 #distance { position:absolute; color:#000; z-index:150; right:5px; bottom:5px; background-color:#FFF; padding:4px; }
 .active { display:block !important; }
 #leveldata { display:block }
