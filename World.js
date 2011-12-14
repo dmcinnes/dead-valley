@@ -107,6 +107,10 @@ define([], function () {
         count += localStorage[localStorage.key(i)].length
       }
       return count * 2; // 2 bytes per character
+    },
+
+    clear: function () {
+      worldMap.clear();
     }
   };
 

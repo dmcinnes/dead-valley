@@ -12,12 +12,14 @@ define(['AssetManager',
         'Keyboard',
         'Collidable',
         'EventMachine',
-        'SpriteMarshal'],
+        'SpriteMarshal',
+        'World'],
         function (AssetManager,
                   Keyboard,
                   Collidable,
                   EventMachine,
-                  SpriteMarshal) {
+                  SpriteMarshal,
+                  World) {
 
   var i, sprite, spriteCount, object, objectCount;
 
@@ -46,6 +48,7 @@ define(['AssetManager',
     won: function () {
     },
     died: function () {
+      World.clear();
     }
   };
 
