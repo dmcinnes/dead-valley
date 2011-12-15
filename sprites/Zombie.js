@@ -234,7 +234,9 @@ define(["Vector", "Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplat
       this.hit(other);
     } else if (this.currentState !== this.states.attacking &&
                !other.isZombie) {
-      this.currentState = this.states.searching;
+      this.lastState = this.currentState;
+      this.lastTarget = this.target;
+      this.currentState = this.states.avoiding;
       this.findEndOfObstacle(other, point, normal);
     }
 
@@ -290,15 +292,44 @@ define(["Vector", "Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplat
         this.currentState = this.states.waiting;
       }
     },
-    stalking: function () {
-      var mosey = this.target.subtract(this.pos).normalize().scale(this.attackSpeed);
-      this.vel.set(mosey);
+    avoiding: function () {
       this.walking = true;
+
+      if (this.target) {
+        var distance = this.target.subtract(this.pos).magnitude();
+        if (distance > 5) {
+          var speed = (this.lastState == this.states.stalking) ? this.attackSpeed : this.moseySpeed;
+          this.moveToward(this.target, speed);
+        } else {
+          // got to the target
+          this.target       = this.lastTarget;
+          this.lastTarget   = null;
+          this.currentState = this.lastState || this.states.waiting;
+          this.lastState    = null;
+        }
+      } else {
+        this.currentState = this.states.waiting;
+      }
+    },
+    stalking: function () {
+      this.walking = true;
+
+      if (!this.target) {
+        this.currentState = this.states.searching;
+        return;
+      }
+
+      var distance = this.target.subtract(this.pos).magnitude();
+      if (distance > 5) {
+        this.moveToward(this.target, this.attackSpeed);
+      } else {
+        // got to the target
+        this.target = null;
+        this.currentState = this.states.searching;
+      }
 
       if (this.targetSprite.inside) {
         this.currentState = this.states.pounding;
-      } else if (!this.seeTarget) {
-        this.currentState = this.states.searching;
       }
     },
     pounding: function () {

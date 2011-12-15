@@ -76,6 +76,7 @@ X game over screen
 X only render check engine light when lit -- inventory doesn't need to be up
 X damage car when it drives over rough ground
 X when dude leaves building/car make sure he's not inside another sprite
+X fix zombie wiggle
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -88,7 +89,6 @@ explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click
 some cars can take more damage than other
 make gunfire light up night
-fix zombie wiggle
 intro screen
 cheat sheet
 keep track of statistics
