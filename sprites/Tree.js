@@ -9,9 +9,7 @@ define(['Sprite', 'Collidable'], function (Sprite, Collidable) {
   Tree.prototype = new Sprite();
   Tree.prototype.stationary = true;
 
-  Tree.prototype.collidesWith = ['Dude', 'Car', 'Zombie'];
-
-  Collidable(Tree);
+  Collidable(Tree, { ignore: ['Tree'] });
 
   return Tree;
 });

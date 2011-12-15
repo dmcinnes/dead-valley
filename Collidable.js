@@ -95,10 +95,9 @@ define(["Vector"], function (Vector) {
     var normals, minDepth, nl, we, they, left, right, depth,
         minPoint, normalIndex;
 
-    if (!other.visible  ||
-         this === other ||
-        (this.collidesWith &&
-        !this.collidesWith[other.name])) {
+    if (this === other ||
+        (this.ignores &&
+         this.ignores[other.clazz])) {
       return;
     }
 
@@ -390,9 +389,17 @@ define(["Vector"], function (Vector) {
 
 
   // make whatever object passed to us 'collidable'
-  var collidable = function (thing, collidesWith) {
-    thing.prototype.collidesWith = collidesWith;
-    thing.prototype.collidable   = true;
+  var collidable = function (thing, config) {
+    if (config && config.ignore) {
+      var ignores = {}
+      _.each(config.ignore, function (clazz) {
+        ignores[clazz] = true;
+      });
+
+      thing.prototype.ignores    = ignores;
+    }
+
+    thing.prototype.collidable = true;
 
     thing.prototype.findAdjacentNodes                   = findAdjacentNodes;
     thing.prototype.checkForCollisionsWithNearbyObjects = checkForCollisionsWithNearbyObjects;

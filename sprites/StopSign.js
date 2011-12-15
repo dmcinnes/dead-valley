@@ -8,8 +8,6 @@ define(['Sprite', 'Collidable'], function (Sprite, Collidable) {
   StopSign.prototype = new Sprite();
   StopSign.prototype.stationary = true;
 
-  StopSign.prototype.collidesWith = ['Dude', 'Car', 'Zombie'];
-
   StopSign.prototype.spawned = function () {
     this.oldRot = this.pos.rot;
     this.pos.rot = 0;

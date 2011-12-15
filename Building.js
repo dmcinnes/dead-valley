@@ -103,7 +103,7 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
     }
   };
 
-  Collidable(Building);
+  Collidable(Building, { ignore: ['Building'] });
 
   // redefine collidable's pointVel
   Building.prototype.pointVel = function () {
