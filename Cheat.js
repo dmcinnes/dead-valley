@@ -7,7 +7,7 @@ define(['Game'], function (Game) {
       sprite.die();
     }
     // unsubscribe when we're done
-    Game.events.unsubscribe('click', killHandler);
+    Game.events.unsubscribe('click', fillit);
   };
 
   var fillit = function (e, sprite) {
@@ -56,7 +56,31 @@ define(['Game'], function (Game) {
 
     fillErUp: function () {
       Game.events.subscribe('click', fillit);
-    }
+    },
+
+    sprites: function () {
+      var counts = {}; 
+      var total = 0;
+      _.each(Game.sprites, function (sprite) {
+        var clazz = sprite.clazz;
+        if (clazz) {
+          total++;
+          if (!counts[clazz]) {
+            counts[clazz] = 0;
+          }
+          counts[clazz]++;
+        }
+      });
+
+      _.each(_.keys(counts).sort(), function (key) {
+        console.log(counts[key], key + 's');
+      });
+
+      console.log('--------------');
+      console.log('Total:', total);
+    },
+
+    game: Game
   };
 
 });
