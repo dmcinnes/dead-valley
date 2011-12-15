@@ -7,7 +7,7 @@ define(['Game'], function (Game) {
       sprite.die();
     }
     // unsubscribe when we're done
-    Game.events.unsubscribe('click', fillit);
+    Game.events.unsubscribe('click', killHandler);
   };
 
   var fillit = function (e, sprite) {
@@ -17,7 +17,7 @@ define(['Game'], function (Game) {
       sprite.stopReceivingFuel();
     }
     // unsubscribe when we're done
-    Game.events.unsubscribe('click', killHandler);
+    Game.events.unsubscribe('click', fillit);
   }
 
   window.Cheat = {
