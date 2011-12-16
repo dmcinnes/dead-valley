@@ -63,33 +63,58 @@ _.each(car_list, function (car, count) {
   }
 });
 
+var fetchMap = function (map, callback) {
+  var req = new XMLHttpRequest();
+  req.open('GET', 'maps/'+map+'.json', false);
+  req.onreadystatechange = function () {
+    if (req.readyState == 4) {
+      // if (req.status == 200) {
+        callback(req.responseText);
+      // } else {
+      //   console.log("Error loading page\n", req.status);
+      // }
+    }
+  };
+  req.send();
+};
+
+
 // sections set these variables with their data when loaded
 var map, roads, sprites, buildings;
+var fetchCount = section_list.length;
 _(section_list).each(function (name) {
   map       = null;
   roads     = null;
   sprites   = null;
   buildings = null;
 
-  importScripts('maps/'+name+'.json');
+  fetchMap(name, function (data) {
+    var section = [];
 
-  var section = [];
+    eval(data);
 
-  // convert the map into objects
-  for (var i = 0; i < map.length; i++) {
-    var tile = new Tile();
-    tile.setFromString(map[i]);
-    section[i] = tile;
-  }
+    // convert the map into objects
+    for (var i = 0; i < map.length; i++) {
+      var tile = new Tile();
+      tile.setFromString(map[i]);
+      section[i] = tile;
+    }
 
-  sections[name]    = section;
+    sections[name]    = section;
 
-  // save the section metadata on the map Array object
-  section.name      = name;
-  // these are from the imported script
-  section.roads     = roads     || [];
-  section.sprites   = sprites   || [];
-  section.buildings = buildings || [];
+    // save the section metadata on the map Array object
+    section.name      = name;
+    // these are from the imported script
+    section.roads     = roads     || [];
+    section.sprites   = sprites   || [];
+    section.buildings = buildings || [];
+
+    fetchCount--;
+
+    if (fetchCount === 0) {
+      postMessage(JSON.stringify({type: 'ready'}));
+    }
+  });
 });
 
 // fills a map's blank tiles wth random dirt and scrub
@@ -372,9 +397,11 @@ onmessage = function (e) {
 
   seedZombies(tiles, carCount, config.width, scale);
 
+  var stringTiles = _.map(tiles, function (t) { return t.toString(); }).join('');
+
   var message = {
     type:      'newtiles',
-    tiles:     _(tiles).map(function (t) { return t.toString(); }).join(''),
+    tiles:     stringTiles,
     roads:     tiles.roads,
     sprites:   tiles.sprites,
     buildings: tiles.buildings,

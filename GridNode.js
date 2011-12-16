@@ -87,11 +87,11 @@ define(["Game",
 
       // translateZ(0) makes a big difference for Safari
       if (Game.threeDee) {
-        transform.push(' translateZ(0)');
+        transform.push(' translateZ(0px)');
       }
 
       // TODO support FF
-      this.domNode[0].style['-webkit-transform'] = transform.join('');
+      this.domNode.css('-moz-transform', transform.join(''));
     }
   };
 

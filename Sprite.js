@@ -282,7 +282,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     }
     // translateZ(0) makes a big difference for Safari
     if (Game.threeDee) {
-      transform.push(' translateZ(0)');
+      transform.push(' translateZ(0px)');
     }
 
     if (this.scale !== 1) {
@@ -290,7 +290,7 @@ define(["Game", "Matrix", "Vector", "EventMachine", "SpriteMarshal", "Sprite-inf
     }
 
     // TODO support FF
-    style['-webkit-transform'] = transform.join('');
+    style['-moz-transform'] = transform.join('');
 
     // update z
     style['z-index'] = this.z;

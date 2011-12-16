@@ -72,7 +72,7 @@ define(["Game",
 
     this.aimingArmNode       = this.createNode(1);
     // set the transform origin so it rotates in the right place
-    this.aimingArmNode[0].style['-webkit-transform-origin'] = ARM_OFFSET_X + ' ' + ARM_OFFSET_Y;
+    this.aimingArmNode[0].style['-moz-transform-origin'] = ARM_OFFSET_X + ' ' + ARM_OFFSET_Y;
 
     this.setupEventHandlers();
     this.setupMouseBindings();
@@ -386,7 +386,7 @@ define(["Game",
     }
     // translateZ(0) makes a big difference for Safari
     if (Game.threeDee) {
-      transform.push(' translateZ(0)');
+      transform.push(' translateZ(0px)');
     }
 
     var left = -(frame * this.tileWidth) - this.imageOffset.x;
@@ -394,7 +394,7 @@ define(["Game",
     style['background-position'] = [left, 'px ', top, 'px'].join('');
 
     // TODO support FF
-    style['-webkit-transform'] = transform.join('');
+    style['-moz-transform'] = transform.join('');
 
     style.visibility = 'visible';
   };

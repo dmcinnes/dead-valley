@@ -323,6 +323,8 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
         case 'log':
           console.log.apply(console, data.message);
           break;
+        case 'ready':
+          break;
         case 'newtiles':
           var strings = data.tiles;
           var pos = new Vector(data.position.x, data.position.y);
