@@ -4,13 +4,6 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
        function (Vector, Game, GridNode, World, progress, Building, BuildingMarshal) {
 
   var Map = function (gridWidth, gridHeight, startX, startY) {
-    var i, j,
-        imageData,
-        startX,     startY,
-        gridX,      gridY,
-        imageWidth, imageHeight,
-        offset,     nodeOffset,
-        screenX,    screenY;
 
     var mapWorker = new Worker("mapworker.js");
     mapWorker.onerror = function (e) {
@@ -62,6 +55,8 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
       this.levelMapContext = this.levelMap[0].getContext("2d");
       this.levelMapData = this.levelMapContext.createImageData(gridWidth, gridHeight);
 
+      var i, j;
+
       var mapData = this.levelMapData.data;
       for (i = 0; i < this.nodes.length; i++) {
         this.nodes[i] = new GridNode(this);
@@ -89,8 +84,8 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
     };
 
     this.getNodeByWorldCoords = function (x, y) {
-      gridX = Math.floor((x - this.originOffsetX + this.submapOffsetX) / Game.gridSize);
-      gridY = Math.floor((y - this.originOffsetY + this.submapOffsetY) / Game.gridSize);
+      var gridX = Math.floor((x - this.originOffsetX + this.submapOffsetX) / Game.gridSize);
+      var gridY = Math.floor((y - this.originOffsetY + this.submapOffsetY) / Game.gridSize);
       return this.getNode(gridX, gridY);
     };
 
@@ -105,9 +100,9 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
     };
 
     this.getNodeFromSection = function (x, y, section) {
-      offset     = 4 * (y * section.width + x);
-      nodeOffset = section.data[offset] +
-                   (section.data[offset+1] << 8);
+      var offset     = 4 * (y * section.width + x);
+      var nodeOffset = section.data[offset] +
+                       (section.data[offset+1] << 8);
       return this.nodes[nodeOffset];
     };
 
@@ -235,7 +230,7 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
     this.swapVertical = function (left, right) {
       var leftNode, rightNode, i;
       var leftX = left.width - 1;
-      for (i = 0; i < left.height; i++) {
+      for (var i = 0; i < left.height; i++) {
         leftNode  = this.getNodeFromSection(leftX, i, left);
         rightNode = this.getNodeFromSection(0, i, right);
         leftNode.east  = rightNode;
@@ -250,7 +245,7 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
     this.swapHorizontal = function (top, bottom) {
       var upperNode, lowerNode, i;
       var bottomY = top.height - 1;
-      for (i = 0; i < top.width; i++) {
+      for (var i = 0; i < top.width; i++) {
         upperNode = this.getNodeFromSection(i, bottomY, top);
         lowerNode = this.getNodeFromSection(i, 0, bottom);
         upperNode.south = lowerNode;
@@ -372,7 +367,7 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
 
         Game.addSpriteID(building);
 
-        var tile;
+        var i, tile;
 
         // put the building in our tiles so we can collide with it
         for (i = 0; i < buildingTiles.length; i++) {
@@ -525,6 +520,10 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
 
     this.render = function (delta) {
       if (this.needsRender) {
+        var startX, startY, gridX, gridY, i,
+            imageData, imageWidth, imageHeight,
+            offset, nodeOffset;
+
         startX = Math.floor(this.submapOffsetX / Game.gridSize) - 2;
         if (startX < 0) {
           startX = 0;
@@ -565,8 +564,8 @@ define(["Vector", "Game", "GridNode", "World", "Progress", "Building", "Building
     var vBorder = 180.0;
 
     this.keepInView = function (sprite) {
-      screenX = sprite.pos.x + sprite.vel.x*0.8 - this.originOffsetX;
-      screenY = sprite.pos.y + sprite.vel.y*0.8 - this.originOffsetY;
+      var screenX = sprite.pos.x + sprite.vel.x*0.8 - this.originOffsetX;
+      var screenY = sprite.pos.y + sprite.vel.y*0.8 - this.originOffsetY;
 
       if (screenX < hBorder) {
         this.velX = screenX - hBorder;
