@@ -1,4 +1,4 @@
-// The Cake is a Lie
+// Beans!
 
 define(['Game', 'inventory/InventoryItem'],
        function (Game, InventoryItem) {
@@ -9,7 +9,7 @@ define(['Game', 'inventory/InventoryItem'],
 
   Beans.prototype = {
     use: function () {
-      Game.dude.heal(2);
+      Game.dude.heal(1);
       this.inventory.removeItem(this);
     },
     viable: function () {
