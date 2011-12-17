@@ -97,7 +97,6 @@ add dead ends
 show low fuel light like the check engine light
 fix sideways gas pumps collision bounds
 create start map
-support FF
 fix cursor rendering when left click on fuelee inventory item
 fix car reverse
 
@@ -183,3 +182,4 @@ support shooting out of car
 gas pumps can take damage
 add dude roll/damage when jumping out of car
 make mapworker work when WebWorkers aren't supported
+support FF

@@ -43,7 +43,13 @@ define(["Game", "Sprite", "Collidable", "Vector", "fx/BulletHit", "Inventory", "
   Building.prototype.inertia        = Number.MAX_VALUE;
   Building.prototype.stationary     = true;
 
-  Building.prototype.collision = function () {
+  Building.prototype.collision = function (other, point, normal, vab) {
+    var proj = other.lineProjection(normal.clone().normalize());
+    // all the way inside
+    if (Math.abs(proj[1] - proj[0]) < normal.magnitude()) {
+      // push em out
+      other.pos.translate(normal.scale(-1));
+    }
   };
 
   Building.prototype.bulletHit = function (hit, damage) {
