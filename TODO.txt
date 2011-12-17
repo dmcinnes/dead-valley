@@ -78,10 +78,12 @@ X damage car when it drives over rough ground
 X when dude leaves building/car make sure he's not inside another sprite
 X fix zombie wiggle
 X explosions should cause dude/zombie damage
+X fix sprite placement by MapWorker so it avoids buildings
 add drag to car
 tune Honda's performance
 HUD ammo count
 headlight repair
+car repair
 make zombies attracted to light
 firearm reload times
 firearm between shot timeout
@@ -92,13 +94,16 @@ make gunfire light up night
 intro screen
 cheat sheet
 keep track of statistics
-fix sprite placement by MapWorker so it avoids buildings
 add dead ends
 show low fuel light like the check engine light
-fix sideways gas pumps collision bounds
 create start map
+
+*BUGS*
+fix sideways gas pumps collision bounds
 fix cursor rendering when left click on fuelee inventory item
 fix car reverse
+fix zombie sticking to walls
+fix gas can no drag bug
 
 *EDITOR*
 X remove current collidible code
