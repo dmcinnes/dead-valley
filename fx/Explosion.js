@@ -50,10 +50,30 @@ define(['Game', 'Sprite', 'fx/BulletHit', 'Vector'], function (Game, Sprite, Bul
   };
 
   Explosion.prototype.postMove = function (delta) {
+    if (this.life === 0) {
+      this.pushBackSprites();
+    }
+
     this.life += delta;
+
     if (this.life > MAX_LIFE) {
       this.die();
     }
+  };
+
+  Explosion.prototype.pushBackSprites = function () {
+    var node = Game.map.getNodeByWorldCoords(this.pos.x, this.pos.y);
+    _.each(node.nearby(), function (sprite) {
+      var vector = sprite.pos.subtract(this.pos);
+      var distance = vector.magnitude();
+      if (!sprite.stationary && sprite.isRigidBody) {
+        sprite.pos.translate(vector.normalize().scale(20));
+      }
+      if (sprite.takeDamage) {
+        var damage = Math.round(2000 / (distance * distance));
+        sprite.takeDamage(damage);
+      }
+    }, this);
   };
 
   Explosion.prototype.z = 150;

@@ -77,6 +77,7 @@ X only render check engine light when lit -- inventory doesn't need to be up
 X damage car when it drives over rough ground
 X when dude leaves building/car make sure he's not inside another sprite
 X fix zombie wiggle
+X explosions should cause dude/zombie damage
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -85,7 +86,6 @@ make zombies attracted to light
 firearm reload times
 firearm between shot timeout
 add inventory/hud toggle button
-explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click
 some cars can take more damage than other
 make gunfire light up night
@@ -99,6 +99,7 @@ fix sideways gas pumps collision bounds
 create start map
 support FF
 fix cursor rendering when left click on fuelee inventory item
+fix car reverse
 
 *EDITOR*
 X remove current collidible code
