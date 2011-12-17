@@ -360,7 +360,7 @@ onmessage = function (e) {
   var y = config.position.y;
   var distance = Math.sqrt(x*x + y*y);
   // how much to scale the zombie infestation
-  var scale = distance / 100;
+  var scale = distance / 50;
 
   var tiles = (config.sectionName) ?
                 loadSection(config) :
