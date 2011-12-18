@@ -30,6 +30,7 @@ define([], function () {
         if (key !== 'saveList') { // no super recursion
           updateSaveList(key);
         }
+        tryAgain = false;
       } catch (e) {
         makeSomeRoom();
         tryAgain = true;
