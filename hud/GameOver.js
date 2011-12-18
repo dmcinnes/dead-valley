@@ -9,8 +9,6 @@ define(['Game'], function (Game) {
   });
 
   Game.events.subscribe('game over', function () {
-    if (Game.dude.health <= 0) {
-      overlay.fadeIn(5000);
-    }
+    overlay.fadeIn(5000);
   });
 });

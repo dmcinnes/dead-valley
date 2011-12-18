@@ -6,6 +6,7 @@ define(['Game',
         'hud/Pause',
         'hud/GameOver',
         'hud/Framerate',
+        'hud/Time',
         'hud/Distance',
         'hud/FuelGauge',
         'hud/Tip',
@@ -19,6 +20,7 @@ define(['Game',
                  Pause,
                  GameOver,
                  Framerate,
+                 Time,
                  Distance,
                  FuelGauge,
                  Tip,
@@ -197,6 +199,9 @@ define(['Game',
 
   // framerate HUD
   Game.addSprite(Framerate);
+
+  // distance HUD
+  Game.addSprite(Time);
 
   // distance HUD
   Game.addSprite(Distance);

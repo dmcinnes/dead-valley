@@ -9,6 +9,7 @@
 // 100 miles / hour == 440 pixels / second
 
 define(['AssetManager',
+        'GameTime',
         'Keyboard',
         'Collidable',
         'EventMachine',
@@ -16,6 +17,7 @@ define(['AssetManager',
         'Vector',
         'World'],
         function (AssetManager,
+                  GameTime,
                   Keyboard,
                   Collidable,
                   EventMachine,
@@ -30,36 +32,44 @@ define(['AssetManager',
   var waitingSprites = 0;
 
   var gameStates = {
-    start: function () {
+    start: function (delta) {
       Game.events.fireEvent('game start');
       Game.isOver = false;
+      GameTime.setTime(0);
+      GameTime.setTargetTime(Game.targetTime);
       currentGameState = gameStates.running;
     },
-    running: function () {
+    running: function (delta) {
+      GameTime.tick(delta);
       var distance = Math.round(Game.dude.pos.magnitude() / 15840);
       if (distance > Game.targetMiles) {
         currentGameState = gameStates.won;
-        Game.isOver = true;
-        Game.events.fireEvent('game over');
       } else if (Game.dude.health <= 0) {
         currentGameState = gameStates.died;
-        Game.isOver = true;
-        Game.events.fireEvent('game over');
       }
     },
-    won: function () {
+    won: function (delta) {
+      Game.isOver = true;
+      Game.events.fireEvent('game over');
     },
-    died: function () {
+    died: function (delta) {
       World.clear();
+      Game.isOver = true;
+      Game.events.fireEvent('game over');
     }
   };
 
-  var currentGameState = gameStates.running;
+  var currentGameState = gameStates.start;
+
+  GameTime.subscribe("target time passed", function () {
+    currentGameState = gameStates.died;
+  });
 
   var Game = {
     assetManager:  new AssetManager('./assets/'),
     keyboard:      Keyboard,
-    targetMiles:   50,
+    targetMiles:   20,
+    targetTime:    GameTime.secondsInADay * 3 + 0.7,
     gridSize:      60,
     tileRowSize:   9,  // should be set by asset manager
                        // this is the number of tiles in row
@@ -260,7 +270,7 @@ define(['AssetManager',
     },
     
     runGameState: function (delta) {
-      currentGameState.call(this);
+      currentGameState.call(this, delta);
     }
   };
 

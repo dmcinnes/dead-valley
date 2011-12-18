@@ -1,13 +1,15 @@
 // The Sky
 
-define(["Game", "Sprite"], function (Game, Sprite) {
+define(["Game", "Sprite", "GameTime"], function (Game, Sprite, GameTime) {
 
   var context = Game.skyContext;
 
+  var secondsInADay = GameTime.secondsInADay;
+
   // in seconds
-  var dayTotal        = 10 * 60;
-  var nightTotal      =  7 * 60;
-  var transitionTotal = 90;
+  var dayTotal        = Math.round(secondsInADay * 0.54);
+  var nightTotal      = Math.round(secondsInADay * 0.38);
+  var transitionTotal = Math.round(secondsInADay * 0.08);
 
   var counter = dayTotal;
 
