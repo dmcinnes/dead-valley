@@ -105,6 +105,8 @@ fix car reverse
 fix zombie sticking to walls
 fix gas can no drag bug
 can't hold drag an item then drop it into another car/building
+clear rubber hose cursor better
+limit map scrolling offset so car doesn't go off screen
 
 *EDITOR*
 X remove current collidible code

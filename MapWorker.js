@@ -95,12 +95,13 @@ _(section_list).each(function (name) {
 });
 
 // fills a map's blank tiles wth random dirt and scrub
-var fillBlankTiles = function (tiles, width) {
+var fillBlankTiles = function (tiles, width, scale) {
   var x, y, i, count;
   var total = tiles.length;
   var carCount = 0;
 
-  var addCars = Math.random() < 0.5; // 50% chance of cars
+  var addCars = (Math.random() < 0.5) || // 50% chance of cars
+                scale === 0; // always have cars on the first seciton
 
   if (!tiles.sprites) {
     tiles.sprites = [];
@@ -369,7 +370,7 @@ onmessage = function (e) {
                 loadSection(config) :
                 getRandomSection(config.roads);
 
-  var carCount = fillBlankTiles(tiles, config.width);
+  var carCount = fillBlankTiles(tiles, config.width, scale);
 
   tiles.buildings = seedBuildings(tiles.buildings, scale);
 

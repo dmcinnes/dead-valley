@@ -13,12 +13,14 @@ define(['AssetManager',
         'Collidable',
         'EventMachine',
         'SpriteMarshal',
+        'Vector',
         'World'],
         function (AssetManager,
                   Keyboard,
                   Collidable,
                   EventMachine,
                   SpriteMarshal,
+                  Vector,
                   World) {
 
   var i, sprite, spriteCount, object, objectCount;
@@ -71,6 +73,8 @@ define(['AssetManager',
     events:        EventMachine(),
     skyContext:    $('#sky-canvas')[0].getContext('2d'),
     threeDee:      true, // 3D acceleration
+
+    startPosition: new Vector(1714, 1822),
 
     runMap: function (delta) {
       if (this.map) this.map.run(delta);

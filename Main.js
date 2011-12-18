@@ -28,6 +28,7 @@ require(
     // TODO clean this up so main isn't so cluttered
     require.ready(function () {
       var dude, startX, startY;
+      var startPos = Game.startPosition;
 
       Game.addSprite(Sky);
 
@@ -36,8 +37,7 @@ require(
       if (dudeState) {
         var parsedDudeState = JSON.parse(dudeState);
         dude = Dude.marshal(dudeState);
-        startX = parsedDudeState.pos.x;
-        startY = parsedDudeState.pos.y;
+        startPos = parsedDudeState.pos;
 
         // wait until the map has loaded
         // other sprites are loaded with the map
@@ -59,25 +59,20 @@ require(
         });
 
       } else {
-        // want to start in the center of the right vertical road
-        startX = 40 * Game.gridSize;
-        startY = 26 * Game.gridSize;
-
         // add our starting players
         dude = new Dude();
-        dude.pos.x = startX;
-        dude.pos.y = startY;
+        dude.pos.set(startPos);
       }
 
       // Call me The DUDE
       Game.newDude(dude);
 
       // set up the map
-      Game.map = new Map(128, 128, startX, startY);
+      Game.map = new Map(128, 128, startPos.x, startPos.y);
 
       if (!dudeState) {
 
-        Game.map.loadStartMapTiles('gas-station-crossroads', 'burbs2', 'EW_burbs', 'EW_gas-station');
+        Game.map.loadStartMapTiles('EW_burbs');
       } else {
         Game.map.loadStartMapTiles();
       }
