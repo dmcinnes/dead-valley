@@ -15,6 +15,8 @@ var burbsInventory = [
   {"clazz":"Nine_mm","percent":0.1,"dice":"2d6","stacked":true}
 ];
 
+MAX_ZOMBIES = 50;
+
 // so we can use TileMarshal even though it's defined
 // with requirejs
 var TileMarshal;
@@ -251,6 +253,7 @@ var seedZombies = function (tiles, carCount, width, scale) {
   var buildingCount = tiles.buildings.length;
   var maxZombies = buildingCount * 3 + carCount;
   var zombieCount = Math.round(Math.random() * maxZombies * scale);
+  zombieCount = (zombieCount > MAX_ZOMBIES) ? MAX_ZOMBIES : zombieCount;
   var zombieGroups = [];
 
   // group the zombies up
