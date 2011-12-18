@@ -16,9 +16,13 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
 
   GasCan.prototype = {
     use: function () {
-      $container.addClass('gascan');
-      this.activate();
-      Game.events.fireEvent('fuel source active', this);
+      if (this.currentFuel > 0) {
+	window.setTimeout(function () {
+	  $container.addClass('gascan');
+	}, 0);
+	this.activate();
+	Game.events.fireEvent('fuel source active', this);
+      }
     },
 
     displayNode: function () {

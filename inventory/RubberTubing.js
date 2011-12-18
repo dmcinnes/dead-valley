@@ -14,10 +14,12 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
       var car = _.detect(Game.dude.touching, function (sprite) {
         return sprite.isCar;
       });
-      if (car) {
+      if (car && car.currentFuel) {
         this.source = car;
         this.currentFuel = car.currentFuel;
-        $container.addClass('rubber-tubing');
+	window.setTimeout(function () {
+	  $container.addClass('rubber-tubing');
+	}, 0);
         this.activate();
         Game.events.fireEvent('fuel source active', this);
       }
@@ -32,6 +34,7 @@ define(['Game', 'inventory/InventoryItem', 'Fuel'],
       }
       this.currentFuel = null;
       this.source = null;
+      $container.removeClass('rubber-tubing');
     },
     isCarCloseEnough: function (car) {
       return Game.dude.distance(car) < FUELING_DISTANCE;
