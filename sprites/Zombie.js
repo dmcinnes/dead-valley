@@ -191,7 +191,7 @@ define(["Vector", "Sprite", "Collidable", "Game", "fx/BulletHit", "fx/BloodSplat
 
       var which = (this.direction === RIGHT) ? 1 : -1;
       var add = new Vector(which * this.tileWidth, 0);
-      other.takeDamage(1, this.pos.add(add));
+      other.takeDamage(1, this.pos.add(add), this);
     }
   };
 

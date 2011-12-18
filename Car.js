@@ -34,6 +34,8 @@ define(["Game",
 
   var closenessForLightDamage = 8;
 
+  var MAX_PUMMEL_HEALTH = 10;
+
   // TODO maybe I should just save the config directly
   var Car = function (config) {
     this.init(config.spriteConfig);
@@ -88,6 +90,8 @@ define(["Game",
 			  config.currentFuel * config.fuelCapacity : 0;
 
     this.health = 100;
+
+    this.pummelHealth = MAX_PUMMEL_HEALTH;
 
     this.smokeCounter = 0;
 
@@ -298,6 +302,7 @@ define(["Game",
   Car.prototype.enter = function (dude) {
     // can't enter if it's destroyed
     if (this.health > 0) {
+      this.pummelHealth = MAX_PUMMEL_HEALTH;
       this.driver = dude;
       Game.events.fireEvent("enter car", this);
       return true;
@@ -311,7 +316,7 @@ define(["Game",
     Game.events.fireEvent("leave car", this);
   };
 
-  Car.prototype.takeDamage = function (damage, point) {
+  Car.prototype.takeDamage = function (damage, point, other) {
     if (damage && this.health > 0) {
       this.takingDamage = true;
 
@@ -324,6 +329,15 @@ define(["Game",
       }
 
       this.fireEvent('health changed', this.health);
+
+      // kick dude out after 10 hits
+      if (other && other.isZombie && this.driver) {
+        this.pummelHealth -= damage;
+        if (this.pummelHealth <= 0) {
+          // kick dude out
+          this.driver.leaveCar();
+        }
+      }
 
       if (this.health <= 0) {
         // die!

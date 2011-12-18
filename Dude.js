@@ -228,6 +228,10 @@ define(["Game",
   Dude.prototype.hide = function () {
     Sprite.prototype.hide.call(this); // super
     this.aimingArmNode[0].style.visibility = 'hidden';
+    if (this.currentNode) {
+      this.currentNode.leave(this);
+      this.currentNode = null;
+    }
   };
 
   Dude.prototype.enterCar = function (car) {
