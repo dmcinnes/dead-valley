@@ -104,6 +104,7 @@ fix cursor rendering when left click on fuelee inventory item
 fix car reverse
 fix zombie sticking to walls
 fix gas can no drag bug
+can't hold drag an item then drop it into another car/building
 
 *EDITOR*
 X remove current collidible code
