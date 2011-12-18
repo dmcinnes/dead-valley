@@ -481,7 +481,9 @@ define(["Game",
               self.aimTowardMouse(coords, true);
             }
 
-            if (firearm.fire(self.pos, coords, self.direction)) {
+            var muzzle = coords.subtract(self.pos).normalize().scale(5);
+
+            if (firearm.fire(self.pos.add(muzzle), coords, self.direction)) {
               self.firing = true;
             }
           }

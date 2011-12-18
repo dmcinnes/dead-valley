@@ -79,6 +79,7 @@ X when dude leaves building/car make sure he's not inside another sprite
 X fix zombie wiggle
 X explosions should cause dude/zombie damage
 X fix sprite placement by MapWorker so it avoids buildings
+X make gunfire light up night
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -90,7 +91,6 @@ firearm between shot timeout
 add inventory/hud toggle button
 support CMD-click on inventory as left-click
 some cars can take more damage than other
-make gunfire light up night
 intro screen
 cheat sheet
 keep track of statistics

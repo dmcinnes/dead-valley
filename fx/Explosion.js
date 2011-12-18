@@ -37,7 +37,6 @@ define(['Game', 'Sprite', 'fx/BulletHit', 'Vector'], function (Game, Sprite, Bul
     context.save();
     context.translate(pos.x - map.originOffsetX, pos.y - map.originOffsetY);
     context.globalCompositeOperation = 'destination-out';
-    context.globalAlpha = 0.6;
     context.beginPath();
     context.arc(0, 0, this.tileWidth * this.scale, 0, Math.PI*2);
     context.fill();

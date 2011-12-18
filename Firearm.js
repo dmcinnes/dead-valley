@@ -1,6 +1,6 @@
 // Firearm
 
-define(['Game'], function (Game) {
+define(['Game', 'fx/MuzzleFlash'], function (Game, MuzzleFlash) {
 
   var Firearm = function () {
   };
@@ -16,7 +16,8 @@ define(['Game'], function (Game) {
       // bullet can fly further than where we're aiming
       var maxEnd = end.subtract(start).normalize().scale(this.range).translate(start);
       this.traceBullet(start, maxEnd);
-      Game.events.fireEvent('firearm discharged', this);
+      MuzzleFlash.createNew(start);
+      Game.events.fireEvent('firearm discharged', this, start, end);
       return true;
     }
     return false;
