@@ -5,7 +5,6 @@ define(['Game', 'MainLoop', 'Keyboard', 'World'], function (Game, MainLoop, Keyb
     esc:   'hide inventory',
     f:     'toggle framerate',
     p:     'toggle pause',
-    n:     'transition sky',
     e:     'dude enter/exit',
     h:     'dude toggle headlights',
     r:     'reload',
