@@ -42,7 +42,7 @@ define(['GameTime'], function (GameTime) {
   var renderCurrentTime = function (force) {
     var time = GameTime.gameTime();
 
-    if (lastTime !== time.hour || force) {
+    if (lastTime !== time.hours || force) {
       var pm = time.hours > 11;
       var hours = pm ? time.hours - 12 : time.hours;
 
