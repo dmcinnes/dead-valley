@@ -107,6 +107,9 @@ fix gas can no drag bug
 can't hold drag an item then drop it into another car/building
 clear rubber hose cursor better
 limit map scrolling offset so car doesn't go off screen (see police car)
+inventory isn't saved in proper position
+tiles in front of gas station are not considered road
+miles display sometimes shows lots of decimals
 
 *EDITOR*
 X remove current collidible code
