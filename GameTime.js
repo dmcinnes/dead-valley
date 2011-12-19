@@ -1,6 +1,6 @@
 define(['EventMachine'], function (EventMachine) {
 
-  var secondsInADay    = 1110;
+  var secondsInADay    = 1200;
   var secondsInAnHour  = secondsInADay / 24;
   var secondsInAMinute = secondsInAnHour / 60;
 

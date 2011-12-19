@@ -7,9 +7,9 @@ define(["Game", "Sprite", "GameTime"], function (Game, Sprite, GameTime) {
   var secondsInADay = GameTime.secondsInADay;
 
   // in seconds
-  var dayTotal        = Math.round(secondsInADay * 0.54);
-  var nightTotal      = Math.round(secondsInADay * 0.38);
-  var transitionTotal = Math.round(secondsInADay * 0.08);
+  var dayTotal        = Math.round(secondsInADay * 0.50);
+  var nightTotal      = Math.round(secondsInADay * 0.42);
+  var transitionTotal = Math.round(secondsInADay * 0.04); // two of these
 
   var counter = dayTotal;
 
@@ -18,7 +18,14 @@ define(["Game", "Sprite", "GameTime"], function (Game, Sprite, GameTime) {
   var alpha = nightAlpha;
 
   var transitionPercent = function () {
-    return (transitionTotal - counter) / transitionTotal;
+    var percent = (transitionTotal - counter) / transitionTotal;
+    if (percent < 0) {
+      percent = 0;
+    }
+    if (percent > 1) {
+      percent = 1;
+    }
+    return percent;
   };
 
   var states = {
@@ -30,7 +37,7 @@ define(["Game", "Sprite", "GameTime"], function (Game, Sprite, GameTime) {
       }
     },
     day: function () {
-      alpha = 0.0;
+      alpha = 0;
       if (counter < 0) {
         counter = transitionTotal;
         currentState = states.sunset;
@@ -39,7 +46,7 @@ define(["Game", "Sprite", "GameTime"], function (Game, Sprite, GameTime) {
     sunset: function () {
       alpha = nightAlpha * transitionPercent();
       if (counter < 0) {
-        counter = dayTotal;
+        counter = nightTotal;
         currentState = states.night;
       }
     },
