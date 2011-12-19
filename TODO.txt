@@ -80,6 +80,7 @@ X fix zombie wiggle
 X explosions should cause dude/zombie damage
 X fix sprite placement by MapWorker so it avoids buildings
 X make gunfire light up night
+X create start map
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -96,17 +97,16 @@ cheat sheet
 keep track of statistics
 add dead ends
 show low fuel light like the check engine light
-create start map
 
 *BUGS*
+X fix cursor rendering when left click on fuelee inventory item
 fix sideways gas pumps collision bounds
-fix cursor rendering when left click on fuelee inventory item
 fix car reverse
 fix zombie sticking to walls
 fix gas can no drag bug
 can't hold drag an item then drop it into another car/building
 clear rubber hose cursor better
-limit map scrolling offset so car doesn't go off screen
+limit map scrolling offset so car doesn't go off screen (see police car)
 
 *EDITOR*
 X remove current collidible code
