@@ -7,7 +7,7 @@ define(['Game'], function (Game) {
   var elapsedCounter = 0.0;
 
   var render = function (framerate) {
-    node.text(framerate);
+    node.text([framerate, 'FPS'].join(' '));
   };
 
   var show = function () {
@@ -15,6 +15,7 @@ define(['Game'], function (Game) {
     elapsedCounter = 0.0;
     visible = true;
     node.addClass('active');
+    render(0);
   };
 
   var hide = function () {

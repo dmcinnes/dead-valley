@@ -91,9 +91,12 @@ body {
 .tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); z-index:5; background-position:60 0px; }
 
 #lower-right { position:absolute; color:#000; z-index:150; right:5px; bottom:5px; cursor:default;}
-#framerate { color:#000; display:none; background-color:#FFF; padding:4px;}
-#time { color:#000; background-color:#FFF; padding:4px; cursor:pointer;}
-#distance { color:#000; background-color:#FFF; padding:4px;}
+#framerate { color:#000; display:none; background-color:#FFF; padding:4px; float:left; width:42px; }
+#distance { color:#000; background-color:#FFF; padding:4px; float:right; width:100px; }
+#time { color:#000; background-color:#FFF; padding:4px; cursor:pointer; float:right; }
+#time.clock {
+  width: auto;
+}
 
 .active { display:block !important; }
 #leveldata { display:block }
@@ -278,6 +281,21 @@ body {
 
 #check-engine-light.lit {
   background-position:45 0px; 
+}
+
+#lower-right > span {
+  font-weight:bold;
+  text-align: right;
+  margin: 2px;
+  background: #256;
+  padding: 5px 15px;
+  color: #DDD;
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  border: 1px solid #034;
+  white-space: nowrap;
+  opacity: 0.8;
 }
 
 .tip {

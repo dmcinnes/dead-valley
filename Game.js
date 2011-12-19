@@ -69,7 +69,7 @@ define(['AssetManager',
     assetManager:  new AssetManager('./assets/'),
     keyboard:      Keyboard,
     targetMiles:   20,
-    targetTime:    GameTime.secondsInADay * 3 + 0.7,
+    targetTime:    GameTime.secondsInADay * 3 + 5,
     gridSize:      60,
     tileRowSize:   9,  // should be set by asset manager
                        // this is the number of tiles in row

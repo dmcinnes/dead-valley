@@ -1,15 +1,14 @@
 define(['GameTime'], function (GameTime) {
   var node = $('#time');
 
-  var lastMinute = null;
-  var colon = true;
+  var lastTime = null;
   var renderTime = false;
-  var forceRender = false;
 
   node.click(function (e) {
     e.preventDefault();
     renderTime = !renderTime;
-    forceRender = true;
+    node.toggleClass('clock');
+    render(true);
   });
 
   var renderRemaining = function (force) {
@@ -17,59 +16,57 @@ define(['GameTime'], function (GameTime) {
 
     if (time.time <= 0) {
       node.text('Elapsed');
-    } else if (lastMinute !== time.minutes || force) {
-      colon = !colon;
+    } else if (lastTime !== time.minutes || force) {
+      var out = [];
 
-      var out = [time.days]
-      out.push((time.days == 1) ? ' Day ' : ' Days ');
-
-      out.push(time.hours || '00');
-
-      out.push((colon) ? ':' : ' ');
-
-      if (time.minutes < 10) {
-	out.push('0');
+      if (time.days > 0) {
+	out.push(time.days);
+	out.push((time.days == 1) ? 'Day' : 'Days');
       }
-      out.push(time.minutes);
 
-      lastMinute = time.minutes;
-      node.text(out.join(''));
+      if (time.hours > 0) {
+	out.push(time.hours, 'Hours');
+      }
+      
+      if (time.hours === 0 && time.days === 0) {
+	out.push(time.minutes, 'Minutes');
+      }
+
+      out.push('Remaining');
+
+      lastTime = time.minutes;
+      node.text(out.join(' '));
     }
   };
 
   var renderCurrentTime = function (force) {
     var time = GameTime.gameTime();
 
-    if (lastMinute !== time.minutes || force) {
-      colon = !colon;
-
+    if (lastTime !== time.hour || force) {
       var pm = time.hours > 11;
       var hours = pm ? time.hours - 12 : time.hours;
 
       var out = [hours || '12'];
 
-      out.push((colon) ? ':' : ' ');
-
-      if (time.minutes < 10) {
-	out.push('0');
-      }
-      out.push(time.minutes);
-
       out.push(pm ? ' PM' : ' AM');
 
-      lastMinute = time.minutes;
       node.text(out.join(''));
+
+      lastTime = time.hour;
+    }
+  };
+
+  var render = function (force) {
+    if (renderTime) {
+      renderCurrentTime(force);
+    } else {
+      renderRemaining(force);
     }
   };
 
   return {
     postMove: function (delta) {
-      if (renderTime) {
-	renderCurrentTime(forceRender);
-      } else {
-	renderRemaining(forceRender);
-      }
-      forceRender = false;
+      render();
     },
     visible: true
   };
