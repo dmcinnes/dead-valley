@@ -65,6 +65,15 @@ define([], function () {
       save(position.toString() + 'b', buildings);
     },
 
+    saveTime: function (time) {
+      save('time', time);
+    },
+
+    getTime: function () {
+      var time = worldMap['time']
+      return time && parseInt(time, 10);
+    },
+
     getTiles: function (position) {
       var data = worldMap[position.toString()];
       return data;

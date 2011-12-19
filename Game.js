@@ -35,7 +35,6 @@ define(['AssetManager',
     start: function (delta) {
       Game.events.fireEvent('game start');
       Game.isOver = false;
-      GameTime.setTime(0);
       GameTime.setTargetTime(Game.targetTime);
       currentGameState = gameStates.running;
     },
@@ -56,6 +55,10 @@ define(['AssetManager',
       World.clear();
       Game.isOver = true;
       Game.events.fireEvent('game over');
+    },
+    newGame: function (delta) {
+      GameTime.setTime(0);
+      currentGameState = gameStates.start;
     }
   };
 
@@ -271,6 +274,10 @@ define(['AssetManager',
     
     runGameState: function (delta) {
       currentGameState.call(this, delta);
+    },
+
+    newGame: function () {
+      currentGameState = gameStates.newGame;
     }
   };
 

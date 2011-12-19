@@ -9,6 +9,7 @@ require(
    "Sky",
    "hud/Hud",
    "World",
+   "GameTime",
    "Mouse",
    "Cheat"],
 
@@ -22,6 +23,7 @@ require(
             Sky,
             Hud,
             World,
+            GameTime,
             Mouse,
             Cheat) {
 
@@ -58,10 +60,14 @@ require(
           }
         });
 
+	GameTime.setTime(World.getTime());
+
       } else {
         // add our starting players
         dude = new Dude();
         dude.pos.set(startPos);
+
+	Game.newGame();
       }
 
       // Call me The DUDE
@@ -71,7 +77,6 @@ require(
       Game.map = new Map(128, 128, startPos.x, startPos.y);
 
       if (!dudeState) {
-
         Game.map.loadStartMapTiles('EW_burbs');
       } else {
         Game.map.loadStartMapTiles();
@@ -83,6 +88,7 @@ require(
         // -- cleared the world for a reason
         if (World.usedSpace()) {
           World.saveDude(Game.dude);
+          World.saveTime(GameTime.elapsedTime());
           Game.map.save();
         }
       });
