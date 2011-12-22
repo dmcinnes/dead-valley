@@ -1,4 +1,4 @@
-require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-info'],
+require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '../lib/progress', '../lib/sprite-info'],
         function (tileMarshal, spriteMarshal, AssetManager, progress, SPRITES) {
 
   var Tile   = function () {};
@@ -1055,16 +1055,14 @@ require(['tilemarshal', 'spritemarshal', 'assetmanager', 'progress', 'sprite-inf
 
   };
 
-  require.ready(function () {
-    setup.tileObject();
-    setup.spriteObject();
-    setup.tileList();
-    setup.spriteList();
-    setup.archetypeList();
-    setup.mapTiles();
-    setup.mouseHandling();
-    setup.controls();
-    setup.hotKeys();
-  });
+  setup.tileObject();
+  setup.spriteObject();
+  setup.tileList();
+  setup.spriteList();
+  setup.archetypeList();
+  setup.mapTiles();
+  setup.mouseHandling();
+  setup.controls();
+  setup.hotKeys();
 
 });
