@@ -194,3 +194,4 @@ gas pumps can take damage
 add dude roll/damage when jumping out of car
 make mapworker work when WebWorkers aren't supported
 support FF
+make mapworker use require.js
