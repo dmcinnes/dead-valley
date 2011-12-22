@@ -24,8 +24,8 @@ var define = function (inc, r) {
   TileMarshal = r();
 };
 
-importScripts('lib/json2.js',
-              'lib/underscore.js',
+importScripts('vendor/json2.js',
+              'vendor/underscore.js',
               'TileMarshal.js');
 
 var Tile = function () {};
