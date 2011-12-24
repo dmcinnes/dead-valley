@@ -26,19 +26,30 @@ task("default", ["build"]);
 desc("build the project");
 task("build", [], function (params) {
   var libFiles = _.union(recurseDir('lib/inventory'), recurseDir('lib/sprites'));
-  // libFiles = _.map(libFiles, function (file) {
-  //   return file.slice(4); // strip lib/
-  // });
-  console.log(libFiles);
+
+  var include = _.map(libFiles, function (file) {
+    var name     = path.basename(file, '.js');
+    var filename = [path.dirname(file), name].join('/').slice(4);
+    return filename;
+  });
 
   var config = {
     baseUrl: "lib",
-    name: "Main",
-    out: "build/Main.js"
+    name:    "Main",
+    out:     "build/lib/Main.js",
+    include: include,
+    skipModuleInsertion: true
   };
+
+  // _.each(['assets', 'stylesheets', 'vendor'], function (dir) {
+  //   sys.copyFileSync(dir, 'build');
+  // });
+
+  // sys.copyFileSync('index.html', 'build');
 
   req.optimize(config, complete);
 }, true);
+
 
 desc("clean up");
 task("clean", [], function (params) {
