@@ -1,7 +1,10 @@
 var fs   = require("fs"),
     path = require("path"),
     _    = require("underscore"),
-    req  = require("requirejs");
+    req  = require("requirejs"),
+    child_process = require( "child_process" ),
+    exec = child_process.exec;
+    
 
 var recurseDir = function (dir) {
   var out = [];
@@ -33,25 +36,32 @@ task("build", [], function (params) {
     return filename;
   });
 
-  var config = {
+
+  fs.mkdirSync('build');
+  fs.mkdirSync('build/lib');
+
+  _.each(['assets', 'stylesheets', 'vendor', 'maps'], function (dir) {
+    exec(['cp -r', dir, 'build/'+dir].join(' '));
+  });
+
+  _.each(['MapWorker', 'TileMarshal', 'section-list', 'car-list'], function (file) {
+    exec('cp lib/'+file+'.js build/lib');
+  });
+
+  exec('cp index.html build');
+
+  req.optimize({
     baseUrl: "lib",
     name:    "Main",
     out:     "build/lib/Main.js",
     include: include,
     skipModuleInsertion: true
-  };
+  }, complete);
 
-  // _.each(['assets', 'stylesheets', 'vendor'], function (dir) {
-  //   sys.copyFileSync(dir, 'build');
-  // });
-
-  // sys.copyFileSync('index.html', 'build');
-
-  req.optimize(config, complete);
 }, true);
 
 
 desc("clean up");
 task("clean", [], function (params) {
-  fs.rmdir("build", complete);
+  exec('rm -r build');
 }, true);
