@@ -39,3 +39,8 @@ task("build", [], function (params) {
 
   req.optimize(config, complete);
 }, true);
+
+desc("clean up");
+task("clean", [], function (params) {
+  fs.rmdir("build", complete);
+}, true);
