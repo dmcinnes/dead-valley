@@ -65,3 +65,26 @@ desc("clean up");
 task("clean", [], function (params) {
   exec('rm -r build');
 }, true);
+
+desc("convert maps to real json");
+task("mapit", [], function () {
+  var files = recurseDir('maps');
+  _.each(files, function (filename) {
+    fs.readFile(filename, function (err, content) {
+      if (err) throw err;
+      console.log(filename);
+      map       = null;
+      roads     = null;
+      sprites   = null;
+      buildings = null;
+      eval(content.toString());
+      var data = {
+        map: map,
+        roads: roads,
+        sprites: sprites,
+        buildings: buildings
+      };
+      fs.writeFile(filename, JSON.stringify(data));
+    });
+  });
+});
