@@ -110,6 +110,7 @@ limit map scrolling offset so car doesn't go off screen (see police car)
 inventory isn't saved in proper position
 tiles in front of gas station are not considered road
 miles display sometimes shows lots of decimals
+fix sprite jitter when map scrolls
 
 *EDITOR*
 X remove current collidible code
@@ -185,6 +186,7 @@ mailbox
 streetlight
 
 *WISHLIST*
+X make mapworker use require.js
 add map handling functions for custom instances of sections through the map worker
 make zombie collision response more natural
 convert everything to radians
@@ -194,4 +196,3 @@ gas pumps can take damage
 add dude roll/damage when jumping out of car
 make mapworker work when WebWorkers aren't supported
 support FF
-make mapworker use require.js
