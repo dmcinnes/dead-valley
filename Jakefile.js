@@ -44,19 +44,31 @@ task("build", [], function (params) {
     exec(['cp -r', dir, 'build/'+dir].join(' '));
   });
 
-  _.each(['MapWorker', 'TileMarshal', 'section-list', 'car-list'], function (file) {
-    exec('cp lib/'+file+'.js build/lib');
-  });
+  // _.each(['MapWorker', 'TileMarshal', 'section-list', 'car-list'], function (file) {
+  //   exec('cp lib/'+file+'.js build/lib');
+  // });
 
   exec('cp index.html build');
+
 
   req.optimize({
     baseUrl: "lib",
     name:    "Main",
     out:     "build/lib/Main.js",
-    include: include,
-    skipModuleInsertion: true
-  }, complete);
+    include: include
+  }, function () {
+
+    req.optimize({
+      baseUrl: "lib",
+      name:    "MapWorker",
+      out:     "build/lib/MapWorker.js",
+      wrap: {
+        start: "importScripts('../vendor/json2.js', '../vendor/underscore.js', '../vendor/require.js');",
+        end: " ",
+      }
+    }, complete);
+
+  });
 
 }, true);
 
