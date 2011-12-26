@@ -100,6 +100,7 @@ show low fuel light like the check engine light
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
+X fix sprite jitter when map scrolls
 fix sideways gas pumps collision bounds
 fix car reverse
 fix zombie sticking to walls
@@ -110,7 +111,6 @@ limit map scrolling offset so car doesn't go off screen (see police car)
 inventory isn't saved in proper position
 tiles in front of gas station are not considered road
 miles display sometimes shows lots of decimals
-fix sprite jitter when map scrolls
 
 *EDITOR*
 X remove current collidible code
