@@ -101,10 +101,10 @@ show low fuel light like the check engine light
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
 X fix sprite jitter when map scrolls
+X fix gas can no drag bug
 fix sideways gas pumps collision bounds
 fix car reverse
 fix zombie sticking to walls
-fix gas can no drag bug
 can't hold drag an item then drop it into another car/building
 clear rubber hose cursor better
 limit map scrolling offset so car doesn't go off screen (see police car)
