@@ -24,10 +24,12 @@ var recurseDir = function (dir) {
   return out;
 };
 
-task("default", ["build"]);
+task("default", ["build", "deploy"]);
 
 desc("build the project");
-task("build", [], function (params) {
+task("build", ["clean"], function (params) {
+  console.log('Buliding...');
+
   var libFiles = _.union(recurseDir('lib/inventory'), recurseDir('lib/sprites'));
 
   var include = _.map(libFiles, function (file) {
@@ -36,7 +38,6 @@ task("build", [], function (params) {
     return filename;
   });
 
-
   fs.mkdirSync('build');
   fs.mkdirSync('build/lib');
 
@@ -44,12 +45,7 @@ task("build", [], function (params) {
     exec(['cp -r', dir, 'build/'+dir].join(' '));
   });
 
-  // _.each(['MapWorker', 'TileMarshal', 'section-list', 'car-list'], function (file) {
-  //   exec('cp lib/'+file+'.js build/lib');
-  // });
-
   exec('cp index.html build');
-
 
   req.optimize({
     baseUrl: "lib",
@@ -74,12 +70,13 @@ task("build", [], function (params) {
 
 
 desc("clean up");
-task("clean", [], function (params) {
-  exec('rm -r build');
+task("clean", function (params) {
+  console.log('Cleaning...');
+  exec('rm -r build', complete);
 }, true);
 
 desc("convert maps to real json");
-task("mapit", [], function () {
+task("mapit", function () {
   var files = recurseDir('maps');
   _.each(files, function (filename) {
     fs.readFile(filename, function (err, content) {
@@ -102,6 +99,7 @@ task("mapit", [], function () {
 });
 
 desc("deploy to test env");
-task("deploy", [], function () {
-  exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:dv.dougmcinnes.com");
-});
+task("deploy", function () {
+  console.log('Deploying...');
+  exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:dv.dougmcinnes.com", complete);
+}, true);
