@@ -111,6 +111,8 @@ limit map scrolling offset so car doesn't go off screen (see police car)
 inventory isn't saved in proper position
 tiles in front of gas station are not considered road
 miles display sometimes shows lots of decimals
+car color is not saved
+sometimes loaded wrecked cars spin when hit
 
 *EDITOR*
 X remove current collidible code
