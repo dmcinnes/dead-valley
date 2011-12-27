@@ -9,12 +9,13 @@ Controls:
 Control your character with WASD or the Arrow keys.
 The mouse button fires any equipped weapon. Aim with the mouse.
 The space bar will also attack with any melee weapon.
+Right-click any inventory item to activate it.
 I toggles the inventory screen.
 E enters/exits buildings and cars.
 P pauses the game.
-Right-click any inventory item to activate it.
 H toggles a car's headlights.
 R reloads your active firearm.
+F toggles the framerate display.
 
 
 Saving:
