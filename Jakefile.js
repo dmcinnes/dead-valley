@@ -2,7 +2,7 @@ var fs   = require("fs"),
     path = require("path"),
     _    = require("underscore"),
     req  = require("requirejs"),
-    child_process = require( "child_process" ),
+    child_process = require("child_process"),
     exec = child_process.exec;
     
 
@@ -99,4 +99,9 @@ task("mapit", [], function () {
       fs.writeFile(filename, JSON.stringify(data));
     });
   });
+});
+
+desc("deploy to test env");
+task("deploy", [], function () {
+  exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:dv.dougmcinnes.com");
 });
