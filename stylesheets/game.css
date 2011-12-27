@@ -333,3 +333,10 @@ body {
 .rubber-tubing #click-overlay, .rubber-tubing .inventory-item, .rubber-tubing .inventory {
   cursor: url(../assets/rubber-tubing-cursor.png), auto !important;
 }
+
+#intro {
+  font-family: trebuchet, helvetica, sans-serif;
+  width: 80%;
+  margin-top: 100px;
+  margin-left: 50px;
+}

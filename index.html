@@ -23,15 +23,15 @@
         <div id="sprites"></div>
         <div id="background"></div>
         <div id="lower-right">
-	  <span id="time">
-	    <span class="hours">&nbsp;</span>
-	    <span class="colon">&nbsp;</span>
-	    <span class="minutes">&nbsp;</span>
-	    <span class="meridiem">&nbsp;</span>
-	  </span>
-	  <span id="distance">&nbsp;</span>
-	  <span id="framerate">&nbsp;</span>
-	</div>
+          <span id="time">
+            <span class="hours">&nbsp;</span>
+            <span class="colon">&nbsp;</span>
+            <span class="minutes">&nbsp;</span>
+            <span class="meridiem">&nbsp;</span>
+          </span>
+          <span id="distance">&nbsp;</span>
+          <span id="framerate">&nbsp;</span>
+        </div>
         <div id="life"></div>
         <div id="progress"><div id="progress-slider"></div></div>
       </div>
@@ -46,10 +46,72 @@
         </div>
       </div>
     </div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <a href="javascript:localStorage.clear();">Clear Game</a>
+
+    <div id="intro">
+      <h4>Premise:</h4>
+      <p>
+      Zombies have taken over Dead Valley! You've been hiding out in the basement of a house and surviving on canned beans hoping that the National Guard will come save you.
+      One morning the radio announces that in exactly three days The Bomb will be dropped on Dead Valley to wipe out the Zombie infestation. You have three days to reach the minimum safe distance of 20 miles from the epicenter -- which happens to be just down the street. Better get cracking! First things first, you need a car -- and it better have gas in it.
+      <p>
+
+      <h4>Controls:</h4>
+      <ul>
+        <li>Control your character with WASD or the Arrow keys.</li>
+        <li>The mouse button fires any equipped weapon. Aim with the mouse.</li>
+        <li>The space bar will also attack with any melee weapon.</li>
+        <li>Right-click any inventory item to activate it.</li>
+        <li>I toggles the inventory screen.</li>
+        <li>E enters/exits buildings and cars.</li>
+        <li>P pauses the game.</li>
+        <li>H toggles a car's headlights.</li>
+        <li>R reloads your active firearm.</li>
+        <li>F toggles the framerate display.</li>
+      </ul>
+
+      <h4>Saving:</h4>
+      <ul>
+        <li>The game automatically saves if you quit your browser or close the tab the game is in. Next time you go to the game page the your last game will be restored.</li>
+        <li>Click here to clear your current game: <a href="javascript:localStorage.clear();">Clear Game</a></li>
+        <li>If you die your game will be cleared :)</li>
+      </ul>
+
+      <h4>Cars:</h4>
+      <ul>
+        <li>Cars need fuel to run!</li>
+        <li>A car takes damage by running into things (even Zombies), driving over rough ground (anything except a road), getting shot, or beat up by a melee weapon.</li>
+        <li>When the car is in bad shape the engine will start to smoke, when it's in really bad shape the Check Engine light will flash -- if the car takes much more damage it will explode.</li>
+        <li>Exploding cars do damage to nearby objects, Zombies, and you!</li>
+        <li>Damage to cars can knock out their head and taillights if the damage is close to one of those areas, so be careful when driving at night.</li>
+      </ul>
+
+      <h4>Fueling:</h4>
+      <ul>
+        <li>To activate a gas pump walk into it. If it's not broken and has gas your cursor should change into a pump nozzle. Click and hold on a nearby car to fill it (has to be near the pump). Also click and hold on a Gas Can to fill it.</li>
+        <li>To use the gas can right click on it when you're touching the car you want to fill. The cursor will change to a mini gas can. Click on hold on the car to fill it.</li>
+        <li>To use the siphon (rubber tubing) right click on it while touching the car you want to remove gas from. The cursor should turn into a mini rubber tubing. Click and hold on another nearby car or a Gas Can in your inventory to fill it.</li>
+      </ul>
+
+      <h4>Inventory:</h4>
+      <ul>
+        <li>Right click on Inventory items to activate them.</li>
+        <li>Double click on an inventory item in a car or building to transfer them to your inventory.</li>
+        <li>Double click on an inventory item in your inventory to place it in your hands.</li>
+        <li>Drag weapons onto the inventory hands to make them active.</li>
+        <li>Dragging ammo onto firearms reloads them. Press R to reload your active weapon.</li>
+        <li>Right click firearms to eject their ammo.</li>
+        <li>Eating beans heal 1/2 a heart. Cake heals 1 heart.</li>
+        <li>Medkits heal you to full strength.</li>
+        <li>Flashlights only work when placed in one of the inventory hands.</li>
+      </ul>
+
+      <h4>Zombies:</h4>
+      <ul>
+        <li>Zombies damage you if they claw you (duh).</li>
+        <li>Zombies can force you out of a building or car by hitting it enough times (the more Zombies the faster you're forced out!).</li>
+        <li>Zombies are attracted to noise.</li>
+        <li>Some buildings have Zombies in them -- when you try to enter they will pop out instead!</li>
+      </ul>
+    </div>
+
   </body>
 </html>
