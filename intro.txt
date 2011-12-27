@@ -80,3 +80,7 @@ Car color is not saved
 Sometimes wrecked cars spin when hit
 There's no timeout between firearm shots
 Minivan and Police Car's brakes are terrible
+Cars are drawn on top of trees
+If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling.
+Sometimes the siphon goes in the wrong direction.
+Sprites sometimes stick to the edge of the screen when they move out of view.

@@ -113,6 +113,10 @@ tiles in front of gas station are not considered road
 miles display sometimes shows lots of decimals
 car color is not saved
 sometimes loaded wrecked cars spin when hit
+cars are drawn on top of trees
+If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
+Sometimes the siphon goes in the wrong direction
+Sprites sometimes stick to the edge of the screen when they move out of view
 
 *EDITOR*
 X remove current collidible code
