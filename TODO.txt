@@ -103,6 +103,7 @@ X fix cursor rendering when left click on fuelee inventory item
 X fix sprite jitter when map scrolls
 X fix gas can no drag bug
 X limit map scrolling offset so car doesn't go off screen (see police car)
+X Sprites sometimes stick to the edge of the screen when they move out of view
 fix sideways gas pumps collision bounds
 fix car reverse
 fix zombie sticking to walls
@@ -116,7 +117,6 @@ sometimes loaded wrecked cars spin when hit
 cars are drawn on top of trees
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
 Sometimes the siphon goes in the wrong direction
-Sprites sometimes stick to the edge of the screen when they move out of view
 
 *EDITOR*
 X remove current collidible code
