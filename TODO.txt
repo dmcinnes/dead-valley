@@ -104,6 +104,7 @@ X fix sprite jitter when map scrolls
 X fix gas can no drag bug
 X limit map scrolling offset so car doesn't go off screen (see police car)
 X Sprites sometimes stick to the edge of the screen when they move out of view
+X Dude leaves a ghost when entering car on Safari
 fix sideways gas pumps collision bounds
 fix car reverse
 fix zombie sticking to walls
