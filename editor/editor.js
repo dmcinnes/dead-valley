@@ -269,13 +269,13 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
   };
 
   var loadMap = function (text) {
-    $.getScript("maps/" + text, function () {
+    $.getJSON("maps/" + text, function (data) {
 
       // clear the sprites
       $map.children('.sprite').remove();
 
-      if (window.map) {
-        progress.setTotal(window.map.length);
+      if (data.map) {
+        progress.setTotal(data.map.length);
 
         var line = 0;
         var nodes = $map.children('.tile');
@@ -287,7 +287,7 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
                 index = line * MAP_SIZE + j;
                 node = nodes.eq(index);
                 tileObject = TileDisplay.getTileObject(node);
-                tileObject.setFromString(window.map[index]);
+                tileObject.setFromString(data.map[index]);
               }
               progress.increment(MAP_SIZE);
             }, 0);
@@ -295,8 +295,8 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
         }
       }
 
-      if (window.sprites) {
-        _(window.sprites).each(function (spriteString) {
+      if (data.sprites) {
+        _(data.sprites).each(function (spriteString) {
           var spriteData = JSON.parse(spriteString);
           var x          = parseInt(spriteData.pos.x);
           var y          = parseInt(spriteData.pos.y);
@@ -310,25 +310,22 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
           setSpriteRotation(sprite, rot);
           $map.append(sprite);
         });
-        delete window.sprites;
       }
 
       // load buildings when done
-      if (window.buildings) {
-        buildings = window.buildings;
-        delete window.buildings;
+      if (data.buildings) {
+        buildings = data.buildings;
         BuildingDisplay.render();
       }
 
-      if (window.archetypes) {
-        _.each(window.archetypes, function (value, key) {
+      if (data.archetypes) {
+        _.each(data.archetypes, function (value, key) {
           _.each(value, function (archetype) {
             _.each(archetype.buildingObjects, function (building) {
               buildings.push(building);
             });
           });
         });
-        delete window.archetypes;
         BuildingDisplay.render();
       }
     });
@@ -352,12 +349,14 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
                     return spriteMarshal.unmarshal($(sprite).data('sprite'));
                   });
 
-    return [
-      "map=\"" + tiles.join('') + "\"",
-      "roads=" + JSON.stringify(roads),
-      "sprites=" + JSON.stringify(sprites),
-      "buildings=" + JSON.stringify(buildings)
-    ].join(';') + ';';
+    var output = {
+      map: tiles.join(''),
+      roads: roads,
+      sprites: sprites,
+      buildings: buildings
+    };
+
+    return JSON.stringify(output);
   };
 
   var generateSpriteTile = function (type, name) {
@@ -706,8 +705,10 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
 
   var cleanupAddArchetype = function () {
     // clean up
-    $newArchetypeDisplay.remove();
-    $newArchetypeDisplay = null;
+    if ($newArchetypeDisplay) {
+      $newArchetypeDisplay.remove();
+      $newArchetypeDisplay = null;
+    }
     newArchetype = null;
     newArchetypeIndex = 0;
     $archetypeList.val([]); // unselect archetype list
@@ -1041,15 +1042,13 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
     },
 
     archetypeList: function () {
-      $.getScript("maps/BuildingArchetypes.json", function () {
-        ARCHETYPES     = window.archetypes;
-        ARCHETYPES_MAP = window.map;
+      $.getJSON("maps/BuildingArchetypes.json", function (data) {
+        ARCHETYPES     = data.archetypes;
+        ARCHETYPES_MAP = data.map;
         var names = _.keys(ARCHETYPES).sort();
         _.each(names, function (name) {
           $archetypeList.append($("<option>").text(name));
         });
-        delete window.archetypes;
-        delete window.map;
       });
     }
 
