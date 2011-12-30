@@ -97,6 +97,7 @@ cheat sheet
 keep track of statistics
 add dead ends
 show low fuel light like the check engine light
+make cars created on parking spots turn to fit in the spot
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -106,9 +107,9 @@ X limit map scrolling offset so car doesn't go off screen (see police car)
 X Sprites sometimes stick to the edge of the screen when they move out of view
 X Dude leaves a ghost when entering car on Safari
 X inventory isn't saved in proper position
+X fix zombie sticking to walls
 fix sideways gas pumps collision bounds
 fix car reverse
-fix zombie sticking to walls
 can't hold drag an item then drop it into another car/building
 clear rubber hose cursor better
 tiles in front of gas station are not considered road
