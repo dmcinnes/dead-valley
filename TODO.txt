@@ -119,6 +119,7 @@ sometimes loaded wrecked cars spin when hit
 cars are drawn on top of trees
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
 Sometimes the siphon goes in the wrong direction
+after use rubber hose gas can is no longer draggable
 
 *EDITOR*
 X remove current collidible code
