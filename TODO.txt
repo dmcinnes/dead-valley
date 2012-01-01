@@ -109,10 +109,10 @@ X Dude leaves a ghost when entering car on Safari
 X inventory isn't saved in proper position
 X fix zombie sticking to walls
 X after use rubber hose gas can is no longer draggable
+X clear rubber hose cursor better
 fix sideways gas pumps collision bounds
 fix car reverse
 can't hold drag an item then drop it into another car/building
-clear rubber hose cursor better
 tiles in front of gas station are not considered road
 miles display sometimes shows lots of decimals
 car color is not saved
@@ -120,6 +120,7 @@ sometimes loaded wrecked cars spin when hit
 cars are drawn on top of trees
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
 Sometimes the siphon goes in the wrong direction
+Can siphon gas from a car into itself
 
 *EDITOR*
 X remove current collidible code
