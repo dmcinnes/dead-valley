@@ -108,6 +108,7 @@ X Sprites sometimes stick to the edge of the screen when they move out of view
 X Dude leaves a ghost when entering car on Safari
 X inventory isn't saved in proper position
 X fix zombie sticking to walls
+X after use rubber hose gas can is no longer draggable
 fix sideways gas pumps collision bounds
 fix car reverse
 can't hold drag an item then drop it into another car/building
@@ -119,7 +120,6 @@ sometimes loaded wrecked cars spin when hit
 cars are drawn on top of trees
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
 Sometimes the siphon goes in the wrong direction
-after use rubber hose gas can is no longer draggable
 
 *EDITOR*
 X remove current collidible code
