@@ -103,33 +103,6 @@ body {
 #progress { position:absolute; left:0px; top:0px; width:100%; height:10px; background-color:#000; z-index:50; opacity:0.5; display:none; }
 #progress-slider { width:0%; height:10px; background-color:red; }
 
-.flip-horizontal {
-  -moz-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  -o-transform: scaleX(-1);
-  transform: scaleX(-1);
-  filter: fliph; /*IE*/
-}
-.flip-vertical {
-  -moz-transform: scaleY(-1);
-  -webkit-transform: scaleY(-1);
-  -o-transform: scaleY(-1);
-  transform: scaleY(-1);
-  filter: flipv; /*IE*/
-}
-.rotate-90 {
-  -moz-transform: rotate(90deg);
-  -webkit-transform: rotate(90deg);
-}
-.rotate-180 {
-  -moz-transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-}
-.rotate-270 {
-  -moz-transform: rotate(270deg);
-  -webkit-transform: rotate(270deg);
-}
-
 #life {
   position:absolute;
   z-index:50;
