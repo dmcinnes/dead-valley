@@ -98,6 +98,7 @@ intro screen
 cheat sheet
 keep track of statistics
 add dead ends
+stagger the two section loads when shifting the level
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
