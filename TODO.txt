@@ -82,6 +82,7 @@ X fix sprite placement by MapWorker so it avoids buildings
 X make gunfire light up night
 X create start map
 X make cars created on parking spots turn to fit in the spot
+X show low fuel light like the check engine light
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -97,7 +98,6 @@ intro screen
 cheat sheet
 keep track of statistics
 add dead ends
-show low fuel light like the check engine light
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item

@@ -283,6 +283,21 @@ body {
   background-position:45 0px; 
 }
 
+#low-fuel-light {
+  display: none;
+  position: absolute;
+  width: 29px;
+  height: 30px;
+  left: 20px;
+  top: 158px;
+  background-image:url(../assets/fuel-low.png);
+  z-index: 110;
+}
+
+#low-fuel-light.lit {
+  background-position:29 0px; 
+}
+
 #lower-right > span {
   font-weight:bold;
   text-align: right;
