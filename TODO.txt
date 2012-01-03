@@ -99,7 +99,6 @@ cheat sheet
 keep track of statistics
 add dead ends
 stagger the two section loads when shifting the level
-try using dirty regions for sky
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -208,3 +207,4 @@ gas pumps can take damage
 add dude roll/damage when jumping out of car
 make mapworker work when WebWorkers aren't supported
 support FF
+try using dirty regions for sky
