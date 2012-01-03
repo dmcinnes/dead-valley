@@ -98,7 +98,6 @@ intro screen
 cheat sheet
 keep track of statistics
 add dead ends
-stagger the two section loads when shifting the level
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -163,7 +162,7 @@ X Minivan
 Pickup Truck
 Honda Fit (Babycar)
 Prius
-Hummer
+Hummer -- can drive offroad without taking damage
 Another Sedan
 Sports Car
 Bus
@@ -181,9 +180,9 @@ X can of beans
 X rubber hose
 lantern
 rifle
+rifle ammo
 golf club
 spare tire
-rifle ammo
 food
 twinkie
 hot dog
@@ -208,3 +207,4 @@ add dude roll/damage when jumping out of car
 make mapworker work when WebWorkers aren't supported
 support FF
 try using dirty regions for sky
+stagger the two section loads when shifting the level
