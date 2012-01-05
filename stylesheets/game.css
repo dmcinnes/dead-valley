@@ -40,7 +40,8 @@ body {
   z-index:1000;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,0.7)), to(rgba(0,0,0,0.7)), color-stop(.5,rgba(0,0,0,0.2)));
 }
-#pause-text-container {
+
+#pause-overlay .centering-container {
   position:absolute;
   left:50%;
   top:50%;
@@ -67,7 +68,8 @@ body {
   z-index:1000;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,1)), to(rgba(0,0,0,1)), color-stop(.5,rgba(0,0,0,0.7)));
 }
-#game-over-text-container {
+
+#game-over-overlay .centering-container {
   position:absolute;
   left:50%;
   top:50%;
@@ -79,9 +81,47 @@ body {
   top:-55px;
   padding:8px;
   font-weight:bold;
-  color: rgba(0,48,64,0.8);
+  color: rgba(10,58,74,0.8);
   text-shadow: 0px 4px 3px rgba(0,18,34,0.4),
                0px 8px 13px rgba(0,18,34,0.2);
+}
+
+#play-again {
+  display:none;
+  position:relative;
+  left:-50%;
+  top: 100px;
+  padding: 10px;
+  color: rgba(0,48,64,0.8);
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  border: 1px solid rgba(0,48,64,0.5);
+  white-space: nowrap;
+  font-size:150%;
+  font-weight:bold;
+  -webkit-transition:0.3s ease;
+  -moz-transition:0.3s ease;
+  -ms-transition:0.3s ease;
+  -o-transition:0.3s ease;
+  transition:0.3s ease;
+  text-decoration: none;
+}
+#play-again:hover {
+  -webkit-transition:0.15s ease;
+  -moz-transition:0.15s ease;
+  -ms-transition:0.15s ease;
+  -o-transition:0.15s ease;
+  transition:0.15s ease;
+
+  -moz-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+
+  color: rgba(20,68,84,0.8);
+  border-color: rgba(20,68,84,0.8);
+  background: rgba(0,48,64,0.3);
 }
 
 /* nothing below the click overlay is clickable */
