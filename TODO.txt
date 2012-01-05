@@ -98,6 +98,8 @@ intro screen
 cheat sheet
 keep track of statistics
 add dead ends
+show building inventory when first entering and fade after a second
+retry button
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
