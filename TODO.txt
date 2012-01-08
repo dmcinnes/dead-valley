@@ -123,6 +123,7 @@ can't hold drag an item then drop it into another car/building
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
 Sometimes the siphon goes in the wrong direction
 walking into car at angle against a building dude is pushed inside building
+dude's aiming arms are rendering behind his body
 
 *EDITOR*
 X remove current collidible code
