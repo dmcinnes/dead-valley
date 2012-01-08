@@ -84,6 +84,7 @@ X create start map
 X make cars created on parking spots turn to fit in the spot
 X show low fuel light like the check engine light
 X retry button
+X show building inventory when inside house
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -99,7 +100,6 @@ intro screen
 cheat sheet
 keep track of statistics
 add dead ends
-show building inventory when first entering and fade after a second
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
