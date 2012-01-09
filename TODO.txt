@@ -117,9 +117,9 @@ X sometimes loaded wrecked cars spin when hit
 X car color is not saved
 X miles display sometimes shows lots of decimals
 X Sprites are sometimes drawn on top of trees
+X fix car reverse
 clear rubber hose cursor better
 fix sideways gas pumps collision bounds
-fix car reverse
 can't hold drag an item then drop it into another car/building
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
 Sometimes the siphon goes in the wrong direction
