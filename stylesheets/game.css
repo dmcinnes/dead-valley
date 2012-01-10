@@ -124,6 +124,10 @@ body {
   background: rgba(0,48,64,0.3);
 }
 
+#play-again:active {
+  border-width: 2px;
+}
+
 /* nothing below the click overlay is clickable */
 #click-overlay { position:absolute; z-index:500; width:900px; height:600px; }
 #sky-canvas { position:absolute; z-index:400; }
