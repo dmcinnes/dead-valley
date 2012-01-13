@@ -26,8 +26,14 @@ var recurseDir = function (dir) {
 
 task("default", ["build", "deploy"]);
 
+desc("create build directory");
+task("mkdir", ["clean"], function (params) {
+  fs.mkdirSync('build');
+  fs.mkdirSync('build/lib');
+});
+
 desc("build the project");
-task("build", ["clean"], function (params) {
+task("build", ["clean", "mkdir", "version"], function (params) {
   console.log('Buliding...');
 
   var libFiles = _.union(recurseDir('lib/inventory'), recurseDir('lib/sprites'));
@@ -37,9 +43,6 @@ task("build", ["clean"], function (params) {
     var filename = [path.dirname(file), name].join('/').slice(4);
     return filename;
   });
-
-  fs.mkdirSync('build');
-  fs.mkdirSync('build/lib');
 
   _.each(['assets', 'stylesheets', 'vendor', 'maps'], function (dir) {
     exec(['cp -r', dir, 'build/'+dir].join(' '));
@@ -68,35 +71,16 @@ task("build", ["clean"], function (params) {
 
 }, true);
 
+desc("create version file");
+task("version", ["mkdir"], function (params) {
+  exec('git log -1 > build/version.txt');
+});
 
 desc("clean up");
 task("clean", function (params) {
   console.log('Cleaning...');
   exec('rm -r build', complete);
 }, true);
-
-desc("convert maps to real json");
-task("mapit", function () {
-  var files = recurseDir('maps');
-  _.each(files, function (filename) {
-    fs.readFile(filename, function (err, content) {
-      if (err) throw err;
-      console.log(filename);
-      map       = null;
-      roads     = null;
-      sprites   = null;
-      buildings = null;
-      eval(content.toString());
-      var data = {
-        map: map,
-        roads: roads,
-        sprites: sprites,
-        buildings: buildings
-      };
-      fs.writeFile(filename, JSON.stringify(data));
-    });
-  });
-});
 
 desc("deploy to test env");
 task("deploy", function () {
