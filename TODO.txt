@@ -101,6 +101,7 @@ cheat sheet
 keep track of statistics
 add dead ends
 nuclear blast after time elapses
+remove one curve from S curve 
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -127,6 +128,7 @@ If run into gas pump when map is scrolling and keep holding move key down, the g
 Sometimes the siphon goes in the wrong direction
 walking into car at angle against a building dude is pushed inside building
 shouldn't be able to move around after time elapses
+sometimes can't reverse after running into something
 
 *EDITOR*
 X remove current collidible code
