@@ -166,7 +166,7 @@ add zombie hit car animation
 *CARS*
 X Police Car
 X Minivan
-Pickup Truck
+X Pickup Truck
 Honda Fit (Babycar)
 Prius
 Hummer -- can drive offroad without taking damage
