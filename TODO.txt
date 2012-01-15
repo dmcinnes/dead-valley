@@ -129,6 +129,7 @@ Sometimes the siphon goes in the wrong direction
 walking into car at angle against a building dude is pushed inside building
 shouldn't be able to move around after time elapses
 sometimes can't reverse after running into something
+zombies rendered on top of minivan
 
 *EDITOR*
 X remove current collidible code
