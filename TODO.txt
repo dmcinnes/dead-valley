@@ -132,6 +132,8 @@ walking into car at angle against a building dude is pushed inside building
 shouldn't be able to move around after time elapses
 sometimes can't reverse after running into something
 dead zombies rendered on top of minivan
+dude's aim arm stays on screen after new game
+items in hand stay after new game
 
 *EDITOR*
 X remove current collidible code
