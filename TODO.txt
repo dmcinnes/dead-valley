@@ -129,7 +129,9 @@ Sometimes the siphon goes in the wrong direction
 walking into car at angle against a building dude is pushed inside building
 shouldn't be able to move around after time elapses
 sometimes can't reverse after running into something
-zombies rendered on top of minivan
+dead zombies rendered on top of minivan
+sky does not reset after new game
+first explosion causes game to pause
 
 *EDITOR*
 X remove current collidible code
