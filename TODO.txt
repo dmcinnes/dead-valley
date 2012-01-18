@@ -121,6 +121,7 @@ X Sprites are sometimes drawn on top of trees
 X fix car reverse
 X dude's aiming arms are rendering behind his body
 X inventory item gets stuck to cursor if dude dies while you're holding it
+X first explosion causes game to pause
 clear rubber hose cursor better
 fix sideways gas pumps collision bounds
 can't hold drag an item then drop it into another car/building
@@ -131,7 +132,6 @@ shouldn't be able to move around after time elapses
 sometimes can't reverse after running into something
 dead zombies rendered on top of minivan
 sky does not reset after new game
-first explosion causes game to pause
 
 *EDITOR*
 X remove current collidible code
