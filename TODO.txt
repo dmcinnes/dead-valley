@@ -77,28 +77,64 @@ X only render check engine light when lit -- inventory doesn't need to be up
 X damage car when it drives over rough ground
 X when dude leaves building/car make sure he's not inside another sprite
 X fix zombie wiggle
+X explosions should cause dude/zombie damage
+X fix sprite placement by MapWorker so it avoids buildings
+X make gunfire light up night
+X create start map
+X make cars created on parking spots turn to fit in the spot
+X show low fuel light like the check engine light
+X retry button
+X show building inventory when inside house
 add drag to car
 tune Honda's performance
 HUD ammo count
 headlight repair
+car repair
 make zombies attracted to light
 firearm reload times
 firearm between shot timeout
 add inventory/hud toggle button
-explosions should cause dude/zombie damage
 support CMD-click on inventory as left-click
 some cars can take more damage than other
-make gunfire light up night
 intro screen
 cheat sheet
 keep track of statistics
-fix sprite placement by MapWorker so it avoids buildings
 add dead ends
-show low fuel light like the check engine light
+nuclear blast after time elapses
+remove one curve from S curve 
+
+*BUGS*
+X fix cursor rendering when left click on fuelee inventory item
+X fix sprite jitter when map scrolls
+X fix gas can no drag bug
+X limit map scrolling offset so car doesn't go off screen (see police car)
+X Sprites sometimes stick to the edge of the screen when they move out of view
+X Dude leaves a ghost when entering car on Safari
+X inventory isn't saved in proper position
+X fix zombie sticking to walls
+X after use rubber hose gas can is no longer draggable
+X tiles in front of gas station are not considered road
+X sometimes loaded wrecked cars spin when hit
+X car color is not saved
+X miles display sometimes shows lots of decimals
+X Sprites are sometimes drawn on top of trees
+X fix car reverse
+X dude's aiming arms are rendering behind his body
+X inventory item gets stuck to cursor if dude dies while you're holding it
+X first explosion causes game to pause
+X sky does not reset after new game
+X dude's aim arm stays on screen after new game
+X items in hand stay after new game
+clear rubber hose cursor better
 fix sideways gas pumps collision bounds
-create start map
-support FF
-fix cursor rendering when left click on fuelee inventory item
+can't hold drag an item then drop it into another car/building
+If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
+Sometimes the siphon goes in the wrong direction
+walking into car at angle against a building dude is pushed inside building
+shouldn't be able to move around after time elapses
+sometimes can't reverse after running into something
+dead zombies rendered on top of minivan
+dude's aiming arm stays after dude dies
 
 *EDITOR*
 X remove current collidible code
@@ -108,9 +144,10 @@ X add building boundries creation
 X add building entrance creation
 X name buildings
 X don't render all building outlines when adding entrances
-support adding full buildings
+X support adding full buildings
 support dragging building points
 update to use new sprite rendering code
+support setting building inventory list keys
 
 *ART*
 X add rifle/shotgun to dude's sprite
@@ -137,10 +174,10 @@ add zombie hit car animation
 *CARS*
 X Police Car
 X Minivan
-Pickup Truck
+X Pickup Truck
 Honda Fit (Babycar)
 Prius
-Hummer
+Hummer -- can drive offroad without taking damage
 Another Sedan
 Sports Car
 Bus
@@ -158,9 +195,9 @@ X can of beans
 X rubber hose
 lantern
 rifle
+rifle ammo
 golf club
 spare tire
-rifle ammo
 food
 twinkie
 hot dog
@@ -174,6 +211,7 @@ mailbox
 streetlight
 
 *WISHLIST*
+X make mapworker use require.js
 add map handling functions for custom instances of sections through the map worker
 make zombie collision response more natural
 convert everything to radians
@@ -182,3 +220,6 @@ support shooting out of car
 gas pumps can take damage
 add dude roll/damage when jumping out of car
 make mapworker work when WebWorkers aren't supported
+support FF
+try using dirty regions for sky
+stagger the two section loads when shifting the level
