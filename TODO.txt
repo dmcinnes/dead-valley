@@ -86,6 +86,7 @@ X show low fuel light like the check engine light
 X retry button
 X show building inventory when inside house
 X make headlights less prone to damage
+X remove one curve from S curves
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -102,7 +103,6 @@ cheat sheet
 keep track of statistics
 add dead ends
 nuclear blast after time elapses
-remove one curve from S curve 
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
