@@ -128,11 +128,11 @@ X dude's aim arm stays on screen after new game
 X items in hand stay after new game
 X dead zombies rendered on top of minivan
 X sometimes can't reverse after running into something
-clear rubber hose cursor better
+X clear rubber hose cursor better
+X Sometimes the siphon goes in the wrong direction
 fix sideways gas pumps collision bounds
 can't hold drag an item then drop it into another car/building
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
-Sometimes the siphon goes in the wrong direction
 walking into car at angle against a building dude is pushed inside building
 shouldn't be able to move around after time elapses
 dude's aiming arm stays after dude dies
