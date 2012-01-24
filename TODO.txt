@@ -194,11 +194,12 @@ X medkit
 X gas can
 X can of beans
 X rubber hose
+X rifle
+X rifle ammo
+wrench
+spare headlight
 lantern
-rifle
-rifle ammo
 golf club
-spare tire
 food
 twinkie
 hot dog
