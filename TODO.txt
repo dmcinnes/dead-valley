@@ -136,6 +136,7 @@ If run into gas pump when map is scrolling and keep holding move key down, the g
 walking into car at angle against a building dude is pushed inside building
 shouldn't be able to move around after time elapses
 dude's aiming arm stays after dude dies
+sometimes inventory images get selected as text
 
 *EDITOR*
 X remove current collidible code
