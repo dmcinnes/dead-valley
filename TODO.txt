@@ -88,6 +88,7 @@ X show building inventory when inside house
 X make headlights less prone to damage
 X remove one curve from S curves
 X nuclear blast after time elapses
+X firearm between shot timeout
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -95,7 +96,6 @@ headlight repair
 car repair
 make zombies attracted to light
 firearm reload times
-firearm between shot timeout
 add inventory/hud toggle button
 support CMD-click on inventory as left-click
 some cars can take more damage than other
