@@ -6,6 +6,13 @@
     <script src="vendor/jquery-1.7.1.min.js"></script>
     <script src="vendor/jquery-ui-1.8.16.custom.min.js"></script>
     <script src="vendor/jquery.transform-0.9.3.js"></script>
+    <script src="vendor/soundmanager2-jsmin.js"></script>
+    <script>
+      soundManager.url = "vendor/swf";
+      soundManager.preferFlash = true;
+      soundManager.useHTML5Audio = false;
+      soundManager.flashVersion = 9;
+    </script>
     <script data-main="lib/Main" src="vendor/require.js"></script>
   </head>
   <body>
