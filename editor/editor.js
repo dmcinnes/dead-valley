@@ -1,5 +1,5 @@
-require(['../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/AssetManager', '../lib/Progress', '../lib/sprite-info'],
-        function (TileMarshal, SpriteMarshal, AssetManager, Progress, SPRITES) {
+require(['../lib/Progress', '../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/sprite-info'],
+        function (Progress, TileMarshal, SpriteMarshal, SPRITES) {
 
   var Tile   = function () {};
   var Sprite = function (spriteInfo) {
@@ -361,8 +361,13 @@ require(['../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/AssetManager', '.
 
   var generateSpriteTile = function (type, name) {
     var val = SPRITES[name];
+    var image = 'url(assets/' + val.img;
+    if (val.color) {
+      image += '-' + val.color;
+    }
+    image += '.png)';
     var spriteTile = $('<'+type+'/>').css({
-      'background-image': 'url(assets/' + val.img + '.png)',
+      'background-image': image,
       'background-position': -val.imageOffset.x + ' ' + -val.imageOffset.y,
       width: val.width,
       height: val.height
@@ -749,7 +754,7 @@ require(['../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/AssetManager', '.
         return {
           x: pos.left + center.x,
           y: pos.top + center.y,
-          rot: rot
+          rot: rot || 0
         };
       });
     },
@@ -991,9 +996,9 @@ require(['../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/AssetManager', '.
     },
 
     tileList: function () {
-      var assetManager = new AssetManager('./assets/');
+      var tiles = new Image();
 
-      assetManager.loadImage('tiles', function (tiles) {
+      tiles.onload = function () {
         // set up the tile selection
         TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
         totalTileCount = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
@@ -1007,7 +1012,9 @@ require(['../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/AssetManager', '.
         }
 
         setup.componentSizes();
-      });
+      };
+
+      tiles.src = './assets/tiles.png';
     },
 
     spriteList: function () {
