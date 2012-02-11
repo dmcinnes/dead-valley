@@ -54,7 +54,7 @@ body {
   top:-55px;
   padding:8px;
   font-weight:bold;
-  color: rgba(0,48,64,0.8);
+  color: rgba(20,68,84,1);
   text-shadow: 0px 4px 3px rgba(0,18,34,0.4),
                0px 8px 13px rgba(0,18,34,0.2);
 }
@@ -82,7 +82,7 @@ body {
   top:-55px;
   padding:8px;
   font-weight:bold;
-  color: rgba(10,58,74,0.8);
+  color: rgba(30,78,94,1);
   text-shadow: 0px 4px 3px rgba(0,18,34,0.4),
                0px 8px 13px rgba(0,18,34,0.2);
 }
@@ -93,7 +93,7 @@ body {
   left:-50%;
   top: 100px;
   padding: 10px;
-  color: rgba(0,48,64,0.8);
+  color: rgba(10,58,74,0.8);
   -webkit-border-radius: 10px;
   -moz-border-radius   : 10px;
   border-radius        : 10px;
@@ -120,7 +120,7 @@ body {
   -o-transform: scale(1.2);
   transform: scale(1.2);
 
-  color: rgba(20,68,84,0.8);
+  color: rgba(30,78,94,1);
   border-color: rgba(20,68,84,0.8);
   background: rgba(0,48,64,0.3);
 }
