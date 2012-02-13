@@ -134,6 +134,7 @@ X Sometimes the siphon goes in the wrong direction
 X shouldn't be able to move around after time elapses
 X dude gets kicked out of car when colliding zombies
 X night sky doesn't get reset on new game
+X explosion causes dude to bleed even though he takes no damage
 fix sideways gas pumps collision bounds
 can't hold drag an item then drop it into another car/building
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
@@ -141,7 +142,6 @@ walking into car at angle against a building dude is pushed inside building
 dude's aiming arm stays after dude dies
 sometimes inventory images get selected as text
 explosion is rendered under barrels
-explosion cause dude to bleed even though he takes no damage
 
 *EDITOR*
 X remove current collidible code
