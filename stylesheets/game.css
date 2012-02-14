@@ -17,7 +17,7 @@
  */
 
 body {
-  font-family: impact, helvetica, sans-serif;
+  font-family: Impact, Helvetica, sans-serif;
 }
 #container {
   position:relative;
@@ -385,7 +385,7 @@ body {
 }
 
 #intro {
-  font-family: trebuchet, helvetica, sans-serif;
+  font-family: Trebuchet, Helvetica, sans-serif;
   width: 80%;
   margin-top: 100px;
   margin-left: 50px;
