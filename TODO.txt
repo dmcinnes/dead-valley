@@ -91,6 +91,7 @@ X nuclear blast after time elapses
 X firearm between shot timeout
 X make headlights automatically turn on
 X firearm reload times
+X cheat sheet
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -101,7 +102,6 @@ add inventory/hud toggle button
 support CMD-click on inventory as left-click
 some cars can take more damage than other
 intro screen
-cheat sheet
 keep track of statistics
 add dead ends
 

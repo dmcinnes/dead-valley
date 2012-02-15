@@ -21,8 +21,6 @@ body {
 }
 #container {
   position:relative;
-  top:20px;
-  left:20px;
   width:900px;
   height:600px;
   border:5px solid black; 
