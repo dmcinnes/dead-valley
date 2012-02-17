@@ -56,19 +56,27 @@ body {
   background-color: black;
 }
 
-#main-screen li {
+#main-content {
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+}
+
+#main-content li {
   font-size: 150%;
   color: #ccc;
   list-style: none;
 }
 
-#main-screen li:hover {
+#main-content li:hover {
   color: #aaa;
   list-style-type: disc;
   cursor: pointer;
 }
 
-#main-screen li:active {
+#main-content li:active {
   color: #eee;
 }
 
