@@ -361,7 +361,7 @@ body {
 }
 
 #check-engine-light.lit {
-  background-position:45 0px; 
+  background-position:45px 0px; 
 }
 
 #low-fuel-light {
@@ -376,7 +376,7 @@ body {
 }
 
 #low-fuel-light.lit {
-  background-position:29 0px; 
+  background-position:29px 0px; 
 }
 
 #lower-right > span {
