@@ -104,6 +104,7 @@ some cars can take more damage than other
 intro screen
 keep track of statistics
 add dead ends
+each section has a different % chance appearing
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -142,6 +143,8 @@ If run into gas pump when map is scrolling and keep holding move key down, the g
 walking into car at angle against a building dude is pushed inside building
 dude's aiming arm stays after dude dies
 sometimes inventory images get selected as text
+empty gas not blinking
+pause in rendering any sky related thing for the first time (headlights, muzzle flash, etc)
 
 *EDITOR*
 X remove current collidible code
@@ -209,6 +212,7 @@ golf club
 food
 twinkie
 hot dog
+donut
 
 *SPRITES*
 X trees
