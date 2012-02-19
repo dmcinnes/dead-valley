@@ -70,10 +70,20 @@ body {
   list-style: none;
 }
 
-#main-content li:hover {
+#main-content li.selected {
   color: #aaa;
   list-style-type: disc;
-  cursor: pointer;
+}
+
+#main-content li:hover {
+  color: #aaa !important;
+  list-style-type: disc !important;
+  cursor: pointer !important;
+}
+
+#main-content ul:hover li.selected {
+  color: #ccc;
+  list-style-type: none;
 }
 
 #main-content li:active {
