@@ -105,6 +105,7 @@ some cars can take more damage than other
 intro screen
 keep track of statistics
 add dead ends
+turn off console.log on deploy
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
