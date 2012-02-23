@@ -94,6 +94,7 @@ X firearm reload times
 X cheat sheet
 X each section has a different % chance appearing
 X turn off console.log on deploy
+X keep track of statistics
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -104,8 +105,9 @@ add inventory/hud toggle button
 support CMD-click on inventory as left-click
 some cars can take more damage than other
 intro screen
-keep track of statistics
 add dead ends
+display statistics
+add about page
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
