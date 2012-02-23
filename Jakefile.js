@@ -54,6 +54,10 @@ task("build", ["clean", "mkdir", "version"], function (params) {
     baseUrl: "lib",
     name:    "Main",
     out:     "build/lib/Main.js",
+    wrap: {
+      start: "window.DV = {debug:false};",
+      end: " ",
+    },
     include: include
   }, function () {
 

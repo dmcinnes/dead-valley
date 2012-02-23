@@ -93,6 +93,7 @@ X make headlights automatically turn on
 X firearm reload times
 X cheat sheet
 X each section has a different % chance appearing
+X turn off console.log on deploy
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -105,7 +106,6 @@ some cars can take more damage than other
 intro screen
 keep track of statistics
 add dead ends
-turn off console.log on deploy
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
