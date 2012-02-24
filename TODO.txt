@@ -95,6 +95,7 @@ X cheat sheet
 X each section has a different % chance appearing
 X turn off console.log on deploy
 X keep track of statistics
+X some cars can take more damage than other
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -103,7 +104,6 @@ car repair
 make zombies attracted to light
 add inventory/hud toggle button
 support CMD-click on inventory as left-click
-some cars can take more damage than other
 intro screen
 add dead ends
 display statistics
