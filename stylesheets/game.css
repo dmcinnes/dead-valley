@@ -18,8 +18,13 @@
 
 body {
   font-family: Impact, Helvetica, sans-serif;
+  background-color: #888;
 }
+
 #container {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
   position:relative;
   width:900px;
   height:600px;
