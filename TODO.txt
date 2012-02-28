@@ -150,6 +150,7 @@ dude's aiming arm stays after dude dies
 sometimes inventory images get selected as text
 pause in rendering any sky related thing for the first time (headlights, muzzle flash, etc)
 smoke sometimes has a weird flicking thing -- same as what was happening with dude before (ghost)
+if car is not in view when exploding it should not make a sound
 
 *EDITOR*
 X remove current collidible code
