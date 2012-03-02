@@ -39,8 +39,8 @@ body {
   display:none;
   top:0px;
   left:0px;
-  width:100%;
-  height:100%;
+  width:900px;
+  height:600px;
   z-index:1000;
 }
 
@@ -146,6 +146,33 @@ body {
   color: rgba(30,78,94,1);
   text-shadow: 0px 4px 3px rgba(0,18,34,0.4),
                0px 8px 13px rgba(0,18,34,0.2);
+}
+
+#help {
+  color: #ccc;
+  background-color: black;
+  overflow: scroll;
+}
+
+#help-content {
+  margin: 30px;
+}
+
+#help-content table {
+  margin: 10px 30px;
+}
+
+#help-content table td {
+  padding-right: 10px;
+}
+
+#figures {
+  width: 300px;
+  float: right;
+}
+
+#figures figure {
+  margin-bottom: 20px;
 }
 
 #play-again {
