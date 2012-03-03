@@ -149,6 +149,7 @@ body {
 }
 
 #help {
+  font-size: 120%;
   color: #ccc;
   background-color: black;
   overflow: scroll;
