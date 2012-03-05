@@ -153,6 +153,11 @@ smoke sometimes has a weird flicking thing in safari-- same as what was happenin
 if car is not in view when exploding it should not make a sound
 hit sound fires when walking into car at an angle
 arm doesn't flash when dude is hit
+there's a rogue pixel on dude's death animation
+occasionally the farmhouse allows zombies and dude to vorp through from the left or bottom sides
+zombies and dude bounce over and over slightly when they walk into some cars
+dude now overlaps too much on 'stationary' collisions
+
 
 *EDITOR*
 X remove current collidible code
