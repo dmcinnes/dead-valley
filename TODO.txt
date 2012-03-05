@@ -108,6 +108,7 @@ intro screen
 add dead ends
 display statistics
 add about page
+switch to use http://soundjs.com/
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
