@@ -59,6 +59,7 @@ body {
 #main-screen {
   color: white;
   background-color: black;
+  z-index:1001;
 }
 
 #main-content {
