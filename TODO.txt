@@ -158,7 +158,7 @@ hit sound fires when walking into car at an angle
 arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vorp through from the left or bottom sides
 zombies and dude bounce over and over slightly when they walk into some cars
-
+zombies on the chase shouldn't slow down after you go into a building
 
 *EDITOR*
 X remove current collidible code
