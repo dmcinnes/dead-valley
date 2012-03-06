@@ -102,6 +102,7 @@ HUD ammo count
 headlight repair
 car repair
 make zombies attracted to light
+make zombies attracted to crashes
 add inventory/hud toggle button
 support CMD-click on inventory as left-click
 intro screen
@@ -146,6 +147,7 @@ X sometimes cars get stuck between two positions
 X walking into car at angle against a building dude is pushed inside building
 X dude now overlaps too much on 'stationary' collisions
 X there's a rogue pixel on dude's death animation
+X zombies on the chase shouldn't slow down after you go into a building
 fix sideways gas pumps collision bounds
 can't hold drag an item then drop it into another car/building
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
@@ -158,7 +160,6 @@ hit sound fires when walking into car at an angle
 arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vorp through from the left or bottom sides
 zombies and dude bounce over and over slightly when they walk into some cars
-zombies on the chase shouldn't slow down after you go into a building
 
 *EDITOR*
 X remove current collidible code
