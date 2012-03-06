@@ -452,7 +452,7 @@ body {
   opacity: 0.8;
 }
 
-.tip:after {
+.tip.top:after {
   content: "";
   position: absolute;
   width: 0;
@@ -462,6 +462,18 @@ body {
   border-right: 10px solid transparent;
   left: 30%;
   top: 100%;
+}
+
+.tip.bottom:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid #034;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  left: 30%;
+  bottom: 100%;
 }
 
 .pump #click-overlay, .pump .inventory, .pump .inventory-item {
