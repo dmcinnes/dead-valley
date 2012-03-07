@@ -452,7 +452,7 @@ body {
   opacity: 0.8;
 }
 
-.tip.top:after {
+.tip.bottom:after {
   content: "";
   position: absolute;
   width: 0;
@@ -464,7 +464,7 @@ body {
   top: 100%;
 }
 
-.tip.bottom:after {
+.tip.top:after {
   content: "";
   position: absolute;
   width: 0;
