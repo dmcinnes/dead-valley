@@ -476,6 +476,11 @@ body {
   bottom: 100%;
 }
 
+.tip.flip:after {
+  left: auto;
+  right: 30%;
+}
+
 .pump #click-overlay, .pump .inventory, .pump .inventory-item {
   cursor: url(../assets/pump-nozzle.png), auto !important;
 }
