@@ -96,6 +96,7 @@ X each section has a different % chance appearing
 X turn off console.log on deploy
 X keep track of statistics
 X some cars can take more damage than other
+X switch to use http://soundjs.com/
 add drag to car
 tune Honda's performance
 HUD ammo count
@@ -109,7 +110,6 @@ intro screen
 add dead ends
 display statistics
 add about page
-switch to use http://soundjs.com/
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
