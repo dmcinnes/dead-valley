@@ -2,6 +2,7 @@
  * z-indices:
  *
  * 1000 for pause/game over overlays
+ *  900 for nuke
  *  800 for drag handlers
  *  700 for canvas mask
  *  600 for ui elements
@@ -16,12 +17,15 @@
  */
 
 body {
-  font-family: impact, helvetica, sans-serif;
+  font-family: Impact, Helvetica, sans-serif;
+  background-color: #888;
 }
+
 #container {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
   position:relative;
-  top:20px;
-  left:20px;
   width:900px;
   height:600px;
   border:5px solid black; 
@@ -30,50 +34,109 @@ body {
   -webkit-border-radius: 5px;
 }
 
-#pause-overlay {
+.overlay {
   position:absolute;
   display:none;
   top:0px;
   left:0px;
+  width:900px;
+  height:600px;
+  z-index:1000;
+}
+
+.centering-container {
+  position:absolute;
+  left:50%;
+  top:50%;
+}
+
+#loading-screen {
+  color: white;
+  background-color: black;
+  display: block;
+}
+
+#main-screen {
+  color: white;
+  background-color: black;
+  z-index:1001;
+}
+
+#main-content {
+  position:absolute;
+  top:0px;
+  left:0px;
   width:100%;
   height:100%;
-  z-index:1000;
+}
+
+#main-content li {
+  font-size: 150%;
+  color: #ccc;
+  list-style: none;
+}
+
+#main-content li.selected {
+  color: #aaa;
+  list-style-type: disc;
+}
+
+#main-content li:hover {
+  color: #aaa !important;
+  list-style-type: disc !important;
+  cursor: pointer !important;
+}
+
+#main-content ul:hover li.selected {
+  color: #ccc;
+  list-style-type: none;
+}
+
+#main-content li:active {
+  color: #eee;
+}
+
+#title {
+  color: #ddd;
+  font-size:600%;
+  margin:100px;
+  color: #202c2d;
+  text-shadow:
+    0 1px #808d93,
+    -1px 0 #cdd2d5,
+    -1px 2px #808d93,
+    -2px 1px #cdd2d5,
+    -2px 3px #808d93,
+    -3px 2px #cdd2d5,
+    -3px 4px #808d93,
+    -4px 3px #cdd2d5,
+    -4px 5px #808d93,
+    -5px 4px #cdd2d5,
+    -5px 6px #808d93,
+    -6px 5px #cdd2d5,
+    -6px 7px #808d93,
+    -7px 6px #cdd2d5,
+    -7px 8px #808d93,
+    -8px 7px #cdd2d5;
+}
+
+#resume-game {
+  display:none;
+}
+
+#main-screen.pause {
+  background-color: transparent;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,0.7)), to(rgba(0,0,0,0.7)), color-stop(.5,rgba(0,0,0,0.2)));
 }
 
-#pause-overlay .centering-container {
-  position:absolute;
-  left:50%;
-  top:50%;
-}
-#pause {
-  font-size:300%;
-  position:relative;
-  left:-50%;
-  top:-55px;
-  padding:8px;
-  font-weight:bold;
-  color: rgba(0,48,64,0.8);
-  text-shadow: 0px 4px 3px rgba(0,18,34,0.4),
-               0px 8px 13px rgba(0,18,34,0.2);
+.pause #resume-game {
+  display:list-item;
 }
 
-#game-over-overlay {
-  position:absolute;
-  display:none;
-  top:0px;
-  left:0px;
-  width:100%;
-  height:100%;
-  z-index:1000;
+#game-over-screen {
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,1)), to(rgba(0,0,0,1)), color-stop(.5,rgba(0,0,0,0.7)));
 }
 
-#game-over-overlay .centering-container {
-  position:absolute;
-  left:50%;
-  top:50%;
-}
 #game-over {
   font-size:300%;
   position:relative;
@@ -81,9 +144,37 @@ body {
   top:-55px;
   padding:8px;
   font-weight:bold;
-  color: rgba(10,58,74,0.8);
+  color: rgba(30,78,94,1);
   text-shadow: 0px 4px 3px rgba(0,18,34,0.4),
                0px 8px 13px rgba(0,18,34,0.2);
+}
+
+#help {
+  font-size: 120%;
+  color: #ccc;
+  background-color: black;
+  overflow: scroll;
+}
+
+#help-content {
+  margin: 30px;
+}
+
+#help-content table {
+  margin: 10px 30px;
+}
+
+#help-content table td {
+  padding-right: 10px;
+}
+
+#figures {
+  width: 300px;
+  float: right;
+}
+
+#figures figure {
+  margin-bottom: 20px;
 }
 
 #play-again {
@@ -92,7 +183,7 @@ body {
   left:-50%;
   top: 100px;
   padding: 10px;
-  color: rgba(0,48,64,0.8);
+  color: rgba(10,58,74,0.8);
   -webkit-border-radius: 10px;
   -moz-border-radius   : 10px;
   border-radius        : 10px;
@@ -119,7 +210,7 @@ body {
   -o-transform: scale(1.2);
   transform: scale(1.2);
 
-  color: rgba(20,68,84,0.8);
+  color: rgba(30,78,94,1);
   border-color: rgba(20,68,84,0.8);
   background: rgba(0,48,64,0.3);
 }
@@ -161,7 +252,7 @@ body {
 
 .active { display:block !important; }
 #leveldata { display:block }
-#progress { position:absolute; left:0px; top:0px; width:100%; height:10px; background-color:#000; z-index:600; opacity:0.5; display:none; }
+#progress { position:absolute; left:0px; top:50%; width:100%; height:10px; background-color:#000; z-index:600; opacity:0.8; display:none; }
 #progress-slider { width:0%; height:10px; background-color:red; }
 
 #life {
@@ -314,7 +405,7 @@ body {
 }
 
 #check-engine-light.lit {
-  background-position:45 0px; 
+  background-position:45px 0px; 
 }
 
 #low-fuel-light {
@@ -329,7 +420,7 @@ body {
 }
 
 #low-fuel-light.lit {
-  background-position:29 0px; 
+  background-position:29px 0px; 
 }
 
 #lower-right > span {
@@ -361,7 +452,7 @@ body {
   opacity: 0.8;
 }
 
-.tip:after {
+.tip.bottom:after {
   content: "";
   position: absolute;
   width: 0;
@@ -371,6 +462,23 @@ body {
   border-right: 10px solid transparent;
   left: 30%;
   top: 100%;
+}
+
+.tip.top:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid #034;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  left: 30%;
+  bottom: 100%;
+}
+
+.tip.flip:after {
+  left: auto;
+  right: 30%;
 }
 
 .pump #click-overlay, .pump .inventory, .pump .inventory-item {
@@ -384,8 +492,22 @@ body {
 }
 
 #intro {
-  font-family: trebuchet, helvetica, sans-serif;
+  font-family: Trebuchet, Helvetica, sans-serif;
   width: 80%;
   margin-top: 100px;
   margin-left: 50px;
+}
+
+#nuke {
+  position: absolute;
+  left: 0px;
+  top: -1000px;
+  width: 2000px;
+  height: 2000px;
+  display: none;
+  background-color: #A22;
+  /* background-image: -webkit-linear-gradient(0, rgba(255,255,255,.07) 50%, transparent 50%), -webkit-linear-gradient(45deg, rgba(255,255,255,.13) 50%, transparent 50%), -webkit-linear-gradient(-45deg, transparent 50%, rgba(255,255,255,.17) 50%), -webkit-linear-gradient(30deg, transparent 50%, rgba(255,255,255,.19) 50%); */
+  /* background-size: 13px, 29px, 37px, 53px; */
+  z-index: 900;
+  -webkit-transform-origin: left center;
 }

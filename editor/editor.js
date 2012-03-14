@@ -1,5 +1,5 @@
-require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '../lib/progress', '../lib/sprite-info'],
-        function (tileMarshal, spriteMarshal, AssetManager, progress, SPRITES) {
+require(['../lib/Progress', '../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/sprite-info'],
+        function (Progress, TileMarshal, SpriteMarshal, SPRITES) {
 
   var Tile   = function () {};
   var Sprite = function (spriteInfo) {
@@ -275,7 +275,7 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
       $map.children('.sprite').remove();
 
       if (data.map) {
-        progress.setTotal(data.map.length);
+        Progress.addTarget(data.map.length);
 
         var line = 0;
         var nodes = $map.children('.tile');
@@ -289,7 +289,7 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
                 tileObject = TileDisplay.getTileObject(node);
                 tileObject.setFromString(data.map[index]);
               }
-              progress.increment(MAP_SIZE);
+              Progress.increment(MAP_SIZE);
             }, 0);
           })(i);
         }
@@ -346,7 +346,7 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
       w: TileDisplay.getTileObject(nodes.eq(2048)).tileOffset === 5
     };
     var sprites = _.map($map.children('.sprite'), function (sprite) {
-                    return spriteMarshal.unmarshal($(sprite).data('sprite'));
+                    return SpriteMarshal.unmarshal($(sprite).data('sprite'));
                   });
 
     var output = {
@@ -361,8 +361,13 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
 
   var generateSpriteTile = function (type, name) {
     var val = SPRITES[name];
+    var image = 'url(assets/' + val.img;
+    if (val.color) {
+      image += '-' + val.color;
+    }
+    image += '.png)';
     var spriteTile = $('<'+type+'/>').css({
-      'background-image': 'url(assets/' + val.img + '.png)',
+      'background-image': image,
       'background-position': -val.imageOffset.x + ' ' + -val.imageOffset.y,
       width: val.width,
       height: val.height
@@ -736,7 +741,7 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
       });
       // so the view can get the data updates
       Tile.prototype.callback = TileDisplay.update;
-      tileMarshal(Tile);
+      TileMarshal(Tile);
     },
 
     spriteObject: function () {
@@ -749,7 +754,7 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
         return {
           x: pos.left + center.x,
           y: pos.top + center.y,
-          rot: rot
+          rot: rot || 0
         };
       });
     },
@@ -991,9 +996,9 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
     },
 
     tileList: function () {
-      var assetManager = new AssetManager('./assets/');
+      var tiles = new Image();
 
-      assetManager.loadImage('tiles', function (tiles) {
+      tiles.onload = function () {
         // set up the tile selection
         TILE_SHEET_WIDTH = tiles.width / TILE_SIZE;
         totalTileCount = TILE_SHEET_WIDTH * (tiles.height / TILE_SIZE);
@@ -1007,7 +1012,9 @@ require(['../lib/tilemarshal', '../lib/spritemarshal', '../lib/assetmanager', '.
         }
 
         setup.componentSizes();
-      });
+      };
+
+      tiles.src = './assets/tiles.png';
     },
 
     spriteList: function () {
