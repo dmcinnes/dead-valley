@@ -177,48 +177,6 @@ body {
   margin-bottom: 20px;
 }
 
-#play-again {
-  display:none;
-  position:relative;
-  left:-50%;
-  top: 100px;
-  padding: 10px;
-  color: rgba(10,58,74,0.8);
-  -webkit-border-radius: 10px;
-  -moz-border-radius   : 10px;
-  border-radius        : 10px;
-  border: 1px solid rgba(0,48,64,0.5);
-  white-space: nowrap;
-  font-size:150%;
-  font-weight:bold;
-  -webkit-transition:0.3s ease;
-  -moz-transition:0.3s ease;
-  -ms-transition:0.3s ease;
-  -o-transition:0.3s ease;
-  transition:0.3s ease;
-  text-decoration: none;
-}
-#play-again:hover {
-  -webkit-transition:0.15s ease;
-  -moz-transition:0.15s ease;
-  -ms-transition:0.15s ease;
-  -o-transition:0.15s ease;
-  transition:0.15s ease;
-
-  -moz-transform: scale(1.2);
-  -webkit-transform: scale(1.2);
-  -o-transform: scale(1.2);
-  transform: scale(1.2);
-
-  color: rgba(30,78,94,1);
-  border-color: rgba(20,68,84,0.8);
-  background: rgba(0,48,64,0.3);
-}
-
-#play-again:active {
-  border-width: 2px;
-}
-
 /* nothing below the click overlay is clickable */
 #click-overlay { position:absolute; z-index:500; width:900px; height:600px; }
 #sky-canvas { position:absolute; z-index:400; }

@@ -111,6 +111,7 @@ add dead ends
 display statistics
 add about page
 zombie audio
+use Modernizr to detect if the browser can play the game or not
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
