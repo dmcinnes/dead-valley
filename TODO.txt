@@ -97,8 +97,8 @@ X turn off console.log on deploy
 X keep track of statistics
 X some cars can take more damage than other
 X switch to use http://soundjs.com/
-add drag to car
-tune Honda's performance
+X tune Honda's performance
+X add drag to car
 HUD ammo count
 headlight repair
 car repair
@@ -161,7 +161,7 @@ pause in rendering any sky related thing for the first time (headlights, muzzle 
 smoke sometimes has a weird flicking thing in safari-- same as what was happening with dude before (ghost)
 hit sound fires when walking into car at an angle
 arm doesn't flash when dude is hit
-occasionally the farmhouse allows zombies and dude to vorp through from the left or bottom sides
+occasionally the farmhouse allows zombies and dude to vworp through from the left or bottom sides
 zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 
