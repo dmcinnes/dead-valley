@@ -483,3 +483,33 @@ body {
   z-index: 900;
   -webkit-transform-origin: left center;
 }
+
+.choice {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: 2px;
+  font-size: medium;
+  background: #444;
+  color: #666;
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.choice span {
+  padding: 0px 10px;
+}
+
+.choice .on {
+  background: #CCC;
+}
+
+.choice .on:first-child {
+  color: #464;
+}
+
+.choice .on:last-child {
+  color: #644;
+}
