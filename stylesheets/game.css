@@ -168,6 +168,20 @@ body {
   padding-right: 10px;
 }
 
+.back {
+  float: right;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.back:hover {
+  color: #aaa;
+}
+
+.back:active {
+  color: #eee;
+}
+
 #figures {
   width: 300px;
   float: right;
