@@ -255,3 +255,4 @@ make mapworker work when WebWorkers aren't supported
 support FF
 try using dirty regions for sky
 stagger the two section loads when shifting the level
+save sound config in a cookie
