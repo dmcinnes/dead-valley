@@ -153,7 +153,7 @@ body {
   font-size: 120%;
   color: #ccc;
   background-color: black;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 #help-content {
