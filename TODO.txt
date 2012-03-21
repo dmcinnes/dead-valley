@@ -154,6 +154,7 @@ X if car is not in view when exploding it should not make a sound
 X shouldn't show intro on saved games
 X hitting return quickly enough can break menu screens
 X gradients not working in FF
+X dude's aiming arm rendered wrong in FF
 fix sideways gas pumps collision bounds
 can't hold drag an item then drop it into another car/building
 If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
@@ -166,7 +167,6 @@ arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vworp through from the left or bottom sides
 zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
-dude's aiming arm rendered wrong in FF
 
 *EDITOR*
 X remove current collidible code
