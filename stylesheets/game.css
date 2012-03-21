@@ -126,7 +126,9 @@ body {
 
 #main-screen.pause {
   background-color: transparent;
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,0.7)), to(rgba(0,0,0,0.7)), color-stop(.5,rgba(0,0,0,0.2)));
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+  background-image: -moz-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+  background-image: -ms-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
 }
 
 .pause #resume-game {
@@ -134,7 +136,9 @@ body {
 }
 
 #game-over-screen {
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,1)), to(rgba(0,0,0,1)), color-stop(.5,rgba(0,0,0,0.7)));
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0.7), rgba(0,0,0,1));
+  background-image: -moz-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0.7), rgba(0,0,0,1));
+  background-image: -ms-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0.7), rgba(0,0,0,1));
 }
 
 #game-over {
@@ -478,8 +482,6 @@ body {
   height: 2000px;
   display: none;
   background-color: #A22;
-  /* background-image: -webkit-linear-gradient(0, rgba(255,255,255,.07) 50%, transparent 50%), -webkit-linear-gradient(45deg, rgba(255,255,255,.13) 50%, transparent 50%), -webkit-linear-gradient(-45deg, transparent 50%, rgba(255,255,255,.17) 50%), -webkit-linear-gradient(30deg, transparent 50%, rgba(255,255,255,.19) 50%); */
-  /* background-size: 13px, 29px, 37px, 53px; */
   z-index: 900;
   -webkit-transform-origin: left center;
 }
