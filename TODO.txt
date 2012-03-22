@@ -162,12 +162,12 @@ If run into gas pump when map is scrolling and keep holding move key down, the g
 dude's aiming arm stays after dude dies
 sometimes inventory images get selected as text
 pause in rendering any sky related thing for the first time (headlights, muzzle flash, etc)
-smoke sometimes has a weird flicking thing in safari-- same as what was happening with dude before (ghost)
 hit sound fires when walking into car at an angle
 arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vworp through from the left or bottom sides
 zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
+smoke sometimes has a weird flicking thing in safari-- same as what was happening with dude before (ghost)
 
 *EDITOR*
 X remove current collidible code
@@ -247,6 +247,7 @@ streetlight
 
 *WISHLIST*
 X make mapworker use require.js
+X support FF
 add map handling functions for custom instances of sections through the map worker
 make zombie collision response more natural
 convert everything to radians
@@ -255,7 +256,6 @@ support shooting out of car
 gas pumps can take damage
 add dude roll/damage when jumping out of car
 make mapworker work when WebWorkers aren't supported
-support FF
 try using dirty regions for sky
 stagger the two section loads when shifting the level
 save sound config in a cookie
