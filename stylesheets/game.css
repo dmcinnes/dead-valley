@@ -198,7 +198,7 @@ body {
 /* nothing below the click overlay is clickable */
 #click-overlay { position:absolute; z-index:500; width:900px; height:600px; }
 #sky-canvas { position:absolute; z-index:400; }
-#sprites { position:absolute; z-index:100; width:900px; height:600px; }
+#sprites { position:absolute; width:900px; height:600px; }
 #canvas-mask {
   position:relative;
   z-index:700;
