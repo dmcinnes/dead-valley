@@ -1,5 +1,5 @@
-require(['../lib/Progress', '../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/sprite-info'],
-        function (Progress, TileMarshal, SpriteMarshal, SPRITES) {
+require(['../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/sprite-info'],
+        function (TileMarshal, SpriteMarshal, SPRITES) {
 
   var Tile   = function () {};
   var Sprite = function (spriteInfo) {
@@ -275,7 +275,6 @@ require(['../lib/Progress', '../lib/TileMarshal', '../lib/SpriteMarshal', '../li
       $map.children('.sprite').remove();
 
       if (data.map) {
-        Progress.addTarget(data.map.length);
 
         var line = 0;
         var nodes = $map.children('.tile');
@@ -289,7 +288,6 @@ require(['../lib/Progress', '../lib/TileMarshal', '../lib/SpriteMarshal', '../li
                 tileObject = TileDisplay.getTileObject(node);
                 tileObject.setFromString(data.map[index]);
               }
-              Progress.increment(MAP_SIZE);
             }, 0);
           })(i);
         }
@@ -436,14 +434,20 @@ require(['../lib/Progress', '../lib/TileMarshal', '../lib/SpriteMarshal', '../li
   };
 
   var setSpriteRotation = function (sprite, rot) {
+    var center = sprite.data('sprite').spriteInfo.center;
+    if (center) {
+      sprite.css('-webkit-transform-origin', center.x + "px " + center.y + "px");
+    }
     sprite.css('-webkit-transform', "rotate("+rot+"deg)");
     sprite.data('rotate', rot);
   };
 
   var setSpritePosition = function (sprite, x, y) {
+    var center = sprite.data('sprite').spriteInfo.center ||
+                 {x:sprite.width()/2, y:sprite.height()/2};
     sprite.css({
-      left: x + $mapMask[0].scrollLeft - mapMaskPos.left - sprite.width()/2,
-      top: y + $mapMask[0].scrollTop - mapMaskPos.top - sprite.height()/2
+      left: x + $mapMask[0].scrollLeft - mapMaskPos.left - center.x,
+      top: y + $mapMask[0].scrollTop - mapMaskPos.top -  center.y
     });
   };
 
