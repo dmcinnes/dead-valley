@@ -416,6 +416,7 @@ body {
 
 .tip {
   position: absolute;
+  text-align: center;
   z-index: 600;
   background: #256;
   padding: 5px 15px;
@@ -514,4 +515,10 @@ body {
 
 .choice .on:last-child {
   color: #644;
+}
+
+#skip-hints {
+  font-size: 85%;
+  color: #F77;
+  cursor: pointer;
 }
