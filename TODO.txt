@@ -112,6 +112,7 @@ add dead ends
 display statistics
 add about page
 zombie audio
+add eating sound
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
