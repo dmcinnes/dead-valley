@@ -522,3 +522,20 @@ body {
   color: #F77;
   cursor: pointer;
 }
+
+.sprite.glow {
+  -webkit-animation: glow 0.65s ease-in-out infinite alternate;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2);
+  -moz-animation: glow 0.65s ease-in-out infinite alternate;
+  -moz-box-shadow: 0px 0px 10px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2);
+}
+
+@-webkit-keyframes glow {
+  from { -webkit-box-shadow: 0px 0px 10px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2) }
+  to   { -webkit-box-shadow: 0px 0px 30px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2) }
+}
+
+@-moz-keyframes glow {
+  from { -moz-box-shadow: 0px 0px 10px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2) }
+  to   { -moz-box-shadow: 0px 0px 30px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2) }
+}
