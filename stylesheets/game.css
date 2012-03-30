@@ -6,7 +6,6 @@
  *  800 for drag handlers
  *  700 for canvas mask
  *  600 for ui elements
- *  500 for click overlay
  *  400 for sky
  *  100 for sprite container
  *   10 for background container
@@ -32,6 +31,7 @@ body {
   border-radius: 5px;
   -moz-border-radius: 5px; 
   -webkit-border-radius: 5px;
+  overflow: hidden;
 }
 
 .overlay {
@@ -195,13 +195,20 @@ body {
   margin-bottom: 20px;
 }
 
-/* nothing below the click overlay is clickable */
-#click-overlay { position:absolute; z-index:500; width:900px; height:600px; }
-#sky-canvas { position:absolute; z-index:400; }
-#sprites { position:absolute; width:900px; height:600px; }
+#sky-canvas {
+  pointer-events: none;
+  position:absolute;
+  z-index:400;
+}
+
+#sprites {
+  position:absolute;
+  width:900px;
+  height:600px;
+}
+
 #canvas-mask {
   position:relative;
-  z-index:700;
   overflow:hidden;
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
@@ -458,13 +465,13 @@ body {
   right: 30%;
 }
 
-.pump #click-overlay, .pump .inventory, .pump .inventory-item {
+.pump #canvas-mask, .pump .inventory, .pump .inventory-item {
   cursor: url(../assets/pump-nozzle.png), auto !important;
 }
-.gascan #click-overlay, .gascan .inventory, .gascan .inventory-item {
+.gascan #canvas-mask, .gascan .inventory, .gascan .inventory-item {
   cursor: url(../assets/gascan-cursor.png), auto !important;
 }
-.rubber-tubing #click-overlay, .rubber-tubing .inventory-item, .rubber-tubing .inventory {
+.rubber-tubing #canvas-mask, .rubber-tubing .inventory-item, .rubber-tubing .inventory {
   cursor: url(../assets/rubber-tubing-cursor.png), auto !important;
 }
 
