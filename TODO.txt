@@ -170,6 +170,7 @@ occasionally the farmhouse allows zombies and dude to vworp through from the lef
 zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 cars show up on top of buildings
+resume game doesn't show up on main menu after 2nd game has started
 
 *EDITOR*
 X remove current collidible code
