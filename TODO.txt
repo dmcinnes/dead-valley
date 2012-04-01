@@ -113,6 +113,8 @@ display statistics
 add about page
 zombie audio
 add eating sound
+move timer to different play mode
+add ability to sleep in houses if no zomibes are chasing you
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
