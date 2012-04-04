@@ -100,6 +100,7 @@ X switch to use http://soundjs.com/
 X tune Honda's performance
 X add drag to car
 X use Modernizr to detect if the browser can play the game or not
+X move timer to different play mode
 HUD ammo count
 headlight repair
 car repair
@@ -113,7 +114,6 @@ display statistics
 add about page
 zombie audio
 add eating sound
-move timer to different play mode
 add ability to sleep in houses if no zomibes are chasing you
 
 *BUGS*
