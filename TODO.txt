@@ -175,6 +175,7 @@ zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 cars show up on top of buildings
 blood isn't showing up anymore
+no cop cars at police station
 
 *EDITOR*
 X remove current collidible code
