@@ -115,6 +115,8 @@ add about page
 zombie audio
 add eating sound
 add ability to sleep in houses if no zomibes are chasing you
+make dude show up where he entered car unless the car moved
+make gas can glow
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -172,6 +174,7 @@ occasionally the farmhouse allows zombies and dude to vworp through from the lef
 zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 cars show up on top of buildings
+blood isn't showing up anymore
 
 *EDITOR*
 X remove current collidible code
