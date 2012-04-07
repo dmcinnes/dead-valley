@@ -7,9 +7,7 @@
  *  700 for canvas mask
  *  600 for ui elements
  *  400 for sky
- *  100 for sprite container
  *   10 for background container
- *    5 for background tiles
  *
  * sprite z-indices between 100-200 are set based on y-axis
  *
@@ -223,7 +221,7 @@ body {
 }
 
 #background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }
-.tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); z-index:5; background-position:60 0px; }
+.tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); background-position:60 0px; }
 
 #lower-right { position:absolute; color:#000; z-index:600; right:5px; bottom:5px; cursor:default;}
 #framerate { color:#000; display:none; background-color:#FFF; padding:4px; float:left; width:42px; }
