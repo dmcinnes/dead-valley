@@ -176,6 +176,7 @@ occasionally the farmhouse allows zombies and dude to vworp through from the lef
 zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 cars show up on top of buildings
+stop dragging when mouse leaves play area
 
 *EDITOR*
 X remove current collidible code
@@ -236,7 +237,7 @@ X can of beans
 X rubber hose
 X rifle
 X rifle ammo
-wrench
+X wrench
 spare headlight
 lantern
 golf club
