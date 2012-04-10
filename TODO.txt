@@ -177,6 +177,7 @@ zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 cars show up on top of buildings
 stop dragging when mouse leaves play area
+car menu sticks around after creating a new game
 
 *EDITOR*
 X remove current collidible code

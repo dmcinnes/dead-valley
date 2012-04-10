@@ -97,7 +97,9 @@ body {
 #title {
   color: #ddd;
   font-size:600%;
-  margin:100px;
+  margin-top:80px;
+  margin-left:100px;
+  margin-bottom:40px;
   color: #202c2d;
   text-shadow:
     0 1px #808d93,
@@ -116,6 +118,18 @@ body {
     -7px 6px #cdd2d5,
     -7px 8px #808d93,
     -8px 7px #cdd2d5;
+}
+
+#graphic {
+  float: right;
+  clear: left;
+  margin-right: 70px;
+}
+
+#menu {
+  position:absolute;
+  left: 140px;
+  top: 360px;
 }
 
 #resume-game {
