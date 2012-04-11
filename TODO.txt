@@ -166,6 +166,7 @@ X fix sideways gas pumps collision bounds
 X If run into gas pump when map is scrolling and keep holding move key down, the gas pump tool tip can continue scrolling
 X blood isn't showing up anymore
 X no cop cars at police station
+X stop dragging when mouse leaves play area
 can't hold drag an item then drop it into another car/building
 dude's aiming arm stays after dude dies
 sometimes inventory images get selected as text
@@ -176,7 +177,6 @@ occasionally the farmhouse allows zombies and dude to vworp through from the lef
 zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 cars show up on top of buildings
-stop dragging when mouse leaves play area
 car menu sticks around after creating a new game
 
 *EDITOR*
