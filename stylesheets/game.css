@@ -141,7 +141,7 @@ body {
 #menu.center ul {
   position:relative;
   left:-50%;
-  top:-80%;
+  top:-80px;
 }
 
 #resume-game {
