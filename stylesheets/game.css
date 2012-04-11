@@ -68,29 +68,29 @@ body {
   height:100%;
 }
 
-#main-content li {
+#menu li {
   font-size: 150%;
   color: #ccc;
   list-style: none;
 }
 
-#main-content li.selected {
+#menu li.selected {
   color: #aaa;
   list-style-type: disc;
 }
 
-#main-content li:hover {
+#menu li:hover {
   color: #aaa !important;
   list-style-type: disc !important;
   cursor: pointer !important;
 }
 
-#main-content ul:hover li.selected {
+#menu ul:hover li.selected {
   color: #ccc;
   list-style-type: none;
 }
 
-#main-content li:active {
+#menu li:active {
   color: #eee;
 }
 
@@ -99,7 +99,7 @@ body {
   font-size:600%;
   margin-top:80px;
   margin-left:100px;
-  margin-bottom:40px;
+  margin-bottom:20px;
   color: #202c2d;
   text-shadow:
     0 1px #808d93,
@@ -121,15 +121,27 @@ body {
 }
 
 #graphic {
-  float: right;
-  clear: left;
-  margin-right: 70px;
+  float: left;
+  clear: right;
+  margin-left: 200px;
 }
 
 #menu {
   position:absolute;
-  left: 140px;
+  right: 220px;
   top: 360px;
+}
+
+#menu.center {
+  right: auto;
+  left: 50%;
+  top: 50%;
+}
+
+#menu.center ul {
+  position:relative;
+  left:-50%;
+  top:-80%;
 }
 
 #resume-game {
