@@ -101,9 +101,9 @@ X tune Honda's performance
 X add drag to car
 X use Modernizr to detect if the browser can play the game or not
 X move timer to different play mode
+X car repair
 HUD ammo count
 headlight repair
-car repair
 make zombies attracted to light
 make zombies attracted to crashes
 add inventory/hud toggle button
@@ -117,6 +117,8 @@ add eating sound
 add ability to sleep in houses if no zomibes are chasing you
 make dude show up where he entered car unless the car moved
 make gas can glow
+update instruction text for non-time trial
+repair sound
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
