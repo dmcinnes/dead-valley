@@ -177,6 +177,50 @@ body {
                0px 8px 13px rgba(0,18,34,0.2);
 }
 
+#continue-button {
+  display:none;
+  position:relative;
+  left:-50%;
+  top: 100px;
+  padding: 10px;
+  color: rgba(30,78,94,0.8);
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  border: 1px solid rgba(30,78,94,0.4);
+  white-space: nowrap;
+  font-size:150%;
+  font-weight:bold;
+  -webkit-transition:0.3s ease;
+  -moz-transition:0.3s ease;
+  -ms-transition:0.3s ease;
+  -o-transition:0.3s ease;
+  transition:0.3s ease;
+  text-decoration: none;
+}
+
+#continue-button:hover {
+  -webkit-transition:0.15s ease;
+  -moz-transition:0.15s ease;
+  -ms-transition:0.15s ease;
+  -o-transition:0.15s ease;
+  transition:0.15s ease;
+
+  -moz-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+
+  color: rgba(40,88,104,1);
+  border-color: rgba(40,88,104,1);
+  background: rgba(0,48,64,0.3);
+}
+
+#continue-button:active {
+  border-width: 2px;
+}
+
+
 #help {
   font-size: 120%;
   color: #ccc;
