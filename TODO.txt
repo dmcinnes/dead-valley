@@ -170,6 +170,7 @@ X blood isn't showing up anymore
 X no cop cars at police station
 X stop dragging when mouse leaves play area
 X cars show up on top of buildings
+X click dropping item fires your weapon
 can't hold drag an item then drop it into another car/building
 dude's aiming arm stays after dude dies
 sometimes inventory images get selected as text
@@ -181,7 +182,6 @@ zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 car menu sticks around after creating a new game
 pressing pause at the moment dude dies you get both game over and pause screen
-click dropping item fires your weapon
 
 *EDITOR*
 X remove current collidible code
