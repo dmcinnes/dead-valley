@@ -7,9 +7,7 @@
  *  700 for canvas mask
  *  600 for ui elements
  *  400 for sky
- *  100 for sprite container
  *   10 for background container
- *    5 for background tiles
  *
  * sprite z-indices between 100-200 are set based on y-axis
  *
@@ -70,36 +68,38 @@ body {
   height:100%;
 }
 
-#main-content li {
+#menu li {
   font-size: 150%;
   color: #ccc;
   list-style: none;
 }
 
-#main-content li.selected {
+#menu li.selected {
   color: #aaa;
   list-style-type: disc;
 }
 
-#main-content li:hover {
+#menu li:hover {
   color: #aaa !important;
   list-style-type: disc !important;
   cursor: pointer !important;
 }
 
-#main-content ul:hover li.selected {
+#menu ul:hover li.selected {
   color: #ccc;
   list-style-type: none;
 }
 
-#main-content li:active {
+#menu li:active {
   color: #eee;
 }
 
 #title {
   color: #ddd;
   font-size:600%;
-  margin:100px;
+  margin-top:80px;
+  margin-left:100px;
+  margin-bottom:20px;
   color: #202c2d;
   text-shadow:
     0 1px #808d93,
@@ -118,6 +118,30 @@ body {
     -7px 6px #cdd2d5,
     -7px 8px #808d93,
     -8px 7px #cdd2d5;
+}
+
+#graphic {
+  float: left;
+  clear: right;
+  margin-left: 200px;
+}
+
+#menu {
+  position:absolute;
+  right: 220px;
+  top: 360px;
+}
+
+#menu.center {
+  right: auto;
+  left: 50%;
+  top: 50%;
+}
+
+#menu.center ul {
+  position:relative;
+  left:-50%;
+  top:-80px;
 }
 
 #resume-game {
@@ -152,6 +176,50 @@ body {
   text-shadow: 0px 4px 3px rgba(0,18,34,0.4),
                0px 8px 13px rgba(0,18,34,0.2);
 }
+
+#continue-button {
+  display:none;
+  position:relative;
+  left:-50%;
+  top: 100px;
+  padding: 10px;
+  color: rgba(30,78,94,0.8);
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  border: 1px solid rgba(30,78,94,0.4);
+  white-space: nowrap;
+  font-size:150%;
+  font-weight:bold;
+  -webkit-transition:0.3s ease;
+  -moz-transition:0.3s ease;
+  -ms-transition:0.3s ease;
+  -o-transition:0.3s ease;
+  transition:0.3s ease;
+  text-decoration: none;
+}
+
+#continue-button:hover {
+  -webkit-transition:0.15s ease;
+  -moz-transition:0.15s ease;
+  -ms-transition:0.15s ease;
+  -o-transition:0.15s ease;
+  transition:0.15s ease;
+
+  -moz-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+
+  color: rgba(40,88,104,1);
+  border-color: rgba(40,88,104,1);
+  background: rgba(0,48,64,0.3);
+}
+
+#continue-button:active {
+  border-width: 2px;
+}
+
 
 #help {
   font-size: 120%;
@@ -223,7 +291,7 @@ body {
 }
 
 #background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }
-.tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); z-index:5; background-position:60 0px; }
+.tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); background-position:60 0px; }
 
 #lower-right { position:absolute; color:#000; z-index:600; right:5px; bottom:5px; cursor:default;}
 #framerate { color:#000; display:none; background-color:#FFF; padding:4px; float:left; width:42px; }
