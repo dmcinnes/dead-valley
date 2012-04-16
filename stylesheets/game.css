@@ -7,6 +7,7 @@
  *  700 for canvas mask
  *  600 for ui elements
  *  400 for sky
+ *   10 for sprite container
  *   10 for background container
  *
  * sprite z-indices between 100-200 are set based on y-axis
@@ -273,6 +274,8 @@ body {
   position:absolute;
   width:900px;
   height:600px;
+  z-index:20;
+  -webkit-transform-style: preserve-3d;
 }
 
 #canvas-mask {
