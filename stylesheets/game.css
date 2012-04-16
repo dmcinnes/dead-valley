@@ -495,7 +495,6 @@ body {
 .tip {
   position: absolute;
   text-align: center;
-  z-index: 600;
   background: #256;
   padding: 5px 15px;
   color: #DDD;
