@@ -183,6 +183,7 @@ zombies and dude bounce over and over slightly when they walk into some cars
 car inventory hints don't move with car
 car menu sticks around after creating a new game
 pressing pause at the moment dude dies you get both game over and pause screen
+audio doesn't clear correctly for new game
 
 *EDITOR*
 X remove current collidible code
