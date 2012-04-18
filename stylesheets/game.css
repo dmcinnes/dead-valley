@@ -505,7 +505,6 @@ body {
   border-radius        : 10px;
   border: 1px solid #034;
   white-space: nowrap;
-  opacity: 0.8;
 }
 
 .tip:after, .tip:before {
