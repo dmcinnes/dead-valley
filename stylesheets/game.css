@@ -27,10 +27,15 @@ body {
   width:900px;
   height:600px;
   border:5px solid black; 
+  overflow: hidden;
   border-radius: 5px;
   -moz-border-radius: 5px; 
   -webkit-border-radius: 5px;
-  overflow: hidden;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 .overlay {
@@ -280,11 +285,6 @@ body {
 #canvas-mask {
   position:relative;
   overflow:hidden;
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
-  user-select: none;
   -moz-transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
