@@ -506,33 +506,53 @@ body {
   opacity: 0.8;
 }
 
-.tip.bottom:after {
-  content: "";
-  position: absolute;
-  width: 0;
+.tip:after, .tip:before {
+  border: solid transparent;
+  content: " ";
   height: 0;
-  border-top: 10px solid #034;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  left: 30%;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  left: 50%;
+}
+
+.tip.bottom:after {
   top: 100%;
+  border-top-color: #256;
+  border-width: 10px;
+  margin-left: -10px;
+}
+.tip.bottom:before {
+  top: 100%;
+  border-top-color: #034;
+  border-width: 11px;
+  margin-left: -11px;
 }
 
 .tip.top:after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-bottom: 10px solid #034;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  left: 30%;
   bottom: 100%;
+  border-bottom-color: #256;
+  border-width: 10px;
+  margin-left: -10px;
+}
+.tip.top:before {
+  bottom: 100%;
+  border-bottom-color: #034;
+  border-width: 11px;
+  margin-left: -11px;
 }
 
-.tip.flip:after {
-  left: auto;
-  right: 30%;
+.tip.left:after, .tip.left:before {
+  left: 30%;
+}
+
+.tip.right:after, .tip.right:before {
+  left: 70%;
+}
+
+.tip b {
+  font-weight: bold;
+  font-size: 140%;
 }
 
 .pump #canvas-mask, .pump .inventory, .pump .inventory-item {
