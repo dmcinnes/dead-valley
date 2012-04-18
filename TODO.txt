@@ -173,11 +173,11 @@ X cars show up on top of buildings
 X click dropping item fires your weapon
 X distance not taking dude's start position into account
 X audio doesn't clear correctly for new game
+X hit sound sometimes fires when walking into car at an angle
 can't hold drag an item then drop it into another car/building
 dude's aiming arm stays after dude dies
 sometimes inventory images get selected as text
 pause in rendering any sky related thing for the first time (headlights, muzzle flash, etc)
-hit sound sometimes fires when walking into car at an angle
 arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vworp through from the left or bottom sides
 zombies and dude bounce over and over slightly when they walk into some cars
