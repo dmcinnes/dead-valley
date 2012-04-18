@@ -274,8 +274,7 @@ body {
   position:absolute;
   width:900px;
   height:600px;
-  z-index:20;
-  -webkit-transform-style: preserve-3d;
+  /* z-index:20; */
 }
 
 #canvas-mask {
@@ -286,6 +285,9 @@ body {
   -webkit-user-select: none;
   -o-user-select: none;
   user-select: none;
+  -moz-transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 .sprite {
@@ -293,7 +295,7 @@ body {
   visibility: hidden;
 }
 
-#background { position:relative; background:#93803A; z-index:10; width:900px; height:600px; overflow:hidden; }
+#background { position:relative; background:#93803A; width:900px; height:600px; overflow:hidden; z-index: -1; }
 .tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); background-position:60 0px; }
 
 #lower-right { position:absolute; color:#000; z-index:600; right:5px; bottom:5px; cursor:default;}
