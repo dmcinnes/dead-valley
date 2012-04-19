@@ -156,9 +156,10 @@ body {
 
 #main-screen.pause {
   background-color: transparent;
-  background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
-  background-image: -moz-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
-  background-image: -ms-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.6), rgba(0,0,0,0.7), rgba(0,0,0,0.6));
+  background-image: -moz-linear-gradient(top, rgba(0,0,0,0.6), rgba(0,0,0,0.7), rgba(0,0,0,0.6));
+  background-image: -ms-linear-gradient(top, rgba(0,0,0,0.6), rgba(0,0,0,0.7), rgba(0,0,0,0.6));
+  background-image: linear-gradient(top, rgba(0,0,0,0.6), rgba(0,0,0,0.7), rgba(0,0,0,0.6));
 }
 
 .pause #resume-game {
@@ -166,9 +167,31 @@ body {
 }
 
 #game-over-screen {
-  background-image: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0.7), rgba(0,0,0,1));
-  background-image: -moz-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0.7), rgba(0,0,0,1));
-  background-image: -ms-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0.7), rgba(0,0,0,1));
+  background-image: -webkit-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+  background-image: -moz-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+  background-image: -ms-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+  background-image: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+}
+
+#intro-screen {
+  background-image: -webkit-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+  background-image: -moz-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+  background-image: -ms-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+  background-image: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+}
+#intro-text {
+  position:relative;
+  text-align: center;
+  background: #145;
+  padding: 5px 15px;
+  color: #DDD;
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  border: 2px solid #034;
+  left: -50%;
+  top: -200px;
+  font-size:115%;
 }
 
 #game-over {
@@ -480,7 +503,6 @@ body {
 }
 
 #lower-right > span {
-  font-weight:bold;
   text-align: right;
   margin: 2px;
   background: #256;
