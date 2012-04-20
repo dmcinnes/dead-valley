@@ -102,6 +102,7 @@ X add drag to car
 X use Modernizr to detect if the browser can play the game or not
 X move timer to different play mode
 X car repair
+X update instruction text for non-time trial
 HUD ammo count
 headlight repair
 make zombies attracted to light
@@ -117,7 +118,6 @@ add eating sound
 add ability to sleep in houses if no zomibes are chasing you
 make dude show up where he entered car unless the car moved
 make gas can glow
-update instruction text for non-time trial
 repair sound
 
 *BUGS*
@@ -176,6 +176,7 @@ X audio doesn't clear correctly for new game
 X hit sound sometimes fires when walking into car at an angle
 X car inventory hints don't move with car
 X sometimes inventory images get selected as text
+X sprites are rendered above sky
 can't hold drag an item then drop it into another car/building
 dude's aiming arm stays after dude dies
 pause in rendering any sky related thing for the first time (headlights, muzzle flash, etc)

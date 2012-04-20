@@ -295,7 +295,10 @@ body {
 #sky-canvas {
   pointer-events: none;
   position:absolute;
-  z-index:400;
+  -moz-transform: translateZ(400px);
+  -webkit-transform: translateZ(400px);
+  -o-transform: translateZ(400px);
+  transform: translateZ(400px);
 }
 
 #sprites {
