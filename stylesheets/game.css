@@ -173,6 +173,10 @@ body {
   background-image: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
 }
 
+#game-over-screen.winning {
+  background-image: none;
+}
+
 #intro-screen {
   background-image: -webkit-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
   background-image: -moz-radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));

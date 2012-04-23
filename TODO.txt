@@ -103,13 +103,13 @@ X use Modernizr to detect if the browser can play the game or not
 X move timer to different play mode
 X car repair
 X update instruction text for non-time trial
+X intro screen
 HUD ammo count
 headlight repair
 make zombies attracted to light
 make zombies attracted to crashes
 add inventory/hud toggle button
 support CMD-click on inventory as left-click
-intro screen
 add dead ends
 display statistics
 add about page
@@ -185,6 +185,7 @@ occasionally the farmhouse allows zombies and dude to vworp through from the lef
 zombies and dude bounce over and over slightly when they walk into some cars
 car menu sticks around after creating a new game
 pressing pause at the moment dude dies you get both game over and pause screen
+nuke appears under sprites
 
 *EDITOR*
 X remove current collidible code
