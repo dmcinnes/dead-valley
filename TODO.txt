@@ -178,6 +178,7 @@ X car inventory hints don't move with car
 X sometimes inventory images get selected as text
 X sprites are rendered above sky
 X nuke appears under sprites
+X nuke is no longer positioned correctly
 can't hold drag an item then drop it into another car/building
 dude's aiming arm stays after dude dies
 pause in rendering any sky related thing for the first time (headlights, muzzle flash, etc)
@@ -186,7 +187,6 @@ occasionally the farmhouse allows zombies and dude to vworp through from the lef
 zombies and dude bounce over and over slightly when they walk into some cars
 car menu sticks around after creating a new game
 pressing pause at the moment dude dies you get both game over and pause screen
-nuke is no longer positioned correctly
 
 *EDITOR*
 X remove current collidible code
@@ -279,3 +279,4 @@ try using dirty regions for sky
 stagger the two section loads when shifting the level
 save sound config in a cookie
 debris
+show keys when press ?
