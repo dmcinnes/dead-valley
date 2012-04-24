@@ -534,6 +534,7 @@ body {
   border-radius        : 10px;
   border: 1px solid #034;
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .tip:after, .tip:before {
@@ -583,6 +584,10 @@ body {
 .tip b {
   font-weight: bold;
   font-size: 140%;
+}
+
+.tip.clickable {
+  pointer-events: visiblePainted !important;
 }
 
 .pump #canvas-mask, .pump .inventory, .pump .inventory-item {
