@@ -119,6 +119,8 @@ add ability to sleep in houses if no zomibes are chasing you
 make dude show up where he entered car unless the car moved
 make gas can glow
 repair sound
+support maximum of certain kind of sections in the game (police station)
+remove bodies for performance
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -187,6 +189,13 @@ occasionally the farmhouse allows zombies and dude to vworp through from the lef
 zombies and dude bounce over and over slightly when they walk into some cars
 car menu sticks around after creating a new game
 pressing pause at the moment dude dies you get both game over and pause screen
+getting context menus when trying to right-click on inventory (shotgun)
+when dude enters car when it's dark he leaves a silhouette
+sedan and police car steering is a bit sensitive
+can't click through gas tips to fuel cars underneith
+inventory drop on other inventory is offset oddly
+after win showed -X Miles to Go
+win pinwheel still shows for new game after win
 
 *EDITOR*
 X remove current collidible code
