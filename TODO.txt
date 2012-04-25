@@ -196,6 +196,7 @@ getting context menus when trying to right-click on inventory (shotgun)
 when dude enters car when it's dark he leaves a silhouette
 sedan and police car steering is a bit sensitive
 inventory drop on other inventory is offset oddly
+dude/zombies are rendered under blood in FF
 
 *EDITOR*
 X remove current collidible code
