@@ -104,6 +104,7 @@ X move timer to different play mode
 X car repair
 X update instruction text for non-time trial
 X intro screen
+X remove bodies for performance
 HUD ammo count
 headlight repair
 make zombies attracted to light
@@ -120,7 +121,6 @@ make dude show up where he entered car unless the car moved
 make gas can glow
 repair sound
 support maximum of certain kind of sections in the game (police station)
-remove bodies for performance
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
