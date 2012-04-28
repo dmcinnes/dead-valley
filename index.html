@@ -2,7 +2,6 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/game.css">
-    <script src="vendor/json2.js"></script>
     <script src="vendor/underscore.js"></script>
     <script src="vendor/jquery-1.7.1.min.js"></script>
     <script src="vendor/jquery-ui-1.8.16.custom.min.js"></script>
@@ -52,11 +51,47 @@
 	      <li id="new-game">New Game</li>
 	      <li id="time-challenge">Time Challenge</li>
 	      <li id="instructions">Instructions</li>
+	      <li id="about">About</li>
 	      <li id="sound">Sound:<div class="choice"><span class="on">ON</span><span>OFF</span></div></li>
 	    </ul>
 	  </div>
         </div>
       </div>
+
+      <div id="about-screen" class="overlay">
+        <div class="text-content">
+          <div class="back">&bull;&nbsp;Back</div>
+          <h1>Dead Valley</h1>
+          <p>
+          Created by <a href="http://dougmcinnes.com">Doug McInnes</a>
+          </p>
+          <p>
+          <a href="http://dogwatchgames.com">Dogwatch Games</a>
+          </p>
+          <p>
+          Made possible with these fine libraries:
+          <ul>
+            <li><a href="http://jquery.com/">jQuery</a></li>
+            <li><a href="http://requirejs.org/">Requirejs</a></li>
+            <li><a href="http://documentcloud.github.com/underscore/">Underscore.js</a></li>
+            <li><a href="http://www.createjs.com/#!/SoundJS">Soundjs</a></li>
+            <li><a href="http://modernizr.com/">Modernizr</a></li>
+          </ul>
+          </p>
+          <p>
+          Graphics created with <a href="http://www.pixelmator.com/">Pixelmator</a> and <a href="http://itunes.apple.com/us/app/artstudio-for-ipad-draw-paint/id364017607?mt=8">Art Studio for iPad</a>.
+          </p>
+          <p>
+          Audio created with <a href="http://www.bfxr.net/">Bfxr</a> and recorded and edited with <a href="http://audacity.sourceforge.net/">Audacity</a>.
+          </p>
+          <p>
+          Created with <a href="http://www.vim.org">Vim</a>.
+          </p>
+
+          <a href="http://www.w3.org/html/logo/"><img id="html5logo" src="assets/about/HTML5_Badge_128.png" width="128" height="128"></img></a>
+        </div>
+      </div>
+
       <div id="game-over-screen" class="overlay">
         <div class="centering-container">
           <div id="game-over">GAME OVER</div>
@@ -65,6 +100,7 @@
 	  <a href="#" id="continue-button">Continue?</a>
 	</div>
       </div>
+
       <div id="intro-screen" class="overlay">
         <div class="centering-container">
           <div id="intro-text">
@@ -89,44 +125,45 @@
           </div>
         </div>
       </div>
+
       <div id="help" class="overlay">
-        <div id="help-content">
+        <div class="text-content">
           <div class="back">&bull;&nbsp;Back</div>
 
           <div id="figures">
             <figure id="fig1">
-              <img src="assets/help/enter_car.png"></img>
-              <img src="assets/help/enter_house.png"></img>
-              <figcaption>Enter/Exit a car or building by pressing E</figcaption>
+            <img src="assets/help/enter_car.png"></img>
+            <img src="assets/help/enter_house.png"></img>
+            <figcaption>Enter/Exit a car or building by pressing E</figcaption>
             </figure>
 
             <figure id="fig2">
-              <img src="assets/help/activate_flashlight.png"></img>
-              <img src="assets/help/flashlight_usage.png"></img>
-              <figcaption>Put the flashlight in the inventory hands to activate it</figcaption>
+            <img src="assets/help/activate_flashlight.png"></img>
+            <img src="assets/help/flashlight_usage.png"></img>
+            <figcaption>Put the flashlight in the inventory hands to activate it</figcaption>
             </figure>
 
             <figure id="fig3">
-              <img src="assets/help/activate_glock.png"></img>
-              <img src="assets/help/glock_usage.png"></img>
-              <figcaption>Put weapons in the inventory hands to make them the active weapon</figcaption>
+            <img src="assets/help/activate_glock.png"></img>
+            <img src="assets/help/glock_usage.png"></img>
+            <figcaption>Put weapons in the inventory hands to make them the active weapon</figcaption>
             </figure>
 
             <figure id="fig4">
-              <img src="assets/help/fuel_car.png"></img>
-              <img src="assets/help/fuel_gascan.png"></img>
-              <figcaption>Touch a gas pump to fuel nearby cars or inventory items</figcaption>
+            <img src="assets/help/fuel_car.png"></img>
+            <img src="assets/help/fuel_gascan.png"></img>
+            <figcaption>Touch a gas pump to fuel nearby cars or inventory items</figcaption>
             </figure>
 
             <figure id="fig6">
-              <img src="assets/help/siphon.png"></img>
-              <img src="assets/help/siphon_gascan.png"></img>
-              <figcaption>Touch a car, activate the siphon then click on nearby cars or inventory items to transfer fuel to them</figcaption>
+            <img src="assets/help/siphon.png"></img>
+            <img src="assets/help/siphon_gascan.png"></img>
+            <figcaption>Touch a car, activate the siphon then click on nearby cars or inventory items to transfer fuel to them</figcaption>
             </figure>
 
             <figure id="fig5">
-              <img src="assets/help/gascan_car.png"></img>
-              <figcaption>Activate the gas can and click on a touching car to fuel it</figcaption>
+            <img src="assets/help/gascan_car.png"></img>
+            <figcaption>Activate the gas can and click on a touching car to fuel it</figcaption>
             </figure>
           </div>
 

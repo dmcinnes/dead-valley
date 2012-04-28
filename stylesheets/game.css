@@ -253,23 +253,37 @@ body {
   border-width: 2px;
 }
 
-
-#help {
+.text-content {
   font-size: 120%;
   color: #ccc;
+  padding: 30px;
+}
+
+#about-screen {
+  background-color: black;
+}
+
+#about-screen a {
+  color: #afa;
+  text-decoration: none;
+}
+
+#html5logo {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+#help {
   background-color: black;
   overflow-y: scroll;
 }
 
-#help-content {
-  margin: 30px;
-}
-
-#help-content table {
+#help table {
   margin: 10px 30px;
 }
 
-#help-content table td {
+#help table td {
   padding-right: 10px;
 }
 
