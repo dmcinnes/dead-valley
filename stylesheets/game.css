@@ -263,6 +263,10 @@ body {
   background-color: black;
 }
 
+#about-screen .sc {
+  font-variant: small-caps;
+}
+
 #about-screen a {
   color: #afa;
   text-decoration: none;
