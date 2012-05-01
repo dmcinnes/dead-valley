@@ -292,16 +292,24 @@ save sound config in a cookie
 debris
 show keys when press ?
 
+
 *TODO BEFORE RELEASE*
+X Add GOOG Analytics to Dogwatch site
 Add logo to loading screen
 Add logo to about screen
 Add hint for time trial describing nuke
+Create game page
+Add GOOG Analytics to game page
+Create Dogwatch Twitter
+
 Audio:
-  Make driving at speed sound less headache inducing and shorter
+X Make driving at speed sound less headache inducing and shorter
+X Replace Glock fire
+X Remove 2nd Zombie attack sound
   Replace Glock/Rifle reload
-  Replace Glock fire
   Zombie hit
   Zombie die
+
 Bugs:
   inventory drop on other inventory is offset oddly
   dude/zombies are rendered under blood in FF
