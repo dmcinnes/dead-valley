@@ -291,3 +291,17 @@ stagger the two section loads when shifting the level
 save sound config in a cookie
 debris
 show keys when press ?
+
+*TODO BEFORE RELEASE*
+Add logo to loading screen
+Add logo to about screen
+Add hint for time trial describing nuke
+Audio:
+  Make driving at speed sound less headache inducing and shorter
+  Replace Glock/Rifle reload
+  Replace Glock fire
+  Zombie hit
+  Zombie die
+Bugs:
+  inventory drop on other inventory is offset oddly
+  dude/zombies are rendered under blood in FF
