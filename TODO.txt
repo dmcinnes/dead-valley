@@ -200,6 +200,7 @@ inventory drop on other inventory is offset oddly
 dude/zombies are rendered under blood in FF
 can't see car glow at night
 engine noise should stop when car runs out of fuel
+cars can be generated overlapping
 
 *EDITOR*
 X remove current collidible code
