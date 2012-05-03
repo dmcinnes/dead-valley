@@ -199,6 +199,7 @@ when dude enters car when it's dark he leaves a silhouette
 inventory drop on other inventory is offset oddly
 dude/zombies are rendered under blood in FF
 can't see car glow at night
+engine noise should stop when car runs out of fuel
 
 *EDITOR*
 X remove current collidible code
