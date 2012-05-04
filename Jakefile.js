@@ -66,7 +66,7 @@ task("build", ["clean", "mkdir", "version"], function (params) {
       name:    "MapWorker",
       out:     "build/lib/MapWorker.js",
       wrap: {
-        start: "importScripts('../vendor/json2.js', '../vendor/underscore.js', '../vendor/require.js');",
+        start: "importScripts('../vendor/underscore-min.js', '../vendor/require.js');",
         end: " ",
       }
     }, complete);
