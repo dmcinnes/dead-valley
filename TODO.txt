@@ -205,7 +205,6 @@ inventory drop on other inventory is offset oddly
 can't see car glow at night
 engine noise should stop when car runs out of fuel
 cars can be generated overlapping
-game freezes in Chrome after a while (localStorage runs out?)
 sometimes breaking turns into reverse
 crossroads gas station is really slow in Chrome
 
@@ -322,4 +321,3 @@ X Remove 2nd Zombie attack sound
 
 Bugs:
   inventory drop on other inventory is offset oddly
-  dude/zombies are rendered under blood in FF
