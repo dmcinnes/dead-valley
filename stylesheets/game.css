@@ -327,15 +327,14 @@ body {
   position:absolute;
   width:900px;
   height:600px;
-  /* z-index:20; */
+  -moz-transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 #canvas-mask {
   position:relative;
   overflow:hidden;
-  -moz-transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
 }
 
 .sprite {
