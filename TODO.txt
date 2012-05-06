@@ -105,6 +105,7 @@ X car repair
 X update instruction text for non-time trial
 X intro screen
 X remove bodies for performance
+X make dude show up where he entered car unless the car moved
 HUD ammo count
 headlight repair
 make zombies attracted to light
@@ -117,7 +118,6 @@ add about page
 zombie audio
 add eating sound
 add ability to sleep in houses if no zomibes are chasing you
-make dude show up where he entered car unless the car moved
 make gas can glow
 repair sound
 support maximum of certain kind of sections in the game (police station)
@@ -207,7 +207,6 @@ when dude enters car when it's dark he leaves a silhouette
 inventory drop on other inventory is offset oddly
 engine noise should stop when car runs out of fuel
 cars can be generated overlapping
-crossroads gas station is really slow in Chrome
 
 *EDITOR*
 X remove current collidible code
