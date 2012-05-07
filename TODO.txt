@@ -316,6 +316,3 @@ X Make driving at speed sound less headache inducing and shorter
 X Replace Glock fire
 X Remove 2nd Zombie attack sound
   Replace Glock/Rifle reload
-
-Bugs:
-  inventory drop on other inventory is offset oddly

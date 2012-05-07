@@ -49,6 +49,7 @@ task("build", ["clean", "mkdir", "version"], function (params) {
   });
 
   exec('cp index.html build');
+  exec('cp favicon.ico build');
 
   req.optimize({
     baseUrl: "lib",
