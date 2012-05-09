@@ -306,9 +306,9 @@ show keys when press ?
 
 *TODO BEFORE RELEASE*
 X Add GOOG Analytics to Dogwatch site
+X Add hint for time trial describing nuke
 Add logo to loading screen
 Add logo to about screen
-Add hint for time trial describing nuke
 Create game page
 Add GOOG Analytics to game page
 Create Dogwatch Twitter
