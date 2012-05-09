@@ -106,6 +106,7 @@ X update instruction text for non-time trial
 X intro screen
 X remove bodies for performance
 X make dude show up where he entered car unless the car moved
+X zombie audio
 HUD ammo count
 headlight repair
 make zombies attracted to light
@@ -115,7 +116,6 @@ support CMD-click on inventory as left-click
 add dead ends
 display statistics
 add about page
-zombie audio
 add eating sound
 add ability to sleep in houses if no zomibes are chasing you
 make gas can glow
@@ -316,4 +316,4 @@ Audio:
 X Make driving at speed sound less headache inducing and shorter
 X Replace Glock fire
 X Remove 2nd Zombie attack sound
-  Replace Glock/Rifle reload
+X Replace Glock/Rifle reload
