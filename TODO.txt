@@ -211,6 +211,7 @@ when dude enters car when it's dark he leaves a silhouette
 engine noise should stop when car runs out of fuel
 cars can be generated overlapping
 can't always hit cars with bat
+reload non-time trial game shows "remaining" instead of time
 
 *EDITOR*
 X remove current collidible code
