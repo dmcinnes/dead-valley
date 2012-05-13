@@ -212,6 +212,7 @@ when dude enters car when it's dark he leaves a silhouette
 engine noise should stop when car runs out of fuel
 cars can be generated overlapping
 can't always hit cars with bat
+Truck inventory/gas hints aren't dismissed when leave truck
 
 *EDITOR*
 X remove current collidible code
@@ -315,6 +316,7 @@ Add logo to about screen
 Create game page
 Add GOOG Analytics to game page
 Create Dogwatch Twitter
+Setup cache buster
 
 Audio:
 X Make driving at speed sound less headache inducing and shorter
