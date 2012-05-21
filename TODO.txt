@@ -213,6 +213,7 @@ engine noise should stop when car runs out of fuel
 cars can be generated overlapping
 can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
+dude appears in center of car after reload while driving then exit
 
 *EDITOR*
 X remove current collidible code
