@@ -688,3 +688,12 @@ body {
   from { -moz-box-shadow: 0px 0px 10px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2) }
   to   { -moz-box-shadow: 0px 0px 30px 1px rgba(255,255,0,0.7), inset 0px 0px 3px 1px rgba(255,255,0,0.2) }
 }
+
+#moz-warn {
+  display: none;
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  color: #A22;
+  font-style: italic;
+}
