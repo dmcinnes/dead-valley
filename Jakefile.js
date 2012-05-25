@@ -2,6 +2,7 @@ var fs   = require("fs"),
     path = require("path"),
     _    = require("underscore"),
     req  = require("requirejs"),
+    seq  = require("seq"),
     child_process = require("child_process"),
     exec = child_process.exec;
     
@@ -51,8 +52,17 @@ task("build", ["clean", "mkdir", "version"], function (params) {
   exec('cp index.html build');
   exec('cp favicon.ico build');
 
-  exec('git log -1 --format=%h', function (error, stdout) {
-    var version = stdout.trim();
+  var version;
+
+  seq().seq(function () {
+
+    var that = this;
+    exec('git log -1 --format=%h', function (error, stdout) {
+      version = stdout.trim();
+      that();
+    });
+
+  }).par(function () {
 
     req.optimize({
       baseUrl: "./",
@@ -62,28 +72,30 @@ task("build", ["clean", "mkdir", "version"], function (params) {
         start: "window.DV = {debug:false,version:'"+version+"'};",
         end: " "
       }
-    }, function () {
+    }, this);
 
-      req.optimize({
-        baseUrl: "lib",
-        name:    "Main",
-        out:     "build/lib/Main.js",
-        include: include
-      }, function () {
+  }).par(function () {
 
-        req.optimize({
-          baseUrl: "lib",
-          name:    "MapWorker",
-          out:     "build/lib/MapWorker.js",
-          wrap: {
-            start: "var version = '"+version+"'; importScripts('../vendor/underscore-min.js', '../vendor/require.js');",
-            end: " "
-          }
-        }, complete);
+    req.optimize({
+      baseUrl: "lib",
+      name:    "Main",
+      out:     "build/lib/Main.js",
+      include: include
+    }, this);
 
-      });
-    });
-  });
+  }).par(function () {
+
+    req.optimize({
+      baseUrl: "lib",
+      name:    "MapWorker",
+      out:     "build/lib/MapWorker.js",
+      wrap: {
+        start: "var version = '"+version+"'; importScripts('../vendor/underscore-min.js', '../vendor/require.js');",
+        end: " "
+      }
+    }, this);
+
+  }).seq(complete);
 
 }, true);
 
