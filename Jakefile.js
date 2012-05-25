@@ -54,15 +54,20 @@ task("build", ["clean", "mkdir", "version"], function (params) {
 
   var version;
 
+  var cont = function (that) {
+    return function (output) {
+      console.log(output);
+      that();
+    };
+  };
+
   seq().seq(function () {
 
-    var that = this;
-    exec('git log -1 --format=%h', function (error, stdout) {
-      version = stdout.trim();
-      that();
-    });
+    // get current version
+    // awk so it strips the trailing \n
+    exec("git log -1 --format=%h  | awk '{ printf $1 }'", this);
 
-  }).par(function () {
+  }).par(function (version) {
 
     req.optimize({
       baseUrl: "./",
@@ -72,7 +77,7 @@ task("build", ["clean", "mkdir", "version"], function (params) {
         start: "window.DV = {debug:false,version:'"+version+"'};",
         end: " "
       }
-    }, this);
+    }, cont(this));
 
   }).par(function () {
 
@@ -81,9 +86,9 @@ task("build", ["clean", "mkdir", "version"], function (params) {
       name:    "Main",
       out:     "build/lib/Main.js",
       include: include
-    }, this);
+    }, cont(this));
 
-  }).par(function () {
+  }).par(function (version) {
 
     req.optimize({
       baseUrl: "lib",
@@ -93,7 +98,7 @@ task("build", ["clean", "mkdir", "version"], function (params) {
         start: "var version = '"+version+"'; importScripts('../vendor/underscore-min.js', '../vendor/require.js');",
         end: " "
       }
-    }, this);
+    }, cont(this));
 
   }).seq(complete);
 
