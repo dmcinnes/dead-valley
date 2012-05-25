@@ -313,12 +313,12 @@ show keys when press ?
 *TODO BEFORE RELEASE*
 X Add GOOG Analytics to Dogwatch site
 X Add hint for time trial describing nuke
+X Setup cache buster
 Add logo to loading screen
 Add logo to about screen
 Create game page
 Add GOOG Analytics to game page
 Create Dogwatch Twitter
-Setup cache buster
 
 Audio:
 X Make driving at speed sound less headache inducing and shorter

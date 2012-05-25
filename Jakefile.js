@@ -51,27 +51,38 @@ task("build", ["clean", "mkdir", "version"], function (params) {
   exec('cp index.html build');
   exec('cp favicon.ico build');
 
-  req.optimize({
-    baseUrl: "lib",
-    name:    "Main",
-    out:     "build/lib/Main.js",
-    wrap: {
-      start: "window.DV = {debug:false};",
-      end: " ",
-    },
-    include: include
-  }, function () {
+  exec('git log -1 --format=%h', function (error, stdout) {
+    var version = stdout.trim();
 
     req.optimize({
-      baseUrl: "lib",
-      name:    "MapWorker",
-      out:     "build/lib/MapWorker.js",
+      baseUrl: "./",
+      name:    "config",
+      out:     "build/config.js",
       wrap: {
-        start: "importScripts('../vendor/underscore-min.js', '../vendor/require.js');",
-        end: " ",
+        start: "window.DV = {debug:false,version:'"+version+"'};",
+        end: " "
       }
-    }, complete);
+    }, function () {
 
+      req.optimize({
+        baseUrl: "lib",
+        name:    "Main",
+        out:     "build/lib/Main.js",
+        include: include
+      }, function () {
+
+        req.optimize({
+          baseUrl: "lib",
+          name:    "MapWorker",
+          out:     "build/lib/MapWorker.js",
+          wrap: {
+            start: "var version = '"+version+"'; importScripts('../vendor/underscore-min.js', '../vendor/require.js');",
+            end: " "
+          }
+        }, complete);
+
+      });
+    });
   });
 
 }, true);
