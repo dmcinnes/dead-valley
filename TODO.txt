@@ -212,6 +212,7 @@ X time trial does not resume on reload
 X on 2nd game after death, old held bat still fires when hit space
 X reload non-time trial game shows "remaining" instead of time
 X 2nd game map tiles not rendered correctly
+X sometimes breaking turns into reverse
 can't hold drag an item then drop it into another car/building
 arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vworp through from the left or bottom sides
@@ -225,7 +226,6 @@ cars can be generated overlapping
 can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
 Highlighted car z-index didn't go back to normal after siphoned car dried up
-sometimes breaking turns into reverse
 
 *EDITOR*
 X remove current collidible code
