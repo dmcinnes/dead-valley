@@ -107,20 +107,31 @@ X intro screen
 X remove bodies for performance
 X make dude show up where he entered car unless the car moved
 X zombie audio
+X headlight repair
+X add about page
 HUD ammo count
-headlight repair
 make zombies attracted to light
 make zombies attracted to crashes
 add inventory/hud toggle button
 support CMD-click on inventory as left-click
 add dead ends
 display statistics
-add about page
 add eating sound
 add ability to sleep in houses if no zomibes are chasing you
 make gas can glow
 repair sound
 support maximum of certain kind of sections in the game (police station)
+switch weapons with number keys
+make it so you have to avoid zombies in the start 
+zombies can pop out of cars too
+separate countdown from time
+tweak rate at which zombies are introduced into the game
+make last 20-30 miles full of zombies
+make gas a little more scarce
+make medkits more scarce
+make zombies slighty quicker
+increase number of zombies that come out of houses
+add a few pixels of light around the dude at night
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -193,7 +204,6 @@ X sprites are rendered on top of sky in Chrome
 X dude/zombies are rendered under blood in FF/Chrome
 X Chrome has some audio warnings
 X Chrome doesn't shoot after a couple of shots
-X sometimes breaking turns into reverse
 X can't see car glow at night
 X sky obscures hints
 X inventory drop on other inventory is offset oddly
@@ -215,6 +225,7 @@ cars can be generated overlapping
 can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
 Highlighted car z-index didn't go back to normal after siphoned car dried up
+sometimes breaking turns into reverse
 
 *EDITOR*
 X remove current collidible code
@@ -283,6 +294,7 @@ food
 twinkie
 hot dog
 donut
+duct tape
 
 *SPRITES*
 X trees
@@ -308,6 +320,7 @@ stagger the two section loads when shifting the level
 save sound config in a cookie
 debris
 show keys when press ?
+click start game, get timing choice (Take your time/Be quick about it/Run like Hell)
 
 
 *TODO BEFORE RELEASE*
