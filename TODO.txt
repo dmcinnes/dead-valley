@@ -111,6 +111,7 @@ X headlight repair
 X add about page
 X add a few pixels of light around the dude at night
 X separate countdown from time
+X make zombies slighty quicker
 HUD ammo count
 make zombies attracted to light
 make zombies attracted to crashes
@@ -130,7 +131,6 @@ tweak rate at which zombies are introduced into the game
 make last 20-30 miles full of zombies
 make gas a little more scarce
 make medkits more scarce
-make zombies slighty quicker
 increase number of zombies that come out of houses
 
 *BUGS*
