@@ -345,13 +345,19 @@ body {
 #background { position:relative; background:#93803A; width:900px; height:600px; overflow:hidden; z-index: -1; }
 .tile { position:absolute; width:60px; height:60px; background-color:#000; background-image:url(../assets/tiles.png); background-position:60 0px; }
 
-#lower-right { position:absolute; color:#000; z-index:600; right:5px; bottom:5px; cursor:default;}
-#framerate { color:#000; display:none; background-color:#FFF; padding:4px; float:left; width:42px; }
-#distance { color:#000; background-color:#FFF; padding:4px; float:right; width:100px; }
-#time { color:#000; background-color:#FFF; padding:4px; cursor:pointer; float:right; }
+#lower-right { position:absolute; z-index:600; right:5px; bottom:5px; cursor:default; }
+#lower-right > span {
+  color:#000;
+  background-color:#FFF;
+  padding:4px;
+}
+#framerate { display:none; float:left; width:42px; }
+#distance { float:right; width:100px; }
+#time { float:right; }
 #time.clock {
   width: auto;
 }
+#time-remaining { display:none; float:right; }
 
 .active { display:block !important; }
 #leveldata { display:block }
