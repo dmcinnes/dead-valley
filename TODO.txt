@@ -112,6 +112,7 @@ X add about page
 X add a few pixels of light around the dude at night
 X separate countdown from time
 X make zombies slighty quicker
+X zombies can pop out of cars too
 HUD ammo count
 make zombies attracted to light
 make zombies attracted to crashes
@@ -126,7 +127,6 @@ repair sound
 support maximum of certain kind of sections in the game (police station)
 switch weapons with number keys
 make it so you have to avoid zombies in the start 
-zombies can pop out of cars too
 tweak rate at which zombies are introduced into the game
 make last 20-30 miles full of zombies
 make gas a little more scarce
@@ -227,6 +227,7 @@ cars can be generated overlapping
 can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
 Highlighted car z-index didn't go back to normal after siphoned car dried up
+exit car after game reload, placed in center of car
 
 *EDITOR*
 X remove current collidible code
