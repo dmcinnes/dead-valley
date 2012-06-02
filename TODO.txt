@@ -113,6 +113,8 @@ X add a few pixels of light around the dude at night
 X separate countdown from time
 X make zombies slighty quicker
 X zombies can pop out of cars too
+X make gas a little more scarce
+X make medkits more scarce
 HUD ammo count
 make zombies attracted to light
 make zombies attracted to crashes
@@ -129,8 +131,6 @@ switch weapons with number keys
 make it so you have to avoid zombies in the start 
 tweak rate at which zombies are introduced into the game
 make last 20-30 miles full of zombies
-make gas a little more scarce
-make medkits more scarce
 increase number of zombies that come out of houses
 
 *BUGS*
