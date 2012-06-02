@@ -229,6 +229,7 @@ cars can be generated overlapping
 can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
 Highlighted car z-index didn't go back to normal after siphoned car dried up
+Tips go to 100% opacity before fading away even if they were configured for lower
 
 *EDITOR*
 X remove current collidible code
