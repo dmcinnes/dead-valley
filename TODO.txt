@@ -216,6 +216,7 @@ X sometimes breaking turns into reverse
 X Time challange intro is rendered too low on the screen
 X exit car after game reload, placed in center of car
 X house inventory doesn't show up when dude inventory is up, then breaks it
+X Highlighted car z-index didn't go back to normal after siphoned car dried up
 can't hold drag an item then drop it into another car/building
 arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vworp through from the left or bottom sides
@@ -228,7 +229,6 @@ engine noise should stop when car runs out of fuel
 cars can be generated overlapping
 can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
-Highlighted car z-index didn't go back to normal after siphoned car dried up
 Tips go to 100% opacity before fading away even if they were configured for lower
 
 *EDITOR*
