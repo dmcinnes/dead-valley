@@ -217,6 +217,7 @@ X Time challange intro is rendered too low on the screen
 X exit car after game reload, placed in center of car
 X house inventory doesn't show up when dude inventory is up, then breaks it
 X Highlighted car z-index didn't go back to normal after siphoned car dried up
+X engine noise should stop when car runs out of fuel
 can't hold drag an item then drop it into another car/building
 arm doesn't flash when dude is hit
 occasionally the farmhouse allows zombies and dude to vworp through from the left or bottom sides
@@ -225,11 +226,11 @@ car menu sticks around after creating a new game
 pressing pause at the moment dude dies you get both game over and pause screen
 getting context menus when trying to right-click on inventory (shotgun)
 when dude enters car when it's dark he leaves a silhouette
-engine noise should stop when car runs out of fuel
 cars can be generated overlapping
 can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
 Tips go to 100% opacity before fading away even if they were configured for lower
+Sometimes when screen jumps a few tiles get stuck
 
 *EDITOR*
 X remove current collidible code
