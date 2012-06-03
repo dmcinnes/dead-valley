@@ -132,6 +132,7 @@ make it so you have to avoid zombies in the start
 tweak rate at which zombies are introduced into the game
 make last 20-30 miles full of zombies
 increase number of zombies that come out of houses
+fix MapWorker zombie seeding so it doesn't have to look for road tiles
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -231,6 +232,7 @@ can't always hit cars with bat
 Truck inventory/gas hints aren't dismissed when leave truck
 Tips go to 100% opacity before fading away even if they were configured for lower
 Sometimes when screen jumps a few tiles get stuck
+dude moves faster going diagonal
 
 *EDITOR*
 X remove current collidible code
