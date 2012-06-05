@@ -115,6 +115,8 @@ X make zombies slighty quicker
 X zombies can pop out of cars too
 X make gas a little more scarce
 X make medkits more scarce
+X increase number of zombies that come out of houses
+X make it so you have to avoid zombies in the start
 HUD ammo count
 make zombies attracted to light
 make zombies attracted to crashes
@@ -127,11 +129,8 @@ add ability to sleep in houses if no zomibes are chasing you
 make gas can glow
 repair sound
 support maximum of certain kind of sections in the game (police station)
-switch weapons with number keys
-make it so you have to avoid zombies in the start 
 tweak rate at which zombies are introduced into the game
 make last 20-30 miles full of zombies
-increase number of zombies that come out of houses
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -328,6 +327,7 @@ save sound config in a cookie
 debris
 show keys when press ?
 click start game, get timing choice (Take your time/Be quick about it/Run like Hell)
+switch weapons with number keys
 
 
 *TODO BEFORE RELEASE*
