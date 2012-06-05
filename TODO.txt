@@ -132,7 +132,6 @@ make it so you have to avoid zombies in the start
 tweak rate at which zombies are introduced into the game
 make last 20-30 miles full of zombies
 increase number of zombies that come out of houses
-fix MapWorker zombie seeding so it doesn't have to look for road tiles
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
