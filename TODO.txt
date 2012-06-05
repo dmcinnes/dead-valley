@@ -233,6 +233,7 @@ Truck inventory/gas hints aren't dismissed when leave truck
 Tips go to 100% opacity before fading away even if they were configured for lower
 Sometimes when screen jumps a few tiles get stuck
 dude moves faster going diagonal
+repeating map at end?
 
 *EDITOR*
 X remove current collidible code
