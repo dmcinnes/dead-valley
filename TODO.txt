@@ -117,6 +117,8 @@ X make gas a little more scarce
 X make medkits more scarce
 X increase number of zombies that come out of houses
 X make it so you have to avoid zombies in the start
+X tweak rate at which zombies are introduced into the game
+X support maximum of certain kind of sections in the game (police station)
 HUD ammo count
 make zombies attracted to light
 make zombies attracted to crashes
@@ -128,8 +130,6 @@ add eating sound
 add ability to sleep in houses if no zomibes are chasing you
 make gas can glow
 repair sound
-support maximum of certain kind of sections in the game (police station)
-tweak rate at which zombies are introduced into the game
 make last 20-30 miles full of zombies
 
 *BUGS*
@@ -231,7 +231,8 @@ Truck inventory/gas hints aren't dismissed when leave truck
 Tips go to 100% opacity before fading away even if they were configured for lower
 Sometimes when screen jumps a few tiles get stuck
 dude moves faster going diagonal
-repeating map at end?
+repeating map at end? looks like MapWorker bought it
+brakes still sometimes shoot car backwards
 
 *EDITOR*
 X remove current collidible code
