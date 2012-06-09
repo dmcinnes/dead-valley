@@ -119,6 +119,7 @@ X increase number of zombies that come out of houses
 X make it so you have to avoid zombies in the start
 X tweak rate at which zombies are introduced into the game
 X support maximum of certain kind of sections in the game (police station)
+X wait to show car inventory hint after 5 seconds or so
 HUD ammo count
 make zombies attracted to light
 make zombies attracted to crashes
@@ -131,7 +132,6 @@ add ability to sleep in houses if no zomibes are chasing you
 make gas can glow
 repair sound
 make last 20-30 miles full of zombies
-wait to show car inventory hint after 5 seconds or so
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
