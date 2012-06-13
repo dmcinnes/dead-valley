@@ -210,6 +210,35 @@ body {
                0px 8px 13px rgba(0,18,34,0.2);
 }
 
+#stats-screen {
+  z-index:20000;
+}
+
+#stats-content {
+  position:relative;
+  color: #DDD;
+  left: -50%;
+  top: -240px;
+}
+#stats-content table {
+  margin-bottom: 20px;
+  font-size: 12pt;
+}
+#stats-content table tr td:first-child {
+  padding-left: 10px;
+}
+#stats-content table tr.heading td {
+  font-size: 18pt !important;
+  padding-left: 0px;
+}
+#stats-content table tr td:last-child {
+  padding-left: 10px;
+}
+#stats-content table:last-child tr td {
+  font-size: 18pt;
+  padding-left: 0px;
+}
+
 #continue-button {
   display:none;
   position:relative;

@@ -132,6 +132,7 @@ add ability to sleep in houses if no zomibes are chasing you
 make gas can glow
 repair sound
 make last 20-30 miles full of zombies
+save report counters
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
