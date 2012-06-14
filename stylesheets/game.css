@@ -220,23 +220,13 @@ body {
   left: -50%;
   top: -240px;
 }
-#stats-content table {
-  margin-bottom: 20px;
-  font-size: 12pt;
+#stats-content h2 {
+  margin-bottom: 2px;
 }
-#stats-content table tr td:first-child {
-  padding-left: 10px;
-}
-#stats-content table tr.heading td {
-  font-size: 18pt !important;
-  padding-left: 0px;
-}
-#stats-content table tr td:last-child {
-  padding-left: 10px;
-}
-#stats-content table:last-child tr td {
-  font-size: 18pt;
-  padding-left: 0px;
+#stats-content p {
+  margin-left: 10px;
+  margin-bottom: 0px;
+  margin-top: 2px;
 }
 
 #continue-button {
