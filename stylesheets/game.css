@@ -211,14 +211,11 @@ body {
 }
 
 #stats-screen {
-  z-index:20000;
+  background-color: black;
 }
 
 #stats-content {
-  position:relative;
   color: #DDD;
-  left: -50%;
-  top: -240px;
 }
 #stats-content h2 {
   margin-bottom: 2px;

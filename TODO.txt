@@ -236,6 +236,7 @@ Tips go to 100% opacity before fading away even if they were configured for lowe
 Sometimes when screen jumps a few tiles get stuck
 dude moves faster going diagonal
 sometimes resume appears after page reload even though game was over
+barrel sprite sometimes rendered inbetween
 
 *EDITOR*
 X remove current collidible code
