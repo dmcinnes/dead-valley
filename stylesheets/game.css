@@ -212,11 +212,14 @@ body {
 
 #stats-screen {
   background-color: black;
-}
-
-#stats-content {
+  overflow-y: scroll;
   color: #DDD;
 }
+
+#stats-screen .text-content {
+  margin-left: 30px;
+}
+
 #stats-content h2 {
   margin-bottom: 2px;
 }
