@@ -120,19 +120,19 @@ X make it so you have to avoid zombies in the start
 X tweak rate at which zombies are introduced into the game
 X support maximum of certain kind of sections in the game (police station)
 X wait to show car inventory hint after 5 seconds or so
+X save report counters
+X make last 20-30 miles full of zombies
+X display statistics
 HUD ammo count
 make zombies attracted to light
 make zombies attracted to crashes
 add inventory/hud toggle button
 support CMD-click on inventory as left-click
 add dead ends
-display statistics
 add eating sound
 add ability to sleep in houses if no zomibes are chasing you
 make gas can glow
 repair sound
-make last 20-30 miles full of zombies
-save report counters
 
 *BUGS*
 X fix cursor rendering when left click on fuelee inventory item
@@ -335,6 +335,7 @@ debris
 show keys when press ?
 click start game, get timing choice (Take your time/Be quick about it/Run like Hell)
 switch weapons with number keys
+clean up event handlers -- only EventMachine-ified object should fire events (i.e. only Game fires Game.events)
 
 
 *TODO BEFORE RELEASE*
