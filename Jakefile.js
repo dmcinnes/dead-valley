@@ -25,7 +25,7 @@ var recurseDir = function (dir) {
   return out;
 };
 
-task("default", ["build", "deploy"]);
+task("default", ["deploy"]);
 
 desc("create build directory");
 task("mkdir", ["clean"], function (params) {
@@ -116,7 +116,13 @@ task("clean", function (params) {
 }, true);
 
 desc("deploy to test env");
-task("deploy", function () {
+task("deploy", ["build"], function () {
   console.log('Deploying...');
   exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:dv.dougmcinnes.com", complete);
+}, true);
+
+desc("release to prod");
+task("release", ["build"], function () {
+  console.log('Releasing...');
+  exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:deadvalleygame.com", complete);
 }, true);
