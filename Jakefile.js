@@ -120,9 +120,3 @@ task("deploy", ["build"], function () {
   console.log('Deploying...');
   exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:dv.dougmcinnes.com", complete);
 }, true);
-
-desc("release to prod");
-task("release", ["build"], function () {
-  console.log('Releasing...');
-  exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:deadvalleygame.com", complete);
-}, true);
