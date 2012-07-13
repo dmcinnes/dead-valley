@@ -1,0 +1,13 @@
+{
+  "name": "Dead Valley",
+  "description": "Escape from Zombie-infested Dead Valley in this HTML5 Grand Theft Auto style Game.",
+  "version": "1.0",
+  "app": {
+    "launch": {
+      "web_url": "http://www.deadvalleygame.com"
+    }
+  },
+  "icons": {
+    "128": "icon_128.png"
+  }
+}
