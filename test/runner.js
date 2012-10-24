@@ -14,6 +14,9 @@
 
   deferred.then(function () {
 
+    // turn jquery effects off
+    $.fx.off = true;
+
     $('head').append('<link rel="stylesheet" type="text/css" href="test/lib/jasmine-1.2.0/jasmine.css">');
 
     var jasmineEnv = jasmine.getEnv();
