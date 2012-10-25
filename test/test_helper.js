@@ -23,3 +23,12 @@ var nextFrame = function (callback) {
   waits(1);
   runs(callback);
 };
+
+var createItem = function (Thing) {
+  var Clazz = require('inventory/'+Thing);
+  var thing = new Clazz();
+  if (thing.maxCount) {
+    thing.setCount(thing.maxCount);
+  }
+  return thing;
+};
