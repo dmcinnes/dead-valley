@@ -32,3 +32,23 @@ var createItem = function (Thing) {
   }
   return thing;
 };
+
+var simulateClick = function (x, y) {
+  var gameX = x;
+  var gameY = y;
+  var event = $.Event('click');
+  event.originalEvent = {
+    pageX: gameX,
+    pageY: gameY
+  };
+  var element = document.elementFromPoint(x, y);
+  console.log(element);
+  $(element).trigger(event);
+};
+
+var canvasMaskOffset = $('#canvas-mask').offset();
+
+var simulateGameClick = function (x, y) {
+  simulateClick(x - canvasMaskOffset.left, y - canvasMaskOffset.top);
+};
+

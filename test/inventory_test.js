@@ -101,17 +101,22 @@ describe("inventory", function() {
 
     var beanz = $('.inventory-item:first');
 
-    var event = $.Event('click');
-    event.originalEvent = {
-      pageX: 100,
-      pageY: 100
-    };
-    beanz.trigger(event);
-
-    waits(300);
+    waitsFor(function () {
+      return beanz.is(":visible");
+    }, 100);
 
     runs(function () {
-      expect($("img.click-dragging[src*='beans']")).toExist();
+      var offset = beanz.offset();
+
+      simulateClick(offset.left + 20, offset.top + 20);
+
+      waits(300);
+
+      runs(function () {
+        var Beans = require('inventory/Beans');
+        expect(Game.dude.inventory.findItem(Beans)).toBeUndefined();
+        expect($("img.click-dragging[src*='beans']")).toExist();
+      });
     });
   });
 
