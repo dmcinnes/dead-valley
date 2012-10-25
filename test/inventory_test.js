@@ -96,4 +96,14 @@ describe("inventory", function() {
     });
   });
 
+  // it("removes the item from the inventory when it is clicked on", function () {
+  //   Cheat.give('Beans');
+
+  //   var beanz = $('.inventory-item:first');
+
+  //   beanz.click();
+
+  //   expect(beanz.parents('table.inventory')).not.toExist();
+  // });
+
 });
