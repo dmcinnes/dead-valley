@@ -96,14 +96,23 @@ describe("inventory", function() {
     });
   });
 
-  // it("removes the item from the inventory when it is clicked on", function () {
-  //   Cheat.give('Beans');
+  it("removes the item from the inventory when it is clicked on", function () {
+    Cheat.give('Beans');
 
-  //   var beanz = $('.inventory-item:first');
+    var beanz = $('.inventory-item:first');
 
-  //   beanz.click();
+    var event = $.Event('click');
+    event.originalEvent = {
+      pageX: 100,
+      pageY: 100
+    };
+    beanz.trigger(event);
 
-  //   expect(beanz.parents('table.inventory')).not.toExist();
-  // });
+    waits(300);
+
+    runs(function () {
+      expect($("img.click-dragging[src*='beans']")).toExist();
+    });
+  });
 
 });
