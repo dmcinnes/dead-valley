@@ -1,7 +1,6 @@
 describe("menu", function() {
 
   beforeEach(function () {
-    jasmine.Clock.useMock();
     $('.back').click();
   });
 
@@ -55,10 +54,10 @@ describe("menu", function() {
       runs(function () {
         $('#new-game').click();
       });
-      waits(1000);
+      waits(2000);
     });
 
-    it("shows the intro screen 'new game' is clicked", function() {
+    it("shows the intro screen when 'new game' is clicked", function() {
       runs(function () {
         expect($('#main-screen')).toBeHidden();
         expect($('#intro-screen')).toBeVisible();

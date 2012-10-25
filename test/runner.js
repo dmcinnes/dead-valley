@@ -4,7 +4,9 @@
 
   var scripts = ["lib/jasmine-1.2.0/jasmine-html.js",
                  "lib/jasmine-1.2.0/jasmine-jquery.js",
-                 "menu_test.js"];
+                 "test_helper.js",
+                 "menu_test.js",
+                 "inventory_test.js"];
 
   _.each(scripts, function (script) {
     deferred = deferred.pipe(function () {
