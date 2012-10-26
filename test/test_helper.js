@@ -52,3 +52,11 @@ var simulateGameClick = function (x, y) {
   simulateClick(x - canvasMaskOffset.left, y - canvasMaskOffset.top);
 };
 
+var clearSprites = function () {
+  _.each(Game.sprites, function (sprite) {
+    if (sprite.die && sprite !== Game.dude) {
+      sprite.die();
+    }
+  });
+};
+
