@@ -42,7 +42,6 @@ var simulateClick = function (x, y) {
     pageY: gameY
   };
   var element = document.elementFromPoint(x, y);
-  console.log(element);
   $(element).trigger(event);
 };
 
