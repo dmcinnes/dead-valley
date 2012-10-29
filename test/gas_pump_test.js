@@ -68,6 +68,24 @@ describe("inventory", function() {
       });
     });
 
+    it("removes the tip after walking away", function () {
+      Game.dude.pos.x = pump.pos.x - 15;
+
+      waits(100);
+      runs(function () {
+        var tip = $('.tip');
+        expect(tip).toBeVisible();
+
+        // move away
+        keyboard.keyStatus.left = true;
+
+        waits(300);
+        runs(function () {
+          expect(tip).not.toBeVisible();
+        });
+      });
+    });
+
   });
 
 });
