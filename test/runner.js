@@ -6,7 +6,7 @@
                  "lib/jasmine-1.2.0/jasmine-jquery.js",
                  "test_helper.js",
                  "menu_test.js",
-                 "inventory_test.js",
+                 // "inventory_test.js",
                  "gas_pump_test.js"];
 
   _.each(scripts, function (script) {
