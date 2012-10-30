@@ -51,10 +51,7 @@ describe("menu", function() {
 
   describe("new game", function() {
     beforeEach(function () {
-      runs(function () {
-        $('#new-game').click();
-      });
-      waits(2000);
+      startNewGame();
     });
 
     it("shows the intro screen when 'new game' is clicked", function() {

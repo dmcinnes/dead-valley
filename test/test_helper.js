@@ -59,3 +59,17 @@ var clearSprites = function () {
   });
 };
 
+var startNewGame = function () {
+  runs(function () {
+    $('#new-game').click();
+  });
+
+  var started = false;
+  Game.events.once('game start', function () {
+    started = true;
+  });
+
+  waitsFor(function () {
+    return started;
+  }, "game never started", 5000);
+};
