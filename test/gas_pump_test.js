@@ -1,4 +1,4 @@
-describe("inventory", function() {
+describe("gas pump", function() {
 
   require(['sprites/GasPump'], function (GasPump) {
 
