@@ -717,8 +717,8 @@ a {
 
 #messages {
   position: absolute;
-  bottom: 4px;
-  left: 6px;
+  bottom: 20px;
+  left: 20px;
   color: #BBB;
   font-size: 14px;
 }
