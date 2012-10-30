@@ -1,6 +1,6 @@
-describe("gas pump", function() {
+require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
 
-  require(['sprites/GasPump'], function (GasPump) {
+  describe("gas pump", function() {
 
     var keyboard = require('Keyboard');
 
@@ -92,7 +92,7 @@ describe("gas pump", function() {
         pump.broken = false;
         pump.currentFuel = 1;
 
-        waits(100);
+        waits(200);
         runs(function () {
           expect($container).toHaveClass('pump');
         });
@@ -102,7 +102,7 @@ describe("gas pump", function() {
         pump.broken = true;
         pump.currentFuel = 1;
 
-        waits(100);
+        waits(200);
         runs(function () {
           expect($container).not.toHaveClass('pump');
         });
@@ -112,14 +112,14 @@ describe("gas pump", function() {
         pump.broken = false;
         pump.currentFuel = 0;
 
-        waits(100);
+        waits(200);
         runs(function () {
           expect($container).not.toHaveClass('pump');
         });
       });
 
       it("removes the cursor class after walking away", function () {
-        waits(100);
+        waits(200);
         runs(function () {
           expect($container).toHaveClass('pump');
 
@@ -130,6 +130,76 @@ describe("gas pump", function() {
           runs(function () {
             expect($container).not.toHaveClass('pump');
           });
+        });
+      });
+    });
+
+    describe("glow car", function () {
+      it("lights up a car when hovering pump cursor if it's close enough", function () {
+        pump.broken = false;
+        pump.currentFuel = 1;
+
+        waits(100);
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 30;
+          car.pos.y = Game.dude.pos.y;
+          Game.addSprite(car);
+
+          car.node.trigger('mouseover');
+
+          expect(car.node).toHaveClass('glow');
+        });
+      });
+
+      it("does not light up the car for broken pumps", function () {
+        pump.broken = true;
+        pump.currentFuel = 1;
+
+        waits(100);
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 30;
+          car.pos.y = Game.dude.pos.y;
+          Game.addSprite(car);
+
+          car.node.trigger('mouseover');
+
+          expect(car.node).not.toHaveClass('glow');
+        });
+      });
+
+      it("does not light up the car for empty pumps", function () {
+        pump.broken = false;
+        pump.currentFuel = 0;
+
+        waits(100);
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 30;
+          car.pos.y = Game.dude.pos.y;
+          Game.addSprite(car);
+
+          car.node.trigger('mouseover');
+
+          expect(car.node).not.toHaveClass('glow');
+        });
+      });
+
+      it("does not light up the car if it's too far away", function () {
+        pump.broken = false;
+        pump.currentFuel = 1;
+
+        waits(100);
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 50;
+          car.pos.y = Game.dude.pos.y;
+          Game.addSprite(car);
+
+          car.node.trigger('mouseover');
+
+          expect(car.node).not.toHaveClass('glow');
         });
       });
     });

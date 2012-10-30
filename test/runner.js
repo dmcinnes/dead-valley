@@ -28,7 +28,6 @@
   });
 
   deferred.then(function () {
-
     // turn jquery effects off
     $.fx.off = true;
 
