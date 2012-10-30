@@ -92,7 +92,7 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
         pump.broken = false;
         pump.currentFuel = 1;
 
-        waits(200);
+        waits(100);
         runs(function () {
           expect($container).toHaveClass('pump');
         });
@@ -102,7 +102,7 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
         pump.broken = true;
         pump.currentFuel = 1;
 
-        waits(200);
+        waits(100);
         runs(function () {
           expect($container).not.toHaveClass('pump');
         });
@@ -112,14 +112,17 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
         pump.broken = false;
         pump.currentFuel = 0;
 
-        waits(200);
+        waits(100);
         runs(function () {
           expect($container).not.toHaveClass('pump');
         });
       });
 
       it("removes the cursor class after walking away", function () {
-        waits(200);
+        pump.broken = false;
+        pump.currentFuel = 1;
+
+        waits(100);
         runs(function () {
           expect($container).toHaveClass('pump');
 
