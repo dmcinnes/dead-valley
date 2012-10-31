@@ -52,6 +52,9 @@ task("build", ["clean", "mkdir", "version"], function (params) {
   exec('cp index.html build');
   exec('cp favicon.ico build');
 
+  // set the latest version number for display
+  exec('sed -i "" "s/###/`git describe --abbrev=0 --tags`/" build/index.html');
+
   var version;
 
   var cont = function (that) {
