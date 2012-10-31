@@ -207,6 +207,29 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
       });
     });
 
+    describe("fill er up", function () {
+      it("starts fueling the car when the mouse button is pressed", function () {
+        pump.broken = false;
+        pump.currentFuel = 1;
+
+        waits(100);
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 30;
+          car.pos.y = Game.dude.pos.y;
+          car.currentFuel = 0;
+          Game.addSprite(car);
+
+          car.node.trigger('mousedown');
+
+          nextFrame(function () {
+            expect(car.currentFuel).toBeGreaterThan(0);
+            expect(pump.currentFuel).toBeLessThan(1);
+          });
+        });
+      });
+    });
+
   });
 
 });
