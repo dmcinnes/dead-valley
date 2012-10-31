@@ -241,6 +241,7 @@ dude moves faster going diagonal
 after being invincible and getting into car, still blink when leave car later
 getting pushed dead across the screen then continuing gives stuck tiles
 weird stuck movement keys for dude in Safari
+Firefox tile border artifacts
 
 *EDITOR*
 X remove current collidible code
