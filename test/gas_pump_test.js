@@ -285,6 +285,31 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
           });
         });
       });
+
+      it("shows an Empty tooltip when the pump runs out of gas", function () {
+        pump.currentFuel = 0.1;
+
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 30;
+          car.pos.y = Game.dude.pos.y;
+          car.currentFuel = 0;
+          Game.addSprite(car);
+
+          var tip = $('.tip');
+          expect(tip).toBeVisible();
+          expect(tip).toHaveText("Has Gas");
+
+          car.node.trigger('mousedown');
+
+          waits(300);
+
+          runs(function () {
+            expect(tip).toBeVisible();
+            expect(tip).toHaveText("Empty");
+          });
+        });
+      });
     });
 
     describe("filling a gas can", function () {
@@ -353,6 +378,25 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
             expect(pump.fueling).toBeNull();
             expect(gasCan.currentFuel).toEqual(0.1);
             expect(pump.currentFuel).toEqual(0);
+          });
+        });
+      });
+
+      it("update the tooltip to 'Empty' when it runs out of gas", function () {
+        pump.currentFuel = 0.1;
+
+        runs(function () {
+          var tip = $('.tip');
+          expect(tip).toBeVisible();
+          expect(tip).toHaveText("Has Gas");
+
+          canNode.trigger('mousedown');
+
+          waits(300);
+
+          runs(function () {
+            expect(tip).toBeVisible();
+            expect(tip).toHaveText("Empty");
           });
         });
       });
