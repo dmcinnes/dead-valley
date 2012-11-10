@@ -208,11 +208,14 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
     });
 
     describe("fill er up", function () {
-      it("starts fueling the car when the mouse button is pressed", function () {
+      beforeEach(function () {
         pump.broken = false;
         pump.currentFuel = 1;
 
         waits(100);
+      });
+
+      it("starts fueling the car when the mouse button is pressed", function () {
         runs(function () {
           var car = new Honda();
           car.pos.x = Game.dude.pos.x - 30;
@@ -222,9 +225,63 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
 
           car.node.trigger('mousedown');
 
-          nextFrame(function () {
+          waits(100);
+
+          runs(function () {
+            expect(pump.fueling).not.toBeNull();
             expect(car.currentFuel).toBeGreaterThan(0);
             expect(pump.currentFuel).toBeLessThan(1);
+          });
+        });
+      });
+
+      it("stops fueling the car when the mouse button is released", function () {
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 30;
+          car.pos.y = Game.dude.pos.y;
+          car.currentFuel = 0;
+          Game.addSprite(car);
+
+          car.node.trigger('mousedown');
+
+          waits(100);
+
+          runs(function () {
+            var carFuel = car.currentFuel;
+            var pumpFuel = pump.currentFuel;
+
+            expect(pump.fueling).not.toBeNull();
+
+            car.node.trigger('mouseup');
+
+            nextFrame(function () {
+              expect(pump.fueling).toBeNull();
+              expect(car.currentFuel).toEqual(carFuel);
+              expect(pump.currentFuel).toEqual(pumpFuel);
+            });
+          });
+        });
+      });
+
+      it("stops fueling the car when the pump runs out of gas", function () {
+        pump.currentFuel = 0.1;
+
+        runs(function () {
+          var car = new Honda();
+          car.pos.x = Game.dude.pos.x - 30;
+          car.pos.y = Game.dude.pos.y;
+          car.currentFuel = 0;
+          Game.addSprite(car);
+
+          car.node.trigger('mousedown');
+
+          waits(300);
+
+          runs(function () {
+            expect(pump.fueling).toBeNull();
+            expect(car.currentFuel).toEqual(0.1);
+            expect(pump.currentFuel).toEqual(0);
           });
         });
       });
