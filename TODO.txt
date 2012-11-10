@@ -242,6 +242,8 @@ after being invincible and getting into car, still blink when leave car later
 getting pushed dead across the screen then continuing gives stuck tiles
 weird stuck movement keys for dude in Safari
 Firefox tile border artifacts
+A faster zombie behind a slower one can boost them both faster
+no timeout for baseball bat attacks
 
 *EDITOR*
 X remove current collidible code
