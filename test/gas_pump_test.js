@@ -1,4 +1,4 @@
-require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
+require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasPump, Honda, GasCan) {
 
   describe("gas pump", function() {
 
@@ -39,7 +39,7 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
         pump.broken = false;
         pump.currentFuel = 0;
 
-        waits(100);
+        waits(150);
         runs(function () {
           var tip = $('.tip');
           expect(tip).toBeVisible();
@@ -50,7 +50,7 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
       it("shows a Broken tooltip when broken", function () {
         pump.broken = true;
 
-        waits(100);
+        waits(150);
         runs(function () {
           var tip = $('.tip');
           expect(tip).toBeVisible();
@@ -62,7 +62,7 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
         pump.broken = false;
         pump.currentFuel = 1;
 
-        waits(100);
+        waits(150);
         runs(function () {
           var tip = $('.tip');
           expect(tip).toBeVisible();
@@ -71,7 +71,7 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
       });
 
       it("removes the tip after walking away", function () {
-        waits(100);
+        waits(150);
         runs(function () {
           var tip = $('.tip');
           expect(tip).toBeVisible();
@@ -281,6 +281,77 @@ require(['sprites/GasPump', 'sprites/Honda'], function (GasPump, Honda) {
           runs(function () {
             expect(pump.fueling).toBeNull();
             expect(car.currentFuel).toEqual(0.1);
+            expect(pump.currentFuel).toEqual(0);
+          });
+        });
+      });
+    });
+
+    describe("filling a gas can", function () {
+      beforeEach(function () {
+        pressKey('i');
+
+        pump.broken = false;
+        pump.currentFuel = 1;
+
+        Game.dude.inventory.clear();
+
+        gasCan = createItem('GasCan');
+        Game.dude.inventory.stuffItemIn(gasCan);
+
+        canNode = gasCan.displayNode().find('img');
+
+        waits(100);
+      });
+
+      it("starts fueling the gas can when the mouse button is pressed", function () {
+        runs(function () {
+          canNode.trigger('mousedown');
+
+          waits(100);
+
+          runs(function () {
+            expect(pump.fueling).not.toBeNull();
+            expect(gasCan.currentFuel).toBeGreaterThan(0);
+            expect(pump.currentFuel).toBeLessThan(1);
+          });
+        });
+      });
+
+      it("stops fueling the gas can when the mouse button is released", function () {
+        runs(function () {
+          canNode.trigger('mousedown');
+
+          waits(100);
+
+          runs(function () {
+            canFuel  = gasCan.currentFuel;
+            pumpFuel = pump.currentFuel;
+
+            expect(pump.fueling).not.toBeNull();
+
+            canNode.trigger('mouseup');
+
+            nextFrame(function () {
+              expect(pump.fueling).toBeNull();
+              expect(gasCan.currentFuel).toEqual(canFuel);
+              expect(pump.currentFuel).toEqual(pumpFuel);
+            });
+          });
+        });
+      });
+
+      it("stops fueling the gas can when the pump runs out of gas", function () {
+        pump.currentFuel = 0.1;
+
+        runs(function () {
+          canNode.trigger('mousedown');
+
+          waits(300);
+
+          runs(function () {
+            expect(pump.fueling).toBeNull();
+            expect(gasCan.currentFuel).toEqual(0.1);
             expect(pump.currentFuel).toEqual(0);
           });
         });
