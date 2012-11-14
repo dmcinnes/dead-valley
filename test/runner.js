@@ -7,7 +7,8 @@
                  "test_helper.js",
                  "menu_test.js",
                  "inventory_test.js",
-                 "gas_pump_test.js"];
+                 "gas_pump_test.js",
+                 "gas_can_test.js"];
 
   _.each(scripts, function (script) {
     deferred = deferred.pipe(function () {

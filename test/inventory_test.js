@@ -17,6 +17,9 @@ describe("inventory", function() {
   beforeEach(function () {
     $('.back').click();
     $('#resume').click();
+
+    clearSprites();
+
     $dudeInventory = $('#dude-inventory');
     $dudeInventory.css('visibility', 'visible');
 
@@ -28,7 +31,8 @@ describe("inventory", function() {
     $dudeInventory.css('visibility', 'hidden');
     pressKey('i');
 
-    nextFrame(function () {
+    waits(50);
+    runs(function () {
       expect($dudeInventory.css('visibility')).toEqual('visible');
 
       pressKey('i');

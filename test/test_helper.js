@@ -33,7 +33,7 @@ var createItem = function (Thing) {
   return thing;
 };
 
-var simulateClick = function (x, y) {
+var simulateClick = function (x, y, which) {
   var gameX = x;
   var gameY = y;
   var event = $.Event('click');
@@ -41,6 +41,9 @@ var simulateClick = function (x, y) {
     pageX: gameX,
     pageY: gameY
   };
+  if (which) {
+    event.which = which;
+  }
   var element = document.elementFromPoint(x, y);
   $(element).trigger(event);
 };
@@ -72,4 +75,8 @@ var startNewGame = function () {
   waitsFor(function () {
     return started;
   }, "game never started", 5000);
+};
+
+$.fn.rightClick = function () {
+  this.trigger({type: 'mousedown', button: 2});
 };
