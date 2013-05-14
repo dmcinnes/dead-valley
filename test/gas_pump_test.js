@@ -41,7 +41,7 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
 
         waits(150);
         runs(function () {
-          var tip = $('.tip');
+          var tip = $('.tip:not(#skip-hints)');
           expect(tip).toBeVisible();
           expect(tip).toHaveText("Empty");
         });
@@ -52,7 +52,7 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
 
         waits(150);
         runs(function () {
-          var tip = $('.tip');
+          var tip = $('.tip:not(#skip-hints)');
           expect(tip).toBeVisible();
           expect(tip).toHaveText("Broken");
         });
@@ -64,7 +64,7 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
 
         waits(150);
         runs(function () {
-          var tip = $('.tip');
+          var tip = $('.tip:not(#skip-hints)');
           expect(tip).toBeVisible();
           expect(tip).toHaveText("Has Gas");
         });
@@ -73,7 +73,7 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
       it("removes the tip after walking away", function () {
         waits(150);
         runs(function () {
-          var tip = $('.tip');
+          var tip = $('.tip:not(#skip-hints)');
           expect(tip).toBeVisible();
 
           // move away
@@ -296,7 +296,7 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
           car.currentFuel = 0;
           Game.addSprite(car);
 
-          var tip = $('.tip');
+          var tip = $('.tip:not(#skip-hints)');
           expect(tip).toBeVisible();
           expect(tip).toHaveText("Has Gas");
 
@@ -386,7 +386,7 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
         pump.currentFuel = 0.1;
 
         runs(function () {
-          var tip = $('.tip');
+          var tip = $('.tip:not(#skip-hints)');
           expect(tip).toBeVisible();
           expect(tip).toHaveText("Has Gas");
 
