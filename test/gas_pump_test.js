@@ -280,7 +280,7 @@ require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasP
 
           runs(function () {
             expect(pump.fueling).toBeNull();
-            expect(car.currentFuel).toEqual(0.1);
+            expect(car.currentFuel).toBeCloseTo(0.1);
             expect(pump.currentFuel).toEqual(0);
           });
         });
