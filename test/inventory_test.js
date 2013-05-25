@@ -124,4 +124,23 @@ describe("inventory", function() {
     });
   });
 
+  it("is hidden when a new game is created", function () {
+    $dudeInventory.css('visibility', 'hidden');
+    pressKey('i');
+
+    waits(50);
+    runs(function () {
+      expect($dudeInventory.css('visibility')).toEqual('visible');
+
+      startNewGame();
+
+      waits(300);
+
+      runs(function () {
+        $('#intro-screen').click();
+        expect($dudeInventory.css('visibility')).toEqual('hidden');
+      });
+    });
+  });
+
 });
