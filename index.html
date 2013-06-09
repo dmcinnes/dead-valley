@@ -4,7 +4,7 @@
     <title>Dead Valley</title>
     <meta name="keywords" content="game,zombies,HTML5,HTML5 game" />
     <meta name="description" content="Escape from Zombie-infested Dead Valley in this HTML5 Grand Theft Auto style Game." />
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/game.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/game.css?cb=###">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <script src="vendor/underscore-min.js"></script>
     <script src="vendor/jquery-1.7.1.min.js"></script>
@@ -12,7 +12,7 @@
     <script src="vendor/sound.js"></script>
     <script src="vendor/modernizr.js"></script>
     <script src="vendor/require.js"></script>
-    <script src="config.js"></script>
+    <script src="config.js?cb=###"></script>
 
     <script type="text/javascript">
       if (window.DV) {
@@ -62,6 +62,7 @@
       <div id="loading-screen" class="overlay">
         <div id="progress"><div id="progress-slider"></div></div>
       </div>
+
       <div id="main-screen" class="overlay">
         <div id="main-content">
           <h1 id="title">DEAD VALLEY</h1>
@@ -77,7 +78,10 @@
 	      <li id="sound">Sound:<div class="choice"><span class="on">ON</span><span>OFF</span></div></li>
 	    </ul>
 	  </div>
-          <span id="moz-warn">Highly recommend you use the latest Safari or Chrome for the best performance.</span>
+          <div id="messages">
+            <div>Check out the <a href="https://groups.google.com/forum/?hl=en&fromgroups#!forum/deadvalley" target="_blank">Dead Valley Forum</a>!</div>
+            <div id="moz-warn">Highly recommend you use the latest Safari or Chrome for the best performance.</div>
+          </div>
         </div>
       </div>
 
@@ -93,7 +97,7 @@
       <div id="about-screen" class="overlay">
         <div class="text-content">
           <div class="back">&bull;&nbsp;Back</div>
-          <h2 class="sc">Dead Valley</h2>
+          <h2 class="sc">Dead Valley <span id="version">###</span></h2>
           <p>
           Created by <a href="http://dougmcinnes.com">Doug McInnes</a> &mdash; <a href="http://dogwatchgames.com">Dogwatch Games</a>
           </p>
@@ -288,5 +292,12 @@
         </div>
       </div>
     </div>
+
+    <br/><br/><br/>
+
+    <div align="center">
+      {ad}
+    </div>
+
   </body>
 </html>

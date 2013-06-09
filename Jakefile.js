@@ -49,8 +49,14 @@ task("build", ["clean", "mkdir", "version"], function (params) {
     exec(['cp -r', dir, 'build/'+dir].join(' '));
   });
 
-  exec('cp index.html build');
   exec('cp favicon.ico build');
+
+  // insert the ad and dump the index in build
+  exec('sed -e "/{ad}/r ad.html" -e "/{ad}/d" index.html > build/index.html');
+
+  // set the latest version number for display
+  exec('sed -i "" "s/###/`git describe --abbrev=0 --tags`/" build/index.html');
+
 
   var version;
 
