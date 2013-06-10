@@ -34,7 +34,7 @@ task("mkdir", ["clean"], function (params) {
 });
 
 desc("build the project");
-task("build", ["clean", "mkdir", "version"], function (params) {
+task("build", ["clean", "mkdir", "version"], {async: true}, function (params) {
   console.log('Buliding...');
 
   var libFiles = _.union(recurseDir('lib/inventory'), recurseDir('lib/sprites'));
@@ -108,7 +108,7 @@ task("build", ["clean", "mkdir", "version"], function (params) {
 
   }).seq(complete);
 
-}, true);
+});
 
 desc("create version file");
 task("version", ["mkdir"], function (params) {
@@ -116,13 +116,19 @@ task("version", ["mkdir"], function (params) {
 });
 
 desc("clean up");
-task("clean", function (params) {
+task("clean", {async: true}, function (params) {
   console.log('Cleaning...');
   exec('rm -r build', complete);
-}, true);
+});
 
-desc("deploy to test env");
-task("deploy", ["build"], function () {
-  console.log('Deploying...');
-  exec("scp -r build/* everydaylloyd@kramer.dreamhost.com:dv.dougmcinnes.com", complete);
-}, true);
+desc("deploy to S3");
+task("deploy", {async: true}, function (target) {
+  if (target === undefined) {
+    console.log('FAIL: Need to specify an S3 target bucket, such as:');
+    console.log('      jake deploy[deadvalley2]');
+  } else {
+    jake.exec(['s3cmd sync --recursive build/ s3://'+target+' --acl-public'],
+              {printStdout: true},
+              complete);
+  }
+});
