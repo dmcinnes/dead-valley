@@ -41,6 +41,16 @@
 
     jasmineEnv.addReporter(htmlReporter);
 
+    // so we can run something at the end
+    jasmineEnv.addReporter({
+      reportRunnerResults: function () {
+        requirejs(['MainLoop'], function (MainLoop) {
+          MainLoop.pause();
+          $('#HTMLReporter').siblings().slideUp();
+        });
+      }
+    });
+
     jasmineEnv.specFilter = function (spec) {
       return htmlReporter.specFilter(spec);
     };
