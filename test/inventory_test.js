@@ -31,7 +31,7 @@ describe("inventory", function() {
     $dudeInventory.css('visibility', 'hidden');
     pressKey('i');
 
-    waits(50);
+    waits(200);
     runs(function () {
       expect($dudeInventory.css('visibility')).toEqual('visible');
 
@@ -128,7 +128,7 @@ describe("inventory", function() {
     $dudeInventory.css('visibility', 'hidden');
     pressKey('i');
 
-    waits(50);
+    waits(200);
     runs(function () {
       expect($dudeInventory.css('visibility')).toEqual('visible');
 
