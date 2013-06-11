@@ -31,13 +31,14 @@ describe("inventory", function() {
     $dudeInventory.css('visibility', 'hidden');
     pressKey('i');
 
-    waits(200);
+    waits(100);
     runs(function () {
       expect($dudeInventory.css('visibility')).toEqual('visible');
 
       pressKey('i');
 
-      nextFrame(function () {
+      waits(100);
+      runs(function () {
         expect($dudeInventory.css('visibility')).toEqual('hidden');
       });
     });
@@ -128,7 +129,7 @@ describe("inventory", function() {
     $dudeInventory.css('visibility', 'hidden');
     pressKey('i');
 
-    waits(200);
+    waits(100);
     runs(function () {
       expect($dudeInventory.css('visibility')).toEqual('visible');
 
