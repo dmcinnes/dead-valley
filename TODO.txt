@@ -318,6 +318,7 @@ twinkie
 hot dog
 donut
 duct tape
+coffee - adds a temp 1/2 heart
 
 *SPRITES*
 X trees
