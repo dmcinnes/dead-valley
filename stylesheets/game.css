@@ -234,12 +234,13 @@ a {
   margin-top: 2px;
 }
 
-#continue-button {
+.game-over-button {
   display:none;
   position:relative;
   left:-50%;
   top: 100px;
   padding: 10px;
+  margin: 20px;
   color: rgba(30,78,94,0.8);
   -webkit-border-radius: 10px;
   -moz-border-radius   : 10px;
@@ -256,7 +257,7 @@ a {
   text-decoration: none;
 }
 
-#continue-button:hover {
+.game-over-button:hover {
   -webkit-transition:0.15s ease;
   -moz-transition:0.15s ease;
   -ms-transition:0.15s ease;
