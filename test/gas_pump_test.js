@@ -1,4 +1,4 @@
-require(['sprites/GasPump', 'sprites/Honda', 'inventory/GasCan'], function (GasPump, Honda, GasCan) {
+require(['models/GasPump', 'models/Honda', 'inventory/GasCan'], function (GasPump, Honda, GasCan) {
 
   describe("gas pump", function() {
 
