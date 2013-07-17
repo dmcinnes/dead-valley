@@ -55,9 +55,9 @@ var simulateGameClick = function (x, y) {
 };
 
 var clearSprites = function () {
-  _.each(Game.sprites, function (sprite) {
-    if (sprite.die && sprite !== Game.dude) {
-      sprite.die();
+  _.each(Game.models, function (model) {
+    if (model.die && model !== Game.dude) {
+      model.die();
     }
   });
 };
