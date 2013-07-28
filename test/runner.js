@@ -1,9 +1,11 @@
 (function () {
 
-  var deferred = $.when($.getScript("test/lib/jasmine-1.2.0/jasmine.js"));
+  var version = '1.3.1';
 
-  var scripts = ["lib/jasmine-1.2.0/jasmine-html.js",
-                 "lib/jasmine-1.2.0/jasmine-jquery.js",
+  var deferred = $.when($.getScript("test/lib/jasmine-"+version+"/jasmine.js"));
+
+  var scripts = ["lib/jasmine-"+version+"/jasmine-html.js",
+                 "lib/jasmine-"+version+"/jasmine-jquery.js",
                  "test_helper.js",
                  "menu_test.js",
                  "inventory_test.js",
