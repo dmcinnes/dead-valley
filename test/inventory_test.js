@@ -14,6 +14,20 @@ describe("inventory", function() {
     runs(callback);
   }
 
+  function giveItem(clazz, callback) {
+    runs(function () {
+      Cheat.give(clazz);
+    });
+
+    waitsFor(function () {
+      return $('.inventory-item:first').is(':visible');
+    },
+    clazz + " never showed up",
+    1000);
+
+    runs(callback);
+  }
+
   beforeEach(function () {
     $('.back').click();
     $('#resume').click();
@@ -45,13 +59,14 @@ describe("inventory", function() {
   });
 
   it("moves an item to an open hand when double-clicked", function () {
-    Cheat.give('Beans');
-    var beanz = $('.inventory-item:first');
-    expect(beanz.parents('table.inventory')).not.toHaveId('dude-hands');
+    giveItem('Beans', function () {
+      var beanz = $('.inventory-item:first');
+      expect(beanz.parents('table.inventory')).not.toHaveId('dude-hands');
 
-    doubleClickThen(beanz, function () {
-      expect(beanz).toBeVisible();
-      expect(beanz.parents('table.inventory')).toHaveId('dude-hands');
+      doubleClickThen(beanz, function () {
+        expect(beanz).toBeVisible();
+        expect(beanz.parents('table.inventory')).toHaveId('dude-hands');
+      });
     });
   });
 
@@ -73,13 +88,14 @@ describe("inventory", function() {
     var medkit = createItem('Medkit');
     Game.dude.hands.stuffItemIn(medkit);
 
-    Cheat.give('Beans');
-    var beanz = $('.inventory-item:first');
-    expect(beanz.parents('table.inventory')).not.toHaveId('dude-hands');
-
-    doubleClickThen(beanz, function () {
-      expect(beanz).toBeVisible();
+    giveItem('Beans', function () {
+      var beanz = $('.inventory-item:first');
       expect(beanz.parents('table.inventory')).not.toHaveId('dude-hands');
+
+      doubleClickThen(beanz, function () {
+        expect(beanz).toBeVisible();
+        expect(beanz.parents('table.inventory')).not.toHaveId('dude-hands');
+      });
     });
   });
 
@@ -102,25 +118,31 @@ describe("inventory", function() {
   });
 
   it("removes the item from the inventory when it is clicked on", function () {
-    Cheat.give('Beans');
+    $('.inventory-item').remove();
 
-    var beanz = $('.inventory-item:first');
+    giveItem('Beans', function () {
+      var beanz = $('.inventory-item:first');
 
-    waitsFor(function () {
-      return beanz.is(":visible");
-    }, 100);
-
-    runs(function () {
-      var offset = beanz.offset();
-
-      simulateClick(offset.left + 20, offset.top + 20);
-
-      waits(300);
+      waitsFor(function () {
+        return beanz.is(":visible");
+      }, 100);
 
       runs(function () {
-        var Beans = require('inventory/Beans');
-        expect(Game.dude.inventory.findItem(Beans)).toBeUndefined();
-        expect($("img.click-dragging[src*='beans']")).toExist();
+        var offset = beanz.offset();
+
+        runs(function () {
+          simulateClick(offset.left + 20, offset.top + 20);
+        });
+
+        waitsFor(function () {
+          return $("img.click-dragging[src*='beans']").is(":visible");
+        });
+
+        runs(function () {
+          var Beans = require('inventory/Beans');
+          expect(Game.dude.inventory.findItem(Beans)).toBeUndefined();
+          expect($("img.click-dragging[src*='beans']")).toExist();
+        });
       });
     });
   });

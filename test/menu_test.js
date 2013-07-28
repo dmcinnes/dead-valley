@@ -7,8 +7,11 @@ describe("menu", function() {
   describe("stats", function() {
     it("clicking stats opens the stats screen", function() {
       $('#stats').click();
-      expect($('#main-screen')).toBeHidden();
-      expect($('#stats-screen')).toBeVisible();
+      waitsFor(function () {
+        return $('#main-screen').is(':hidden') && $('#stats-screen').is(':visible');
+      },
+      "the stats screen should be showing",
+      1000);
     });
 
     it("clicking back goes back to the main screen", function() {

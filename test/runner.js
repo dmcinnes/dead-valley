@@ -34,7 +34,7 @@
     // turn jquery effects off
     $.fx.off = true;
 
-    $('head').append('<link rel="stylesheet" type="text/css" href="test/lib/jasmine-1.2.0/jasmine.css">');
+    $('head').append('<link rel="stylesheet" type="text/css" href="test/lib/jasmine-'+version+'/jasmine.css">');
 
     var jasmineEnv = jasmine.getEnv();
     jasmineEnv.updateInterval = 1000;
