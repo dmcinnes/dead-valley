@@ -17,18 +17,24 @@ Dependent Libraries (Found in *vendor/*)
 Development
 -----------
 
+### Running the Game
+
 Opening index.html locally in a browser will not work; you will need to set up a web server. I recommend using [Pow](http://pow.cx/) on a mac. It needs a public directory to host static files so just create a symlink:
 ```
 ln -s . public
 ```
 It's already in the .gitignore file.
 
-Tests!
------
+### Branches
+
+The "master" branch is what's currently hosted on http://www.deadvalleygame.com
+The "standalone" branch has the most up to date code -- all of the Sprite and Inventory classes have had their view and data centered code split to make future development easier.
+
+### Tests
 
 There's a suite of Jasmine tests in the *test/* directory that put some aspects of the game through their paces. The coverage is spotty and the test code is kind of ratty but at least it exists.
 
-Drag this [Test Runner Bookmarklet](javascript:$.getScript("test/runner.js");) to your browser bar.
+Drag this to your browser bar: <a href="javascript:$.getScript('test/runner.js');">Test Runner Bookmarklet</a>
 
 Reload the game then click on the bookmarklet to run the tests.
 
