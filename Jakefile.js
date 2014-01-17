@@ -5,7 +5,7 @@ var fs   = require("fs"),
     seq  = require("seq"),
     child_process = require("child_process"),
     exec = child_process.exec;
-    
+
 
 var recurseDir = function (dir) {
   var out = [];
