@@ -28,6 +28,12 @@ Required Libraries (Found in *vendor/*)
 * [Soundjs](http://www.createjs.com/#!/SoundJS)
 * [Modernizr](http://modernizr.com/)
 
+### Editor
+
+The maps are JSON in the *maps/* directory.
+
+There is an HTML5 map editor **editor.html** that seems to be broken.
+
 ### Branches
 
 The "master" branch is what's currently hosted on http://www.deadvalleygame.com
@@ -36,7 +42,7 @@ The "standalone" branch has the most up to date code -- all of the Sprite and In
 
 ### Tests
 
-There's a suite of Jasmine tests in the *test/* directory that put some aspects of the game through their paces. The coverage is spotty and the test code is kind of flaky and ratty but at least it exists.
+There's a suite of Jasmine tests in the *test/* directory that put some aspects of the game through their paces. The coverage is spotty and the test code is kind of ratty but at least it exists.
 
 Drag this to your browser bar: <a href="javascript:$.getScript('test/runner.js');">Test Runner Bookmarklet</a>
 
