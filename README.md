@@ -6,16 +6,7 @@ Escape from Zombie-infested Dead Valley in this HTML5 Grand Theft Auto style Gam
 The full game is hosted here:
 http://www.deadvalleygame.com
 
-Dependent Libraries (Found in *vendor/*)
 
-* [jQuery](http://jquery.com/)
-* [Requirejs](http://requirejs.org/)
-* [Underscore.js](http://documentcloud.github.com/underscore/)
-* [Soundjs](http://www.createjs.com/#!/SoundJS)
-* [Modernizr](http://modernizr.com/)
-
-Development
------------
 
 ### Running the Game
 
@@ -25,14 +16,27 @@ ln -s . public
 ```
 It's already in the .gitignore file.
 
+### Code
+
+Dead Valley uses [Requirejs](http://requirejs.org/) for code organization.
+
+Required Libraries (Found in *vendor/*)
+
+* [jQuery](http://jquery.com/)
+* [Requirejs](http://requirejs.org/)
+* [Underscore.js](http://documentcloud.github.com/underscore/)
+* [Soundjs](http://www.createjs.com/#!/SoundJS)
+* [Modernizr](http://modernizr.com/)
+
 ### Branches
 
 The "master" branch is what's currently hosted on http://www.deadvalleygame.com
+
 The "standalone" branch has the most up to date code -- all of the Sprite and Inventory classes have had their view and data centered code split to make future development easier.
 
 ### Tests
 
-There's a suite of Jasmine tests in the *test/* directory that put some aspects of the game through their paces. The coverage is spotty and the test code is kind of ratty but at least it exists.
+There's a suite of Jasmine tests in the *test/* directory that put some aspects of the game through their paces. The coverage is spotty and the test code is kind of flaky and ratty but at least it exists.
 
 Drag this to your browser bar: <a href="javascript:$.getScript('test/runner.js');">Test Runner Bookmarklet</a>
 
