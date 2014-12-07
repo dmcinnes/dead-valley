@@ -366,10 +366,15 @@ require(['../lib/TileMarshal', '../lib/SpriteMarshal', '../lib/sprite-info'],
     image += '.png)';
     var spriteTile = $('<'+type+'/>').css({
       'background-image': image,
-      'background-position': -val.imageOffset.x + ' ' + -val.imageOffset.y,
       width: val.width,
       height: val.height
     }).addClass('sprite');
+    // not all sprites have image offsets
+    if (val.imageOffset) {
+      spriteTile.css({
+        'background-position': -val.imageOffset.x + ' ' + -val.imageOffset.y
+      });
+    }
 
     var spriteObj = new Sprite(val);
     spriteObj.name = name;

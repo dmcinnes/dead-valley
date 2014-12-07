@@ -32,7 +32,10 @@ Required Libraries (Found in *vendor/*)
 
 The maps are JSON in the *maps/* directory.
 
-There is an HTML5 map editor **editor.html** that seems to be broken.
+There is an HTML5 map editor **editor.html**.
+Select tiles on the left, and place them with a click. Free draw with the shift key. The red highlighted tiles in the map are the only places roads should leave the map.
+
+There used to be a way to place full buildings, complete with defined walls and entrances (Building Archetypes) but that seems broken.
 
 ### Branches
 
