@@ -55,7 +55,7 @@ task("build", ["clean", "mkdir", "version"], {async: true}, function (params) {
   exec('sed -e "/{ad}/r ad.html" -e "/{ad}/d" index.html > build/index.html');
 
   // set the latest version number for display
-  exec('sed -i "" "s/###/`git describe --abbrev=0 --tags`/" build/index.html');
+  exec('sed -i "s/###/`git describe --abbrev=0 --tags`/" build/index.html');
 
 
   var version;
