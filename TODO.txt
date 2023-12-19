@@ -310,13 +310,13 @@ X rubber hose
 X rifle
 X rifle ammo
 X wrench
+X Donut
 spare headlight
 lantern
 golf club
 food
 twinkie
 hot dog
-donut
 duct tape
 coffee - adds a temp 1/2 heart
 
